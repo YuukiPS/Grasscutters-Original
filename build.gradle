@@ -25,7 +25,6 @@ plugins {
     id 'com.diffplug.spotless' version '6.11.0' // Apply the Spotless linter plugin.
 
     id 'eclipse' // Eclipse Support
-    id 'idea' // IntelliJ Support
 
     id 'maven-publish' // Support for publishing to Maven repositories.
     id 'signing' // Support for signing build artifacts.
@@ -116,7 +115,7 @@ dependencies {
 
     // Google Protocol Buffer definitions.
     // These are the raw '.proto' files.
-    protobuf files('proto/')
+    protobuf files('../GC-Proto/proto/')
 
     // Testing libraries.
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.8.2'
@@ -267,15 +266,6 @@ sourceSets {
         java {
             srcDir 'src/generated/main/java'
         }
-    }
-}
-
-idea {
-    module {
-        // proto files and generated Java files are automatically added as
-        // source dirs.
-        // If you have additional sources, add them here:
-        sourceDirs += file('/proto/');
     }
 }
 
