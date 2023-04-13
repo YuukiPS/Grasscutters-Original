@@ -10,6 +10,7 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -61,15 +62,21 @@ public final class FileUtils {
         final String resources = Grasscutter.config.folderStructure.resources;
         fs = null;
         path = Path.of(resources);
-        if (resources.endsWith(
-                ".zip")) { // Would be nice to support .tar.gz too at some point, but it doesn't come for
-            // free in Java
-            try {
-                fs = FileSystems.newFileSystem(path);
-            } catch (IOException e) {
-                Grasscutter.getLogger().error("Failed to load resources zip \"" + resources + "\"");
-            }
-        }
+
+        Path pathzip = Paths.get(resources+"resources.zip");
+
+		if (resources.endsWith(".zip") || Files.exists(pathzip)) {
+			Grasscutter.getLogger().info("Found file zip res");
+			var tmptes = path;
+			if (Files.exists(pathzip)) {
+				tmptes = pathzip; // foce use it
+			}
+			try {
+				fs = FileSystems.newFileSystem(tmptes);
+			} catch (IOException e) {
+				Grasscutter.getLogger().error("Failed to load resources zip \"" + resources + "\"");
+			}
+		}
 
         if (fs != null) {
             var root = fs.getPath("");
