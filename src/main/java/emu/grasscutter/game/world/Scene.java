@@ -447,9 +447,15 @@ public final class Scene {
 
         // Reward drop
         if (target instanceof EntityMonster && this.getSceneType() != SceneType.SCENE_DUNGEON) {
-            if (!getWorld().getServer().getDropSystem().handleMonsterDrop((EntityMonster) target)) {
-                Grasscutter.getLogger().warn("Can not solve monster drop: drop_id = {} , drop_tag = {}.Fallback to legacy drop system.", ((EntityMonster) target).getMetaMonster().drop_id, ((EntityMonster) target).getMetaMonster().drop_tag);
-                getWorld().getServer().getDropSystemLegacy().callDrop((EntityMonster) target);
+            var t = ((EntityMonster) target);
+            if (!getWorld().getServer().getDropSystem().handleMonsterDrop(t)) {
+                var metadata = t.getMetaMonster();
+                if(metadata != null){
+                 Grasscutter.getLogger().warn("Can not solve monster drop: drop_id = {} , drop_tag = {}.Fallback to legacy drop system.",metadata.drop_id, metadata.drop_tag);
+                 getWorld().getServer().getDropSystemLegacy().callDrop(t);
+                }else{
+                 Grasscutter.getLogger().warn("Can not solve monster drop, because monster id {} metadata was not found",t.getId());
+                }                
             }
         }
 
