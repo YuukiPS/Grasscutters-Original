@@ -446,16 +446,11 @@ public final class Scene {
         this.broadcastPacket(new PacketLifeStateChangeNotify(attackerId, target, LifeState.LIFE_DEAD));
 
         // Reward drop
-        if (target instanceof EntityMonster && this.getSceneType() != SceneType.SCENE_DUNGEON) {
-            var t = ((EntityMonster) target);
-            if (!getWorld().getServer().getDropSystem().handleMonsterDrop(t)) {
-                var metadata = t.getMetaMonster();
-                if(metadata != null){
-                 Grasscutter.getLogger().warn("Can not solve monster drop: drop_id = {} , drop_tag = {}.Fallback to legacy drop system.",metadata.drop_id, metadata.drop_tag);
-                 getWorld().getServer().getDropSystemLegacy().callDrop(t);
-                }else{
-                 Grasscutter.getLogger().warn("Can not solve monster drop, because monster id {} metadata was not found",t.getId());
-                }                
+        var world = this.getWorld();
+        if (target instanceof EntityMonster monster && this.getSceneType() != SceneType.SCENE_DUNGEON) {
+            if (monster.getMetaMonster() != null && !world.getServer().getDropSystem().handleMonsterDrop(monster)) {
+                Grasscutter.getLogger().debug("Can not solve monster drop: drop_id = {}, drop_tag = {}. Falling back to legacy drop system.", monster.getMetaMonster().drop_id, monster.getMetaMonster().drop_tag);
+                getWorld().getServer().getDropSystemLegacy().callDrop(monster);
             }
         }
 
