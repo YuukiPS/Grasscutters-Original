@@ -35,10 +35,10 @@ public final class InvestigationMonsterOuterClass {
      * CBBFLPAGFOI
      * </pre>
      *
-     * <code>uint32 CBBFLPAGFOI = 10;</code>
-     * @return The cBBFLPAGFOI.
+     * <code>uint32 refresh_interval = 10;</code>
+     * @return The refreshInterval.
      */
-    int getCBBFLPAGFOI();
+    int getRefreshInterval();
 
     /**
      * <code>uint32 next_refresh_time = 1;</code>
@@ -78,20 +78,16 @@ public final class InvestigationMonsterOuterClass {
      * MGMCKOOBFBJ
      * </pre>
      *
-     * <code>uint32 max_boss_chest_num = 9;</code>
-     * @return The maxBossChestNum.
+     * <code>uint32 boss_chest_num = 9;</code>
+     * @return The bossChestNum.
      */
-    int getMaxBossChestNum();
+    int getBossChestNum();
 
     /**
-     * <pre>
-     * DHMMIBILNEE
-     * </pre>
-     *
-     * <code>uint32 refresh_interval = 11;</code>
-     * @return The refreshInterval.
+     * <code>uint32 DHMMIBILNEE = 11;</code>
+     * @return The dHMMIBILNEE.
      */
-    int getRefreshInterval();
+    int getDHMMIBILNEE();
 
     /**
      * <code>.Vector pos = 2;</code>
@@ -150,14 +146,10 @@ public final class InvestigationMonsterOuterClass {
     emu.grasscutter.net.proto.InvestigationMonsterOuterClass.InvestigationMonster.LockState getLockState();
 
     /**
-     * <pre>
-     * HKBNEBOAMDI
-     * </pre>
-     *
-     * <code>uint32 boss_chest_num = 15;</code>
-     * @return The bossChestNum.
+     * <code>uint32 max_boss_chest_num = 15;</code>
+     * @return The maxBossChestNum.
      */
-    int getBossChestNum();
+    int getMaxBossChestNum();
   }
   /**
    * <pre>
@@ -260,17 +252,17 @@ public final class InvestigationMonsterOuterClass {
             }
             case 72: {
 
-              maxBossChestNum_ = input.readUInt32();
+              bossChestNum_ = input.readUInt32();
               break;
             }
             case 80: {
 
-              cBBFLPAGFOI_ = input.readUInt32();
+              refreshInterval_ = input.readUInt32();
               break;
             }
             case 88: {
 
-              refreshInterval_ = input.readUInt32();
+              dHMMIBILNEE_ = input.readUInt32();
               break;
             }
             case 98: {
@@ -298,7 +290,7 @@ public final class InvestigationMonsterOuterClass {
             }
             case 120: {
 
-              bossChestNum_ = input.readUInt32();
+              maxBossChestNum_ = input.readUInt32();
               break;
             }
             case 4144: {
@@ -345,7 +337,7 @@ public final class InvestigationMonsterOuterClass {
 
     /**
      * <pre>
-     * Name: ENEAGILHBCC &gt; LockState
+     * Name: ENEAGILHBCC
      * </pre>
      *
      * Protobuf enum {@code InvestigationMonster.LockState}
@@ -353,24 +345,24 @@ public final class InvestigationMonsterOuterClass {
     public enum LockState
         implements com.google.protobuf.ProtocolMessageEnum {
       /**
-       * <code>LOCK_STATE_NONE = 0;</code>
+       * <code>LOCK_NONE = 0;</code>
        */
-      LOCK_STATE_NONE(0),
+      LOCK_NONE(0),
       /**
-       * <code>LOCK_STATE_QUEST = 1;</code>
+       * <code>LOCK_QUEST = 1;</code>
        */
-      LOCK_STATE_QUEST(1),
+      LOCK_QUEST(1),
       UNRECOGNIZED(-1),
       ;
 
       /**
-       * <code>LOCK_STATE_NONE = 0;</code>
+       * <code>LOCK_NONE = 0;</code>
        */
-      public static final int LOCK_STATE_NONE_VALUE = 0;
+      public static final int LOCK_NONE_VALUE = 0;
       /**
-       * <code>LOCK_STATE_QUEST = 1;</code>
+       * <code>LOCK_QUEST = 1;</code>
        */
-      public static final int LOCK_STATE_QUEST_VALUE = 1;
+      public static final int LOCK_QUEST_VALUE = 1;
 
 
       public final int getNumber() {
@@ -397,8 +389,8 @@ public final class InvestigationMonsterOuterClass {
        */
       public static LockState forNumber(int value) {
         switch (value) {
-          case 0: return LOCK_STATE_NONE;
-          case 1: return LOCK_STATE_QUEST;
+          case 0: return LOCK_NONE;
+          case 1: return LOCK_QUEST;
           default: return null;
         }
       }
@@ -477,19 +469,19 @@ public final class InvestigationMonsterOuterClass {
       return cityId_;
     }
 
-    public static final int CBBFLPAGFOI_FIELD_NUMBER = 10;
-    private int cBBFLPAGFOI_;
+    public static final int REFRESH_INTERVAL_FIELD_NUMBER = 10;
+    private int refreshInterval_;
     /**
      * <pre>
      * CBBFLPAGFOI
      * </pre>
      *
-     * <code>uint32 CBBFLPAGFOI = 10;</code>
-     * @return The cBBFLPAGFOI.
+     * <code>uint32 refresh_interval = 10;</code>
+     * @return The refreshInterval.
      */
     @java.lang.Override
-    public int getCBBFLPAGFOI() {
-      return cBBFLPAGFOI_;
+    public int getRefreshInterval() {
+      return refreshInterval_;
     }
 
     public static final int NEXT_REFRESH_TIME_FIELD_NUMBER = 1;
@@ -551,34 +543,30 @@ public final class InvestigationMonsterOuterClass {
       return level_;
     }
 
-    public static final int MAX_BOSS_CHEST_NUM_FIELD_NUMBER = 9;
-    private int maxBossChestNum_;
+    public static final int BOSS_CHEST_NUM_FIELD_NUMBER = 9;
+    private int bossChestNum_;
     /**
      * <pre>
      * MGMCKOOBFBJ
      * </pre>
      *
-     * <code>uint32 max_boss_chest_num = 9;</code>
-     * @return The maxBossChestNum.
+     * <code>uint32 boss_chest_num = 9;</code>
+     * @return The bossChestNum.
      */
     @java.lang.Override
-    public int getMaxBossChestNum() {
-      return maxBossChestNum_;
+    public int getBossChestNum() {
+      return bossChestNum_;
     }
 
-    public static final int REFRESH_INTERVAL_FIELD_NUMBER = 11;
-    private int refreshInterval_;
+    public static final int DHMMIBILNEE_FIELD_NUMBER = 11;
+    private int dHMMIBILNEE_;
     /**
-     * <pre>
-     * DHMMIBILNEE
-     * </pre>
-     *
-     * <code>uint32 refresh_interval = 11;</code>
-     * @return The refreshInterval.
+     * <code>uint32 DHMMIBILNEE = 11;</code>
+     * @return The dHMMIBILNEE.
      */
     @java.lang.Override
-    public int getRefreshInterval() {
-      return refreshInterval_;
+    public int getDHMMIBILNEE() {
+      return dHMMIBILNEE_;
     }
 
     public static final int POS_FIELD_NUMBER = 2;
@@ -681,19 +669,15 @@ public final class InvestigationMonsterOuterClass {
       return result == null ? emu.grasscutter.net.proto.InvestigationMonsterOuterClass.InvestigationMonster.LockState.UNRECOGNIZED : result;
     }
 
-    public static final int BOSS_CHEST_NUM_FIELD_NUMBER = 15;
-    private int bossChestNum_;
+    public static final int MAX_BOSS_CHEST_NUM_FIELD_NUMBER = 15;
+    private int maxBossChestNum_;
     /**
-     * <pre>
-     * HKBNEBOAMDI
-     * </pre>
-     *
-     * <code>uint32 boss_chest_num = 15;</code>
-     * @return The bossChestNum.
+     * <code>uint32 max_boss_chest_num = 15;</code>
+     * @return The maxBossChestNum.
      */
     @java.lang.Override
-    public int getBossChestNum() {
-      return bossChestNum_;
+    public int getMaxBossChestNum() {
+      return maxBossChestNum_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -719,7 +703,7 @@ public final class InvestigationMonsterOuterClass {
       if (resin_ != 0) {
         output.writeUInt32(3, resin_);
       }
-      if (lockState_ != emu.grasscutter.net.proto.InvestigationMonsterOuterClass.InvestigationMonster.LockState.LOCK_STATE_NONE.getNumber()) {
+      if (lockState_ != emu.grasscutter.net.proto.InvestigationMonsterOuterClass.InvestigationMonster.LockState.LOCK_NONE.getNumber()) {
         output.writeEnum(4, lockState_);
       }
       if (cityId_ != 0) {
@@ -734,14 +718,14 @@ public final class InvestigationMonsterOuterClass {
       if (isAreaLocked_ != false) {
         output.writeBool(8, isAreaLocked_);
       }
-      if (maxBossChestNum_ != 0) {
-        output.writeUInt32(9, maxBossChestNum_);
-      }
-      if (cBBFLPAGFOI_ != 0) {
-        output.writeUInt32(10, cBBFLPAGFOI_);
+      if (bossChestNum_ != 0) {
+        output.writeUInt32(9, bossChestNum_);
       }
       if (refreshInterval_ != 0) {
-        output.writeUInt32(11, refreshInterval_);
+        output.writeUInt32(10, refreshInterval_);
+      }
+      if (dHMMIBILNEE_ != 0) {
+        output.writeUInt32(11, dHMMIBILNEE_);
       }
       if (weeklyBossResinDiscountInfo_ != null) {
         output.writeMessage(12, getWeeklyBossResinDiscountInfo());
@@ -752,8 +736,8 @@ public final class InvestigationMonsterOuterClass {
       if (isAlive_ != false) {
         output.writeBool(14, isAlive_);
       }
-      if (bossChestNum_ != 0) {
-        output.writeUInt32(15, bossChestNum_);
+      if (maxBossChestNum_ != 0) {
+        output.writeUInt32(15, maxBossChestNum_);
       }
       if (monsterId_ != 0) {
         output.writeUInt32(518, monsterId_);
@@ -782,7 +766,7 @@ public final class InvestigationMonsterOuterClass {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(3, resin_);
       }
-      if (lockState_ != emu.grasscutter.net.proto.InvestigationMonsterOuterClass.InvestigationMonster.LockState.LOCK_STATE_NONE.getNumber()) {
+      if (lockState_ != emu.grasscutter.net.proto.InvestigationMonsterOuterClass.InvestigationMonster.LockState.LOCK_NONE.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(4, lockState_);
       }
@@ -802,17 +786,17 @@ public final class InvestigationMonsterOuterClass {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(8, isAreaLocked_);
       }
-      if (maxBossChestNum_ != 0) {
+      if (bossChestNum_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(9, maxBossChestNum_);
-      }
-      if (cBBFLPAGFOI_ != 0) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(10, cBBFLPAGFOI_);
+          .computeUInt32Size(9, bossChestNum_);
       }
       if (refreshInterval_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(11, refreshInterval_);
+          .computeUInt32Size(10, refreshInterval_);
+      }
+      if (dHMMIBILNEE_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(11, dHMMIBILNEE_);
       }
       if (weeklyBossResinDiscountInfo_ != null) {
         size += com.google.protobuf.CodedOutputStream
@@ -826,9 +810,9 @@ public final class InvestigationMonsterOuterClass {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(14, isAlive_);
       }
-      if (bossChestNum_ != 0) {
+      if (maxBossChestNum_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(15, bossChestNum_);
+          .computeUInt32Size(15, maxBossChestNum_);
       }
       if (monsterId_ != 0) {
         size += com.google.protobuf.CodedOutputStream
@@ -857,8 +841,8 @@ public final class InvestigationMonsterOuterClass {
           != other.getIsAreaLocked()) return false;
       if (getCityId()
           != other.getCityId()) return false;
-      if (getCBBFLPAGFOI()
-          != other.getCBBFLPAGFOI()) return false;
+      if (getRefreshInterval()
+          != other.getRefreshInterval()) return false;
       if (getNextRefreshTime()
           != other.getNextRefreshTime()) return false;
       if (hasWeeklyBossResinDiscountInfo() != other.hasWeeklyBossResinDiscountInfo()) return false;
@@ -870,10 +854,10 @@ public final class InvestigationMonsterOuterClass {
           != other.getIsAlive()) return false;
       if (getLevel()
           != other.getLevel()) return false;
-      if (getMaxBossChestNum()
-          != other.getMaxBossChestNum()) return false;
-      if (getRefreshInterval()
-          != other.getRefreshInterval()) return false;
+      if (getBossChestNum()
+          != other.getBossChestNum()) return false;
+      if (getDHMMIBILNEE()
+          != other.getDHMMIBILNEE()) return false;
       if (hasPos() != other.hasPos()) return false;
       if (hasPos()) {
         if (!getPos()
@@ -890,8 +874,8 @@ public final class InvestigationMonsterOuterClass {
       if (getMonsterId()
           != other.getMonsterId()) return false;
       if (lockState_ != other.lockState_) return false;
-      if (getBossChestNum()
-          != other.getBossChestNum()) return false;
+      if (getMaxBossChestNum()
+          != other.getMaxBossChestNum()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -908,8 +892,8 @@ public final class InvestigationMonsterOuterClass {
           getIsAreaLocked());
       hash = (37 * hash) + CITY_ID_FIELD_NUMBER;
       hash = (53 * hash) + getCityId();
-      hash = (37 * hash) + CBBFLPAGFOI_FIELD_NUMBER;
-      hash = (53 * hash) + getCBBFLPAGFOI();
+      hash = (37 * hash) + REFRESH_INTERVAL_FIELD_NUMBER;
+      hash = (53 * hash) + getRefreshInterval();
       hash = (37 * hash) + NEXT_REFRESH_TIME_FIELD_NUMBER;
       hash = (53 * hash) + getNextRefreshTime();
       if (hasWeeklyBossResinDiscountInfo()) {
@@ -921,10 +905,10 @@ public final class InvestigationMonsterOuterClass {
           getIsAlive());
       hash = (37 * hash) + LEVEL_FIELD_NUMBER;
       hash = (53 * hash) + getLevel();
-      hash = (37 * hash) + MAX_BOSS_CHEST_NUM_FIELD_NUMBER;
-      hash = (53 * hash) + getMaxBossChestNum();
-      hash = (37 * hash) + REFRESH_INTERVAL_FIELD_NUMBER;
-      hash = (53 * hash) + getRefreshInterval();
+      hash = (37 * hash) + BOSS_CHEST_NUM_FIELD_NUMBER;
+      hash = (53 * hash) + getBossChestNum();
+      hash = (37 * hash) + DHMMIBILNEE_FIELD_NUMBER;
+      hash = (53 * hash) + getDHMMIBILNEE();
       if (hasPos()) {
         hash = (37 * hash) + POS_FIELD_NUMBER;
         hash = (53 * hash) + getPos().hashCode();
@@ -941,8 +925,8 @@ public final class InvestigationMonsterOuterClass {
       hash = (53 * hash) + getMonsterId();
       hash = (37 * hash) + LOCK_STATE_FIELD_NUMBER;
       hash = (53 * hash) + lockState_;
-      hash = (37 * hash) + BOSS_CHEST_NUM_FIELD_NUMBER;
-      hash = (53 * hash) + getBossChestNum();
+      hash = (37 * hash) + MAX_BOSS_CHEST_NUM_FIELD_NUMBER;
+      hash = (53 * hash) + getMaxBossChestNum();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1084,7 +1068,7 @@ public final class InvestigationMonsterOuterClass {
 
         cityId_ = 0;
 
-        cBBFLPAGFOI_ = 0;
+        refreshInterval_ = 0;
 
         nextRefreshTime_ = 0;
 
@@ -1098,9 +1082,9 @@ public final class InvestigationMonsterOuterClass {
 
         level_ = 0;
 
-        maxBossChestNum_ = 0;
+        bossChestNum_ = 0;
 
-        refreshInterval_ = 0;
+        dHMMIBILNEE_ = 0;
 
         if (posBuilder_ == null) {
           pos_ = null;
@@ -1120,7 +1104,7 @@ public final class InvestigationMonsterOuterClass {
 
         lockState_ = 0;
 
-        bossChestNum_ = 0;
+        maxBossChestNum_ = 0;
 
         return this;
       }
@@ -1150,7 +1134,7 @@ public final class InvestigationMonsterOuterClass {
         emu.grasscutter.net.proto.InvestigationMonsterOuterClass.InvestigationMonster result = new emu.grasscutter.net.proto.InvestigationMonsterOuterClass.InvestigationMonster(this);
         result.isAreaLocked_ = isAreaLocked_;
         result.cityId_ = cityId_;
-        result.cBBFLPAGFOI_ = cBBFLPAGFOI_;
+        result.refreshInterval_ = refreshInterval_;
         result.nextRefreshTime_ = nextRefreshTime_;
         if (weeklyBossResinDiscountInfoBuilder_ == null) {
           result.weeklyBossResinDiscountInfo_ = weeklyBossResinDiscountInfo_;
@@ -1159,8 +1143,8 @@ public final class InvestigationMonsterOuterClass {
         }
         result.isAlive_ = isAlive_;
         result.level_ = level_;
-        result.maxBossChestNum_ = maxBossChestNum_;
-        result.refreshInterval_ = refreshInterval_;
+        result.bossChestNum_ = bossChestNum_;
+        result.dHMMIBILNEE_ = dHMMIBILNEE_;
         if (posBuilder_ == null) {
           result.pos_ = pos_;
         } else {
@@ -1172,7 +1156,7 @@ public final class InvestigationMonsterOuterClass {
         result.resin_ = resin_;
         result.monsterId_ = monsterId_;
         result.lockState_ = lockState_;
-        result.bossChestNum_ = bossChestNum_;
+        result.maxBossChestNum_ = maxBossChestNum_;
         onBuilt();
         return result;
       }
@@ -1227,8 +1211,8 @@ public final class InvestigationMonsterOuterClass {
         if (other.getCityId() != 0) {
           setCityId(other.getCityId());
         }
-        if (other.getCBBFLPAGFOI() != 0) {
-          setCBBFLPAGFOI(other.getCBBFLPAGFOI());
+        if (other.getRefreshInterval() != 0) {
+          setRefreshInterval(other.getRefreshInterval());
         }
         if (other.getNextRefreshTime() != 0) {
           setNextRefreshTime(other.getNextRefreshTime());
@@ -1242,11 +1226,11 @@ public final class InvestigationMonsterOuterClass {
         if (other.getLevel() != 0) {
           setLevel(other.getLevel());
         }
-        if (other.getMaxBossChestNum() != 0) {
-          setMaxBossChestNum(other.getMaxBossChestNum());
+        if (other.getBossChestNum() != 0) {
+          setBossChestNum(other.getBossChestNum());
         }
-        if (other.getRefreshInterval() != 0) {
-          setRefreshInterval(other.getRefreshInterval());
+        if (other.getDHMMIBILNEE() != 0) {
+          setDHMMIBILNEE(other.getDHMMIBILNEE());
         }
         if (other.hasPos()) {
           mergePos(other.getPos());
@@ -1269,8 +1253,8 @@ public final class InvestigationMonsterOuterClass {
         if (other.lockState_ != 0) {
           setLockStateValue(other.getLockStateValue());
         }
-        if (other.getBossChestNum() != 0) {
-          setBossChestNum(other.getBossChestNum());
+        if (other.getMaxBossChestNum() != 0) {
+          setMaxBossChestNum(other.getMaxBossChestNum());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1363,31 +1347,31 @@ public final class InvestigationMonsterOuterClass {
         return this;
       }
 
-      private int cBBFLPAGFOI_ ;
+      private int refreshInterval_ ;
       /**
        * <pre>
        * CBBFLPAGFOI
        * </pre>
        *
-       * <code>uint32 CBBFLPAGFOI = 10;</code>
-       * @return The cBBFLPAGFOI.
+       * <code>uint32 refresh_interval = 10;</code>
+       * @return The refreshInterval.
        */
       @java.lang.Override
-      public int getCBBFLPAGFOI() {
-        return cBBFLPAGFOI_;
+      public int getRefreshInterval() {
+        return refreshInterval_;
       }
       /**
        * <pre>
        * CBBFLPAGFOI
        * </pre>
        *
-       * <code>uint32 CBBFLPAGFOI = 10;</code>
-       * @param value The cBBFLPAGFOI to set.
+       * <code>uint32 refresh_interval = 10;</code>
+       * @param value The refreshInterval to set.
        * @return This builder for chaining.
        */
-      public Builder setCBBFLPAGFOI(int value) {
+      public Builder setRefreshInterval(int value) {
         
-        cBBFLPAGFOI_ = value;
+        refreshInterval_ = value;
         onChanged();
         return this;
       }
@@ -1396,12 +1380,12 @@ public final class InvestigationMonsterOuterClass {
        * CBBFLPAGFOI
        * </pre>
        *
-       * <code>uint32 CBBFLPAGFOI = 10;</code>
+       * <code>uint32 refresh_interval = 10;</code>
        * @return This builder for chaining.
        */
-      public Builder clearCBBFLPAGFOI() {
+      public Builder clearRefreshInterval() {
         
-        cBBFLPAGFOI_ = 0;
+        refreshInterval_ = 0;
         onChanged();
         return this;
       }
@@ -1618,31 +1602,31 @@ public final class InvestigationMonsterOuterClass {
         return this;
       }
 
-      private int maxBossChestNum_ ;
+      private int bossChestNum_ ;
       /**
        * <pre>
        * MGMCKOOBFBJ
        * </pre>
        *
-       * <code>uint32 max_boss_chest_num = 9;</code>
-       * @return The maxBossChestNum.
+       * <code>uint32 boss_chest_num = 9;</code>
+       * @return The bossChestNum.
        */
       @java.lang.Override
-      public int getMaxBossChestNum() {
-        return maxBossChestNum_;
+      public int getBossChestNum() {
+        return bossChestNum_;
       }
       /**
        * <pre>
        * MGMCKOOBFBJ
        * </pre>
        *
-       * <code>uint32 max_boss_chest_num = 9;</code>
-       * @param value The maxBossChestNum to set.
+       * <code>uint32 boss_chest_num = 9;</code>
+       * @param value The bossChestNum to set.
        * @return This builder for chaining.
        */
-      public Builder setMaxBossChestNum(int value) {
+      public Builder setBossChestNum(int value) {
         
-        maxBossChestNum_ = value;
+        bossChestNum_ = value;
         onChanged();
         return this;
       }
@@ -1651,55 +1635,43 @@ public final class InvestigationMonsterOuterClass {
        * MGMCKOOBFBJ
        * </pre>
        *
-       * <code>uint32 max_boss_chest_num = 9;</code>
+       * <code>uint32 boss_chest_num = 9;</code>
        * @return This builder for chaining.
        */
-      public Builder clearMaxBossChestNum() {
+      public Builder clearBossChestNum() {
         
-        maxBossChestNum_ = 0;
+        bossChestNum_ = 0;
         onChanged();
         return this;
       }
 
-      private int refreshInterval_ ;
+      private int dHMMIBILNEE_ ;
       /**
-       * <pre>
-       * DHMMIBILNEE
-       * </pre>
-       *
-       * <code>uint32 refresh_interval = 11;</code>
-       * @return The refreshInterval.
+       * <code>uint32 DHMMIBILNEE = 11;</code>
+       * @return The dHMMIBILNEE.
        */
       @java.lang.Override
-      public int getRefreshInterval() {
-        return refreshInterval_;
+      public int getDHMMIBILNEE() {
+        return dHMMIBILNEE_;
       }
       /**
-       * <pre>
-       * DHMMIBILNEE
-       * </pre>
-       *
-       * <code>uint32 refresh_interval = 11;</code>
-       * @param value The refreshInterval to set.
+       * <code>uint32 DHMMIBILNEE = 11;</code>
+       * @param value The dHMMIBILNEE to set.
        * @return This builder for chaining.
        */
-      public Builder setRefreshInterval(int value) {
+      public Builder setDHMMIBILNEE(int value) {
         
-        refreshInterval_ = value;
+        dHMMIBILNEE_ = value;
         onChanged();
         return this;
       }
       /**
-       * <pre>
-       * DHMMIBILNEE
-       * </pre>
-       *
-       * <code>uint32 refresh_interval = 11;</code>
+       * <code>uint32 DHMMIBILNEE = 11;</code>
        * @return This builder for chaining.
        */
-      public Builder clearRefreshInterval() {
+      public Builder clearDHMMIBILNEE() {
         
-        refreshInterval_ = 0;
+        dHMMIBILNEE_ = 0;
         onChanged();
         return this;
       }
@@ -2032,45 +2004,33 @@ public final class InvestigationMonsterOuterClass {
         return this;
       }
 
-      private int bossChestNum_ ;
+      private int maxBossChestNum_ ;
       /**
-       * <pre>
-       * HKBNEBOAMDI
-       * </pre>
-       *
-       * <code>uint32 boss_chest_num = 15;</code>
-       * @return The bossChestNum.
+       * <code>uint32 max_boss_chest_num = 15;</code>
+       * @return The maxBossChestNum.
        */
       @java.lang.Override
-      public int getBossChestNum() {
-        return bossChestNum_;
+      public int getMaxBossChestNum() {
+        return maxBossChestNum_;
       }
       /**
-       * <pre>
-       * HKBNEBOAMDI
-       * </pre>
-       *
-       * <code>uint32 boss_chest_num = 15;</code>
-       * @param value The bossChestNum to set.
+       * <code>uint32 max_boss_chest_num = 15;</code>
+       * @param value The maxBossChestNum to set.
        * @return This builder for chaining.
        */
-      public Builder setBossChestNum(int value) {
+      public Builder setMaxBossChestNum(int value) {
         
-        bossChestNum_ = value;
+        maxBossChestNum_ = value;
         onChanged();
         return this;
       }
       /**
-       * <pre>
-       * HKBNEBOAMDI
-       * </pre>
-       *
-       * <code>uint32 boss_chest_num = 15;</code>
+       * <code>uint32 max_boss_chest_num = 15;</code>
        * @return This builder for chaining.
        */
-      public Builder clearBossChestNum() {
+      public Builder clearMaxBossChestNum() {
         
-        bossChestNum_ = 0;
+        maxBossChestNum_ = 0;
         onChanged();
         return this;
       }
@@ -2142,21 +2102,21 @@ public final class InvestigationMonsterOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\032InvestigationMonster.proto\032\014Vector.pro" +
-      "to\032!WeeklyBossResinDiscountInfo.proto\"\375\003" +
+      "to\032!WeeklyBossResinDiscountInfo.proto\"\361\003" +
       "\n\024InvestigationMonster\022\026\n\016is_area_locked" +
-      "\030\010 \001(\010\022\017\n\007city_id\030\005 \001(\r\022\023\n\013CBBFLPAGFOI\030\n" +
-      " \001(\r\022\031\n\021next_refresh_time\030\001 \001(\r\022E\n\037weekl" +
-      "y_boss_resin_discount_info\030\014 \001(\0132\034.Weekl" +
-      "yBossResinDiscountInfo\022\020\n\010is_alive\030\016 \001(\010" +
-      "\022\r\n\005level\030\r \001(\r\022\032\n\022max_boss_chest_num\030\t " +
-      "\001(\r\022\030\n\020refresh_interval\030\013 \001(\r\022\024\n\003pos\030\002 \001" +
-      "(\0132\007.Vector\022\021\n\010group_id\030\274\t \001(\r\022\n\n\002id\030\007 \001" +
-      "(\r\022\020\n\010scene_id\030\006 \001(\r\022\r\n\005resin\030\003 \001(\r\022\023\n\nm" +
-      "onster_id\030\206\004 \001(\r\0223\n\nlock_state\030\004 \001(\0162\037.I" +
-      "nvestigationMonster.LockState\022\026\n\016boss_ch" +
-      "est_num\030\017 \001(\r\"6\n\tLockState\022\023\n\017LOCK_STATE" +
-      "_NONE\020\000\022\024\n\020LOCK_STATE_QUEST\020\001B\033\n\031emu.gra" +
-      "sscutter.net.protob\006proto3"
+      "\030\010 \001(\010\022\017\n\007city_id\030\005 \001(\r\022\030\n\020refresh_inter" +
+      "val\030\n \001(\r\022\031\n\021next_refresh_time\030\001 \001(\r\022E\n\037" +
+      "weekly_boss_resin_discount_info\030\014 \001(\0132\034." +
+      "WeeklyBossResinDiscountInfo\022\020\n\010is_alive\030" +
+      "\016 \001(\010\022\r\n\005level\030\r \001(\r\022\026\n\016boss_chest_num\030\t" +
+      " \001(\r\022\023\n\013DHMMIBILNEE\030\013 \001(\r\022\024\n\003pos\030\002 \001(\0132\007" +
+      ".Vector\022\021\n\010group_id\030\274\t \001(\r\022\n\n\002id\030\007 \001(\r\022\020" +
+      "\n\010scene_id\030\006 \001(\r\022\r\n\005resin\030\003 \001(\r\022\023\n\nmonst" +
+      "er_id\030\206\004 \001(\r\0223\n\nlock_state\030\004 \001(\0162\037.Inves" +
+      "tigationMonster.LockState\022\032\n\022max_boss_ch" +
+      "est_num\030\017 \001(\r\"*\n\tLockState\022\r\n\tLOCK_NONE\020" +
+      "\000\022\016\n\nLOCK_QUEST\020\001B\033\n\031emu.grasscutter.net" +
+      ".protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -2169,7 +2129,7 @@ public final class InvestigationMonsterOuterClass {
     internal_static_InvestigationMonster_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_InvestigationMonster_descriptor,
-        new java.lang.String[] { "IsAreaLocked", "CityId", "CBBFLPAGFOI", "NextRefreshTime", "WeeklyBossResinDiscountInfo", "IsAlive", "Level", "MaxBossChestNum", "RefreshInterval", "Pos", "GroupId", "Id", "SceneId", "Resin", "MonsterId", "LockState", "BossChestNum", });
+        new java.lang.String[] { "IsAreaLocked", "CityId", "RefreshInterval", "NextRefreshTime", "WeeklyBossResinDiscountInfo", "IsAlive", "Level", "BossChestNum", "DHMMIBILNEE", "Pos", "GroupId", "Id", "SceneId", "Resin", "MonsterId", "LockState", "MaxBossChestNum", });
     emu.grasscutter.net.proto.VectorOuterClass.getDescriptor();
     emu.grasscutter.net.proto.WeeklyBossResinDiscountInfoOuterClass.getDescriptor();
   }

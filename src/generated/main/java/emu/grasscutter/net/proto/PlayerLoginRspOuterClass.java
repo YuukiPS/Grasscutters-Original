@@ -87,20 +87,12 @@ public final class PlayerLoginRspOuterClass {
         getClientVersionSuffixBytes();
 
     /**
-     * <pre>
-     * CLDKNBOLOEN
-     * </pre>
-     *
-     * <code>string client_silence_md5 = 1149;</code>
+     * <code>string clientSilenceMd5 = 1149;</code>
      * @return The clientSilenceMd5.
      */
     java.lang.String getClientSilenceMd5();
     /**
-     * <pre>
-     * CLDKNBOLOEN
-     * </pre>
-     *
-     * <code>string client_silence_md5 = 1149;</code>
+     * <code>string clientSilenceMd5 = 1149;</code>
      * @return The bytes for clientSilenceMd5.
      */
     com.google.protobuf.ByteString
@@ -259,19 +251,11 @@ public final class PlayerLoginRspOuterClass {
     boolean getFCJHOMPHEON();
 
     /**
-     * <pre>
-     * EHDGCMPILDC
-     * </pre>
-     *
      * <code>string register_cps = 1152;</code>
      * @return The registerCps.
      */
     java.lang.String getRegisterCps();
     /**
-     * <pre>
-     * EHDGCMPILDC
-     * </pre>
-     *
      * <code>string register_cps = 1152;</code>
      * @return The bytes for registerCps.
      */
@@ -337,20 +321,12 @@ public final class PlayerLoginRspOuterClass {
     boolean getIsAudit();
 
     /**
-     * <pre>
-     * KJJAIPPKFCI
-     * </pre>
-     *
-     * <code>string client_md5 = 625;</code>
+     * <code>string clientMd5 = 625;</code>
      * @return The clientMd5.
      */
     java.lang.String getClientMd5();
     /**
-     * <pre>
-     * KJJAIPPKFCI
-     * </pre>
-     *
-     * <code>string client_md5 = 625;</code>
+     * <code>string clientMd5 = 625;</code>
      * @return The bytes for clientMd5.
      */
     com.google.protobuf.ByteString
@@ -918,14 +894,10 @@ public final class PlayerLoginRspOuterClass {
       }
     }
 
-    public static final int CLIENT_SILENCE_MD5_FIELD_NUMBER = 1149;
+    public static final int CLIENTSILENCEMD5_FIELD_NUMBER = 1149;
     private volatile java.lang.Object clientSilenceMd5_;
     /**
-     * <pre>
-     * CLDKNBOLOEN
-     * </pre>
-     *
-     * <code>string client_silence_md5 = 1149;</code>
+     * <code>string clientSilenceMd5 = 1149;</code>
      * @return The clientSilenceMd5.
      */
     @java.lang.Override
@@ -942,11 +914,7 @@ public final class PlayerLoginRspOuterClass {
       }
     }
     /**
-     * <pre>
-     * CLDKNBOLOEN
-     * </pre>
-     *
-     * <code>string client_silence_md5 = 1149;</code>
+     * <code>string clientSilenceMd5 = 1149;</code>
      * @return The bytes for clientSilenceMd5.
      */
     @java.lang.Override
@@ -1270,10 +1238,6 @@ public final class PlayerLoginRspOuterClass {
     public static final int REGISTER_CPS_FIELD_NUMBER = 1152;
     private volatile java.lang.Object registerCps_;
     /**
-     * <pre>
-     * EHDGCMPILDC
-     * </pre>
-     *
      * <code>string register_cps = 1152;</code>
      * @return The registerCps.
      */
@@ -1291,10 +1255,6 @@ public final class PlayerLoginRspOuterClass {
       }
     }
     /**
-     * <pre>
-     * EHDGCMPILDC
-     * </pre>
-     *
      * <code>string register_cps = 1152;</code>
      * @return The bytes for registerCps.
      */
@@ -1448,14 +1408,10 @@ public final class PlayerLoginRspOuterClass {
       return isAudit_;
     }
 
-    public static final int CLIENT_MD5_FIELD_NUMBER = 625;
+    public static final int CLIENTMD5_FIELD_NUMBER = 625;
     private volatile java.lang.Object clientMd5_;
     /**
-     * <pre>
-     * KJJAIPPKFCI
-     * </pre>
-     *
-     * <code>string client_md5 = 625;</code>
+     * <code>string clientMd5 = 625;</code>
      * @return The clientMd5.
      */
     @java.lang.Override
@@ -1472,11 +1428,7 @@ public final class PlayerLoginRspOuterClass {
       }
     }
     /**
-     * <pre>
-     * KJJAIPPKFCI
-     * </pre>
-     *
-     * <code>string client_md5 = 625;</code>
+     * <code>string clientMd5 = 625;</code>
      * @return The bytes for clientMd5.
      */
     @java.lang.Override
@@ -2060,7 +2012,7 @@ public final class PlayerLoginRspOuterClass {
       }
       hash = (37 * hash) + CLIENT_VERSION_SUFFIX_FIELD_NUMBER;
       hash = (53 * hash) + getClientVersionSuffix().hashCode();
-      hash = (37 * hash) + CLIENT_SILENCE_MD5_FIELD_NUMBER;
+      hash = (37 * hash) + CLIENTSILENCEMD5_FIELD_NUMBER;
       hash = (53 * hash) + getClientSilenceMd5().hashCode();
       hash = (37 * hash) + IS_DATA_NEED_RELOGIN_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
@@ -2122,7 +2074,7 @@ public final class PlayerLoginRspOuterClass {
       hash = (37 * hash) + IS_AUDIT_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getIsAudit());
-      hash = (37 * hash) + CLIENT_MD5_FIELD_NUMBER;
+      hash = (37 * hash) + CLIENTMD5_FIELD_NUMBER;
       hash = (53 * hash) + getClientMd5().hashCode();
       hash = (37 * hash) + BJLCFHHIGJD_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
@@ -3194,11 +3146,7 @@ public final class PlayerLoginRspOuterClass {
 
       private java.lang.Object clientSilenceMd5_ = "";
       /**
-       * <pre>
-       * CLDKNBOLOEN
-       * </pre>
-       *
-       * <code>string client_silence_md5 = 1149;</code>
+       * <code>string clientSilenceMd5 = 1149;</code>
        * @return The clientSilenceMd5.
        */
       public java.lang.String getClientSilenceMd5() {
@@ -3214,11 +3162,7 @@ public final class PlayerLoginRspOuterClass {
         }
       }
       /**
-       * <pre>
-       * CLDKNBOLOEN
-       * </pre>
-       *
-       * <code>string client_silence_md5 = 1149;</code>
+       * <code>string clientSilenceMd5 = 1149;</code>
        * @return The bytes for clientSilenceMd5.
        */
       public com.google.protobuf.ByteString
@@ -3235,11 +3179,7 @@ public final class PlayerLoginRspOuterClass {
         }
       }
       /**
-       * <pre>
-       * CLDKNBOLOEN
-       * </pre>
-       *
-       * <code>string client_silence_md5 = 1149;</code>
+       * <code>string clientSilenceMd5 = 1149;</code>
        * @param value The clientSilenceMd5 to set.
        * @return This builder for chaining.
        */
@@ -3254,11 +3194,7 @@ public final class PlayerLoginRspOuterClass {
         return this;
       }
       /**
-       * <pre>
-       * CLDKNBOLOEN
-       * </pre>
-       *
-       * <code>string client_silence_md5 = 1149;</code>
+       * <code>string clientSilenceMd5 = 1149;</code>
        * @return This builder for chaining.
        */
       public Builder clearClientSilenceMd5() {
@@ -3268,11 +3204,7 @@ public final class PlayerLoginRspOuterClass {
         return this;
       }
       /**
-       * <pre>
-       * CLDKNBOLOEN
-       * </pre>
-       *
-       * <code>string client_silence_md5 = 1149;</code>
+       * <code>string clientSilenceMd5 = 1149;</code>
        * @param value The bytes for clientSilenceMd5 to set.
        * @return This builder for chaining.
        */
@@ -4232,10 +4164,6 @@ public final class PlayerLoginRspOuterClass {
 
       private java.lang.Object registerCps_ = "";
       /**
-       * <pre>
-       * EHDGCMPILDC
-       * </pre>
-       *
        * <code>string register_cps = 1152;</code>
        * @return The registerCps.
        */
@@ -4252,10 +4180,6 @@ public final class PlayerLoginRspOuterClass {
         }
       }
       /**
-       * <pre>
-       * EHDGCMPILDC
-       * </pre>
-       *
        * <code>string register_cps = 1152;</code>
        * @return The bytes for registerCps.
        */
@@ -4273,10 +4197,6 @@ public final class PlayerLoginRspOuterClass {
         }
       }
       /**
-       * <pre>
-       * EHDGCMPILDC
-       * </pre>
-       *
        * <code>string register_cps = 1152;</code>
        * @param value The registerCps to set.
        * @return This builder for chaining.
@@ -4292,10 +4212,6 @@ public final class PlayerLoginRspOuterClass {
         return this;
       }
       /**
-       * <pre>
-       * EHDGCMPILDC
-       * </pre>
-       *
        * <code>string register_cps = 1152;</code>
        * @return This builder for chaining.
        */
@@ -4306,10 +4222,6 @@ public final class PlayerLoginRspOuterClass {
         return this;
       }
       /**
-       * <pre>
-       * EHDGCMPILDC
-       * </pre>
-       *
        * <code>string register_cps = 1152;</code>
        * @param value The bytes for registerCps to set.
        * @return This builder for chaining.
@@ -4647,11 +4559,7 @@ public final class PlayerLoginRspOuterClass {
 
       private java.lang.Object clientMd5_ = "";
       /**
-       * <pre>
-       * KJJAIPPKFCI
-       * </pre>
-       *
-       * <code>string client_md5 = 625;</code>
+       * <code>string clientMd5 = 625;</code>
        * @return The clientMd5.
        */
       public java.lang.String getClientMd5() {
@@ -4667,11 +4575,7 @@ public final class PlayerLoginRspOuterClass {
         }
       }
       /**
-       * <pre>
-       * KJJAIPPKFCI
-       * </pre>
-       *
-       * <code>string client_md5 = 625;</code>
+       * <code>string clientMd5 = 625;</code>
        * @return The bytes for clientMd5.
        */
       public com.google.protobuf.ByteString
@@ -4688,11 +4592,7 @@ public final class PlayerLoginRspOuterClass {
         }
       }
       /**
-       * <pre>
-       * KJJAIPPKFCI
-       * </pre>
-       *
-       * <code>string client_md5 = 625;</code>
+       * <code>string clientMd5 = 625;</code>
        * @param value The clientMd5 to set.
        * @return This builder for chaining.
        */
@@ -4707,11 +4607,7 @@ public final class PlayerLoginRspOuterClass {
         return this;
       }
       /**
-       * <pre>
-       * KJJAIPPKFCI
-       * </pre>
-       *
-       * <code>string client_md5 = 625;</code>
+       * <code>string clientMd5 = 625;</code>
        * @return This builder for chaining.
        */
       public Builder clearClientMd5() {
@@ -4721,11 +4617,7 @@ public final class PlayerLoginRspOuterClass {
         return this;
       }
       /**
-       * <pre>
-       * KJJAIPPKFCI
-       * </pre>
-       *
-       * <code>string client_md5 = 625;</code>
+       * <code>string clientMd5 = 625;</code>
        * @param value The bytes for clientMd5 to set.
        * @return This builder for chaining.
        */
@@ -5181,38 +5073,37 @@ public final class PlayerLoginRspOuterClass {
     java.lang.String[] descriptorData = {
       "\n\024PlayerLoginRsp.proto\032\017BlockInfo.proto\032" +
       "\026FeatureBlockInfo.proto\032\026ResVersionConfi" +
-      "g.proto\032\032ShortAbilityHashPair.proto\"\220\t\n\016" +
+      "g.proto\032\032ShortAbilityHashPair.proto\"\215\t\n\016" +
       "PlayerLoginRsp\022\031\n\021ability_hash_code\030\004 \001(" +
       "\005\022\020\n\007sc_info\030\332\006 \001(\014\022\025\n\014country_code\030\236\002 \001" +
       "(\t\0226\n\026short_ability_hash_map\030\221\003 \003(\0132\025.Sh" +
       "ortAbilityHashPair\022\036\n\025client_version_suf" +
-      "fix\030\265\002 \001(\t\022\033\n\022client_silence_md5\030\375\010 \001(\t\022" +
-      "\035\n\024is_data_need_relogin\030\247\010 \001(\010\022\033\n\023is_use" +
-      "_ability_hash\030\002 \001(\010\022.\n\022res_version_confi" +
-      "g\030\331\t \001(\0132\021.ResVersionConfig\022\024\n\013HKHOCPFCP" +
-      "AM\030\362\001 \001(\010\022\023\n\013DCFPMMCBEAD\030\006 \001(\r\022=\n\020abilit" +
-      "y_hash_map\030\013 \003(\0132#.PlayerLoginRsp.Abilit" +
-      "yHashMapEntry\022\024\n\013is_transfer\030\212\t \001(\010\022\033\n\023c" +
-      "lient_data_version\030\n \001(\r\0223\n\027feature_bloc" +
-      "k_info_list\030\315\014 \003(\0132\021.FeatureBlockInfo\022\030\n" +
-      "\017total_tick_time\030\224\017 \001(\001\022&\n\035client_silenc" +
-      "e_version_suffix\030\371\006 \001(\t\0223\n\027next_res_vers" +
-      "ion_config\030\236\005 \001(\0132\021.ResVersionConfig\022\024\n\013" +
-      "FCJHOMPHEON\030\345\005 \001(\010\022\025\n\014register_cps\030\200\t \001(" +
-      "\t\022\017\n\007retcode\030\005 \001(\005\022\020\n\010game_biz\030\003 \001(\t\022\023\n\013" +
-      "BMLPDBNDAIJ\030\017 \001(\010\022\023\n\nis_sc_open\030\351\t \001(\010\022\022" +
-      "\n\nlogin_rand\030\001 \001(\004\022\021\n\010birthday\030\351\010 \001(\t\022\021\n" +
-      "\010is_audit\030\315\003 \001(\010\022\023\n\nclient_md5\030\361\004 \001(\t\022\023\n" +
-      "\013BJLCFHHIGJD\030\010 \001(\010\022#\n\033client_silence_dat" +
-      "a_version\030\t \001(\r\022\024\n\013FMOKLFNAOOK\030\374\006 \001(\r\022\023\n" +
-      "\013JLDGJOPFALG\030\007 \001(\014\022\032\n\021next_resource_url\030" +
-      "\254\002 \001(\t\022\022\n\ntarget_uid\030\014 \001(\r\022:\n\016block_info" +
-      "_map\030\203\006 \003(\0132!.PlayerLoginRsp.BlockInfoMa" +
-      "pEntry\0325\n\023AbilityHashMapEntry\022\013\n\003key\030\001 \001" +
-      "(\t\022\r\n\005value\030\002 \001(\005:\0028\001\032?\n\021BlockInfoMapEnt" +
-      "ry\022\013\n\003key\030\001 \001(\r\022\031\n\005value\030\002 \001(\0132\n.BlockIn" +
-      "fo:\0028\001B\033\n\031emu.grasscutter.net.protob\006pro" +
-      "to3"
+      "fix\030\265\002 \001(\t\022\031\n\020clientSilenceMd5\030\375\010 \001(\t\022\035\n" +
+      "\024is_data_need_relogin\030\247\010 \001(\010\022\033\n\023is_use_a" +
+      "bility_hash\030\002 \001(\010\022.\n\022res_version_config\030" +
+      "\331\t \001(\0132\021.ResVersionConfig\022\024\n\013HKHOCPFCPAM" +
+      "\030\362\001 \001(\010\022\023\n\013DCFPMMCBEAD\030\006 \001(\r\022=\n\020ability_" +
+      "hash_map\030\013 \003(\0132#.PlayerLoginRsp.AbilityH" +
+      "ashMapEntry\022\024\n\013is_transfer\030\212\t \001(\010\022\033\n\023cli" +
+      "ent_data_version\030\n \001(\r\0223\n\027feature_block_" +
+      "info_list\030\315\014 \003(\0132\021.FeatureBlockInfo\022\030\n\017t" +
+      "otal_tick_time\030\224\017 \001(\001\022&\n\035client_silence_" +
+      "version_suffix\030\371\006 \001(\t\0223\n\027next_res_versio" +
+      "n_config\030\236\005 \001(\0132\021.ResVersionConfig\022\024\n\013FC" +
+      "JHOMPHEON\030\345\005 \001(\010\022\025\n\014register_cps\030\200\t \001(\t\022" +
+      "\017\n\007retcode\030\005 \001(\005\022\020\n\010game_biz\030\003 \001(\t\022\023\n\013BM" +
+      "LPDBNDAIJ\030\017 \001(\010\022\023\n\nis_sc_open\030\351\t \001(\010\022\022\n\n" +
+      "login_rand\030\001 \001(\004\022\021\n\010birthday\030\351\010 \001(\t\022\021\n\010i" +
+      "s_audit\030\315\003 \001(\010\022\022\n\tclientMd5\030\361\004 \001(\t\022\023\n\013BJ" +
+      "LCFHHIGJD\030\010 \001(\010\022#\n\033client_silence_data_v" +
+      "ersion\030\t \001(\r\022\024\n\013FMOKLFNAOOK\030\374\006 \001(\r\022\023\n\013JL" +
+      "DGJOPFALG\030\007 \001(\014\022\032\n\021next_resource_url\030\254\002 " +
+      "\001(\t\022\022\n\ntarget_uid\030\014 \001(\r\022:\n\016block_info_ma" +
+      "p\030\203\006 \003(\0132!.PlayerLoginRsp.BlockInfoMapEn" +
+      "try\0325\n\023AbilityHashMapEntry\022\013\n\003key\030\001 \001(\t\022" +
+      "\r\n\005value\030\002 \001(\005:\0028\001\032?\n\021BlockInfoMapEntry\022" +
+      "\013\n\003key\030\001 \001(\r\022\031\n\005value\030\002 \001(\0132\n.BlockInfo:" +
+      "\0028\001B\033\n\031emu.grasscutter.net.protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
