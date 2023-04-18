@@ -1019,7 +1019,7 @@ public class Avatar {
                         .putAllSkillLevelMap(this.getSkillLevelMap())
                         .addAllInherentProudSkillList(this.getProudSkillList())
                         .putAllProudSkillExtraLevelMap(this.getProudSkillBonusMap())
-                        .setAvatarType(1)
+                        .setAvatarType(this.getAvatarType())
                         .setBornTime(this.getBornTime())
                         .setFetterInfo(avatarFetter)
                         .setWearingFlycloakId(this.getFlyCloak())
@@ -1298,8 +1298,8 @@ public class Avatar {
     @AllArgsConstructor
     @Getter
     enum Type {
-        NORMAL(0),
-        TRIAL(1);
+        NORMAL(1),
+        TRIAL(2);
 
         final int number;
     }
