@@ -1,5 +1,6 @@
 package emu.grasscutter.game.entity;
 
+import emu.grasscutter.game.ability.Ability;
 import emu.grasscutter.game.player.Player;
 import emu.grasscutter.game.props.ElementType;
 import emu.grasscutter.game.props.FightProperty;
@@ -23,6 +24,8 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2FloatMap;
 import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -48,6 +51,10 @@ public abstract class GameEntity {
     // Abilities
     private Object2FloatMap<String> metaOverrideMap;
     private Int2ObjectMap<String> metaModifiers;
+    private Map<Integer, Integer> instanceToHash;
+    private Int2ObjectMap<String> instanceToName;
+
+    @Getter private Map<String, Ability> abilities = new HashMap<>();
 
     public GameEntity(Scene scene) {
         this.scene = scene;
@@ -84,6 +91,22 @@ public abstract class GameEntity {
             this.metaModifiers = new Int2ObjectOpenHashMap<>();
         }
         return this.metaModifiers;
+    }
+
+    public Map<Integer, Integer> getInstanceToHash() {
+        if (this.instanceToHash == null) {
+            this.instanceToHash = new HashMap<>();
+        }
+
+        return this.instanceToHash;
+    }
+
+    public Int2ObjectMap<String> getInstanceToName() {
+        if (this.instanceToName == null) {
+            this.instanceToName = new Int2ObjectOpenHashMap<>();
+        }
+
+        return this.instanceToName;
     }
 
     public abstract Int2FloatMap getFightProperties();
@@ -189,7 +212,9 @@ public abstract class GameEntity {
             this.setFightProperty(FightProperty.FIGHT_PROP_CUR_HP, 0f);
             isDead = true;
         }
+
         this.runLuaCallbacks(event);
+        this.runAbilityCallbacks(event);
 
         // Packets
         this.getScene()
@@ -211,6 +236,15 @@ public abstract class GameEntity {
         if (entityController != null) {
             entityController.onBeHurt(this, event.getAttackElementType(), true); // todo is host handling
         }
+    }
+
+    /**
+     * Runs the ability callbacks for {@link EntityDamageEvent}.
+     *
+     * @param event The damage event.
+     */
+    public void runAbilityCallbacks(EntityDamageEvent event) {
+        this.abilities.values().forEach(ability -> ability.onBeingHit(event));
     }
 
     /**

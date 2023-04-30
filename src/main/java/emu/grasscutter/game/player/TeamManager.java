@@ -64,7 +64,7 @@ public final class TeamManager extends BasePlayerDataManager {
 
     public TeamManager() {
         this.mpTeam = new TeamInfo();
-        this.avatars = new ArrayList<>();
+        this.avatars = Collections.synchronizedList(new ArrayList<>());
         this.gadgets = new HashSet<>();
         this.teamResonances = new IntOpenHashSet();
         this.teamResonancesConfig = new IntOpenHashSet();
@@ -438,11 +438,6 @@ public final class TeamManager extends BasePlayerDataManager {
         this.usingTrialTeam = true;
     }
 
-    /** Displays the trial avatars. Picks the last avatar in the team. */
-    public void trialAvatarTeamPostUpdate() {
-        this.trialAvatarTeamPostUpdate(this.getActiveTeam().size() - 1);
-    }
-
     /**
      * Displays the trial avatars.
      *
@@ -487,12 +482,19 @@ public final class TeamManager extends BasePlayerDataManager {
         return this.getTrialAvatars().values().stream()
                 .filter(avatar -> avatar.getTrialAvatarId() == trialAvatarId)
                 .map(Avatar::getGuid)
-                .findFirst().orElse(0L);
+                .findFirst()
+                .orElse(0L);
     }
 
     /** Rollback changes from using a trial avatar team. */
     public void unsetTrialAvatarTeam() {
-        this.trialAvatarTeamPostUpdate(this.getPreviousIndex());
+        // Get the previous index.
+        var index = this.getPreviousIndex();
+        if (index < 0) index = 0;
+
+        // Remove the trial avatars.
+        this.trialAvatarTeamPostUpdate(index);
+        // Reset the index.
         this.setPreviousIndex(-1);
     }
 
@@ -517,37 +519,56 @@ public final class TeamManager extends BasePlayerDataManager {
      * @param trialAvatarIds The avatar IDs to remove.
      */
     public void removeTrialAvatarTeam(List<Integer> trialAvatarIds) {
+        var isTeam = trialAvatarIds.size() == this.getActiveTeam().size();
+
         var player = this.getPlayer();
+        var scene = player.getScene();
 
         // Disable the trial team.
         this.usingTrialTeam = false;
         this.trialAvatarTeam = new TeamInfo();
 
         // Remove the avatars from the team.
-        trialAvatarIds.forEach(
+        this.getActiveTeam().forEach(avatarEntity -> scene
+            .removeEntity(avatarEntity, VisionTypeOuterClass.VisionType.VISION_TYPE_REMOVE));
+
+        if (isTeam) {
+            this.getActiveTeam().clear();
+            this.getTrialAvatars().clear();
+        } else {
+            trialAvatarIds.forEach(
                 trialAvatarId -> {
-                    this.getActiveTeam()
-                            .forEach(
-                                    x ->
-                                            player
-                                                    .getScene()
-                                                    .removeEntity(x, VisionTypeOuterClass.VisionType.VISION_TYPE_REMOVE));
                     this.getActiveTeam().removeIf(x -> x.getAvatar().getTrialAvatarId() == trialAvatarId);
                     this.getTrialAvatars().values().removeIf(x -> x.getTrialAvatarId() == trialAvatarId);
                 });
+        }
 
         // Re-add the avatars to the team.
-        var index = 0;
-        for (var avatar : this.getCurrentTeamInfo().getAvatars()) {
-            if (this.getActiveTeam().stream()
+        if (isTeam) {
+            // Restores all avatars from the player's avatar storage.
+            this.getCurrentTeamInfo().getAvatars().forEach(avatarId ->
+                this.getActiveTeam().add(new EntityAvatar(
+                    scene, player.getAvatars().getAvatarById(avatarId)
+                )));
+        } else {
+            // Restores all avatars from the player's avatar storage.
+            // If the avatar is already in the team, it will not be added.
+            // TODO: Fix order in which avatars are added.
+            // Currently, they are added from last to first.
+            var avatars = this.getCurrentTeamInfo().getAvatars();
+            for (var index = 0; index < avatars.size(); index++) {
+                var avatar = avatars.get(index);
+                if (this.getActiveTeam().stream()
                     .map(entity -> entity.getAvatar().getAvatarId())
                     .toList()
-                    .contains(avatar)) return;
+                    .contains(avatar)) continue;
 
-            this.getActiveTeam()
-                    .add(
-                            index++,
-                            new EntityAvatar(player.getScene(), player.getAvatars().getAvatarById(avatar)));
+                // Check if the player owns the avatar.
+                var avatarData = player.getAvatars().getAvatarById(avatar);
+                if (avatarData == null) continue;
+
+                this.getActiveTeam().add(index, new EntityAvatar(scene, avatarData));
+            }
         }
 
         this.unsetTrialAvatarTeam();
@@ -1034,7 +1055,7 @@ public final class TeamManager extends BasePlayerDataManager {
                             this.addTrialAvatar(
                                     trialAvatarId,
                                     questId,
-                                    questId == 0
+                                    questId != 0
                                             ? GrantReason.GRANT_REASON_BY_QUEST
                                             : GrantReason.GRANT_REASON_BY_TRIAL_AVATAR_ACTIVITY);
 
@@ -1050,7 +1071,7 @@ public final class TeamManager extends BasePlayerDataManager {
         this.removeTrialAvatar(
                 this.getActiveTeam().stream()
                         .map(EntityAvatar::getAvatar)
-                        .map(Avatar::getAvatarId)
+                        .map(Avatar::getTrialAvatarId)
                         .toList());
     }
 
@@ -1070,11 +1091,14 @@ public final class TeamManager extends BasePlayerDataManager {
      * @param trialAvatarIds List of trial avatar IDs.
      */
     public void removeTrialAvatar(List<Integer> trialAvatarIds) {
-        if (!this.isUsingTrialTeam()) throw new RuntimeException("Player is not using a trial team.");
+        // Check if the player is using a trial team.
+        if (!this.isUsingTrialTeam())
+            throw new IllegalStateException("Player is not using trial team.");
 
         this.getPlayer()
-                .sendPacket(
-                        new PacketAvatarDelNotify(trialAvatarIds.stream().map(this::getTrialAvatarGuid).toList()));
+            .sendPacket(
+                new PacketAvatarDelNotify(
+                    trialAvatarIds.stream().map(this::getTrialAvatarGuid).toList()));
         this.removeTrialAvatarTeam(trialAvatarIds);
 
         // Update the team.

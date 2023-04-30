@@ -169,6 +169,8 @@ public class Player {
     @Getter private transient PlayerProgressManager progressManager;
     @Getter private transient SatiationManager satiationManager;
 
+    @Getter @Setter private transient Position lastCheckedPosition = null;
+
     // Manager data (Save-able to the database)
     @Getter private transient Achievements achievements;
     private PlayerProfile playerProfile;  // Getter has null-check
@@ -203,7 +205,7 @@ public class Player {
     @Getter @Setter private int resinBuyCount;
     @Getter @Setter private int lastDailyReset;
     @Getter private transient MpSettingType mpSetting = MpSettingType.MP_SETTING_TYPE_ENTER_AFTER_APPLY;
-    @Getter private long playerGameTime = 540; // 9 in-game hours. Present at the start of the game.
+    @Getter private long playerGameTime = 540000; // 9 in-game hours. Present at the start of the game.
 
     @Getter private PlayerProgress playerProgress;
     @Getter private Set<Integer> activeQuestTimers;
@@ -511,7 +513,7 @@ public class Player {
      * Applies the properties to the player.
      */
     private void applyProperties() {
-        var withQuesting = GAME_OPTIONS.questing;
+        var withQuesting = GAME_OPTIONS.questing.enabled;
 
         this.setOrFetch(PlayerProperty.PROP_PLAYER_LEVEL, 1);
         this.setOrFetch(PlayerProperty.PROP_IS_SPRING_AUTO_USE, 1);
