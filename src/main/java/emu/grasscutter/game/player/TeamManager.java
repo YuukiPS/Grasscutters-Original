@@ -131,7 +131,35 @@ public final class TeamManager extends BasePlayerDataManager {
         return avatars;
     }
 
+    /**
+     * Returns the active team.
+     * If there are errors with the team, they can be fixed.
+     *
+     * @param fix If true, the team will be fixed.
+     * @return The active team.
+     */
+    public List<EntityAvatar> getActiveTeam(boolean fix) {
+        if (!fix) return this.getActiveTeam();
+
+        // Remove duplicate avatars.
+        var avatars = this.getActiveTeam();
+        var avatarIds = new HashSet<Long>();
+        for (var entityAvatar : new ArrayList<>(avatars)) {
+            if (avatarIds.contains(entityAvatar.getAvatar().getGuid())) {
+                avatars.remove(entityAvatar);
+            } else {
+                avatarIds.add(entityAvatar.getAvatar().getGuid());
+            }
+        }
+
+        return avatars; // Return the fixed team.
+    }
+
     public EntityAvatar getCurrentAvatarEntity() {
+        if (this.currentCharacterIndex >= this.getActiveTeam().size()) {
+            this.currentCharacterIndex = 0; // Reset to the first character.
+        }
+
         return this.getActiveTeam().get(this.currentCharacterIndex);
     }
 
@@ -553,10 +581,8 @@ public final class TeamManager extends BasePlayerDataManager {
         } else {
             // Restores all avatars from the player's avatar storage.
             // If the avatar is already in the team, it will not be added.
-            // TODO: Fix order in which avatars are added.
-            // Currently, they are added from last to first.
             var avatars = this.getCurrentTeamInfo().getAvatars();
-            for (var index = 0; index < avatars.size(); index++) {
+            for (var index = 0; index < avatars.size() - 1; index++) {
                 var avatar = avatars.get(index);
                 if (this.getActiveTeam().stream()
                     .map(entity -> entity.getAvatar().getAvatarId())
@@ -800,7 +826,7 @@ public final class TeamManager extends BasePlayerDataManager {
         //		     return;
         //		}
         //	}
-        player
+        this.getPlayer()
                 .getStaminaManager()
                 .stopSustainedStaminaHandler(); // prevent drowning immediately after respawn
 
@@ -809,7 +835,7 @@ public final class TeamManager extends BasePlayerDataManager {
             entity.setFightProperty(
                     FightProperty.FIGHT_PROP_CUR_HP,
                     entity.getFightProperty(FightProperty.FIGHT_PROP_MAX_HP) * .4f);
-            player.getSatiationManager().removeSatiationDirectly(entity.getAvatar(), 15000);
+            this.getPlayer().getSatiationManager().removeSatiationDirectly(entity.getAvatar(), 15000);
             this.getPlayer()
                     .sendPacket(
                             new PacketAvatarFightPropUpdateNotify(
@@ -825,10 +851,10 @@ public final class TeamManager extends BasePlayerDataManager {
                                     this.getPlayer(),
                                     EnterType.ENTER_TYPE_SELF,
                                     EnterReason.Revival,
-                                    player.getSceneId(),
-                                    getRespawnPosition()));
-            player.getPosition().set(getRespawnPosition());
-        } catch (Exception e) {
+                                    this.getPlayer().getSceneId(),
+                                    this.getRespawnPosition()));
+            this.getPlayer().getPosition().set(this.getRespawnPosition());
+        } catch (Exception ignored) {
             this.getPlayer()
                     .sendPacket(
                             new PacketPlayerEnterSceneNotify(
@@ -837,7 +863,7 @@ public final class TeamManager extends BasePlayerDataManager {
                                     EnterReason.Revival,
                                     3,
                                     GameConstants.START_POSITION));
-            player
+            this.getPlayer()
                     .getPosition()
                     .set(GameConstants.START_POSITION); // If something goes wrong, the resurrection is here
         }

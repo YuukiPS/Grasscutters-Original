@@ -24,6 +24,8 @@ import emu.grasscutter.server.packet.send.PacketQuestProgressUpdateNotify;
 import emu.grasscutter.utils.ConversionUtils;
 import emu.grasscutter.utils.Position;
 import java.util.*;
+import java.util.stream.Collectors;
+
 import lombok.Getter;
 import lombok.val;
 import org.bson.types.ObjectId;
@@ -144,26 +146,28 @@ public class GameMainQuest {
     public void finish() {
         // Avoid recursion from child finish() in GameQuest
         // when auto finishing all child quests with QUEST_STATE_UNFINISHED (below)
-        if (this.isFinished) {
-            Grasscutter.getLogger().debug("Skip main quest finishing because it's already finished");
-            return;
+        synchronized (this) {
+            if (this.isFinished || this.state == ParentQuestState.PARENT_QUEST_STATE_FINISHED) {
+                Grasscutter.getLogger().debug("Skip main quest {} finishing because it's already finished",this.getParentQuestId());
+                return;
+            }
+
+            this.isFinished = true;
+            this.state = ParentQuestState.PARENT_QUEST_STATE_FINISHED;
         }
 
-        this.isFinished = true;
-        this.state = ParentQuestState.PARENT_QUEST_STATE_FINISHED;
-
         /*
-        We also need to check for unfinished childQuests in this MainQuest
-        force them to complete and send a packet about this to the user,
-        because at some points there are special "invisible" child quests that control
-        some situations.
-
-        For example, subQuest 35312 is responsible for the event of leaving the territory
-        of the island with a statue and automatically returns the character back,
-        quest 35311 completes the main quest line 353 and starts 35501 from
-        new MainQuest 355 but if 35312 is not completed after the completion
-        of the main quest 353 - the character will not be able to leave place
-        (return again and again)
+         * We also need to check for unfinished childQuests in this MainQuest
+         * force them to complete and send a packet about this to the user,
+         * because at some points there are special "invisible" child quests that control
+         * some situations.
+         *
+         * For example, subQuest 35312 is responsible for the event of leaving the territory
+         * of the island with a statue and automatically returns the character back,
+         * quest 35311 completes the main quest line 353 and starts 35501 from
+         * new MainQuest 355 but if 35312 is not completed after the completion
+         * of the main quest 353 - the character will not be able to leave place
+         * (return again and again)
         */
         this.getChildQuests().values().stream()
                 .filter(p -> p.state != QuestState.QUEST_STATE_FINISHED)
@@ -179,12 +183,11 @@ public class GameMainQuest {
         if (mainQuestData.getRewardIdList() != null) {
             for (int rewardId : mainQuestData.getRewardIdList()) {
                 RewardData rewardData = GameData.getRewardDataMap().get(rewardId);
-
                 if (rewardData == null) {
                     continue;
                 }
 
-                getOwner()
+                this.getOwner()
                         .getInventory()
                         .addItemParamDatas(rewardData.getRewardItemList(), ActionReason.QuestReward);
             }
@@ -474,7 +477,7 @@ public class GameMainQuest {
                                         .getServer()
                                         .getQuestSystem()
                                         .triggerContent(subQuestWithCond, condition, paramStr, params);
-                        subQuestWithCond.getFinishProgressList()[i] = result ? 1 : 0;
+                        subQuestWithCond.setFinishProgress(i, result ? 1 : 0);
                         if (result) {
                             getOwner().getSession().send(new PacketQuestProgressUpdateNotify(subQuestWithCond));
                         }
@@ -485,6 +488,12 @@ public class GameMainQuest {
                         LogicType.calculate(
                                 subQuestWithCond.getQuestData().getFinishCondComb(),
                                 subQuestWithCond.getFinishProgressList());
+
+                if (this.getQuestManager().getLoggedQuests().contains(subQuestWithCond.getSubQuestId())) {
+                    Grasscutter.getLogger().debug("Quest {} will be {} as a result of content trigger {} ({}, {}).",
+                        subQuestWithCond.getSubQuestId(), shouldFinish ? "finished" : "not finished", condType.name(), paramStr,
+                        Arrays.stream(params).mapToObj(String::valueOf).collect(Collectors.joining(", ")));
+                }
 
                 if (shouldFinish) subQuestWithCond.finish();
             }
@@ -530,7 +539,7 @@ public class GameMainQuest {
         return proto.build();
     }
 
-    // TimeVar handling TODO check if ingame or irl time
+    // TimeVar handling TODO check if in-game or irl time
     public boolean initTimeVar(int index) {
         if (index >= this.timeVar.length) {
             Grasscutter.getLogger()

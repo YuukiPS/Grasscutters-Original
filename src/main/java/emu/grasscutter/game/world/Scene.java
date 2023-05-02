@@ -795,7 +795,7 @@ public final class Scene {
         return true;
     }
 
-    public synchronized void checkGroups() {
+    public void checkGroups() {
         Set<Integer> visible =
                 this.players.stream()
                         .map(player -> this.getPlayerActiveGroups(player))
@@ -833,7 +833,7 @@ public final class Scene {
         this.getScriptManager().loadBlockFromScript(block);
         scriptManager.getLoadedGroupSetPerBlock().put(block.id, new HashSet<>());
 
-        Grasscutter.getLogger().debug("Scene {} Block {} loaded.", this.getId(), block.id);
+        Grasscutter.getLogger().trace("Scene {} Block {} loaded.", this.getId(), block.id);
     }
 
     public int loadDynamicGroup(int group_id) {
@@ -1014,7 +1014,7 @@ public final class Scene {
 
         if (this.scriptManager.getLoadedGroupSetPerBlock().get(block.id).isEmpty()) {
             this.scriptManager.getLoadedGroupSetPerBlock().remove(block.id);
-            Grasscutter.getLogger().debug("Scene {} Block {} is unloaded.", this.getId(), block.id);
+            Grasscutter.getLogger().trace("Scene {} Block {} is unloaded.", this.getId(), block.id);
         }
 
         this.broadcastPacket(new PacketGroupUnloadNotify(List.of(group_id)));

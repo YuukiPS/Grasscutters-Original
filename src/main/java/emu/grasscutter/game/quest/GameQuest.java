@@ -94,29 +94,17 @@ public class GameQuest {
 
         getOwner().sendPacket(new PacketQuestListUpdateNotify(this));
 
-        if (ChapterData.beginQuestChapterMap.containsKey(subQuestId)) {
+        if (ChapterData.getBeginQuestChapterMap().containsKey(subQuestId)) {
             getOwner()
                     .sendPacket(
                             new PacketChapterStateNotify(
-                                    ChapterData.beginQuestChapterMap.get(subQuestId).getId(),
+                                    ChapterData.getBeginQuestChapterMap().get(subQuestId).getId(),
                                     ChapterStateOuterClass.ChapterState.CHAPTER_STATE_BEGIN));
         }
 
         // Some subQuests and talks become active when some other subQuests are unfinished (even from
         // different MainQuests)
-        getOwner()
-                .getQuestManager()
-                .queueEvent(
-                        QuestContent.QUEST_CONTENT_QUEST_STATE_EQUAL,
-                        getSubQuestId(),
-                        getState().getValue(),
-                        0,
-                        0,
-                        0);
-        getOwner()
-                .getQuestManager()
-                .queueEvent(
-                        QuestCond.QUEST_COND_STATE_EQUAL, getSubQuestId(), getState().getValue(), 0, 0, 0);
+        this.triggerStateEvents();
 
         getQuestData()
                 .getBeginExec()
@@ -125,6 +113,24 @@ public class GameQuest {
 
         Grasscutter.getLogger().debug("Quest {} is started", subQuestId);
         this.save();
+    }
+
+    /**
+     * Triggers events:
+     * 'QUEST_COND_STATE_EQUAL',
+     * 'QUEST_COND_STATE_NOT_EQUAL',
+     * 'QUEST_CONTENT_QUEST_STATE_EQUAL',
+     * 'QUEST_CONTENT_QUEST_STATE_NOT_EQUAL'
+     */
+    public void triggerStateEvents() {
+        var questManager = this.getOwner().getQuestManager();
+        var questId = this.getSubQuestId();
+        var state = this.getState().getValue();
+
+        questManager.queueEvent(QuestCond.QUEST_COND_STATE_EQUAL, questId, state, 0, 0, 0);
+        questManager.queueEvent(QuestCond.QUEST_COND_STATE_NOT_EQUAL, questId, state, 0, 0, 0);
+        questManager.queueEvent(QuestContent.QUEST_CONTENT_QUEST_STATE_EQUAL, questId, state, 0, 0, 0);
+        questManager.queueEvent(QuestContent.QUEST_CONTENT_QUEST_STATE_NOT_EQUAL, questId, state, 0, 0, 0);
     }
 
     public String getTriggerNameById(int id) {
@@ -179,22 +185,30 @@ public class GameQuest {
     }
 
     public void finish() {
-        this.state = QuestState.QUEST_STATE_FINISHED;
+        // Check if the quest has been finished.
+        synchronized (this) {
+            if (this.state == QuestState.QUEST_STATE_FINISHED) {
+                Grasscutter.getLogger().debug("Quest {} was already finished.", this.getSubQuestId());
+                return;
+            }
+
+            this.state = QuestState.QUEST_STATE_FINISHED;
+        }
         this.finishTime = Utils.getCurrentSeconds();
 
-        getOwner().sendPacket(new PacketQuestListUpdateNotify(this));
+        this.getOwner().sendPacket(new PacketQuestListUpdateNotify(this));
 
-        if (getQuestData().isFinishParent()) {
+        if (this.getQuestData().isFinishParent()) {
             // This quest finishes the questline - the main quest will also save the quest to db, so we
             // don't have to call save() here
-            getMainQuest().finish();
+            this.getMainQuest().finish();
         }
 
-        getQuestData()
+        this.getQuestData()
                 .getFinishExec()
                 .forEach(e -> getOwner().getServer().getQuestSystem().triggerExec(this, e, e.getParam()));
         // Some subQuests have conditions that subQuests are finished (even from different MainQuests)
-        getOwner()
+        this.getOwner()
                 .getQuestManager()
                 .queueEvent(
                         QuestContent.QUEST_CONTENT_QUEST_STATE_EQUAL,
@@ -203,25 +217,22 @@ public class GameQuest {
                         0,
                         0,
                         0);
-        getOwner()
+        this.getOwner()
                 .getQuestManager()
                 .queueEvent(QuestContent.QUEST_CONTENT_FINISH_PLOT, this.subQuestId, 0);
-        getOwner()
-                .getQuestManager()
-                .queueEvent(
-                        QuestCond.QUEST_COND_STATE_EQUAL, this.subQuestId, this.state.getValue(), 0, 0, 0);
-        getOwner()
+        this.triggerStateEvents();
+        this.getOwner()
                 .getScene()
                 .triggerDungeonEvent(DungeonPassConditionType.DUNGEON_COND_FINISH_QUEST, getSubQuestId());
 
-        getOwner().getProgressManager().tryUnlockOpenStates();
+        this.getOwner().getProgressManager().tryUnlockOpenStates();
 
-        if (ChapterData.endQuestChapterMap.containsKey(subQuestId)) {
-            mainQuest
+        if (ChapterData.getEndQuestChapterMap().containsKey(subQuestId)) {
+            this.getMainQuest()
                     .getOwner()
                     .sendPacket(
                             new PacketChapterStateNotify(
-                                    ChapterData.endQuestChapterMap.get(subQuestId).getId(),
+                                    ChapterData.getEndQuestChapterMap().get(subQuestId).getId(),
                                     ChapterStateOuterClass.ChapterState.CHAPTER_STATE_END));
         }
 
@@ -242,19 +253,7 @@ public class GameQuest {
         this.getOwner().sendPacket(new PacketQuestListUpdateNotify(this));
 
         // Some subQuests have conditions that subQuests fail (even from different MainQuests)
-        this.getOwner()
-                .getQuestManager()
-                .queueEvent(
-                        QuestContent.QUEST_CONTENT_QUEST_STATE_EQUAL,
-                        this.subQuestId,
-                        this.state.getValue(),
-                        0,
-                        0,
-                        0);
-        this.getOwner()
-                .getQuestManager()
-                .queueEvent(
-                        QuestCond.QUEST_COND_STATE_EQUAL, this.subQuestId, this.state.getValue(), 0, 0, 0);
+        this.triggerStateEvents();
 
         this.getQuestData()
                 .getFailExec()
