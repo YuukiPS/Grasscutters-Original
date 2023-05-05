@@ -45,6 +45,7 @@ import emu.grasscutter.game.quest.QuestManager;
 import emu.grasscutter.game.quest.enums.QuestCond;
 import emu.grasscutter.game.quest.enums.QuestContent;
 import emu.grasscutter.game.shop.ShopLimit;
+import emu.grasscutter.game.talk.TalkManager;
 import emu.grasscutter.game.tower.TowerData;
 import emu.grasscutter.game.tower.TowerManager;
 import emu.grasscutter.game.world.Scene;
@@ -168,6 +169,7 @@ public class Player {
     @Getter private transient PlayerBuffManager buffManager;
     @Getter private transient PlayerProgressManager progressManager;
     @Getter private transient SatiationManager satiationManager;
+    @Getter private transient TalkManager talkManager;
 
     @Getter @Setter private transient Position lastCheckedPosition = null;
 
@@ -255,7 +257,7 @@ public class Player {
         this.unlockedSceneAreas = new HashMap<>();
         this.unlockedScenePoints = new HashMap<>();
         this.chatEmojiIdList = new ArrayList<>();
-        this.playerProgress = new PlayerProgress(this);
+        this.playerProgress = new PlayerProgress();
         this.activeQuestTimers = new HashSet<>();
 
         this.attackResults = new LinkedBlockingQueue<>();
@@ -285,6 +287,7 @@ public class Player {
         this.cookingManager = new CookingManager(this);
         this.cookingCompoundManager = new CookingCompoundManager(this);
         this.satiationManager = new SatiationManager(this);
+        this.talkManager = new TalkManager(this);
     }
 
     // On player creation
@@ -327,6 +330,17 @@ public class Player {
     public void updatePlayerGameTime(long gameTime) {
         if (this.playerGameTime == gameTime) return;
         this.playerGameTime = gameTime;
+
+        // If the player is the host of the world, update the game time as well.
+        if (this.getWorld().getHost() == this) {
+            this.getWorld().changeTime(gameTime);
+        }
+
+        // Trigger the script event for game time update.
+        var questManager = this.getQuestManager();
+        questManager.queueEvent(QuestCond.QUEST_COND_IS_DAYTIME);
+        questManager.queueEvent(QuestCond.QUEST_COND_TIME_VAR_GT_EQ);
+        questManager.queueEvent(QuestCond.QUEST_COND_TIME_VAR_PASS_DAY);
 
         this.save();
     }
@@ -647,12 +661,13 @@ public class Player {
     }
 
     public void onEnterRegion(SceneRegion region) {
-        getQuestManager().forEachActiveQuest(quest -> {
-            if (quest.getTriggerData() != null && quest.getTriggers().containsKey("ENTER_REGION_"+ region.config_id)) {
+        this.getQuestManager().forEachActiveQuest(quest -> {
+            if (quest.getTriggerData() != null &&
+                quest.getTriggers().containsKey("ENTER_REGION_"+ region.config_id)) {
                 // If trigger hasn't been fired yet
                 if (!Boolean.TRUE.equals(quest.getTriggers().put("ENTER_REGION_" + region.config_id, true))) {
-                    //getSession().send(new PacketServerCondMeetQuestListUpdateNotify());
-                    getQuestManager().queueEvent(QuestContent.QUEST_CONTENT_TRIGGER_FIRE,
+                    this.getSession().send(new PacketServerCondMeetQuestListUpdateNotify());
+                    this.getQuestManager().queueEvent(QuestContent.QUEST_CONTENT_TRIGGER_FIRE,
                         quest.getTriggerData().get("ENTER_REGION_" + region.config_id).getId(), 0);
                 }
             }
@@ -661,12 +676,12 @@ public class Player {
     }
 
     public void onLeaveRegion(SceneRegion region) {
-        getQuestManager().forEachActiveQuest(quest -> {
+        this.getQuestManager().forEachActiveQuest(quest -> {
             if (quest.getTriggers().containsKey("LEAVE_REGION_" + region.config_id)) {
                 // If trigger hasn't been fired yet
                 if (!Boolean.TRUE.equals(quest.getTriggers().put("LEAVE_REGION_" + region.config_id, true))) {
-                    getSession().send(new PacketServerCondMeetQuestListUpdateNotify());
-                    getQuestManager().queueEvent(QuestContent.QUEST_CONTENT_TRIGGER_FIRE,
+                    this.getSession().send(new PacketServerCondMeetQuestListUpdateNotify());
+                    this.getQuestManager().queueEvent(QuestContent.QUEST_CONTENT_TRIGGER_FIRE,
                         quest.getTriggerData().get("LEAVE_REGION_" + region.config_id).getId(), 0);
                 }
             }
@@ -1296,6 +1311,8 @@ public class Player {
 
         this.loadBattlePassManager();
         this.getAvatars().postLoad(); // Needs to be called after inventory is handled
+
+        this.getPlayerProgress().setPlayer(this); // Add reference to the player.
     }
 
     public void onPlayerBorn() {
@@ -1342,6 +1359,7 @@ public class Player {
         session.send(new PacketFinishedParentQuestNotify(this));
         session.send(new PacketBattlePassAllDataNotify(this));
         session.send(new PacketQuestListNotify(this));
+        session.send(new PacketQuestGlobalVarNotify(this));
         session.send(new PacketCodexDataFullNotify(this));
         session.send(new PacketAllWidgetDataNotify(this));
 

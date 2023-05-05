@@ -1,10 +1,10 @@
 package emu.grasscutter.game.quest;
 
 import emu.grasscutter.Grasscutter;
-import emu.grasscutter.data.excels.QuestData;
-import emu.grasscutter.data.excels.QuestData.QuestAcceptCondition;
-import emu.grasscutter.data.excels.QuestData.QuestContentCondition;
-import emu.grasscutter.data.excels.QuestData.QuestExecParam;
+import emu.grasscutter.data.excels.quest.QuestData;
+import emu.grasscutter.data.excels.quest.QuestData.QuestAcceptCondition;
+import emu.grasscutter.data.excels.quest.QuestData.QuestContentCondition;
+import emu.grasscutter.data.excels.quest.QuestData.QuestExecParam;
 import emu.grasscutter.game.player.Player;
 import emu.grasscutter.game.quest.conditions.BaseCondition;
 import emu.grasscutter.game.quest.content.BaseContent;
@@ -45,11 +45,11 @@ public class QuestSystem extends BaseGameSystem {
         var handlerClasses = reflections.getSubTypesOf(clazz);
 
         for (var obj : handlerClasses) {
-            this.registerPacketHandler(map, obj);
+            this.registerHandler(map, obj);
         }
     }
 
-    public <T> void registerPacketHandler(Int2ObjectMap<T> map, Class<? extends T> handlerClass) {
+    public <T> void registerHandler(Int2ObjectMap<T> map, Class<? extends T> handlerClass) {
         try {
             int value = 0;
             if (handlerClass.isAnnotationPresent(QuestValueExec.class)) {

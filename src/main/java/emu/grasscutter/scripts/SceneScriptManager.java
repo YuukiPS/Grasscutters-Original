@@ -338,7 +338,7 @@ public class SceneScriptManager {
     public void registerRegion(EntityRegion region) {
         regions.put(region.getId(), region);
         Grasscutter.getLogger()
-                .debug(
+                .trace(
                         "Registered region {} from group {}",
                         region.getMetaRegion().config_id,
                         region.getGroupId());
@@ -643,30 +643,32 @@ public class SceneScriptManager {
                             .toList();
             entities.forEach(region::addEntity);
 
-            int targetID = 0;
+            var targetId = 0;
             if (entities.size() > 0) {
-                targetID = entities.get(0).getId();
+                targetId = entities.get(0).getId();
             }
 
-            if (region.hasNewEntities()) {
+            if (region.entityHasEntered()) {
                 Grasscutter.getLogger()
                         .trace("Call EVENT_ENTER_REGION_{}", region.getMetaRegion().config_id);
-                callEvent(
+                this.callEvent(
                         new ScriptArgs(region.getGroupId(), EventType.EVENT_ENTER_REGION, region.getConfigId())
                                 .setSourceEntityId(region.getId())
-                                .setTargetEntityId(targetID));
+                                .setTargetEntityId(targetId));
 
                 region.resetNewEntities();
             }
 
-            for (int entityId : region.getEntities()) {
-                if (getScene().getEntityById(entityId) == null
-                        || !region.getMetaRegion().contains(getScene().getEntityById(entityId).getPosition())) {
+            for (var entityId : region.getEntities()) {
+                var entity = this.getScene().getEntityById(entityId);
+                if (entity == null || !region.getMetaRegion()
+                    .contains(entity.getPosition())) {
                     region.removeEntity(entityId);
                 }
             }
-            if (region.entityLeave()) {
-                callEvent(
+
+            if (region.entityHasLeft()) {
+                this.callEvent(
                         new ScriptArgs(region.getGroupId(), EventType.EVENT_LEAVE_REGION, region.getConfigId())
                                 .setSourceEntityId(region.getId())
                                 .setTargetEntityId(region.getFirstEntityId()));
@@ -854,7 +856,7 @@ public class SceneScriptManager {
                 return true;
             } else {
                 Grasscutter.getLogger()
-                        .debug("Condition Trigger {} returned false", trigger.getCondition());
+                        .trace("Condition Trigger {} returned false", trigger.getCondition());
             }
             // TODO some ret do not bool
             return false;

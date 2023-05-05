@@ -5,12 +5,13 @@ import emu.grasscutter.Grasscutter;
 import emu.grasscutter.data.GameData;
 import emu.grasscutter.data.binout.MainQuestData;
 import emu.grasscutter.data.binout.ScenePointEntry;
-import emu.grasscutter.data.excels.QuestData;
+import emu.grasscutter.data.excels.quest.QuestData;
 import emu.grasscutter.database.DatabaseHelper;
 import emu.grasscutter.game.player.BasePlayerManager;
 import emu.grasscutter.game.player.Player;
 import emu.grasscutter.game.quest.enums.*;
 import emu.grasscutter.server.packet.send.PacketFinishedParentQuestUpdateNotify;
+import emu.grasscutter.server.packet.send.PacketQuestGlobalVarNotify;
 import emu.grasscutter.utils.Position;
 import io.netty.util.concurrent.FastThreadLocalThread;
 import it.unimi.dsi.fastutil.ints.*;
@@ -28,11 +29,12 @@ import java.util.stream.Collectors;
 
 import static emu.grasscutter.GameConstants.DEBUG;
 import static emu.grasscutter.config.Configuration.GAME_OPTIONS;
+import static emu.grasscutter.config.Configuration.SERVER;
 
 public class QuestManager extends BasePlayerManager {
     @Getter private final Player player;
     @Getter private final Int2ObjectMap<GameMainQuest> mainQuests;
-    @Transient @Getter private final IntList loggedQuests;
+    @Transient @Getter private final List<Integer> loggedQuests;
 
     private long lastHourCheck = 0;
     private long lastDayCheck = 0;
@@ -42,26 +44,6 @@ public class QuestManager extends BasePlayerManager {
         eventExecutor = new ThreadPoolExecutor(4, 4,
             60, TimeUnit.SECONDS, new LinkedBlockingDeque<>(1000),
             FastThreadLocalThread::new, new ThreadPoolExecutor.AbortPolicy());
-
-        var options = GAME_OPTIONS.questing;
-        if (options.enabled) {
-            if (options.legacyResources) {
-                Grasscutter.getLogger().debug("You have 'legacyResources' enabled.");
-                Grasscutter.getLogger().debug("This assumes you are using older (3.2) QuestExcelConfigData and MainQuestExcelConfigData.");
-                Grasscutter.getLogger().debug("The game will *break* if you are not using these older excels.");
-                Grasscutter.getLogger().debug("Questing should feel more natural in this mode.");
-            } else {
-                Grasscutter.getLogger().debug("You have 'legacyResources' disabled.");
-                Grasscutter.getLogger().debug("This should be enabled if you are using 3.3 or newer resources.");
-                Grasscutter.getLogger().debug("The game can potentially encounter issues in this mode.");
-            }
-        }
-
-        //noinspection removal
-        if (GAME_OPTIONS.questingEnabled) {
-            Grasscutter.getLogger().warn("Please upgrade your configuration. 'questing' is being deprecated in favor of 'questOptions'.");
-            Grasscutter.getLogger().info("To remove this message until removal, use 'questingEnabled' instead of 'questOptions.enabled'.");
-        }
     }
     /*
         On SetPlayerBornDataReq, the server sends FinishedParentQuestNotify, with this exact
@@ -108,7 +90,7 @@ public class QuestManager extends BasePlayerManager {
 
         this.player = player;
         this.mainQuests = new Int2ObjectOpenHashMap<>();
-        this.loggedQuests = new IntArrayList();
+        this.loggedQuests = new ArrayList<>();
 
         if (DEBUG) {
             this.loggedQuests.addAll(List.of(
@@ -121,15 +103,29 @@ public class QuestManager extends BasePlayerManager {
                 46904, // Quest which is required to be started, but not completed for 31101's talks to begin.
                        // This quest is related to obtaining your first Anemoculus.
 
-                35104  // Quest which is required to be finished for 46904 to begin.
+                35104, // Quest which is required to be finished for 46904 to begin.
                        // This quest requires 31101 not be finished.
                        // This quest should be accepted when the account is created.
+
+                       // These quests currently have bugged triggers.
+                30700, // Quest which is responsible for unlocking Crash Course.
+                30800, // Quest which is responsible for unlocking Sparks Amongst the Pages.
+
+                47001, 47002, 47003, 47004
             ));
         }
     }
 
-    // TODO store user value set on enable
+    /**
+     * Checks if questing can be enabled.
+     */
     public boolean isQuestingEnabled() {
+        // Check if scripts are enabled.
+        if (!SERVER.game.enableScriptInBigWorld) {
+            Grasscutter.getLogger().warn("Questing is disabled without scripts enabled.");
+            return false;
+        }
+
         return GAME_OPTIONS.questing.enabled;
     }
 
@@ -141,11 +137,7 @@ public class QuestManager extends BasePlayerManager {
         // 3. ServerCondMeetQuestListUpdateNotify
 
         if (this.isQuestingEnabled()) {
-            if (GAME_OPTIONS.questing.legacyResources) {
-                this.enableQuests(); // This assumes 3.2 resources, where all conditions are known.
-            } else {
-                this.addQuest(35104); // This assumes resources greater than 3.2, where quests might have unknown conditions.
-            }
+            this.enableQuests();
         }
 
         // this.getPlayer().sendPacket(new PacketFinishedParentQuestUpdateNotify(newQuests));
@@ -179,17 +171,15 @@ public class QuestManager extends BasePlayerManager {
         var world = this.getPlayer().getWorld();
         if (world == null) return;
 
-        checkTimeVars();
+        this.checkTimeVars();
         // trigger game time tick for quests
-        queueEvent(QuestContent.QUEST_CONTENT_GAME_TIME_TICK,
-            world.getGameTimeHours() , // hours
-            0);
+        this.queueEvent(QuestContent.QUEST_CONTENT_GAME_TIME_TICK);
     }
 
     private void checkTimeVars() {
         val currentDays = player.getWorld().getTotalGameTimeDays();
         val currentHours = player.getWorld().getTotalGameTimeHours();
-        boolean checkDays =  currentDays != lastDayCheck;
+        boolean checkDays = currentDays != lastDayCheck;
         boolean checkHours = currentHours != lastHourCheck;
 
         if(!checkDays && !checkHours){
@@ -226,29 +216,60 @@ public class QuestManager extends BasePlayerManager {
         this.triggerEvent(QuestCond.QUEST_COND_PLAYER_LEVEL_EQUAL_GREATER, null, 1);
     }
 
-    /*
-        Looking through mainQuests 72201-72208 and 72174, we can infer that a questGlobalVar's default value is 0
-    */
-    public Integer getQuestGlobalVarValue(Integer variable) {
-        return getPlayer().getQuestGlobalVariables().getOrDefault(variable,0);
+    /**
+     * Returns the default value of a global variable.
+     *
+     * @param variable The variable ID.
+     * @return The default value.
+     */
+    public int getGlobalVarDefault(int variable) {
+        var questGlobalVarData = GameData.getQuestGlobalVarDataMap().get(variable);
+        return questGlobalVarData != null ? questGlobalVarData.getDefaultValue() : 0;
     }
 
-    public void setQuestGlobalVarValue(Integer variable, Integer value) {
-        Integer previousValue = getPlayer().getQuestGlobalVariables().put(variable,value);
-        Grasscutter.getLogger().debug("Changed questGlobalVar {} value from {} to {}", variable, previousValue==null ? 0: previousValue, value);
+    /*
+     * Looking through mainQuests 72201-72208 and 72174, we can infer that a questGlobalVar's default value is 0
+     */
+    public Integer getQuestGlobalVarValue(Integer variable) {
+        return getPlayer().getQuestGlobalVariables()
+            .computeIfAbsent(variable, k -> this.getGlobalVarDefault(variable));
     }
-    public void incQuestGlobalVarValue(Integer variable, Integer inc) {
-        //
-        Integer previousValue = getPlayer().getQuestGlobalVariables().getOrDefault(variable,0);
-        getPlayer().getQuestGlobalVariables().put(variable,previousValue + inc);
-        Grasscutter.getLogger().debug("Incremented questGlobalVar {} value from {} to {}", variable, previousValue, previousValue + inc);
+
+    public void setQuestGlobalVarValue(int variable, int setVal) {
+        var prevVal = this.getPlayer().getQuestGlobalVariables().put(variable, setVal);
+        if (prevVal == null){
+            prevVal = this.getGlobalVarDefault(variable);
+        }
+        var newVal = this.getQuestGlobalVarValue(variable);
+
+        Grasscutter.getLogger().debug("Changed questGlobalVar {} value from {} to {}", variable, prevVal, newVal);
+        this.triggerQuestGlobalVarAction(variable, setVal);
     }
-    //In MainQuest 998, dec is passed as a positive integer
-    public void decQuestGlobalVarValue(Integer variable, Integer dec) {
-        //
-        Integer previousValue = getPlayer().getQuestGlobalVariables().getOrDefault(variable,0);
-        getPlayer().getQuestGlobalVariables().put(variable,previousValue - dec);
-        Grasscutter.getLogger().debug("Decremented questGlobalVar {} value from {} to {}", variable, previousValue, previousValue - dec);
+
+    public void incQuestGlobalVarValue(int variable, int inc) {
+        var prevVal = getQuestGlobalVarValue(variable);
+        var newVal = getPlayer().getQuestGlobalVariables()
+            .compute(variable, (k, v) -> prevVal + inc);
+
+        Grasscutter.getLogger().debug("Incremented questGlobalVar {} value from {} to {}", variable, prevVal, newVal);
+        this.triggerQuestGlobalVarAction(variable, newVal);
+    }
+
+    // In MainQuest 998, dec is passed as a positive integer
+    public void decQuestGlobalVarValue(int variable, int dec) {
+        var prevVal = getQuestGlobalVarValue(variable);
+        this.getPlayer().getQuestGlobalVariables().put(variable, prevVal - dec);
+        var newVal = getQuestGlobalVarValue(variable);
+
+        Grasscutter.getLogger().debug("Decremented questGlobalVar {} value from {} to {}", variable, prevVal, newVal);
+        this.triggerQuestGlobalVarAction(variable, newVal);
+    }
+
+    public void triggerQuestGlobalVarAction(int variable, int value) {
+        this.queueEvent(QuestCond.QUEST_COND_QUEST_GLOBAL_VAR_EQUAL, variable, value);
+        this.queueEvent(QuestCond.QUEST_COND_QUEST_GLOBAL_VAR_GREATER, variable, value);
+        this.queueEvent(QuestCond.QUEST_COND_QUEST_GLOBAL_VAR_LESS, variable, value);
+        this.getPlayer().sendPacket(new PacketQuestGlobalVarNotify(getPlayer()));
     }
 
     public GameMainQuest getMainQuestById(int mainQuestId) {
@@ -261,13 +282,12 @@ public class QuestManager extends BasePlayerManager {
     }
 
     public GameQuest getQuestById(int questId) {
-        QuestData questConfig = GameData.getQuestDataMap().get(questId);
+        var questConfig = GameData.getQuestDataMap().get(questId);
         if (questConfig == null) {
             return null;
         }
 
-        GameMainQuest mainQuest = getMainQuests().get(questConfig.getMainId());
-
+        var mainQuest = getMainQuests().get(questConfig.getMainId());
         if (mainQuest == null) {
             return null;
         }
@@ -276,23 +296,23 @@ public class QuestManager extends BasePlayerManager {
     }
 
     public void forEachQuest(Consumer<GameQuest> callback) {
-        for (GameMainQuest mainQuest : getMainQuests().values()) {
-            for (GameQuest quest : mainQuest.getChildQuests().values()) {
+        for (var mainQuest : getMainQuests().values()) {
+            for (var quest : mainQuest.getChildQuests().values()) {
                 callback.accept(quest);
             }
         }
     }
 
     public void forEachMainQuest(Consumer<GameMainQuest> callback) {
-        for (GameMainQuest mainQuest : getMainQuests().values()) {
+        for (var mainQuest : getMainQuests().values()) {
             callback.accept(mainQuest);
         }
     }
 
     // TODO
     public void forEachActiveQuest(Consumer<GameQuest> callback) {
-        for (GameMainQuest mainQuest : getMainQuests().values()) {
-            for (GameQuest quest : mainQuest.getChildQuests().values()) {
+        for (var mainQuest : getMainQuests().values()) {
+            for (var quest : mainQuest.getChildQuests().values()) {
                 if (quest.getState() != QuestState.QUEST_STATE_FINISHED) {
                     callback.accept(quest);
                 }
@@ -301,28 +321,25 @@ public class QuestManager extends BasePlayerManager {
     }
 
     public GameMainQuest addMainQuest(QuestData questConfig) {
-        GameMainQuest mainQuest = new GameMainQuest(getPlayer(), questConfig.getMainId());
-        getMainQuests().put(mainQuest.getParentQuestId(), mainQuest);
-
-        getPlayer().sendPacket(new PacketFinishedParentQuestUpdateNotify(mainQuest));
+        var mainQuest = new GameMainQuest(getPlayer(), questConfig.getMainId());
+        this.getMainQuests().put(mainQuest.getParentQuestId(), mainQuest);
+        this.getPlayer().sendPacket(new PacketFinishedParentQuestUpdateNotify(mainQuest));
 
         return mainQuest;
     }
 
     public GameQuest addQuest(int questId) {
-        QuestData questConfig = GameData.getQuestDataMap().get(questId);
-
+        var questConfig = GameData.getQuestDataMap().get(questId);
         if (questConfig == null) {
             return null;
         }
 
-       return addQuest(questConfig);
+       return this.addQuest(questConfig);
     }
 
     public GameQuest addQuest(@Nonnull QuestData questConfig) {
-
         // Main quest
-        GameMainQuest mainQuest = this.getMainQuestById(questConfig.getMainId());
+        var mainQuest = this.getMainQuestById(questConfig.getMainId());
 
         // Create main quest if it doesnt exist
         if (mainQuest == null) {
@@ -330,11 +347,11 @@ public class QuestManager extends BasePlayerManager {
         }
 
         // Sub quest
-        GameQuest quest = mainQuest.getChildQuestById(questConfig.getSubId());
-
+        var quest = mainQuest.getChildQuestById(questConfig.getSubId());
         // Forcefully start
         quest.start();
-        checkQuestAlreadyFullfilled(quest);
+        // Check conditions.
+        this.checkQuestAlreadyFullfilled(quest);
 
         return quest;
     }
@@ -368,6 +385,7 @@ public class QuestManager extends BasePlayerManager {
     public void queueEvent(QuestContent condType, String paramStr, int... params) {
         eventExecutor.submit(() -> triggerEvent(condType, paramStr, params));
     }
+
     public void queueEvent(QuestCond condType, String paramStr, int... params) {
         eventExecutor.submit(() -> triggerEvent(condType, paramStr, params));
     }
@@ -398,7 +416,7 @@ public class QuestManager extends BasePlayerManager {
 
             boolean shouldAccept = LogicType.calculate(questData.getAcceptCondComb(), accept);
             if (this.loggedQuests.contains(questData.getId())) {
-                Grasscutter.getLogger().debug("Quest {} will be {} as a result of event trigger {} ({}, {}).",
+                Grasscutter.getLogger().debug(">>> Quest {} will be {} as a result of event trigger {} ({}, {}).",
                     questData.getId(), shouldAccept ? "accepted" : "not accepted", condType.name(), paramStr,
                     Arrays.stream(params).mapToObj(String::valueOf).collect(Collectors.joining(", ")));
                 for (var i = 0; i < accept.length; i++) {
@@ -442,7 +460,7 @@ public class QuestManager extends BasePlayerManager {
     /**
      * TODO maybe trigger them delayed to allow basic communication finish first
      * TODO move content checks to use static informations where possible to allow direct already fulfilled checking
-     * @param quest
+     * @param quest The ID of the quest.
      */
     public void checkQuestAlreadyFullfilled(GameQuest quest){
         Grasscutter.getGameServer().getScheduler().scheduleDelayedTask(() -> {

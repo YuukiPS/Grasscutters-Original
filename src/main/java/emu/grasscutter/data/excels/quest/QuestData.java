@@ -1,4 +1,4 @@
-package emu.grasscutter.data.excels;
+package emu.grasscutter.data.excels.quest;
 
 import com.google.gson.annotations.SerializedName;
 import emu.grasscutter.Grasscutter;
@@ -110,13 +110,13 @@ public class QuestData extends GameResource {
     @Data
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class QuestExecParam {
-        @SerializedName("_type")
+        @SerializedName(value = "_type", alternate = {"type"})
         QuestExec type;
 
-        @SerializedName("_param")
+        @SerializedName(value = "_param", alternate = {"param"})
         String[] param;
 
-        @SerializedName("_count")
+        @SerializedName(value = "_count", alternate = {"count"})
         String count;
     }
 
@@ -126,16 +126,16 @@ public class QuestData extends GameResource {
 
     @Data
     public static class QuestCondition<TYPE extends Enum<?> & QuestTrigger> {
-        @SerializedName("_type")
+        @SerializedName(value = "_type", alternate = {"type"})
         private TYPE type;
 
-        @SerializedName("_param")
+        @SerializedName(value = "_param", alternate = {"param"})
         private int[] param;
 
-        @SerializedName("_param_str")
-        private String paramStr;
+        @SerializedName(value = "_param_str", alternate = {"param_str"})
+        private String paramStr = "";
 
-        @SerializedName("_count")
+        @SerializedName(value = "_count", alternate = {"count"})
         private int count;
 
         public String asKey() {
