@@ -95,8 +95,8 @@ public final class SceneGroup {
 
         this.bindings = ScriptLoader.getEngine().createBindings();
 
-        var file = "Scene/" + sceneId + "/scene" + sceneId + "_group" + this.id + ".lua";
-        CompiledScript cs = ScriptLoader.getScript(file);
+        var cs =
+                ScriptLoader.getScript("Scene/%s/scene%s_group%s.lua".formatted(sceneId, sceneId, this.id));
 
         if (cs == null) {
             return this;
@@ -171,8 +171,15 @@ public final class SceneGroup {
 
             // Add monsters and gadgets to suite
             this.suites.forEach(i -> i.init(this));
-        } catch (LuaError | ScriptException e) {
-            Grasscutter.getLogger().error("An error occurred while loading file script grup: {} ", file, e);
+        } catch (ScriptException e) {
+            Grasscutter.getLogger()
+                    .error(
+                            "An error occurred while loading group " + this.id + " in scene " + sceneId + ".", e);
+        } catch (LuaError luaError) {
+            Grasscutter.getLogger()
+                    .error(
+                            "An error occurred while loading group %s in scene %s.".formatted(this.id, sceneId),
+                            luaError);
         }
 
         Grasscutter.getLogger().trace("Successfully loaded group {} in scene {}.", this.id, sceneId);

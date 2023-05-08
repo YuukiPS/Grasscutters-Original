@@ -297,12 +297,11 @@ public final class GameData {
             new Int2ObjectOpenHashMap<>();
 
     @Getter
-    private static final Int2ObjectMap<QuestData> questDataMap =
-        new Int2ObjectOpenHashMap<>();
+    private static final Int2ObjectMap<QuestData> questDataMap = new Int2ObjectOpenHashMap<>();
 
     @Getter
     private static final Int2ObjectMap<QuestGlobalVarData> questGlobalVarDataMap =
-        new Int2ObjectOpenHashMap<>();
+            new Int2ObjectOpenHashMap<>();
 
     @Getter
     private static final Int2ObjectMap<ReliquaryAffixData> reliquaryAffixDataMap =
@@ -324,12 +323,11 @@ public final class GameData {
             new Int2ObjectOpenHashMap<>();
 
     @Getter
-    private static final Int2ObjectMap<SceneData> sceneDataMap =
-        new Int2ObjectLinkedOpenHashMap<>();
+    private static final Int2ObjectMap<SceneData> sceneDataMap = new Int2ObjectLinkedOpenHashMap<>();
 
     @Getter
     private static final Int2ObjectMap<TalkConfigData> talkConfigDataMap =
-        new Int2ObjectOpenHashMap<>();
+            new Int2ObjectOpenHashMap<>();
 
     @Getter
     private static final Int2ObjectMap<TowerFloorData> towerFloorDataMap =
@@ -477,8 +475,8 @@ public final class GameData {
     private static final Int2IntMap trialAvatarIndexIdTrialActivityDataDataMap =
             new Int2IntOpenHashMap();
 
-    private static final Map<Integer, List<Integer>> fetters = new HashMap<>();
-    private static final Map<Integer, List<ShopGoodsData>> shopGoods = new HashMap<>();
+    private static Map<Integer, List<Integer>> fetters = new HashMap<>();
+    private static Map<Integer, List<ShopGoodsData>> shopGoods = new HashMap<>();
 
     // Getters with different names that stay for now
     public static Int2ObjectMap<MainQuestData> getMainQuestDataMap() {

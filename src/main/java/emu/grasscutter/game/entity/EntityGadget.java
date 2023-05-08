@@ -49,7 +49,7 @@ import lombok.ToString;
 public class EntityGadget extends EntityBaseGadget {
     @Getter private final GadgetData gadgetData;
 
-    @Getter(onMethod = @__(@Override))
+    @Getter(onMethod_ = @Override)
     @Setter
     private int gadgetId;
 
@@ -62,11 +62,11 @@ public class EntityGadget extends EntityBaseGadget {
     @Getter @Setter private int pointType;
     @Getter private GadgetContent content;
 
-    @Getter(onMethod = @__(@Override), lazy = true)
+    @Getter(onMethod_ = @Override, lazy = true)
     private final Int2FloatMap fightProperties = new Int2FloatOpenHashMap();
 
     @Getter @Setter private SceneGadget metaGadget;
-    @Nullable @Getter private ConfigEntityGadget configGadget;
+    @Nullable @Getter ConfigEntityGadget configGadget;
     @Getter @Setter private BaseRoute routeConfig;
 
     @Getter @Setter private int stopValue = 0; // Controller related, inited to zero

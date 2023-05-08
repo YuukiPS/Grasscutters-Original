@@ -31,23 +31,23 @@ import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.val;
 
-public class World implements Iterable<Player> {
+public final class World implements Iterable<Player> {
     @Getter private final GameServer server;
     @Getter private final Player host;
     @Getter private final List<Player> players;
     @Getter private final Int2ObjectMap<Scene> scenes;
 
-    @Getter private final int levelEntityId;
+    @Getter private int levelEntityId;
     private int nextEntityId = 0;
     private int nextPeerId = 0;
     private int worldLevel;
 
-    private final boolean isMultiplayer;
+    @Getter private boolean isMultiplayer, timeLocked = false;
 
     private long lastUpdateTime;
     @Getter private int tickCount = 0;
     @Getter private boolean isPaused = false;
-    @Getter private long currentWorldTime = 0;
+    @Getter private long currentWorldTime;
 
     public World(Player player) {
         this(player, false);
@@ -116,10 +116,6 @@ public class World implements Iterable<Player> {
 
     public int getPlayerCount() {
         return this.getPlayers().size();
-    }
-
-    public boolean isMultiplayer() {
-        return isMultiplayer;
     }
 
     /**
@@ -275,7 +271,7 @@ public class World implements Iterable<Player> {
                         .teleportType(teleportType)
                         .enterReason(enterReason)
                         .teleportTo(teleportTo)
-                        .enterType(EnterType.ENTER_TYPE_JUMP);
+                        .enterType(EnterType.ENTER_TYPE_GOTO);
 
         val sceneData = GameData.getSceneDataMap().get(sceneId);
         if (dungeonData != null) {
@@ -283,6 +279,7 @@ public class World implements Iterable<Player> {
                     .teleportTo(dungeonData.getStartPosition())
                     .teleportRot(dungeonData.getStartRotation());
             teleportProps.enterType(EnterType.ENTER_TYPE_DUNGEON).enterReason(EnterReason.DungeonEnter);
+            teleportProps.dungeonId(dungeonData.getId());
         } else if (player.getSceneId() == sceneId) {
             teleportProps.enterType(EnterType.ENTER_TYPE_GOTO);
         } else if (sceneData != null && sceneData.getSceneType() == SceneType.SCENE_HOME_WORLD) {
@@ -326,7 +323,7 @@ public class World implements Iterable<Player> {
 
         var newScene = this.getSceneById(teleportProperties.getSceneId());
         newScene.addPlayer(player);
-        player.setAvatarsAbilityForScene(newScene);
+        player.getTeamManager().applyAbilities(newScene);
 
         // Dungeon
         // Dungeon system is handling this already
@@ -425,8 +422,8 @@ public class World implements Iterable<Player> {
         }
 
         // store updated world time every 60 seconds. (in-game hour)
-        if (this.tickCount % 60 == 0) {
-            this.getHost().updatePlayerGameTime(currentWorldTime);
+        if (this.tickCount % 60 == 0 && !this.timeLocked) {
+            this.getHost().updatePlayerGameTime(this.currentWorldTime);
         }
 
         this.tickCount++;
@@ -437,13 +434,13 @@ public class World implements Iterable<Player> {
 
     /** Returns the in-game world time in real milliseconds. */
     public long getWorldTime() {
-        if (!this.isPaused) {
+        if (!this.isPaused && !this.timeLocked) {
             var newUpdateTime = System.currentTimeMillis();
             this.currentWorldTime += (newUpdateTime - lastUpdateTime);
             this.lastUpdateTime = newUpdateTime;
         }
 
-        return currentWorldTime;
+        return this.currentWorldTime;
     }
 
     /** Returns the current in game days world time in in-game minutes (0-1439) */
@@ -501,10 +498,7 @@ public class World implements Iterable<Player> {
 
         // Trigger script events.
         this.players.forEach(
-            player ->
-                player
-                    .getQuestManager()
-                    .queueEvent(QuestContent.QUEST_CONTENT_GAME_TIME_TICK));
+                player -> player.getQuestManager().queueEvent(QuestContent.QUEST_CONTENT_GAME_TIME_TICK));
     }
 
     /**
@@ -514,6 +508,9 @@ public class World implements Iterable<Player> {
      * @param days The number of days to add.
      */
     public void changeTime(int time, int days) {
+        // Check if the time is locked.
+        if (this.timeLocked) return;
+
         // Calculate time differences.
         var currentTime = this.getGameTime();
         var diff = time - currentTime;
@@ -525,10 +522,19 @@ public class World implements Iterable<Player> {
         // Update all players.
         this.host.updatePlayerGameTime(currentWorldTime);
         this.players.forEach(
-                player ->
-                        player
-                                .getQuestManager()
-                                .queueEvent(QuestContent.QUEST_CONTENT_GAME_TIME_TICK));
+                player -> player.getQuestManager().queueEvent(QuestContent.QUEST_CONTENT_GAME_TIME_TICK));
+    }
+
+    /**
+     * Locks the world time.
+     *
+     * @param locked True if the world time should be locked.
+     */
+    public void lockTime(boolean locked) {
+        this.timeLocked = locked;
+
+        // Broadcast the state change.
+        this.broadcastPacket(new PacketClientLockGameTimeNotify(this));
     }
 
     @Override

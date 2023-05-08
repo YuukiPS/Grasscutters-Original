@@ -35,14 +35,14 @@ public class EntityVehicle extends EntityBaseGadget {
 
     @Getter private final Player owner;
 
-    @Getter(onMethod = @__(@Override))
+    @Getter(onMethod_ = @Override)
     private final Int2FloatMap fightProperties;
 
     @Getter private final int pointId;
     @Getter private final int gadgetId;
 
     @Getter @Setter private float curStamina;
-    @Getter private final List<VehicleMember> vehicleMembers;
+    @Getter private List<VehicleMember> vehicleMembers;
     @Nullable @Getter private ConfigEntityGadget configGadget;
 
     public EntityVehicle(
