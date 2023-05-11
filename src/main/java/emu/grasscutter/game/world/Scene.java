@@ -373,7 +373,7 @@ public final class Scene {
         }
     }
 
-    public synchronized void removeEntities(List<GameEntity> entity, VisionType visionType) {
+    public void removeEntities(List<GameEntity> entity, VisionType visionType) {
         var toRemove =
                 entity.stream()
                         .filter(Objects::nonNull)
@@ -510,8 +510,7 @@ public final class Scene {
 
         this.finishLoading();
         this.checkPlayerRespawn();
-        if (this.tickCount++ % 10 == 0)
-            this.broadcastPacket(new PacketSceneTimeNotify(this));
+        if (this.tickCount++ % 10 == 0) this.broadcastPacket(new PacketSceneTimeNotify(this));
     }
 
     /** Validates a player's current position. Teleports the player if the player is out of bounds. */
@@ -663,7 +662,7 @@ public final class Scene {
         this.npcBornEntrySet = npcBornEntries;
     }
 
-    public synchronized void checkSpawns() {
+    public void checkSpawns() {
         Set<SpawnDataEntry.GridBlockId> loadedGridBlocks = new HashSet<>();
         for (Player player : this.getPlayers()) {
             Collections.addAll(
@@ -788,7 +787,7 @@ public final class Scene {
         return activeGroups;
     }
 
-    public synchronized boolean loadBlock(SceneBlock block) {
+    public boolean loadBlock(SceneBlock block) {
         if (this.loadedBlocks.contains(block)) return false;
 
         this.onLoadBlock(block, this.players);
@@ -796,23 +795,21 @@ public final class Scene {
         return true;
     }
 
-    public synchronized void checkGroups() {
+    public void checkGroups() {
         Set<Integer> visible =
                 this.players.stream()
-                        .map(player -> this.getPlayerActiveGroups(player))
+                        .map(this::getPlayerActiveGroups)
                         .flatMap(Collection::stream)
                         .collect(Collectors.toSet());
 
-        Iterator<SceneGroup> it = this.loadedGroups.iterator();
-        while (it.hasNext()) {
-            SceneGroup group = it.next();
+        for (var group : this.loadedGroups) {
             if (!visible.contains(group.id) && !group.dynamic_load)
                 unloadGroup(scriptManager.getBlocks().get(group.block_id), group.id);
         }
 
-        List<SceneGroup> toLoad =
+        var toLoad =
                 visible.stream()
-                        .filter(g -> this.loadedGroups.stream().filter(gr -> gr.id == g).count() == 0)
+                        .filter(g -> this.loadedGroups.stream().noneMatch(gr -> gr.id == g))
                         .map(
                                 g -> {
                                     for (var b : scriptManager.getBlocks().values()) {
@@ -834,7 +831,7 @@ public final class Scene {
         this.getScriptManager().loadBlockFromScript(block);
         scriptManager.getLoadedGroupSetPerBlock().put(block.id, new HashSet<>());
 
-        Grasscutter.getLogger().debug("Scene {} Block {} loaded.", this.getId(), block.id);
+        Grasscutter.getLogger().trace("Scene {} block {} loaded.", this.getId(), block.id);
     }
 
     public int loadDynamicGroup(int group_id) {
@@ -964,17 +961,6 @@ public final class Scene {
                 groupInstance = cachedInstance;
             }
 
-            // Load garbages
-            var garbageGadgets = group.getGarbageGadgets();
-
-            if (garbageGadgets != null) {
-                entities.addAll(
-                        garbageGadgets.stream()
-                                .map(g -> scriptManager.createGadget(group.id, group.block_id, g))
-                                .filter(Objects::nonNull)
-                                .toList());
-            }
-
             // Load suites
             // int suite = group.findInitSuiteIndex(0);
             this.getScriptManager()
@@ -1015,7 +1001,7 @@ public final class Scene {
 
         if (this.scriptManager.getLoadedGroupSetPerBlock().get(block.id).isEmpty()) {
             this.scriptManager.getLoadedGroupSetPerBlock().remove(block.id);
-            Grasscutter.getLogger().debug("Scene {} Block {} is unloaded.", this.getId(), block.id);
+            Grasscutter.getLogger().trace("Scene {} block {} is unloaded.", this.getId(), block.id);
         }
 
         this.broadcastPacket(new PacketGroupUnloadNotify(List.of(group_id)));

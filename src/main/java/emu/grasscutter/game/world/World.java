@@ -271,7 +271,7 @@ public final class World implements Iterable<Player> {
                         .teleportType(teleportType)
                         .enterReason(enterReason)
                         .teleportTo(teleportTo)
-                        .enterType(EnterType.ENTER_TYPE_GOTO);
+                        .enterType(EnterType.ENTER_TYPE_JUMP);
 
         val sceneData = GameData.getSceneDataMap().get(sceneId);
         if (dungeonData != null) {
@@ -309,7 +309,6 @@ public final class World implements Iterable<Player> {
         }
 
         Scene oldScene = null;
-
         if (player.getScene() != null) {
             oldScene = player.getScene();
 
@@ -323,6 +322,7 @@ public final class World implements Iterable<Player> {
 
         var newScene = this.getSceneById(teleportProperties.getSceneId());
         newScene.addPlayer(player);
+
         player.getTeamManager().applyAbilities(newScene);
 
         // Dungeon
@@ -532,9 +532,6 @@ public final class World implements Iterable<Player> {
      */
     public void lockTime(boolean locked) {
         this.timeLocked = locked;
-
-        // Broadcast the state change.
-        this.broadcastPacket(new PacketClientLockGameTimeNotify(this));
     }
 
     @Override
