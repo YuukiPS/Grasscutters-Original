@@ -1,6 +1,6 @@
 package emu.grasscutter.scripts;
 
-import static emu.grasscutter.scripts.constants.EventType.*;
+import static emu.grasscutter.scripts.constants.EventType.EVENT_TIMER_EVENT;
 
 import com.github.davidmoten.rtreemulti.RTree;
 import com.github.davidmoten.rtreemulti.geometry.Geometry;
@@ -351,9 +351,10 @@ public class SceneScriptManager {
     }
 
     public synchronized void deregisterRegion(SceneRegion region) {
-        var instance =
-                regions.values().stream().filter(r -> r.getConfigId() == region.config_id).findFirst();
-        instance.ifPresent(entityRegion -> regions.remove(entityRegion.getId()));
+        this.regions.values().stream()
+                .filter(r -> r.getMetaRegion().equals(region))
+                .findFirst()
+                .ifPresent(entityRegion -> this.regions.remove(entityRegion.getId()));
     }
 
     public Map<Integer, Set<SceneGroup>> getLoadedGroupSetPerBlock() {

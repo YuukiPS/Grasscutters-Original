@@ -46,6 +46,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.script.Bindings;
 import javax.script.CompiledScript;
+import lombok.SneakyThrows;
 import lombok.val;
 import org.reflections.Reflections;
 
@@ -96,9 +97,13 @@ public final class ResourceLoader {
         return List.copyOf(map.values());
     }
 
+    @SneakyThrows
     public static void loadAll() {
         if (loadedAll) return;
         Grasscutter.getLogger().info(translate("messages.status.resources.loading"));
+
+        // Initialize the script loader.
+        ScriptLoader.init();
 
         loadConfigData();
         // Load ability lists

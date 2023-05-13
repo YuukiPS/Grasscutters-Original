@@ -14,8 +14,7 @@ import emu.grasscutter.config.ConfigContainer;
 import emu.grasscutter.data.ResourceLoader;
 import emu.grasscutter.database.DatabaseManager;
 import emu.grasscutter.plugin.PluginManager;
-import emu.grasscutter.plugin.api.ServerHook;
-import emu.grasscutter.scripts.ScriptLoader;
+import emu.grasscutter.plugin.api.ServerHelper;
 import emu.grasscutter.server.game.GameServer;
 import emu.grasscutter.server.http.HttpServer;
 import emu.grasscutter.server.http.dispatch.DispatchHandler;
@@ -106,7 +105,6 @@ public final class Grasscutter {
 
         // Load all resources.
         Grasscutter.updateDayOfWeek();
-        ScriptLoader.init();
         ResourceLoader.loadAll();
 
         // Generate handbooks.
@@ -123,7 +121,7 @@ public final class Grasscutter {
         httpServer = new HttpServer();
         gameServer = new GameServer();
         // Create a server hook instance with both servers.
-        new ServerHook(gameServer, httpServer);
+        new ServerHelper(gameServer, httpServer);
 
         // Create plugin manager instance.
         pluginManager = new PluginManager();

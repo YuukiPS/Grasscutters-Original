@@ -5,7 +5,8 @@ import emu.grasscutter.data.GameData;
 import emu.grasscutter.data.GameDepot;
 import emu.grasscutter.data.binout.SceneNpcBornEntry;
 import emu.grasscutter.data.binout.routes.Route;
-import emu.grasscutter.data.excels.*;
+import emu.grasscutter.data.excels.ItemData;
+import emu.grasscutter.data.excels.SceneData;
 import emu.grasscutter.data.excels.codex.CodexAnimalData;
 import emu.grasscutter.data.excels.monster.MonsterData;
 import emu.grasscutter.data.excels.world.WorldLevelData;
@@ -511,6 +512,10 @@ public final class Scene {
         this.finishLoading();
         this.checkPlayerRespawn();
         if (this.tickCount++ % 10 == 0) this.broadcastPacket(new PacketSceneTimeNotify(this));
+        if (this.getPlayerCount() <= 0 && !this.dontDestroyWhenEmpty) {
+            this.getScriptManager().onDestroy();
+            this.getWorld().deregisterScene(this);
+        }
     }
 
     /** Validates a player's current position. Teleports the player if the player is out of bounds. */
@@ -551,7 +556,7 @@ public final class Scene {
     /**
      * @return The script's default rotation, or the player's rotation.
      */
-    private Position getDefaultRot(Player player) {
+    public Position getDefaultRotation(Player player) {
         var defaultRotation = this.getScriptManager().getConfig().born_rot;
         return defaultRotation != null ? defaultRotation : player.getRotation();
     }
@@ -577,7 +582,7 @@ public final class Scene {
     private Position getRespawnRotation(Player player) {
         var lastCheckpointRot =
                 this.dungeonManager != null ? this.dungeonManager.getRespawnRotation() : null;
-        return lastCheckpointRot != null ? lastCheckpointRot : this.getDefaultRot(player);
+        return lastCheckpointRot != null ? lastCheckpointRot : this.getDefaultRotation(player);
     }
 
     /**

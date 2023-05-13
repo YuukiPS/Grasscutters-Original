@@ -245,7 +245,8 @@ public final class PluginManager {
      */
     private void checkAndFilter(Event event, HandlerPriority priority) {
         // Add all listeners from every plugin.
-        this.listeners.values().stream()
+        var listeners = new ArrayList<>(this.listeners.values());
+        listeners.stream()
                 .flatMap(Collection::stream)
                 // Filter the listeners by priority.
                 .filter(handler -> handler.handles().isInstance(event))

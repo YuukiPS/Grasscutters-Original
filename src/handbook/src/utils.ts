@@ -134,3 +134,34 @@ export async function fetchEntityData(entity: Entity): Promise<EntityInfo> {
         .then((res) => res.json())
         .catch(() => {});
 }
+
+/**
+ * Attempts to copy text to the clipboard.
+ * Uses the Clipboard API.
+ *
+ * @param text The text to copy.
+ */
+export async function copyToClipboard(text: string): Promise<void> {
+    await navigator.clipboard.writeText(text);
+}
+
+/**
+ * Opens a URL in a new tab.
+ * Uses the window.open() method.
+ *
+ * @param url The URL to open.
+ */
+export function openUrl(url: string): void {
+    window.open(url, "_blank");
+}
+
+/**
+ * Checks if a value is NaN.
+ * Returns an empty string if it is.
+ *
+ * @param value The value to check.
+ */
+export function notNaN(value: number | string): string {
+    const number = parseInt(value.toString());
+    return isNaN(number) ? "" : number.toString();
+}

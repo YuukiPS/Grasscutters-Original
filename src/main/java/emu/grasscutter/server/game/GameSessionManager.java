@@ -95,7 +95,7 @@ public class GameSessionManager {
         return listener;
     }
 
-    interface KcpTunnel {
+    public interface KcpTunnel {
         InetSocketAddress getAddress();
 
         void writeData(byte[] bytes);

@@ -30,7 +30,7 @@ public final class GrasscutterTest {
     }
 
     @BeforeAll
-    public static void main() {
+    public static void entry() {
         try {
             // Start Grasscutter.
             Grasscutter.main(new String[] {"-test"});

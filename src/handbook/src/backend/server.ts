@@ -1,6 +1,8 @@
 import type { CommandResponse } from "@backend/types";
+import emitter from "@backend/events";
 
 let targetPlayer = 0; // The UID of the target player.
+export let connected = false; // Whether the server is connected.
 
 /**
  * Sets the target player.
@@ -9,7 +11,10 @@ let targetPlayer = 0; // The UID of the target player.
  */
 export function setTargetPlayer(player: number): void {
     targetPlayer = player;
-    console.log(`Target Player is now: ${targetPlayer}`);
+    connected = !isNaN(player) && player > 0;
+
+    // Emit the connected event.
+    emitter.emit("connected", connected);
 }
 
 /**
@@ -69,6 +74,47 @@ export async function giveItem(item: number, amount = 1): Promise<CommandRespons
             player: targetPlayer.toString(),
             item: item.toString(),
             amount
+        })
+    }).then((res) => res.json());
+}
+
+/**
+ * Teleports the player to a new scene.
+ *
+ * @param scene The scene's ID.
+ */
+export async function teleportTo(scene: number): Promise<CommandResponse> {
+    // Validate the number.
+    if (isNaN(scene) || scene < 1) return { status: -1, message: "Invalid scene." };
+
+    return await fetch(`https://localhost:443/handbook/teleport`, {
+        method: "POST",
+        body: JSON.stringify({
+            player: targetPlayer.toString(),
+            scene: scene.toString()
+        })
+    }).then((res) => res.json());
+}
+
+/**
+ * Spawns an entity.
+ *
+ * @param entity The entity's ID.
+ * @param amount The amount of the entity to spawn.
+ * @param level The level of the entity to spawn.
+ */
+export async function spawnEntity(entity: number, amount = 1, level = 1): Promise<CommandResponse> {
+    // Validate the numbers.
+    if (isNaN(entity) || isNaN(amount) || isNaN(level) || amount < 1 || level < 1 || level > 200)
+        return { status: -1, message: "Invalid arguments." };
+
+    return await fetch(`https://localhost:443/handbook/spawn`, {
+        method: "POST",
+        body: JSON.stringify({
+            player: targetPlayer.toString(),
+            entity: entity.toString(),
+            amount,
+            level
         })
     }).then((res) => res.json());
 }

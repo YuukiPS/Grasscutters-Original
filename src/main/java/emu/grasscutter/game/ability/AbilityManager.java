@@ -201,7 +201,7 @@ public final class AbilityManager extends BasePlayerManager {
 
             if (head.getInstancedAbilityId() <= abilities.length) {
                 var ability = abilities[head.getInstancedAbilityId() - 1];
-                Grasscutter.getLogger().warn("-> {}", ability.getData().localIdToAction);
+                Grasscutter.getLogger().trace("-> {}", ability.getData().localIdToAction);
                 var action = ability.getData().localIdToAction.get(head.getLocalId());
                 if (action != null) ability.getManager().executeAction(ability, action);
             }
