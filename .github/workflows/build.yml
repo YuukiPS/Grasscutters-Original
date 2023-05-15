@@ -37,6 +37,11 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('*.gradle', 'gradle.properties', '**/*.accesswidener') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
+      - name: Download Handbook
+        uses: suisei-cn/actions-download-file@v1.4.0
+        with:
+          url: https://api.grasscutter.io/static/handbook.html
+          target: src/main/resources/
       - name: Run Gradle
         run: ./gradlew && ./gradlew jar
       - name: Upload build

@@ -72,6 +72,33 @@ jobs:
       - name: Install dependencies
         working-directory: src/handbook
         run: npm install --force
+
+      - name: Download Avatar Data
+        uses: suisei-cn/actions-download-file@v1.4.0
+        with:
+          url: https://api.grasscutter.io/static/avatars.csv
+          target: src/handbook/data/
+      - name: Download Command Data
+        uses: suisei-cn/actions-download-file@v1.4.0
+        with:
+          url: https://api.grasscutter.io/static/commands.json
+          target: src/handbook/data/
+      - name: Download Entity Data
+        uses: suisei-cn/actions-download-file@v1.4.0
+        with:
+          url: https://api.grasscutter.io/static/entities.csv
+          target: src/handbook/data/
+      - name: Download Item Data
+        uses: suisei-cn/actions-download-file@v1.4.0
+        with:
+          url: https://api.grasscutter.io/static/items.csv
+          target: src/handbook/data/
+      - name: Download Scene Data
+        uses: suisei-cn/actions-download-file@v1.4.0
+        with:
+          url: https://api.grasscutter.io/static/scenes.csv
+          target: src/handbook/data/
+
       - name: Build handbook
         working-directory: src/handbook
         run: npm run build

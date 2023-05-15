@@ -54,6 +54,7 @@ public final class DatabaseHelper {
         }
 
         // Account
+        @SuppressWarnings("deprecation")
         Account account = new Account();
         account.setUsername(username);
         account.setId(Integer.toString(DatabaseManager.getNextId(account)));
@@ -213,6 +214,20 @@ public final class DatabaseHelper {
         return DatabaseManager.getGameDatastore()
                 .find(playerClass)
                 .filter(Filters.eq("accountId", account.getId()))
+                .first();
+    }
+
+    /**
+     * Use {@link DatabaseHelper#getPlayerByAccount(Account, Class)} for creating a real player. This
+     * method is used for fetching the player's data.
+     *
+     * @param accountId The account's ID.
+     * @return The player.
+     */
+    public static Player getPlayerByAccount(String accountId) {
+        return DatabaseManager.getGameDatastore()
+                .find(Player.class)
+                .filter(Filters.eq("accountId", accountId))
                 .first();
     }
 

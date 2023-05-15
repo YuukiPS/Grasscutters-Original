@@ -11,6 +11,7 @@ import org.eclipse.jetty.util.ssl.SslContextFactory;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 
 import static emu.grasscutter.config.Configuration.*;
 import static emu.grasscutter.utils.Language.translate;
@@ -26,26 +27,44 @@ public final class HttpServer {
      * Configures the Javalin application.
      */
     public HttpServer() {
+        // Check if we are in game only mode.
+        if (Grasscutter.getRunMode() == Grasscutter.ServerRunMode.GAME_ONLY) {
+            this.javalin = null;
+            return;
+        }
+
         this.javalin = Javalin.create(config -> {
             // Set the Javalin HTTP server.
-            config.server(HttpServer::createServer);
+            config.jetty.server(HttpServer::createServer);
 
             // Configure encryption/HTTPS/SSL.
-            config.enforceSsl = HTTP_ENCRYPTION.useEncryption;
+            if (HTTP_ENCRYPTION.useEncryption)
+                config.plugins.enableSslRedirects();
 
             // Configure HTTP policies.
             if (HTTP_POLICIES.cors.enabled) {
                 var allowedOrigins = HTTP_POLICIES.cors.allowedOrigins;
-                if (allowedOrigins.length > 0)
-                    config.enableCorsForOrigin(allowedOrigins);
-                else config.enableCorsForAllOrigins();
+                config.plugins.enableCors(cors -> cors.add(corsConfig -> {
+                    if (allowedOrigins.length > 0) {
+                        if (Arrays.asList(allowedOrigins).contains("*"))
+                            corsConfig.anyHost();
+                        else corsConfig.allowHost(Arrays.toString(allowedOrigins));
+                    } else corsConfig.anyHost();
+                }));
             }
 
             // Configure debug logging.
             if (DISPATCH_INFO.logRequests == ServerDebugMode.ALL)
-                config.enableDevLogging();
+                config.plugins.enableDevLogging();
 
             // Static files should be added like this https://javalin.io/documentation#static-files
+        });
+
+        this.javalin.exception(Exception.class, (exception, ctx) -> {
+            ctx.status(500).result("Internal server error. %s"
+                .formatted(exception.getMessage()));
+            Grasscutter.getLogger().debug("Exception thrown: " +
+                exception.getMessage(), exception);
         });
     }
 
@@ -112,7 +131,7 @@ public final class HttpServer {
     @SuppressWarnings("UnusedReturnValue")
     public HttpServer addRouter(Class<? extends Router> router, Object... args) {
         // Get all constructor parameters.
-        Class<?>[] types = new Class<?>[args.length];
+        var types = new Class<?>[args.length];
         for (var argument : args)
             types[args.length - 1] = argument.getClass();
 
