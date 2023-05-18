@@ -49,11 +49,11 @@
     align-items: center;
     border-radius: 10px;
 
-    background-color: var(--secondary-color);
+    background-color: var(--primary-color);
 }
 
 .EntitiesPage_Input {
-    background-color: transparent;
+    background: none;
     border: none;
 
     color: var(--text-primary-color);

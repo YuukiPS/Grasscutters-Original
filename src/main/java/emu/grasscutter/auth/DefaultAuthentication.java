@@ -20,6 +20,7 @@ public final class DefaultAuthentication implements AuthenticationSystem {
     private final Authenticator<Account> sessionTokenValidator = new SessionTokenValidator();
     private final ExternalAuthenticator externalAuthenticator = new ExternalAuthentication();
     private final OAuthAuthenticator oAuthAuthenticator = new OAuthAuthentication();
+    private final HandbookAuthenticator handbookAuthenticator = new HandbookAuthentication();
 
     public DefaultAuthentication() {
         if (ACCOUNT.EXPERIMENTAL_RealPassword) {
@@ -74,5 +75,10 @@ public final class DefaultAuthentication implements AuthenticationSystem {
     @Override
     public OAuthAuthenticator getOAuthAuthenticator() {
         return this.oAuthAuthenticator;
+    }
+
+    @Override
+    public HandbookAuthenticator getHandbookAuthenticator() {
+        return this.handbookAuthenticator;
     }
 }

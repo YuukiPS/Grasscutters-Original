@@ -72,10 +72,7 @@ import emu.grasscutter.server.game.GameServer;
 import emu.grasscutter.server.game.GameSession;
 import emu.grasscutter.server.game.GameSession.SessionState;
 import emu.grasscutter.server.packet.send.*;
-import emu.grasscutter.utils.DateHelper;
-import emu.grasscutter.utils.MessageHandler;
-import emu.grasscutter.utils.Position;
-import emu.grasscutter.utils.Utils;
+import emu.grasscutter.utils.*;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import lombok.Getter;
@@ -94,9 +91,11 @@ import static emu.grasscutter.config.Configuration.GAME_OPTIONS;
 @Entity(value = "players", useDiscriminator = false)
 public class Player implements PlayerHook {
     @Id private int id;
-    @Indexed(options = @IndexOptions(unique = true)) private String accountId;
+    @Indexed(options = @IndexOptions(unique = true))
+    @Getter private String accountId;
     @Setter private transient Account account;
     @Getter @Setter private transient GameSession session;
+    @Transient private String sessionKey;
 
     @Getter private String nickname;
     @Getter private String signature;
@@ -373,6 +372,24 @@ public class Player implements PlayerHook {
         if (this.account == null)
             this.account = DatabaseHelper.getAccountById(this.accountId);
         return this.account;
+    }
+
+    /**
+     * @return The player's session key.
+     */
+    public String getSessionKey() {
+        if (this.sessionKey == null) {
+            // Check if the account is null.
+            if (this.account == null) {
+                this.account = DispatchUtils.getAccountById(this.getAccountId());
+            }
+            if (this.account == null) return "";
+
+            // Get the session key.
+            this.sessionKey = this.getAccount().getSessionKey();
+        }
+
+        return this.sessionKey;
     }
 
     public boolean isOnline() {
@@ -706,6 +723,17 @@ public class Player implements PlayerHook {
         return playerProfile;
     }
 
+    /**
+     * Sets a player's property.
+     *
+     * @param prop The property.
+     * @param value The value as a boolean.
+     * @return True if the property was set.
+     */
+    public boolean setProperty(PlayerProperty prop, boolean value) {
+        return setPropertyWithSanityCheck(prop, value ? 1 : 0, true);
+    }
+
     public boolean setProperty(PlayerProperty prop, int value) {
         return setPropertyWithSanityCheck(prop, value, true);
     }
@@ -743,7 +771,7 @@ public class Player implements PlayerHook {
     }
 
     public void setPaused(boolean newPauseState) {
-        boolean oldPauseState = this.paused;
+        var oldPauseState = this.paused;
         this.paused = newPauseState;
 
         if (newPauseState && !oldPauseState) {
@@ -1464,14 +1492,21 @@ public class Player implements PlayerHook {
             int currentValue = this.properties.get(prop.getId());
             this.properties.put(prop.getId(), value);
             if (sendPacket) {
-                // Update player with packet
+                // Send property change reasons if needed.
+                switch (prop) {
+                    case PROP_PLAYER_EXP -> this.sendPacket(new PacketPlayerPropChangeReasonNotify(this, prop, currentValue, value,
+                        PropChangeReason.PROP_CHANGE_REASON_PLAYER_ADD_EXP));
+                    case PROP_PLAYER_LEVEL -> this.sendPacket(new PacketPlayerPropChangeReasonNotify(this, prop, currentValue, value,
+                        PropChangeReason.PROP_CHANGE_REASON_LEVELUP));
+
+                    // TODO: Handle world level changing.
+                    // case PROP_PLAYER_WORLD_LEVEL -> this.sendPacket(new PacketPlayerPropChangeReasonNotify(this, prop, currentValue, value,
+                    //     PropChangeReason.PROP_CHANGE_REASON_MANUAL_ADJUST_WORLD_LEVEL));
+                }
+
+                // Update player with packet.
                 this.sendPacket(new PacketPlayerPropNotify(this, prop));
                 this.sendPacket(new PacketPlayerPropChangeNotify(this, prop, value - currentValue));
-
-                // Make the Adventure EXP pop-up show on screen.
-                if (prop == PlayerProperty.PROP_PLAYER_EXP) {
-                    this.sendPacket(new PacketPlayerPropChangeReasonNotify(this, prop, currentValue, value, PropChangeReason.PROP_CHANGE_REASON_PLAYER_ADD_EXP));
-                }
             }
             return true;
         } else {

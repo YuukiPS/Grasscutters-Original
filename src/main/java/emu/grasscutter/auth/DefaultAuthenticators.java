@@ -5,6 +5,7 @@ import static emu.grasscutter.utils.Language.translate;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import emu.grasscutter.Grasscutter;
+import emu.grasscutter.Grasscutter.ServerRunMode;
 import emu.grasscutter.auth.AuthenticationSystem.AuthenticationRequest;
 import emu.grasscutter.database.DatabaseHelper;
 import emu.grasscutter.game.Account;
@@ -12,8 +13,10 @@ import emu.grasscutter.server.dispatch.IDispatcher;
 import emu.grasscutter.server.dispatch.PacketIds;
 import emu.grasscutter.server.http.objects.ComboTokenResJson;
 import emu.grasscutter.server.http.objects.LoginResultJson;
+import emu.grasscutter.utils.DispatchUtils;
 import emu.grasscutter.utils.FileUtils;
 import emu.grasscutter.utils.Utils;
+import io.javalin.http.ContentType;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.interfaces.RSAPrivateKey;
@@ -369,6 +372,77 @@ public final class DefaultAuthenticators {
                 return future.get(5, TimeUnit.SECONDS);
             } catch (Exception ignored) {
                 return null;
+            }
+        }
+    }
+
+    /** Handles authentication for the web GM Handbook. */
+    public static class HandbookAuthentication implements HandbookAuthenticator {
+        private final String authPage;
+
+        public HandbookAuthentication() {
+            try {
+                this.authPage = new String(FileUtils.readResource("/html/handbook_auth.html"));
+            } catch (Exception ignored) {
+                throw new RuntimeException("Failed to load handbook auth page.");
+            }
+        }
+
+        @Override
+        public void presentPage(AuthenticationRequest request) {
+            var ctx = request.getContext();
+            if (ctx == null) return;
+
+            // Check to see if an IP authentication can be performed.
+            if (Grasscutter.getRunMode() == ServerRunMode.HYBRID) {
+                var player = Grasscutter.getGameServer().getPlayerByIpAddress(ctx.ip());
+                if (player != null) {
+                    // Get the player's session token.
+                    var sessionKey = player.getAccount().getSessionKey();
+                    // Respond with the handbook auth page.
+                    ctx.status(200)
+                            .result(
+                                    this.authPage
+                                            .replace("{{VALUE}}", "true")
+                                            .replace("{{SESSION_TOKEN}}", sessionKey)
+                                            .replace("{{PLAYER_ID}}", String.valueOf(player.getUid())));
+                    return;
+                }
+            }
+
+            // Respond with the handbook auth page.
+            ctx.contentType(ContentType.TEXT_HTML).result(this.authPage);
+        }
+
+        @Override
+        public Response authenticate(AuthenticationRequest request) {
+            var ctx = request.getContext();
+            if (ctx == null) return null;
+
+            // Get the body data.
+            var playerId = ctx.formParam("playerid");
+            if (playerId == null) {
+                return Response.builder().status(400).body("Invalid player ID.").build();
+            }
+
+            try {
+                // Get the player's session token.
+                var sessionKey = DispatchUtils.fetchSessionKey(Integer.parseInt(playerId));
+                if (sessionKey == null) {
+                    return Response.builder().status(400).body("Invalid player ID.").build();
+                }
+
+                // Check if the account is banned.
+                return Response.builder()
+                        .status(200)
+                        .body(
+                                this.authPage
+                                        .replace("{{VALUE}}", "true")
+                                        .replace("{{SESSION_TOKEN}}", sessionKey)
+                                        .replace("{{PLAYER_ID}}", playerId))
+                        .build();
+            } catch (NumberFormatException ignored) {
+                return Response.builder().status(500).body("Invalid player ID.").build();
             }
         }
     }

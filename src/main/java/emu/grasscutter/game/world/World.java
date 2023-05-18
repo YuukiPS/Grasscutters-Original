@@ -8,6 +8,7 @@ import emu.grasscutter.game.player.Player;
 import emu.grasscutter.game.player.Player.SceneLoadState;
 import emu.grasscutter.game.props.EnterReason;
 import emu.grasscutter.game.props.EntityIdType;
+import emu.grasscutter.game.props.PlayerProperty;
 import emu.grasscutter.game.props.SceneType;
 import emu.grasscutter.game.quest.enums.QuestContent;
 import emu.grasscutter.game.world.data.TeleportProperties;
@@ -30,6 +31,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.val;
+import org.jetbrains.annotations.NotNull;
 
 public final class World implements Iterable<Player> {
     @Getter private final GameServer server;
@@ -476,7 +478,14 @@ public final class World implements Iterable<Player> {
      * @param paused True if the world should be paused.
      */
     public void setPaused(boolean paused) {
-        this.getWorldTime(); // Update the world time.
+        // Check if this world is a multiplayer world.
+        if (this.isMultiplayer) return;
+
+        // Update the world time.
+        this.getWorldTime();
+        this.updateTime();
+        // Lock the world time.
+        this.lockTime(paused);
 
         // If the world is being un-paused, update the last update time.
         if (this.isPaused != paused && !paused) {
@@ -525,6 +534,12 @@ public final class World implements Iterable<Player> {
                 player -> player.getQuestManager().queueEvent(QuestContent.QUEST_CONTENT_GAME_TIME_TICK));
     }
 
+    /** Notifies all players of the current world time. */
+    public void updateTime() {
+        this.getPlayers().forEach(p -> p.sendPacket(new PacketPlayerGameTimeNotify(p)));
+        this.getPlayers().forEach(p -> p.sendPacket(new PacketSceneTimeNotify(p)));
+    }
+
     /**
      * Locks the world time.
      *
@@ -532,9 +547,14 @@ public final class World implements Iterable<Player> {
      */
     public void lockTime(boolean locked) {
         this.timeLocked = locked;
+
+        // Notify players of the locking.
+        this.updateTime();
+        this.getPlayers()
+                .forEach(player -> player.setProperty(PlayerProperty.PROP_IS_GAME_TIME_LOCKED, locked));
     }
 
-    @Override
+    @NotNull @Override
     public Iterator<Player> iterator() {
         return this.getPlayers().iterator();
     }

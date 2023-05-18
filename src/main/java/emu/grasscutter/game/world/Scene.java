@@ -661,7 +661,7 @@ public final class Scene {
 
         if (toUnload.size() > 0) {
             broadcastPacket(new PacketGroupUnloadNotify(toUnload));
-            Grasscutter.getLogger().debug("Unload NPC Group {}", toUnload);
+            Grasscutter.getLogger().trace("Unload NPC Group {}", toUnload);
         }
         // exchange the new npcBornEntry Set
         this.npcBornEntrySet = npcBornEntries;
@@ -978,7 +978,7 @@ public final class Scene {
         groups.forEach(
                 g -> scriptManager.callEvent(new ScriptArgs(g.id, EventType.EVENT_GROUP_LOAD, g.id)));
 
-        Grasscutter.getLogger().debug("Scene {} loaded {} group(s)", this.getId(), groups.size());
+        Grasscutter.getLogger().trace("Scene {} loaded {} group(s)", this.getId(), groups.size());
     }
 
     public void unloadGroup(SceneBlock block, int group_id) {
@@ -1119,7 +1119,7 @@ public final class Scene {
 
         if (sceneNpcBornEntries.size() > 0) {
             this.broadcastPacket(new PacketGroupSuiteNotify(sceneNpcBornEntries));
-            Grasscutter.getLogger().debug("Loaded Npc Group Suite {}", sceneNpcBornEntries);
+            Grasscutter.getLogger().trace("Loaded Npc Group Suite {}", sceneNpcBornEntries);
         }
         return npcList;
     }

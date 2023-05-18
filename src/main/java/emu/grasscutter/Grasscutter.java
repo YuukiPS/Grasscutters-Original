@@ -120,7 +120,7 @@ public final class Grasscutter {
         }
 
         // Initialize database.
-        DatabaseManager.initialize();
+        DatabaseManager.initializeAsync();
 
         // Initialize the default systems.
         authenticationSystem = new DefaultAuthentication();

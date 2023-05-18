@@ -54,6 +54,16 @@ public interface Dumpers {
     }
 
     /**
+     * Encodes the dump into comma separated values.
+     *
+     * @param dump The dump to encode.
+     * @return The encoded dump.
+     */
+    private static String miniEncode(Map<Integer, ?> dump, String... headers) {
+        return String.join(",", headers) + "\n" + Dumpers.miniEncode(dump);
+    }
+
+    /**
      * Dumps all commands to a JSON file.
      *
      * @param locale The language to dump the commands in.
@@ -104,7 +114,7 @@ public interface Dumpers {
     }
 
     /**
-     * Dumps all avatars to a JSON file.
+     * Dumps all avatars to a CSV file.
      *
      * @param locale The language to dump the avatars in.
      */
@@ -145,7 +155,7 @@ public interface Dumpers {
     }
 
     /**
-     * Dumps all items to a JSON file.
+     * Dumps all items to a CSVv file.
      *
      * @param locale The language to dump the items in.
      */
@@ -195,7 +205,7 @@ public interface Dumpers {
         }
     }
 
-    /** Dumps all scenes to a JSON file. */
+    /** Dumps all scenes to a CSV file. */
     static void dumpScenes() {
         // Reload resources.
         ResourceLoader.loadAll();
@@ -223,7 +233,7 @@ public interface Dumpers {
     }
 
     /**
-     * Dumps all entities to a JSON file.
+     * Dumps all entities to a CSV file.
      *
      * @param locale The language to dump the entities in.
      */
@@ -256,6 +266,72 @@ public interface Dumpers {
 
             // Write the dump to the file.
             Files.writeString(file.toPath(), Dumpers.miniEncode(dump));
+        } catch (IOException ignored) {
+            throw new RuntimeException("Failed to write to file.");
+        }
+    }
+
+    /**
+     * Dumps all quests to a JSON file.
+     *
+     * @param locale The language to dump the quests in.
+     */
+    static void dumpQuests(String locale) {
+        // Reload resources.
+        ResourceLoader.loadAll();
+        Language.loadTextMaps();
+
+        // Convert all known quests to a quest map.
+        var dump = new HashMap<Integer, QuestInfo>();
+        GameData.getQuestDataMap()
+                .forEach(
+                        (id, quest) -> {
+                            var langHash = quest.getDescTextMapHash();
+                            dump.put(
+                                    id,
+                                    new QuestInfo(
+                                            langHash == 0
+                                                    ? "Unknown"
+                                                    : Language.getTextMapKey(langHash).get(locale).replaceAll(",", "\\\\"),
+                                            quest.getMainId()));
+                        });
+
+        // Convert all known main quests into a quest map.
+        var mainDump = new HashMap<Integer, MainQuestInfo>();
+        GameData.getMainQuestDataMap()
+                .forEach(
+                        (id, mainQuest) -> {
+                            var langHash = mainQuest.getTitleTextMapHash();
+                            mainDump.put(
+                                    id,
+                                    new MainQuestInfo(
+                                            langHash == 0
+                                                    ? "Unknown"
+                                                    : Language.getTextMapKey(langHash).get(locale).replaceAll(",", "\\\\")));
+                        });
+
+        try {
+            // Create a file for the dump.
+            var file = new File("quests.csv");
+            if (file.exists() && !file.delete()) throw new RuntimeException("Failed to delete file.");
+            if (!file.exists() && !file.createNewFile())
+                throw new RuntimeException("Failed to create file.");
+
+            // Write the dump to the file.
+            Files.writeString(file.toPath(), Dumpers.miniEncode(dump, "id", "description", "mainId"));
+        } catch (IOException ignored) {
+            throw new RuntimeException("Failed to write to file.");
+        }
+
+        try {
+            // Create a file for the dump.
+            var file = new File("mainquests.csv");
+            if (file.exists() && !file.delete()) throw new RuntimeException("Failed to delete file.");
+            if (!file.exists() && !file.createNewFile())
+                throw new RuntimeException("Failed to create file.");
+
+            // Write the dump to the file.
+            Files.writeString(file.toPath(), Dumpers.miniEncode(mainDump, "id", "title"));
         } catch (IOException ignored) {
             throw new RuntimeException("Failed to write to file.");
         }
@@ -314,6 +390,27 @@ public interface Dumpers {
         @Override
         public String toString() {
             return this.name + "," + this.internal;
+        }
+    }
+
+    @AllArgsConstructor
+    class MainQuestInfo {
+        public String title;
+
+        @Override
+        public String toString() {
+            return this.title;
+        }
+    }
+
+    @AllArgsConstructor
+    class QuestInfo {
+        public String description;
+        public int mainQuest;
+
+        @Override
+        public String toString() {
+            return this.description + "," + this.mainQuest;
         }
     }
 

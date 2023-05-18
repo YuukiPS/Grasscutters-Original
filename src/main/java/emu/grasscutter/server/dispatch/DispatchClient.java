@@ -16,6 +16,7 @@ import java.net.ConnectException;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,7 @@ public final class DispatchClient extends WebSocketClient implements IDispatcher
 
         this.registerHandler(PacketIds.GachaHistoryReq, this::fetchGachaHistory);
         this.registerHandler(PacketIds.GmTalkReq, this::handleHandbookAction);
+        this.registerHandler(PacketIds.GetPlayerFieldsReq, this::fetchPlayerFields);
     }
 
     /**
@@ -103,6 +105,30 @@ public final class DispatchClient extends WebSocketClient implements IDispatcher
 
         // Send the response to the server.
         this.sendMessage(PacketIds.GmTalkRsp, response);
+    }
+
+    /**
+     * Fetches the fields of an online player.
+     *
+     * @param socket The socket the packet was received from.
+     * @param object The packet data.
+     */
+    private void fetchPlayerFields(WebSocket socket, JsonElement object) {
+        var message = IDispatcher.decode(object);
+        var playerId = message.get("playerId").getAsInt();
+        var fieldsRaw = message.get("fields").getAsJsonArray();
+
+        // Get the player with the specified ID.
+        var player = Grasscutter.getGameServer().getPlayerByUid(playerId, true);
+        if (player == null) return;
+
+        // Convert the fields array.
+        var fieldsList = new ArrayList<String>();
+        for (var field : fieldsRaw) fieldsList.add(field.getAsString());
+        var fields = fieldsList.toArray(new String[0]);
+
+        // Return the response object.
+        this.sendMessage(PacketIds.GetPlayerFieldsRsp, DispatchUtils.getPlayerFields(playerId, fields));
     }
 
     /**

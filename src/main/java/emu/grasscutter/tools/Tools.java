@@ -52,6 +52,10 @@ public final class Tools {
      * @throws Exception If an error occurs while generating the handbooks.
      */
     public static void createGmHandbooks(boolean message) throws Exception {
+        // Check if the GM Handbook directory exists.
+        val handbookDir = new File("GM Handbook");
+        if (handbookDir.exists()) return;
+
         val languages = Language.TextStrings.getLanguages();
 
         ResourceLoader.loadAll();

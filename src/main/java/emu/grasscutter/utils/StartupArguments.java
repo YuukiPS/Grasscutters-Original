@@ -167,6 +167,7 @@ public final class StartupArguments {
                 case "items" -> Dumpers.dumpItems(language);
                 case "scenes" -> Dumpers.dumpScenes();
                 case "entities" -> Dumpers.dumpEntities(language);
+                case "quests" -> Dumpers.dumpQuests(language);
             }
 
             Grasscutter.getLogger().info("Finished dumping.");

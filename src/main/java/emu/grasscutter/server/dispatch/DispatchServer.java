@@ -39,6 +39,7 @@ public final class DispatchServer extends WebSocketServer implements IDispatcher
 
         this.registerHandler(PacketIds.LoginNotify, this::handleLogin);
         this.registerHandler(PacketIds.TokenValidateReq, this::validateToken);
+        this.registerHandler(PacketIds.GetAccountReq, this::fetchAccount);
     }
 
     /**
@@ -82,6 +83,22 @@ public final class DispatchServer extends WebSocketServer implements IDispatcher
 
         // Send the response.
         this.sendMessage(socket, PacketIds.TokenValidateRsp, response);
+    }
+
+    /**
+     * Fetches an account by its ID.
+     *
+     * @param socket The socket the packet was received from.
+     * @param object The packet data.
+     */
+    private void fetchAccount(WebSocket socket, JsonElement object) {
+        var message = IDispatcher.decode(object);
+        var accountId = message.get("accountId").getAsString();
+
+        // Get the account from the database.
+        var account = DatabaseHelper.getAccountById(accountId);
+        // Send the account.
+        this.sendMessage(socket, PacketIds.GetAccountRsp, JSON.toJsonTree(account));
     }
 
     /**

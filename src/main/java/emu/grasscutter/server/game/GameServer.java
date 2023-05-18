@@ -7,6 +7,7 @@ import static emu.grasscutter.utils.Language.translate;
 import emu.grasscutter.GameConstants;
 import emu.grasscutter.Grasscutter;
 import emu.grasscutter.Grasscutter.ServerRunMode;
+import emu.grasscutter.data.ResourceLoader;
 import emu.grasscutter.database.DatabaseHelper;
 import emu.grasscutter.game.Account;
 import emu.grasscutter.game.battlepass.BattlePassSystem;
@@ -140,11 +141,15 @@ public final class GameServer extends KcpServer {
 
         this.init(GameSessionManager.getListener(), channelConfig, address);
 
-        EnergyManager.initialize();
-        StaminaManager.initialize();
-        CookingManager.initialize();
-        CookingCompoundManager.initialize();
-        CombineManger.initialize();
+        // Load game managers asyncronously.
+        ResourceLoader.runAsync(
+                () -> {
+                    EnergyManager.initialize();
+                    StaminaManager.initialize();
+                    CookingManager.initialize();
+                    CookingCompoundManager.initialize();
+                    CombineManger.initialize();
+                });
 
         // Game Server base
         this.address = address;
@@ -244,6 +249,22 @@ public final class GameServer extends KcpServer {
                         .filter(player -> player.getAccount().getId().equals(accountId))
                         .findFirst();
         return playerOpt.orElse(null);
+    }
+
+    /**
+     * Tries to find a player with the matching IP address.
+     *
+     * @param ipAddress The IP address. This should just be numbers without a port.
+     * @return The player, or null if one could not be found.
+     */
+    public Player getPlayerByIpAddress(String ipAddress) {
+        return this.getPlayers().values().stream()
+                .map(Player::getSession)
+                .filter(
+                        session -> session != null && session.getAddress().getHostString().equals(ipAddress))
+                .map(GameSession::getPlayer)
+                .findFirst()
+                .orElse(null);
     }
 
     public SocialDetail.Builder getSocialDetailByUid(int id) {

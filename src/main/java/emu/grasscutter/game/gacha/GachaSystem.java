@@ -6,6 +6,7 @@ import com.sun.nio.file.SensitivityWatchEventModifier;
 import emu.grasscutter.Grasscutter;
 import emu.grasscutter.data.DataLoader;
 import emu.grasscutter.data.GameData;
+import emu.grasscutter.data.ResourceLoader;
 import emu.grasscutter.data.common.ItemParamData;
 import emu.grasscutter.data.excels.ItemData;
 import emu.grasscutter.database.DatabaseHelper;
@@ -45,8 +46,9 @@ public class GachaSystem extends BaseGameSystem {
 
     public GachaSystem(GameServer server) {
         super(server);
+
         this.gachaBanners = new Int2ObjectOpenHashMap<>();
-        this.load();
+        ResourceLoader.runAsync(this::load);
         this.startWatcher(server);
     }
 

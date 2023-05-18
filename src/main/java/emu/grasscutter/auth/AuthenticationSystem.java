@@ -130,6 +130,13 @@ public interface AuthenticationSystem {
      */
     OAuthAuthenticator getOAuthAuthenticator();
 
+    /**
+     * This is the authenticator used for handling handbook authentication requests.
+     *
+     * @return An authenticator.
+     */
+    HandbookAuthenticator getHandbookAuthenticator();
+
     /** A data container that holds relevant data for authenticating a client. */
     @Builder
     @AllArgsConstructor

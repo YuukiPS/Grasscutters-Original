@@ -1,5 +1,11 @@
 export type Page = "Home" | "Commands" | "Avatars" | "Items" | "Entities" | "Scenes";
+export type Overlays = "None" | "ServerSettings";
 export type Days = "Sunday" | "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday";
+
+export type MainQuest = {
+    id: number;
+    title: string;
+};
 
 export type Command = {
     name: string[];
@@ -33,6 +39,12 @@ export type Entity = {
     id: number;
     name: string;
     internal: string;
+};
+
+export type Quest = {
+    id: number;
+    description: string;
+    mainId: number;
 };
 
 // Exported from Project Amber.
