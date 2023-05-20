@@ -6,6 +6,8 @@ import scenes from "@data/scenes.csv";
 import quests from "@data/quests.csv";
 import items from "@data/items.csv";
 
+import type { RawNodeDatum } from "react-d3-tree";
+
 import { Quality, ItemType, ItemCategory, SceneType } from "@backend/types";
 import type { MainQuest, Command, Avatar, Item, Scene, Entity, Quest } from "@backend/types";
 
@@ -163,8 +165,7 @@ export function getItems(): Item[] {
 export function getQuests(): QuestDump {
     const map: QuestDump = {};
     quests.forEach((quest: Quest) => {
-        quest.description = quest.description
-            .replaceAll("\\", ",");
+        quest.description = quest.description.replaceAll("\\", ",");
         map[quest.id] = quest;
     });
 
@@ -175,8 +176,7 @@ export function getQuests(): QuestDump {
  * Fetches and lists all the quests in the file.
  */
 export function listQuests(): Quest[] {
-    return Object.values(getQuests())
-        .sort((a, b) => a.id - b.id);
+    return Object.values(getQuests()).sort((a, b) => a.id - b.id);
 }
 
 /**
@@ -185,8 +185,7 @@ export function listQuests(): Quest[] {
 export function getMainQuests(): MainQuestDump {
     const map: MainQuestDump = {};
     mainQuests.forEach((quest: MainQuest) => {
-        quest.title = quest.title
-            .replaceAll("\\", ",");
+        quest.title = quest.title.replaceAll("\\", ",");
         map[quest.id] = quest;
     });
 
@@ -197,8 +196,7 @@ export function getMainQuests(): MainQuestDump {
  * Fetches and lists all the quests in the file.
  */
 export function listMainQuests(): MainQuestDump[] {
-    return Object.values(allMainQuests)
-        .sort((a, b) => a.id - b.id);
+    return Object.values(allMainQuests).sort((a, b) => a.id - b.id);
 }
 
 /**
@@ -208,4 +206,40 @@ export function listMainQuests(): MainQuestDump[] {
  */
 export function getMainQuestFor(quest: Quest): MainQuest {
     return allMainQuests[quest.mainId];
+}
+
+/**
+ * Fetches all quests for a main quest.
+ *
+ * @param mainQuest The main quest to fetch quests for.
+ */
+export function listSubQuestsFor(mainQuest: MainQuest): Quest[] {
+    return listQuests().filter((quest) => quest.mainId == mainQuest.id);
+}
+
+/*
+ * Tree conversion methods.
+ */
+
+/**
+ * Converts a quest to a tree.
+ *
+ * @param mainQuest The main quest to convert.
+ */
+export function questToTree(mainQuest: MainQuest): RawNodeDatum {
+    return {
+        name: mainQuest.title,
+        attributes: {
+            id: mainQuest.id
+        },
+        children: listSubQuestsFor(mainQuest).map((quest) => {
+            return {
+                name: quest.id.toString(),
+                attributes: {
+                    description: quest.description
+                },
+                children: []
+            } as RawNodeDatum;
+        })
+    };
 }

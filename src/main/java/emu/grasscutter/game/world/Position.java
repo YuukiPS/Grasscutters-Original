@@ -1,9 +1,10 @@
-package emu.grasscutter.utils;
+package emu.grasscutter.game.world;
 
 import com.github.davidmoten.rtreemulti.geometry.Point;
 import com.google.gson.annotations.SerializedName;
 import dev.morphia.annotations.Entity;
 import emu.grasscutter.net.proto.VectorOuterClass.Vector;
+import emu.grasscutter.utils.Utils;
 import java.io.Serializable;
 import java.util.List;
 import lombok.Getter;
@@ -12,6 +13,9 @@ import lombok.Setter;
 @Entity
 public class Position implements Serializable {
     private static final long serialVersionUID = -2001232313615923575L;
+
+    public static final Position ZERO = new Position(0, 0, 0);
+    public static final Position IDENTITY = new Position(0, 0);
 
     @SerializedName(
             value = "x",

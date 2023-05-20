@@ -14,9 +14,9 @@ import java.util.function.Function;
 import org.slf4j.LoggerFactory;
 
 /** A parser for start-up arguments. */
-public final class StartupArguments {
+public interface StartupArguments {
     /* A map of parameter -> argument handler. */
-    private static final Map<String, Function<String, Boolean>> argumentHandlers =
+    Map<String, Function<String, Boolean>> argumentHandlers =
             new HashMap<>() {
                 {
                     putAll(
@@ -74,17 +74,13 @@ public final class StartupArguments {
                 }
             };
 
-    private StartupArguments() {
-        // This class is not meant to be instantiated.
-    }
-
     /**
      * Parses the provided start-up arguments.
      *
      * @param args The application start-up arguments.
      * @return If the application should exit.
      */
-    public static boolean parse(String[] args) {
+    static boolean parse(String[] args) {
         boolean exitEarly = false;
 
         // Parse the arguments.

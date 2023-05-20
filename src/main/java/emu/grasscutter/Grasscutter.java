@@ -1,7 +1,7 @@
 package emu.grasscutter;
 
 import static emu.grasscutter.config.Configuration.SERVER;
-import static emu.grasscutter.utils.Language.translate;
+import static emu.grasscutter.utils.lang.Language.translate;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
@@ -28,7 +28,11 @@ import emu.grasscutter.server.http.handlers.GachaHandler;
 import emu.grasscutter.server.http.handlers.GenericHandler;
 import emu.grasscutter.server.http.handlers.LogHandler;
 import emu.grasscutter.tools.Tools;
-import emu.grasscutter.utils.*;
+import emu.grasscutter.utils.Crypto;
+import emu.grasscutter.utils.JsonUtils;
+import emu.grasscutter.utils.StartupArguments;
+import emu.grasscutter.utils.Utils;
+import emu.grasscutter.utils.lang.Language;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOError;
@@ -120,7 +124,7 @@ public final class Grasscutter {
         }
 
         // Initialize database.
-        DatabaseManager.initializeAsync();
+        DatabaseManager.initialize();
 
         // Initialize the default systems.
         authenticationSystem = new DefaultAuthentication();

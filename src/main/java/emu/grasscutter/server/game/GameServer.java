@@ -2,12 +2,11 @@ package emu.grasscutter.server.game;
 
 import static emu.grasscutter.config.Configuration.DISPATCH_INFO;
 import static emu.grasscutter.config.Configuration.GAME_INFO;
-import static emu.grasscutter.utils.Language.translate;
+import static emu.grasscutter.utils.lang.Language.translate;
 
 import emu.grasscutter.GameConstants;
 import emu.grasscutter.Grasscutter;
 import emu.grasscutter.Grasscutter.ServerRunMode;
-import emu.grasscutter.data.ResourceLoader;
 import emu.grasscutter.database.DatabaseHelper;
 import emu.grasscutter.game.Account;
 import emu.grasscutter.game.battlepass.BattlePassSystem;
@@ -53,9 +52,10 @@ import kcp.highway.KcpServer;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import org.jetbrains.annotations.NotNull;
 
 @Getter
-public final class GameServer extends KcpServer {
+public final class GameServer extends KcpServer implements Iterable<Player> {
     // Game server base
     private final InetSocketAddress address;
     private final GameServerPacketHandler packetHandler;
@@ -141,15 +141,11 @@ public final class GameServer extends KcpServer {
 
         this.init(GameSessionManager.getListener(), channelConfig, address);
 
-        // Load game managers asyncronously.
-        ResourceLoader.runAsync(
-                () -> {
-                    EnergyManager.initialize();
-                    StaminaManager.initialize();
-                    CookingManager.initialize();
-                    CookingCompoundManager.initialize();
-                    CombineManger.initialize();
-                });
+        EnergyManager.initialize();
+        StaminaManager.initialize();
+        CookingManager.initialize();
+        CookingCompoundManager.initialize();
+        CombineManger.initialize();
 
         // Game Server base
         this.address = address;
@@ -356,5 +352,10 @@ public final class GameServer extends KcpServer {
         }
 
         getWorlds().forEach(World::save);
+    }
+
+    @NotNull @Override
+    public Iterator<Player> iterator() {
+        return this.getPlayers().values().iterator();
     }
 }

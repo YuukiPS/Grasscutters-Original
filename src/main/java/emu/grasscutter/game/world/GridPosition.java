@@ -1,4 +1,4 @@
-package emu.grasscutter.utils;
+package emu.grasscutter.game.world;
 
 import com.github.davidmoten.rtreemulti.geometry.Point;
 import dev.morphia.annotations.Entity;

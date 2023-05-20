@@ -3,7 +3,7 @@ package emu.grasscutter.server.http.documentation;
 import static emu.grasscutter.config.Configuration.DOCUMENT_LANGUAGE;
 
 import emu.grasscutter.tools.Tools;
-import emu.grasscutter.utils.Language;
+import emu.grasscutter.utils.lang.Language;
 import io.javalin.http.ContentType;
 import io.javalin.http.Context;
 import java.util.List;

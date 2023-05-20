@@ -6,6 +6,7 @@ import emu.grasscutter.GameConstants;
 import emu.grasscutter.command.CommandMap;
 import emu.grasscutter.game.player.Player;
 import emu.grasscutter.net.proto.ChatInfoOuterClass.ChatInfo;
+import emu.grasscutter.server.event.player.PlayerChatEvent;
 import emu.grasscutter.server.game.GameServer;
 import emu.grasscutter.server.packet.send.PacketPlayerChatNotify;
 import emu.grasscutter.server.packet.send.PacketPrivateChatNotify;
@@ -133,11 +134,25 @@ public class ChatSystem implements ChatSystemHandler {
         }
 
         // Get target.
-        Player target = getServer().getPlayerByUid(targetUid);
-
+        var target = getServer().getPlayerByUid(targetUid);
         if (target == null && targetUid != GameConstants.SERVER_CONSOLE_UID) {
             return;
         }
+
+        // Invoke the chat event.
+        var event = new PlayerChatEvent(player, message, target);
+        event.call();
+        if (event.isCanceled()) return;
+
+        // Fetch the new target.
+        if (targetUid != GameConstants.SERVER_CONSOLE_UID) {
+            targetUid = event.getTargetUid();
+            if (targetUid == -1) return;
+        }
+
+        // Fetch the new message.
+        message = event.getMessage();
+        if (message == null || message.length() == 0) return;
 
         // Create chat packet.
         var packet = new PacketPrivateChatNotify(player.getUid(), targetUid, message);
@@ -147,32 +162,45 @@ public class ChatSystem implements ChatSystemHandler {
         putInHistory(player.getUid(), targetUid, packet.getChatInfo());
 
         // Check if command
-        boolean isCommand = tryInvokeCommand(player, target, message);
+        var isCommand = tryInvokeCommand(player, target, message);
 
-        if ((target != null) && (!isCommand)) {
+        if (target != null && !isCommand) {
             target.sendPacket(packet);
-            putInHistory(targetUid, player.getUid(), packet.getChatInfo());
+            this.putInHistory(targetUid, player.getUid(), packet.getChatInfo());
         }
     }
 
     public void sendPrivateMessage(Player player, int targetUid, int emote) {
         // Get target.
-        Player target = getServer().getPlayerByUid(targetUid);
-
+        var target = getServer().getPlayerByUid(targetUid);
         if (target == null && targetUid != GameConstants.SERVER_CONSOLE_UID) {
             return;
         }
 
+        // Invoke the chat event.
+        var event = new PlayerChatEvent(player, emote, target);
+        event.call();
+        if (event.isCanceled()) return;
+
+        // Fetch the new target.
+        if (targetUid != GameConstants.SERVER_CONSOLE_UID) {
+            targetUid = event.getTargetUid();
+            if (targetUid == -1) return;
+        }
+        // Fetch the new emote.
+        emote = event.getMessageAsInt();
+        if (emote == -1) return;
+
         // Create chat packet.
-        var packet = new PacketPrivateChatNotify(player.getUid(), target.getUid(), emote);
+        var packet = new PacketPrivateChatNotify(player.getUid(), targetUid, emote);
 
         // Send and put is history.
         player.sendPacket(packet);
-        putInHistory(player.getUid(), targetUid, packet.getChatInfo());
+        this.putInHistory(player.getUid(), targetUid, packet.getChatInfo());
 
         if (target != null) {
             target.sendPacket(packet);
-            putInHistory(targetUid, player.getUid(), packet.getChatInfo());
+            this.putInHistory(targetUid, player.getUid(), packet.getChatInfo());
         }
     }
 
@@ -183,15 +211,39 @@ public class ChatSystem implements ChatSystemHandler {
         }
 
         // Check if command
-        if (tryInvokeCommand(player, null, message)) {
+        if (this.tryInvokeCommand(player, null, message)) {
             return;
         }
+
+        // Invoke the chat event.
+        var event = new PlayerChatEvent(player, message, channel);
+        event.call();
+        if (event.isCanceled()) return;
+
+        // Fetch the new message.
+        message = event.getMessage();
+        if (message == null || message.length() == 0) return;
+        // Fetch the new channel.
+        channel = event.getChannel();
+        if (channel == -1) return;
 
         // Create and send chat packet
         player.getWorld().broadcastPacket(new PacketPlayerChatNotify(player, channel, message));
     }
 
     public void sendTeamMessage(Player player, int channel, int icon) {
+        // Invoke the chat event.
+        var event = new PlayerChatEvent(player, icon, channel);
+        event.call();
+        if (event.isCanceled()) return;
+
+        // Fetch the new icon.
+        icon = event.getMessageAsInt();
+        if (icon == -1) return;
+        // Fetch the new channel.
+        channel = event.getChannel();
+        if (channel == -1) return;
+
         // Create and send chat packet
         player.getWorld().broadcastPacket(new PacketPlayerChatNotify(player, channel, icon));
     }

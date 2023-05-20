@@ -1,7 +1,7 @@
 package emu.grasscutter.tools;
 
 import static emu.grasscutter.utils.FileUtils.getResourcePath;
-import static emu.grasscutter.utils.Language.getTextMapKey;
+import static emu.grasscutter.utils.lang.Language.getTextMapKey;
 
 import emu.grasscutter.GameConstants;
 import emu.grasscutter.Grasscutter;
@@ -16,8 +16,8 @@ import emu.grasscutter.data.excels.achievement.AchievementData;
 import emu.grasscutter.data.excels.avatar.AvatarData;
 import emu.grasscutter.utils.FileUtils;
 import emu.grasscutter.utils.JsonUtils;
-import emu.grasscutter.utils.Language;
-import emu.grasscutter.utils.Language.TextStrings;
+import emu.grasscutter.utils.lang.Language;
+import emu.grasscutter.utils.lang.Language.TextStrings;
 import it.unimi.dsi.fastutil.ints.Int2IntRBTreeMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectRBTreeMap;
 import java.io.*;

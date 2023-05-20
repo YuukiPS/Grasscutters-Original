@@ -1,4 +1,4 @@
-package emu.grasscutter.utils;
+package emu.grasscutter.utils.lang;
 
 import static emu.grasscutter.config.Configuration.FALLBACK_LANGUAGE;
 import static emu.grasscutter.utils.FileUtils.getCachePath;
@@ -11,6 +11,8 @@ import emu.grasscutter.data.GameData;
 import emu.grasscutter.data.ResourceLoader;
 import emu.grasscutter.data.excels.achievement.AchievementData;
 import emu.grasscutter.game.player.Player;
+import emu.grasscutter.utils.JsonUtils;
+import emu.grasscutter.utils.Utils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
@@ -339,13 +341,11 @@ public final class Language {
      */
     public static void loadTextMaps(boolean bypassCache) {
         // Check system timestamps on cache and resources
-        if (!bypassCache) {
+        if (!bypassCache)
             try {
                 long cacheModified = Files.getLastModifiedTime(TEXTMAP_CACHE_PATH).toMillis();
-
-                var stream = Files.list(getResourcePath("TextMap"));
-                var textmapsModified =
-                        stream
+                long textmapsModified =
+                        Files.list(getResourcePath("TextMap"))
                                 .filter(path -> path.toString().endsWith(".json"))
                                 .map(
                                         path -> {
@@ -353,17 +353,16 @@ public final class Language {
                                                 return Files.getLastModifiedTime(path).toMillis();
                                             } catch (Exception ignored) {
                                                 Grasscutter.getLogger()
-                                                        .debug("Exception while checking modified time: {}.", path);
+                                                        .debug("Exception while checking modified time: ", path);
                                                 return Long.MAX_VALUE; // Don't use cache, something has gone wrong
                                             }
                                         })
                                 .max(Long::compare)
                                 .get();
-                stream.close();
 
                 Grasscutter.getLogger()
                         .debug(
-                                "Cache modified %d, textmap modified %d."
+                                "Cache modified %d, textmap modified %d"
                                         .formatted(cacheModified, textmapsModified));
                 if (textmapsModified < cacheModified) {
                     // Try loading from cache
@@ -372,9 +371,8 @@ public final class Language {
                     return;
                 }
             } catch (Exception exception) {
-                Grasscutter.getLogger().error("Error loading textmaps cache: " + exception);
+                Grasscutter.getLogger().error("Error loading textmaps cache: " + exception.toString());
             }
-        }
 
         // Regenerate cache
         Grasscutter.getLogger().debug("Generating TextMaps cache");

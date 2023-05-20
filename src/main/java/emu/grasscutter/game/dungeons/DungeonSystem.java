@@ -9,13 +9,13 @@ import emu.grasscutter.data.excels.dungeon.DungeonPassConfigData;
 import emu.grasscutter.game.dungeons.handlers.DungeonBaseHandler;
 import emu.grasscutter.game.player.Player;
 import emu.grasscutter.game.props.SceneType;
+import emu.grasscutter.game.world.Position;
 import emu.grasscutter.game.world.Scene;
 import emu.grasscutter.net.packet.BasePacket;
 import emu.grasscutter.net.packet.PacketOpcodes;
 import emu.grasscutter.server.game.BaseGameSystem;
 import emu.grasscutter.server.game.GameServer;
 import emu.grasscutter.server.packet.send.PacketDungeonEntryInfoRsp;
-import emu.grasscutter.utils.Position;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import java.util.List;
@@ -106,13 +106,13 @@ public class DungeonSystem extends BaseGameSystem {
             return false;
         }
         Grasscutter.getLogger()
-                .info(
-                        "{}({}) is trying to enter dungeon {}",
+                .debug(
+                        "{} ({}) is trying to enter dungeon {}.",
                         player.getNickname(),
                         player.getUid(),
                         dungeonId);
 
-        int sceneId = data.getSceneId();
+        var sceneId = data.getSceneId();
         var scene = player.getScene();
         scene.setPrevScene(sceneId);
 

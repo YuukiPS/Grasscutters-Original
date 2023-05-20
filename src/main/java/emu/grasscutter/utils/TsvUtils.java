@@ -23,7 +23,7 @@ import lombok.val;
 
 // Throughout this file, commented System.out.println debug log calls are left in.
 // This is because the default logger will deadlock when operating on parallel streams.
-public class TsvUtils {
+public final class TsvUtils {
     private static final Map<Type, Object> defaultValues =
             Map.ofEntries(
                     // Map.entry(String.class, null),  // builder hates null values
@@ -678,5 +678,9 @@ public class TsvUtils {
                     });
             return map;
         }
+    }
+
+    private TsvUtils() {
+        // No instantiation.
     }
 }
