@@ -3,7 +3,7 @@ package emu.grasscutter.server.packet.send;
 import emu.grasscutter.game.world.Position;
 import emu.grasscutter.net.packet.BasePacket;
 import emu.grasscutter.net.packet.PacketOpcodes;
-import emu.grasscutter.net.proto.BeginCameraSceneLookNotifyOuterClass.BeginCameraSceneLookNotify;
+//import emu.grasscutter.net.proto.BeginCameraSceneLookNotifyOuterClass.BeginCameraSceneLookNotify;
 import java.util.ArrayList;
 import java.util.Collection;
 import lombok.Data;
@@ -14,6 +14,7 @@ public final class PacketBeginCameraSceneLookNotify extends BasePacket {
     public PacketBeginCameraSceneLookNotify(CameraSceneLookNotify parameters) {
         super(PacketOpcodes.BeginCameraSceneLookNotify);
 
+        /* 
         var packet =
                 BeginCameraSceneLookNotify.newBuilder()
                         .setLookPos(parameters.lookPos.toProto())
@@ -32,6 +33,7 @@ public final class PacketBeginCameraSceneLookNotify extends BasePacket {
                         .addAllOtherParams(parameters.otherParams);
 
         this.setData(packet);
+        */
     }
 
     // TODO check default values
