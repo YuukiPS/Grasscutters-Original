@@ -398,6 +398,7 @@ public final class Language {
         GameData.getMonsterDataMap().forEach((k, v) -> usedHashes.add((int) v.getNameTextMapHash()));
         GameData.getMainQuestDataMap().forEach((k, v) -> usedHashes.add((int) v.getTitleTextMapHash()));
         GameData.getQuestDataMap().forEach((k, v) -> usedHashes.add((int) v.getDescTextMapHash()));
+        GameData.getWorldAreaDataMap().forEach((k, v) -> usedHashes.add((int) v.getTextMapHash()));
         // Incidental strings
         usedHashes.add((int) 4233146695L); // Character
         usedHashes.add((int) 4231343903L); // Weapon

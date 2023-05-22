@@ -1,5 +1,6 @@
 package emu.grasscutter.plugin;
 
+import ch.qos.logback.classic.Level;
 import emu.grasscutter.Grasscutter;
 import emu.grasscutter.plugin.api.ServerHelper;
 import emu.grasscutter.plugin.api.ServerHook;
@@ -8,10 +9,12 @@ import emu.grasscutter.utils.FileUtils;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URLClassLoader;
+import lombok.EqualsAndHashCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /** The base class for all plugins to extend. */
+@EqualsAndHashCode
 @SuppressWarnings("removal")
 public abstract class Plugin {
     private final ServerHelper server = ServerHook.getInstance();
@@ -38,6 +41,10 @@ public abstract class Plugin {
         this.classLoader = classLoader;
         this.dataFolder = FileUtils.getPluginPath(identifier.name).toFile();
         this.logger = LoggerFactory.getLogger(identifier.name);
+
+        // Check if the logger should be set in debug mode.
+        if (Grasscutter.getLogger().isDebugEnabled())
+            ((ch.qos.logback.classic.Logger) logger).setLevel(Level.DEBUG);
 
         if (!this.dataFolder.exists() && !this.dataFolder.mkdirs()) {
             Grasscutter.getLogger()
