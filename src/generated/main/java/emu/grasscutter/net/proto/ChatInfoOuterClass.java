@@ -31,10 +31,10 @@ public final class ChatInfoOuterClass {
     int getTime();
 
     /**
-     * <code>uint32 LHKGJHPFJKA = 2;</code>
-     * @return The lHKGJHPFJKA.
+     * <code>uint32 sequence = 2;</code>
+     * @return The sequence.
      */
-    int getLHKGJHPFJKA();
+    int getSequence();
 
     /**
      * <code>uint32 uid = 11;</code>
@@ -144,7 +144,7 @@ public final class ChatInfoOuterClass {
               break;
             case 16: {
 
-              lHKGJHPFJKA_ = input.readUInt32();
+              sequence_ = input.readUInt32();
               break;
             }
             case 32: {
@@ -785,15 +785,15 @@ public final class ChatInfoOuterClass {
       return time_;
     }
 
-    public static final int LHKGJHPFJKA_FIELD_NUMBER = 2;
-    private int lHKGJHPFJKA_;
+    public static final int SEQUENCE_FIELD_NUMBER = 2;
+    private int sequence_;
     /**
-     * <code>uint32 LHKGJHPFJKA = 2;</code>
-     * @return The lHKGJHPFJKA.
+     * <code>uint32 sequence = 2;</code>
+     * @return The sequence.
      */
     @java.lang.Override
-    public int getLHKGJHPFJKA() {
-      return lHKGJHPFJKA_;
+    public int getSequence() {
+      return sequence_;
     }
 
     public static final int UID_FIELD_NUMBER = 11;
@@ -936,8 +936,8 @@ public final class ChatInfoOuterClass {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (lHKGJHPFJKA_ != 0) {
-        output.writeUInt32(2, lHKGJHPFJKA_);
+      if (sequence_ != 0) {
+        output.writeUInt32(2, sequence_);
       }
       if (toUid_ != 0) {
         output.writeUInt32(4, toUid_);
@@ -970,9 +970,9 @@ public final class ChatInfoOuterClass {
       if (size != -1) return size;
 
       size = 0;
-      if (lHKGJHPFJKA_ != 0) {
+      if (sequence_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(2, lHKGJHPFJKA_);
+          .computeUInt32Size(2, sequence_);
       }
       if (toUid_ != 0) {
         size += com.google.protobuf.CodedOutputStream
@@ -1021,8 +1021,8 @@ public final class ChatInfoOuterClass {
           != other.getToUid()) return false;
       if (getTime()
           != other.getTime()) return false;
-      if (getLHKGJHPFJKA()
-          != other.getLHKGJHPFJKA()) return false;
+      if (getSequence()
+          != other.getSequence()) return false;
       if (getUid()
           != other.getUid()) return false;
       if (getIsRead()
@@ -1059,8 +1059,8 @@ public final class ChatInfoOuterClass {
       hash = (53 * hash) + getToUid();
       hash = (37 * hash) + TIME_FIELD_NUMBER;
       hash = (53 * hash) + getTime();
-      hash = (37 * hash) + LHKGJHPFJKA_FIELD_NUMBER;
-      hash = (53 * hash) + getLHKGJHPFJKA();
+      hash = (37 * hash) + SEQUENCE_FIELD_NUMBER;
+      hash = (53 * hash) + getSequence();
       hash = (37 * hash) + UID_FIELD_NUMBER;
       hash = (53 * hash) + getUid();
       hash = (37 * hash) + IS_READ_FIELD_NUMBER;
@@ -1223,7 +1223,7 @@ public final class ChatInfoOuterClass {
 
         time_ = 0;
 
-        lHKGJHPFJKA_ = 0;
+        sequence_ = 0;
 
         uid_ = 0;
 
@@ -1259,7 +1259,7 @@ public final class ChatInfoOuterClass {
         emu.grasscutter.net.proto.ChatInfoOuterClass.ChatInfo result = new emu.grasscutter.net.proto.ChatInfoOuterClass.ChatInfo(this);
         result.toUid_ = toUid_;
         result.time_ = time_;
-        result.lHKGJHPFJKA_ = lHKGJHPFJKA_;
+        result.sequence_ = sequence_;
         result.uid_ = uid_;
         result.isRead_ = isRead_;
         if (contentCase_ == 1362) {
@@ -1330,8 +1330,8 @@ public final class ChatInfoOuterClass {
         if (other.getTime() != 0) {
           setTime(other.getTime());
         }
-        if (other.getLHKGJHPFJKA() != 0) {
-          setLHKGJHPFJKA(other.getLHKGJHPFJKA());
+        if (other.getSequence() != 0) {
+          setSequence(other.getSequence());
         }
         if (other.getUid() != 0) {
           setUid(other.getUid());
@@ -1464,33 +1464,33 @@ public final class ChatInfoOuterClass {
         return this;
       }
 
-      private int lHKGJHPFJKA_ ;
+      private int sequence_ ;
       /**
-       * <code>uint32 LHKGJHPFJKA = 2;</code>
-       * @return The lHKGJHPFJKA.
+       * <code>uint32 sequence = 2;</code>
+       * @return The sequence.
        */
       @java.lang.Override
-      public int getLHKGJHPFJKA() {
-        return lHKGJHPFJKA_;
+      public int getSequence() {
+        return sequence_;
       }
       /**
-       * <code>uint32 LHKGJHPFJKA = 2;</code>
-       * @param value The lHKGJHPFJKA to set.
+       * <code>uint32 sequence = 2;</code>
+       * @param value The sequence to set.
        * @return This builder for chaining.
        */
-      public Builder setLHKGJHPFJKA(int value) {
+      public Builder setSequence(int value) {
         
-        lHKGJHPFJKA_ = value;
+        sequence_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>uint32 LHKGJHPFJKA = 2;</code>
+       * <code>uint32 sequence = 2;</code>
        * @return This builder for chaining.
        */
-      public Builder clearLHKGJHPFJKA() {
+      public Builder clearSequence() {
         
-        lHKGJHPFJKA_ = 0;
+        sequence_ = 0;
         onChanged();
         return this;
       }
@@ -1907,13 +1907,13 @@ public final class ChatInfoOuterClass {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016ChatInfo.proto\"\322\001\n\010ChatInfo\022\016\n\006to_uid\030" +
-      "\004 \001(\r\022\014\n\004time\030\017 \001(\r\022\023\n\013LHKGJHPFJKA\030\002 \001(\r" +
-      "\022\013\n\003uid\030\013 \001(\r\022\017\n\007is_read\030\014 \001(\010\022\017\n\004text\030\322" +
-      "\n \001(\tH\000\022\017\n\004icon\030\303\003 \001(\rH\000\022,\n\013system_hint\030" +
-      "\204\006 \001(\0132\024.ChatInfo.SystemHintH\000\032\032\n\nSystem" +
-      "Hint\022\014\n\004type\030\014 \001(\rB\t\n\007contentB\033\n\031emu.gra" +
-      "sscutter.net.protob\006proto3"
+      "\n\016ChatInfo.proto\"\317\001\n\010ChatInfo\022\016\n\006to_uid\030" +
+      "\004 \001(\r\022\014\n\004time\030\017 \001(\r\022\020\n\010sequence\030\002 \001(\r\022\013\n" +
+      "\003uid\030\013 \001(\r\022\017\n\007is_read\030\014 \001(\010\022\017\n\004text\030\322\n \001" +
+      "(\tH\000\022\017\n\004icon\030\303\003 \001(\rH\000\022,\n\013system_hint\030\204\006 " +
+      "\001(\0132\024.ChatInfo.SystemHintH\000\032\032\n\nSystemHin" +
+      "t\022\014\n\004type\030\014 \001(\rB\t\n\007contentB\033\n\031emu.grassc" +
+      "utter.net.protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -1924,7 +1924,7 @@ public final class ChatInfoOuterClass {
     internal_static_ChatInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ChatInfo_descriptor,
-        new java.lang.String[] { "ToUid", "Time", "LHKGJHPFJKA", "Uid", "IsRead", "Text", "Icon", "SystemHint", "Content", });
+        new java.lang.String[] { "ToUid", "Time", "Sequence", "Uid", "IsRead", "Text", "Icon", "SystemHint", "Content", });
     internal_static_ChatInfo_SystemHint_descriptor =
       internal_static_ChatInfo_descriptor.getNestedTypes().get(0);
     internal_static_ChatInfo_SystemHint_fieldAccessorTable = new

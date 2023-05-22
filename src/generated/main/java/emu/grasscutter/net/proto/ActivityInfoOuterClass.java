@@ -179,10 +179,10 @@ public final class ActivityInfoOuterClass {
     boolean getIsFinished();
 
     /**
-     * <code>bool DMCFNBNECAN = 202;</code>
-     * @return The dMCFNBNECAN.
+     * <code>bool is_starting = 202;</code>
+     * @return The isStarting.
      */
-    boolean getDMCFNBNECAN();
+    boolean getIsStarting();
 
     /**
      * <code>repeated .ActivityWatcherInfo watcher_info_list = 4;</code>
@@ -1634,7 +1634,7 @@ public final class ActivityInfoOuterClass {
             }
             case 1616: {
 
-              dMCFNBNECAN_ = input.readBool();
+              isStarting_ = input.readBool();
               break;
             }
             case 1898: {
@@ -3021,15 +3021,15 @@ public final class ActivityInfoOuterClass {
       return isFinished_;
     }
 
-    public static final int DMCFNBNECAN_FIELD_NUMBER = 202;
-    private boolean dMCFNBNECAN_;
+    public static final int IS_STARTING_FIELD_NUMBER = 202;
+    private boolean isStarting_;
     /**
-     * <code>bool DMCFNBNECAN = 202;</code>
-     * @return The dMCFNBNECAN.
+     * <code>bool is_starting = 202;</code>
+     * @return The isStarting.
      */
     @java.lang.Override
-    public boolean getDMCFNBNECAN() {
-      return dMCFNBNECAN_;
+    public boolean getIsStarting() {
+      return isStarting_;
     }
 
     public static final int WATCHER_INFO_LIST_FIELD_NUMBER = 4;
@@ -5430,8 +5430,8 @@ public final class ActivityInfoOuterClass {
       if (detailCase_ == 199) {
         output.writeMessage(199, (emu.grasscutter.net.proto.WaterSpiritActivityDetailInfoOuterClass.WaterSpiritActivityDetailInfo) detail_);
       }
-      if (dMCFNBNECAN_ != false) {
-        output.writeBool(202, dMCFNBNECAN_);
+      if (isStarting_ != false) {
+        output.writeBool(202, isStarting_);
       }
       if (detailCase_ == 237) {
         output.writeMessage(237, (emu.grasscutter.net.proto.VintageActivityDetailInfoOuterClass.VintageActivityDetailInfo) detail_);
@@ -5762,9 +5762,9 @@ public final class ActivityInfoOuterClass {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(199, (emu.grasscutter.net.proto.WaterSpiritActivityDetailInfoOuterClass.WaterSpiritActivityDetailInfo) detail_);
       }
-      if (dMCFNBNECAN_ != false) {
+      if (isStarting_ != false) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(202, dMCFNBNECAN_);
+          .computeBoolSize(202, isStarting_);
       }
       if (detailCase_ == 237) {
         size += com.google.protobuf.CodedOutputStream
@@ -6089,8 +6089,8 @@ public final class ActivityInfoOuterClass {
           != other.getJAFIBAJIAFF()) return false;
       if (getIsFinished()
           != other.getIsFinished()) return false;
-      if (getDMCFNBNECAN()
-          != other.getDMCFNBNECAN()) return false;
+      if (getIsStarting()
+          != other.getIsStarting()) return false;
       if (!getWatcherInfoListList()
           .equals(other.getWatcherInfoListList())) return false;
       if (!getDetailCase().equals(other.getDetailCase())) return false;
@@ -6449,9 +6449,9 @@ public final class ActivityInfoOuterClass {
       hash = (37 * hash) + IS_FINISHED_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getIsFinished());
-      hash = (37 * hash) + DMCFNBNECAN_FIELD_NUMBER;
+      hash = (37 * hash) + IS_STARTING_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-          getDMCFNBNECAN());
+          getIsStarting());
       if (getWatcherInfoListCount() > 0) {
         hash = (37 * hash) + WATCHER_INFO_LIST_FIELD_NUMBER;
         hash = (53 * hash) + getWatcherInfoListList().hashCode();
@@ -6931,7 +6931,7 @@ public final class ActivityInfoOuterClass {
 
         isFinished_ = false;
 
-        dMCFNBNECAN_ = false;
+        isStarting_ = false;
 
         if (watcherInfoListBuilder_ == null) {
           watcherInfoList_ = java.util.Collections.emptyList();
@@ -7002,7 +7002,7 @@ public final class ActivityInfoOuterClass {
         result.beginTime_ = beginTime_;
         result.jAFIBAJIAFF_ = jAFIBAJIAFF_;
         result.isFinished_ = isFinished_;
-        result.dMCFNBNECAN_ = dMCFNBNECAN_;
+        result.isStarting_ = isStarting_;
         if (watcherInfoListBuilder_ == null) {
           if (((bitField0_ & 0x00000008) != 0)) {
             watcherInfoList_ = java.util.Collections.unmodifiableList(watcherInfoList_);
@@ -7663,8 +7663,8 @@ public final class ActivityInfoOuterClass {
         if (other.getIsFinished() != false) {
           setIsFinished(other.getIsFinished());
         }
-        if (other.getDMCFNBNECAN() != false) {
-          setDMCFNBNECAN(other.getDMCFNBNECAN());
+        if (other.getIsStarting() != false) {
+          setIsStarting(other.getIsStarting());
         }
         if (watcherInfoListBuilder_ == null) {
           if (!other.watcherInfoList_.isEmpty()) {
@@ -8925,33 +8925,33 @@ public final class ActivityInfoOuterClass {
         return this;
       }
 
-      private boolean dMCFNBNECAN_ ;
+      private boolean isStarting_ ;
       /**
-       * <code>bool DMCFNBNECAN = 202;</code>
-       * @return The dMCFNBNECAN.
+       * <code>bool is_starting = 202;</code>
+       * @return The isStarting.
        */
       @java.lang.Override
-      public boolean getDMCFNBNECAN() {
-        return dMCFNBNECAN_;
+      public boolean getIsStarting() {
+        return isStarting_;
       }
       /**
-       * <code>bool DMCFNBNECAN = 202;</code>
-       * @param value The dMCFNBNECAN to set.
+       * <code>bool is_starting = 202;</code>
+       * @param value The isStarting to set.
        * @return This builder for chaining.
        */
-      public Builder setDMCFNBNECAN(boolean value) {
+      public Builder setIsStarting(boolean value) {
         
-        dMCFNBNECAN_ = value;
+        isStarting_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>bool DMCFNBNECAN = 202;</code>
+       * <code>bool is_starting = 202;</code>
        * @return This builder for chaining.
        */
-      public Builder clearDMCFNBNECAN() {
+      public Builder clearIsStarting() {
         
-        dMCFNBNECAN_ = false;
+        isStarting_ = false;
         onChanged();
         return this;
       }
@@ -19628,8 +19628,8 @@ public final class ActivityInfoOuterClass {
       "vity_type\030\013 \001(\r\022\023\n\013GODELKHIPDE\030\003 \001(\010\022\024\n\013" +
       "DLNNGPNHBFB\030\375\r \001(\010\022\035\n\024first_day_start_ti" +
       "me\030\351\004 \001(\r\022\022\n\nbegin_time\030\017 \001(\r\022\024\n\013JAFIBAJ" +
-      "IAFF\030\234\004 \001(\r\022\023\n\013is_finished\030\014 \001(\010\022\024\n\013DMCF" +
-      "NBNECAN\030\312\001 \001(\010\022/\n\021watcher_info_list\030\004 \003(" +
+      "IAFF\030\234\004 \001(\r\022\023\n\013is_finished\030\014 \001(\010\022\024\n\013is_s" +
+      "tarting\030\312\001 \001(\010\022/\n\021watcher_info_list\030\004 \003(" +
       "\0132\024.ActivityWatcherInfo\0223\n\rsam_lamp_info" +
       "\030\t \001(\0132\032.SeaLampActivityDetailInfoH\000\0224\n\r" +
       "crucible_info\030\016 \001(\0132\033.CrucibleActivityDe" +
@@ -19822,7 +19822,7 @@ public final class ActivityInfoOuterClass {
     internal_static_ActivityInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ActivityInfo_descriptor,
-        new java.lang.String[] { "IMFFKIMJDJH", "OIBEDADECFB", "EndTime", "ActivityId", "ActivityPushTipsDataList", "DCENNBKGOAH", "MeetCondList", "ScheduleId", "DNKBDEJAOMC", "MPCDIKMJOAC", "CurScore", "ActivityType", "GODELKHIPDE", "DLNNGPNHBFB", "FirstDayStartTime", "BeginTime", "JAFIBAJIAFF", "IsFinished", "DMCFNBNECAN", "WatcherInfoList", "SamLampInfo", "CrucibleInfo", "SalesmanInfo", "TrialAvatarInfo", "DeliveryInfo", "AsterInfo", "FlightInfo", "DragonSpineInfo", "EffigyInfo", "TreasureMapInfo", "BlessingInfo", "SeaLampInfo", "ExpeditionInfo", "ArenaChallengeInfo", "FleurFairInfo", "WaterSpiritInfo", "ChallnelerSlabInfo", "MistTrialActivityInfo", "HideAndSeekInfo", "FindHilichurlInfo", "SummerTimeInfo", "BuoyantCombatInfo", "EchoShellInfo", "BounceConjuringInfo", "BlitzRushInfo", "ChessInfo", "SumoInfo", "MoonfinTrialInfo", "LunaRiteInfo", "PlantFlowerInfo", "MusicGameInfo", "RoguelikeDungoenInfo", "DigInfo", "HachiInfo", "WinterCampInfo", "PotionInfo", "TanukiTravelActivityInfo", "LanternRiteActivityInfo", "MichiaeMatsuriInfo", "BartenderInfo", "UgcInfo", "CrystalLinkInfo", "IrodoriInfo", "PhotoInfo", "SpiceInfo", "GachaInfo", "LuminanceStoneChallengeInfo", "RogueDiaryInfo", "SummerTimeV2Info", "IslandPartyInfo", "GearInfo", "GravenInnocenceInfo", "InstableSprayInfo", "MuqadasPotionInfo", "TreasureSeelieInfo", "RockBoardExploreInfo", "VintageInfo", "WindFieldInfo", "FungusFighterInfo", "CharAmusementInfo", "EffigyChallengeInfo", "CoinCollectInfo", "BrickBreakerInfo", "DuelHeartInfo", "SeaLampV3Info", "TeamChainInfo", "ElectroherculesBattleInfo", "GcgFestivalInfo", "FleurFairV2Info", "FungusFighterV2Info", "AkaFesInfo", "SandwormCannonDetailInfo", "SorushTrialInfo", "Detail", });
+        new java.lang.String[] { "IMFFKIMJDJH", "OIBEDADECFB", "EndTime", "ActivityId", "ActivityPushTipsDataList", "DCENNBKGOAH", "MeetCondList", "ScheduleId", "DNKBDEJAOMC", "MPCDIKMJOAC", "CurScore", "ActivityType", "GODELKHIPDE", "DLNNGPNHBFB", "FirstDayStartTime", "BeginTime", "JAFIBAJIAFF", "IsFinished", "IsStarting", "WatcherInfoList", "SamLampInfo", "CrucibleInfo", "SalesmanInfo", "TrialAvatarInfo", "DeliveryInfo", "AsterInfo", "FlightInfo", "DragonSpineInfo", "EffigyInfo", "TreasureMapInfo", "BlessingInfo", "SeaLampInfo", "ExpeditionInfo", "ArenaChallengeInfo", "FleurFairInfo", "WaterSpiritInfo", "ChallnelerSlabInfo", "MistTrialActivityInfo", "HideAndSeekInfo", "FindHilichurlInfo", "SummerTimeInfo", "BuoyantCombatInfo", "EchoShellInfo", "BounceConjuringInfo", "BlitzRushInfo", "ChessInfo", "SumoInfo", "MoonfinTrialInfo", "LunaRiteInfo", "PlantFlowerInfo", "MusicGameInfo", "RoguelikeDungoenInfo", "DigInfo", "HachiInfo", "WinterCampInfo", "PotionInfo", "TanukiTravelActivityInfo", "LanternRiteActivityInfo", "MichiaeMatsuriInfo", "BartenderInfo", "UgcInfo", "CrystalLinkInfo", "IrodoriInfo", "PhotoInfo", "SpiceInfo", "GachaInfo", "LuminanceStoneChallengeInfo", "RogueDiaryInfo", "SummerTimeV2Info", "IslandPartyInfo", "GearInfo", "GravenInnocenceInfo", "InstableSprayInfo", "MuqadasPotionInfo", "TreasureSeelieInfo", "RockBoardExploreInfo", "VintageInfo", "WindFieldInfo", "FungusFighterInfo", "CharAmusementInfo", "EffigyChallengeInfo", "CoinCollectInfo", "BrickBreakerInfo", "DuelHeartInfo", "SeaLampV3Info", "TeamChainInfo", "ElectroherculesBattleInfo", "GcgFestivalInfo", "FleurFairV2Info", "FungusFighterV2Info", "AkaFesInfo", "SandwormCannonDetailInfo", "SorushTrialInfo", "Detail", });
     emu.grasscutter.net.proto.ActivityPushTipsDataOuterClass.getDescriptor();
     emu.grasscutter.net.proto.ActivityWatcherInfoOuterClass.getDescriptor();
     emu.grasscutter.net.proto.AkaFesDetailInfoOuterClass.getDescriptor();

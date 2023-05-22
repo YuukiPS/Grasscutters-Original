@@ -29,10 +29,10 @@ public final class DungeonSettleNotifyOuterClass {
      * CHNDMCHIOON
      * </pre>
      *
-     * <code>uint32 result = 9;</code>
-     * @return The result.
+     * <code>uint32 create_player_uid = 9;</code>
+     * @return The createPlayerUid.
      */
-    int getResult();
+    int getCreatePlayerUid();
 
     /**
      * <code>map&lt;uint32, .ParamList&gt; settle_show = 14;</code>
@@ -166,10 +166,10 @@ public final class DungeonSettleNotifyOuterClass {
      * BBMMPMLBGJO
      * </pre>
      *
-     * <code>uint32 create_player_uid = 10;</code>
-     * @return The createPlayerUid.
+     * <code>uint32 result = 10;</code>
+     * @return The result.
      */
-    int getCreatePlayerUid();
+    int getResult();
 
     /**
      * <code>.TowerLevelEndNotify tower_level_end_notify = 1587;</code>
@@ -451,12 +451,12 @@ public final class DungeonSettleNotifyOuterClass {
             }
             case 72: {
 
-              result_ = input.readUInt32();
+              createPlayerUid_ = input.readUInt32();
               break;
             }
             case 80: {
 
-              createPlayerUid_ = input.readUInt32();
+              result_ = input.readUInt32();
               break;
             }
             case 90: {
@@ -815,19 +815,19 @@ public final class DungeonSettleNotifyOuterClass {
       return useTime_;
     }
 
-    public static final int RESULT_FIELD_NUMBER = 9;
-    private int result_;
+    public static final int CREATE_PLAYER_UID_FIELD_NUMBER = 9;
+    private int createPlayerUid_;
     /**
      * <pre>
      * CHNDMCHIOON
      * </pre>
      *
-     * <code>uint32 result = 9;</code>
-     * @return The result.
+     * <code>uint32 create_player_uid = 9;</code>
+     * @return The createPlayerUid.
      */
     @java.lang.Override
-    public int getResult() {
-      return result_;
+    public int getCreatePlayerUid() {
+      return createPlayerUid_;
     }
 
     public static final int SETTLE_SHOW_FIELD_NUMBER = 14;
@@ -1093,19 +1093,19 @@ public final class DungeonSettleNotifyOuterClass {
     }
     private int failCondListMemoizedSerializedSize = -1;
 
-    public static final int CREATE_PLAYER_UID_FIELD_NUMBER = 10;
-    private int createPlayerUid_;
+    public static final int RESULT_FIELD_NUMBER = 10;
+    private int result_;
     /**
      * <pre>
      * BBMMPMLBGJO
      * </pre>
      *
-     * <code>uint32 create_player_uid = 10;</code>
-     * @return The createPlayerUid.
+     * <code>uint32 result = 10;</code>
+     * @return The result.
      */
     @java.lang.Override
-    public int getCreatePlayerUid() {
-      return createPlayerUid_;
+    public int getResult() {
+      return result_;
     }
 
     public static final int TOWER_LEVEL_END_NOTIFY_FIELD_NUMBER = 1587;
@@ -1541,11 +1541,11 @@ public final class DungeonSettleNotifyOuterClass {
           internalGetStrengthenPointDataMap(),
           StrengthenPointDataMapDefaultEntryHolder.defaultEntry,
           8);
-      if (result_ != 0) {
-        output.writeUInt32(9, result_);
-      }
       if (createPlayerUid_ != 0) {
-        output.writeUInt32(10, createPlayerUid_);
+        output.writeUInt32(9, createPlayerUid_);
+      }
+      if (result_ != 0) {
+        output.writeUInt32(10, result_);
       }
       for (int i = 0; i < exhibitionInfoList_.size(); i++) {
         output.writeMessage(11, exhibitionInfoList_.get(i));
@@ -1636,13 +1636,13 @@ public final class DungeonSettleNotifyOuterClass {
         size += com.google.protobuf.CodedOutputStream
             .computeMessageSize(8, strengthenPointDataMap__);
       }
-      if (result_ != 0) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(9, result_);
-      }
       if (createPlayerUid_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(10, createPlayerUid_);
+          .computeUInt32Size(9, createPlayerUid_);
+      }
+      if (result_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(10, result_);
       }
       for (int i = 0; i < exhibitionInfoList_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
@@ -1745,8 +1745,8 @@ public final class DungeonSettleNotifyOuterClass {
 
       if (getUseTime()
           != other.getUseTime()) return false;
-      if (getResult()
-          != other.getResult()) return false;
+      if (getCreatePlayerUid()
+          != other.getCreatePlayerUid()) return false;
       if (!internalGetSettleShow().equals(
           other.internalGetSettleShow())) return false;
       if (!internalGetStrengthenPointDataMap().equals(
@@ -1761,8 +1761,8 @@ public final class DungeonSettleNotifyOuterClass {
           != other.getIsSuccess()) return false;
       if (!getFailCondListList()
           .equals(other.getFailCondListList())) return false;
-      if (getCreatePlayerUid()
-          != other.getCreatePlayerUid()) return false;
+      if (getResult()
+          != other.getResult()) return false;
       if (!getDetailCase().equals(other.getDetailCase())) return false;
       switch (detailCase_) {
         case 1587:
@@ -1833,8 +1833,8 @@ public final class DungeonSettleNotifyOuterClass {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + USE_TIME_FIELD_NUMBER;
       hash = (53 * hash) + getUseTime();
-      hash = (37 * hash) + RESULT_FIELD_NUMBER;
-      hash = (53 * hash) + getResult();
+      hash = (37 * hash) + CREATE_PLAYER_UID_FIELD_NUMBER;
+      hash = (53 * hash) + getCreatePlayerUid();
       if (!internalGetSettleShow().getMap().isEmpty()) {
         hash = (37 * hash) + SETTLE_SHOW_FIELD_NUMBER;
         hash = (53 * hash) + internalGetSettleShow().hashCode();
@@ -1858,8 +1858,8 @@ public final class DungeonSettleNotifyOuterClass {
         hash = (37 * hash) + FAIL_COND_LIST_FIELD_NUMBER;
         hash = (53 * hash) + getFailCondListList().hashCode();
       }
-      hash = (37 * hash) + CREATE_PLAYER_UID_FIELD_NUMBER;
-      hash = (53 * hash) + getCreatePlayerUid();
+      hash = (37 * hash) + RESULT_FIELD_NUMBER;
+      hash = (53 * hash) + getResult();
       switch (detailCase_) {
         case 1587:
           hash = (37 * hash) + TOWER_LEVEL_END_NOTIFY_FIELD_NUMBER;
@@ -2083,7 +2083,7 @@ public final class DungeonSettleNotifyOuterClass {
         super.clear();
         useTime_ = 0;
 
-        result_ = 0;
+        createPlayerUid_ = 0;
 
         internalGetMutableSettleShow().clear();
         internalGetMutableStrengthenPointDataMap().clear();
@@ -2101,7 +2101,7 @@ public final class DungeonSettleNotifyOuterClass {
 
         failCondList_ = emptyIntList();
         bitField0_ = (bitField0_ & ~0x00000008);
-        createPlayerUid_ = 0;
+        result_ = 0;
 
         detailCase_ = 0;
         detail_ = null;
@@ -2133,7 +2133,7 @@ public final class DungeonSettleNotifyOuterClass {
         emu.grasscutter.net.proto.DungeonSettleNotifyOuterClass.DungeonSettleNotify result = new emu.grasscutter.net.proto.DungeonSettleNotifyOuterClass.DungeonSettleNotify(this);
         int from_bitField0_ = bitField0_;
         result.useTime_ = useTime_;
-        result.result_ = result_;
+        result.createPlayerUid_ = createPlayerUid_;
         result.settleShow_ = internalGetSettleShow();
         result.settleShow_.makeImmutable();
         result.strengthenPointDataMap_ = internalGetStrengthenPointDataMap();
@@ -2155,7 +2155,7 @@ public final class DungeonSettleNotifyOuterClass {
           bitField0_ = (bitField0_ & ~0x00000008);
         }
         result.failCondList_ = failCondList_;
-        result.createPlayerUid_ = createPlayerUid_;
+        result.result_ = result_;
         if (detailCase_ == 1587) {
           if (towerLevelEndNotifyBuilder_ == null) {
             result.detail_ = detail_;
@@ -2299,8 +2299,8 @@ public final class DungeonSettleNotifyOuterClass {
         if (other.getUseTime() != 0) {
           setUseTime(other.getUseTime());
         }
-        if (other.getResult() != 0) {
-          setResult(other.getResult());
+        if (other.getCreatePlayerUid() != 0) {
+          setCreatePlayerUid(other.getCreatePlayerUid());
         }
         internalGetMutableSettleShow().mergeFrom(
             other.internalGetSettleShow());
@@ -2351,8 +2351,8 @@ public final class DungeonSettleNotifyOuterClass {
           }
           onChanged();
         }
-        if (other.getCreatePlayerUid() != 0) {
-          setCreatePlayerUid(other.getCreatePlayerUid());
+        if (other.getResult() != 0) {
+          setResult(other.getResult());
         }
         switch (other.getDetailCase()) {
           case TOWER_LEVEL_END_NOTIFY: {
@@ -2487,31 +2487,31 @@ public final class DungeonSettleNotifyOuterClass {
         return this;
       }
 
-      private int result_ ;
+      private int createPlayerUid_ ;
       /**
        * <pre>
        * CHNDMCHIOON
        * </pre>
        *
-       * <code>uint32 result = 9;</code>
-       * @return The result.
+       * <code>uint32 create_player_uid = 9;</code>
+       * @return The createPlayerUid.
        */
       @java.lang.Override
-      public int getResult() {
-        return result_;
+      public int getCreatePlayerUid() {
+        return createPlayerUid_;
       }
       /**
        * <pre>
        * CHNDMCHIOON
        * </pre>
        *
-       * <code>uint32 result = 9;</code>
-       * @param value The result to set.
+       * <code>uint32 create_player_uid = 9;</code>
+       * @param value The createPlayerUid to set.
        * @return This builder for chaining.
        */
-      public Builder setResult(int value) {
+      public Builder setCreatePlayerUid(int value) {
         
-        result_ = value;
+        createPlayerUid_ = value;
         onChanged();
         return this;
       }
@@ -2520,12 +2520,12 @@ public final class DungeonSettleNotifyOuterClass {
        * CHNDMCHIOON
        * </pre>
        *
-       * <code>uint32 result = 9;</code>
+       * <code>uint32 create_player_uid = 9;</code>
        * @return This builder for chaining.
        */
-      public Builder clearResult() {
+      public Builder clearCreatePlayerUid() {
         
-        result_ = 0;
+        createPlayerUid_ = 0;
         onChanged();
         return this;
       }
@@ -3198,31 +3198,31 @@ public final class DungeonSettleNotifyOuterClass {
         return this;
       }
 
-      private int createPlayerUid_ ;
+      private int result_ ;
       /**
        * <pre>
        * BBMMPMLBGJO
        * </pre>
        *
-       * <code>uint32 create_player_uid = 10;</code>
-       * @return The createPlayerUid.
+       * <code>uint32 result = 10;</code>
+       * @return The result.
        */
       @java.lang.Override
-      public int getCreatePlayerUid() {
-        return createPlayerUid_;
+      public int getResult() {
+        return result_;
       }
       /**
        * <pre>
        * BBMMPMLBGJO
        * </pre>
        *
-       * <code>uint32 create_player_uid = 10;</code>
-       * @param value The createPlayerUid to set.
+       * <code>uint32 result = 10;</code>
+       * @param value The result to set.
        * @return This builder for chaining.
        */
-      public Builder setCreatePlayerUid(int value) {
+      public Builder setResult(int value) {
         
-        createPlayerUid_ = value;
+        result_ = value;
         onChanged();
         return this;
       }
@@ -3231,12 +3231,12 @@ public final class DungeonSettleNotifyOuterClass {
        * BBMMPMLBGJO
        * </pre>
        *
-       * <code>uint32 create_player_uid = 10;</code>
+       * <code>uint32 result = 10;</code>
        * @return This builder for chaining.
        */
-      public Builder clearCreatePlayerUid() {
+      public Builder clearResult() {
         
-        createPlayerUid_ = 0;
+        result_ = 0;
         onChanged();
         return this;
       }
@@ -5164,16 +5164,16 @@ public final class DungeonSettleNotifyOuterClass {
       "tleInfo.proto\032\031TowerLevelEndNotify.proto" +
       "\032\'TrialAvatarFirstPassDungeonNotify.prot" +
       "o\032 WindFieldDungeonSettleInfo.proto\"\264\013\n\023" +
-      "DungeonSettleNotify\022\020\n\010use_time\030\005 \001(\r\022\016\n" +
-      "\006result\030\t \001(\r\0229\n\013settle_show\030\016 \003(\0132$.Dun" +
-      "geonSettleNotify.SettleShowEntry\022S\n\031stre" +
-      "ngthen_point_data_map\030\010 \003(\01320.DungeonSet" +
-      "tleNotify.StrengthenPointDataMapEntry\022\022\n" +
-      "\nclose_time\030\r \001(\r\022\022\n\ndungeon_id\030\007 \001(\r\022:\n" +
-      "\024exhibition_info_list\030\013 \003(\0132\034.DungeonSet" +
-      "tleExhibitionInfo\022\022\n\nis_success\030\002 \001(\010\022\026\n" +
-      "\016fail_cond_list\030\014 \003(\r\022\031\n\021create_player_u" +
-      "id\030\n \001(\r\0227\n\026tower_level_end_notify\030\263\014 \001(" +
+      "DungeonSettleNotify\022\020\n\010use_time\030\005 \001(\r\022\031\n" +
+      "\021create_player_uid\030\t \001(\r\0229\n\013settle_show\030" +
+      "\016 \003(\0132$.DungeonSettleNotify.SettleShowEn" +
+      "try\022S\n\031strengthen_point_data_map\030\010 \003(\01320" +
+      ".DungeonSettleNotify.StrengthenPointData" +
+      "MapEntry\022\022\n\nclose_time\030\r \001(\r\022\022\n\ndungeon_" +
+      "id\030\007 \001(\r\022:\n\024exhibition_info_list\030\013 \003(\0132\034" +
+      ".DungeonSettleExhibitionInfo\022\022\n\nis_succe" +
+      "ss\030\002 \001(\010\022\026\n\016fail_cond_list\030\014 \003(\r\022\016\n\006resu" +
+      "lt\030\n \001(\r\0227\n\026tower_level_end_notify\030\263\014 \001(" +
       "\0132\024.TowerLevelEndNotifyH\000\022U\n&trial_avata" +
       "r_first_pass_dungeon_notify\030\350\013 \001(\0132\".Tri" +
       "alAvatarFirstPassDungeonNotifyH\000\022Y\n(chan" +
@@ -5228,7 +5228,7 @@ public final class DungeonSettleNotifyOuterClass {
     internal_static_DungeonSettleNotify_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_DungeonSettleNotify_descriptor,
-        new java.lang.String[] { "UseTime", "Result", "SettleShow", "StrengthenPointDataMap", "CloseTime", "DungeonId", "ExhibitionInfoList", "IsSuccess", "FailCondList", "CreatePlayerUid", "TowerLevelEndNotify", "TrialAvatarFirstPassDungeonNotify", "ChannellerSlabLoopDungeonResultInfo", "EffigyChallengeDungeonResultInfo", "RoguelikeDungeonSettleInfo", "CrystalLinkSettleInfo", "SummerTimeV2DungeonSettleInfo", "InstableSpraySettleInfo", "WindFieldDungeonSettleInfo", "EffigyChallengeV2SettleInfo", "TeamChainSettleInfo", "PacmanSettleInfo", "FungusFighterV2SettleInfo", "Detail", });
+        new java.lang.String[] { "UseTime", "CreatePlayerUid", "SettleShow", "StrengthenPointDataMap", "CloseTime", "DungeonId", "ExhibitionInfoList", "IsSuccess", "FailCondList", "Result", "TowerLevelEndNotify", "TrialAvatarFirstPassDungeonNotify", "ChannellerSlabLoopDungeonResultInfo", "EffigyChallengeDungeonResultInfo", "RoguelikeDungeonSettleInfo", "CrystalLinkSettleInfo", "SummerTimeV2DungeonSettleInfo", "InstableSpraySettleInfo", "WindFieldDungeonSettleInfo", "EffigyChallengeV2SettleInfo", "TeamChainSettleInfo", "PacmanSettleInfo", "FungusFighterV2SettleInfo", "Detail", });
     internal_static_DungeonSettleNotify_SettleShowEntry_descriptor =
       internal_static_DungeonSettleNotify_descriptor.getNestedTypes().get(0);
     internal_static_DungeonSettleNotify_SettleShowEntry_fieldAccessorTable = new

@@ -25,21 +25,33 @@ public final class CoopChapterOuterClass {
     int getFinishedEndCount();
 
     /**
-     * <code>repeated uint32 KAKALNAGLGJ = 7;</code>
-     * @return A list containing the kAKALNAGLGJ.
+     * <pre>
+     *KAKALNAGLGJ
+     * </pre>
+     *
+     * <code>repeated uint32 lock_reason_list = 7;</code>
+     * @return A list containing the lockReasonList.
      */
-    java.util.List<java.lang.Integer> getKAKALNAGLGJList();
+    java.util.List<java.lang.Integer> getLockReasonListList();
     /**
-     * <code>repeated uint32 KAKALNAGLGJ = 7;</code>
-     * @return The count of kAKALNAGLGJ.
+     * <pre>
+     *KAKALNAGLGJ
+     * </pre>
+     *
+     * <code>repeated uint32 lock_reason_list = 7;</code>
+     * @return The count of lockReasonList.
      */
-    int getKAKALNAGLGJCount();
+    int getLockReasonListCount();
     /**
-     * <code>repeated uint32 KAKALNAGLGJ = 7;</code>
+     * <pre>
+     *KAKALNAGLGJ
+     * </pre>
+     *
+     * <code>repeated uint32 lock_reason_list = 7;</code>
      * @param index The index of the element to return.
-     * @return The kAKALNAGLGJ at the given index.
+     * @return The lockReasonList at the given index.
      */
-    int getKAKALNAGLGJ(int index);
+    int getLockReasonList(int index);
 
     /**
      * <code>map&lt;uint32, uint32&gt; seen_ending_map = 14;</code>
@@ -124,21 +136,33 @@ public final class CoopChapterOuterClass {
         int index);
 
     /**
-     * <code>repeated uint32 LNOCPBNPHIE = 12;</code>
-     * @return A list containing the lNOCPBNPHIE.
+     * <pre>
+     *LNOCPBNPHIE
+     * </pre>
+     *
+     * <code>repeated uint32 finish_dialog_list = 12;</code>
+     * @return A list containing the finishDialogList.
      */
-    java.util.List<java.lang.Integer> getLNOCPBNPHIEList();
+    java.util.List<java.lang.Integer> getFinishDialogListList();
     /**
-     * <code>repeated uint32 LNOCPBNPHIE = 12;</code>
-     * @return The count of lNOCPBNPHIE.
+     * <pre>
+     *LNOCPBNPHIE
+     * </pre>
+     *
+     * <code>repeated uint32 finish_dialog_list = 12;</code>
+     * @return The count of finishDialogList.
      */
-    int getLNOCPBNPHIECount();
+    int getFinishDialogListCount();
     /**
-     * <code>repeated uint32 LNOCPBNPHIE = 12;</code>
+     * <pre>
+     *LNOCPBNPHIE
+     * </pre>
+     *
+     * <code>repeated uint32 finish_dialog_list = 12;</code>
      * @param index The index of the element to return.
-     * @return The lNOCPBNPHIE at the given index.
+     * @return The finishDialogList at the given index.
      */
-    int getLNOCPBNPHIE(int index);
+    int getFinishDialogList(int index);
 
     /**
      * <code>uint32 id = 1;</code>
@@ -204,10 +228,10 @@ public final class CoopChapterOuterClass {
       super(builder);
     }
     private CoopChapter() {
-      kAKALNAGLGJ_ = emptyIntList();
+      lockReasonList_ = emptyIntList();
       coopRewardList_ = java.util.Collections.emptyList();
       coopPointList_ = java.util.Collections.emptyList();
-      lNOCPBNPHIE_ = emptyIntList();
+      finishDialogList_ = emptyIntList();
       state_ = 0;
       coopCgList_ = java.util.Collections.emptyList();
     }
@@ -275,21 +299,21 @@ public final class CoopChapterOuterClass {
             }
             case 56: {
               if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-                kAKALNAGLGJ_ = newIntList();
+                lockReasonList_ = newIntList();
                 mutable_bitField0_ |= 0x00000001;
               }
-              kAKALNAGLGJ_.addInt(input.readUInt32());
+              lockReasonList_.addInt(input.readUInt32());
               break;
             }
             case 58: {
               int length = input.readRawVarint32();
               int limit = input.pushLimit(length);
               if (!((mutable_bitField0_ & 0x00000001) != 0) && input.getBytesUntilLimit() > 0) {
-                kAKALNAGLGJ_ = newIntList();
+                lockReasonList_ = newIntList();
                 mutable_bitField0_ |= 0x00000001;
               }
               while (input.getBytesUntilLimit() > 0) {
-                kAKALNAGLGJ_.addInt(input.readUInt32());
+                lockReasonList_.addInt(input.readUInt32());
               }
               input.popLimit(limit);
               break;
@@ -314,21 +338,21 @@ public final class CoopChapterOuterClass {
             }
             case 96: {
               if (!((mutable_bitField0_ & 0x00000010) != 0)) {
-                lNOCPBNPHIE_ = newIntList();
+                finishDialogList_ = newIntList();
                 mutable_bitField0_ |= 0x00000010;
               }
-              lNOCPBNPHIE_.addInt(input.readUInt32());
+              finishDialogList_.addInt(input.readUInt32());
               break;
             }
             case 98: {
               int length = input.readRawVarint32();
               int limit = input.pushLimit(length);
               if (!((mutable_bitField0_ & 0x00000010) != 0) && input.getBytesUntilLimit() > 0) {
-                lNOCPBNPHIE_ = newIntList();
+                finishDialogList_ = newIntList();
                 mutable_bitField0_ |= 0x00000010;
               }
               while (input.getBytesUntilLimit() > 0) {
-                lNOCPBNPHIE_.addInt(input.readUInt32());
+                finishDialogList_.addInt(input.readUInt32());
               }
               input.popLimit(limit);
               break;
@@ -365,7 +389,7 @@ public final class CoopChapterOuterClass {
           coopRewardList_ = java.util.Collections.unmodifiableList(coopRewardList_);
         }
         if (((mutable_bitField0_ & 0x00000001) != 0)) {
-          kAKALNAGLGJ_.makeImmutable(); // C
+          lockReasonList_.makeImmutable(); // C
         }
         if (((mutable_bitField0_ & 0x00000008) != 0)) {
           coopPointList_ = java.util.Collections.unmodifiableList(coopPointList_);
@@ -374,7 +398,7 @@ public final class CoopChapterOuterClass {
           coopCgList_ = java.util.Collections.unmodifiableList(coopCgList_);
         }
         if (((mutable_bitField0_ & 0x00000010) != 0)) {
-          lNOCPBNPHIE_.makeImmutable(); // C
+          finishDialogList_.makeImmutable(); // C
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -546,33 +570,45 @@ public final class CoopChapterOuterClass {
       return finishedEndCount_;
     }
 
-    public static final int KAKALNAGLGJ_FIELD_NUMBER = 7;
-    private com.google.protobuf.Internal.IntList kAKALNAGLGJ_;
+    public static final int LOCK_REASON_LIST_FIELD_NUMBER = 7;
+    private com.google.protobuf.Internal.IntList lockReasonList_;
     /**
-     * <code>repeated uint32 KAKALNAGLGJ = 7;</code>
-     * @return A list containing the kAKALNAGLGJ.
+     * <pre>
+     *KAKALNAGLGJ
+     * </pre>
+     *
+     * <code>repeated uint32 lock_reason_list = 7;</code>
+     * @return A list containing the lockReasonList.
      */
     @java.lang.Override
     public java.util.List<java.lang.Integer>
-        getKAKALNAGLGJList() {
-      return kAKALNAGLGJ_;
+        getLockReasonListList() {
+      return lockReasonList_;
     }
     /**
-     * <code>repeated uint32 KAKALNAGLGJ = 7;</code>
-     * @return The count of kAKALNAGLGJ.
+     * <pre>
+     *KAKALNAGLGJ
+     * </pre>
+     *
+     * <code>repeated uint32 lock_reason_list = 7;</code>
+     * @return The count of lockReasonList.
      */
-    public int getKAKALNAGLGJCount() {
-      return kAKALNAGLGJ_.size();
+    public int getLockReasonListCount() {
+      return lockReasonList_.size();
     }
     /**
-     * <code>repeated uint32 KAKALNAGLGJ = 7;</code>
+     * <pre>
+     *KAKALNAGLGJ
+     * </pre>
+     *
+     * <code>repeated uint32 lock_reason_list = 7;</code>
      * @param index The index of the element to return.
-     * @return The kAKALNAGLGJ at the given index.
+     * @return The lockReasonList at the given index.
      */
-    public int getKAKALNAGLGJ(int index) {
-      return kAKALNAGLGJ_.getInt(index);
+    public int getLockReasonList(int index) {
+      return lockReasonList_.getInt(index);
     }
-    private int kAKALNAGLGJMemoizedSerializedSize = -1;
+    private int lockReasonListMemoizedSerializedSize = -1;
 
     public static final int SEEN_ENDING_MAP_FIELD_NUMBER = 14;
     private static final class SeenEndingMapDefaultEntryHolder {
@@ -735,33 +771,45 @@ public final class CoopChapterOuterClass {
       return coopPointList_.get(index);
     }
 
-    public static final int LNOCPBNPHIE_FIELD_NUMBER = 12;
-    private com.google.protobuf.Internal.IntList lNOCPBNPHIE_;
+    public static final int FINISH_DIALOG_LIST_FIELD_NUMBER = 12;
+    private com.google.protobuf.Internal.IntList finishDialogList_;
     /**
-     * <code>repeated uint32 LNOCPBNPHIE = 12;</code>
-     * @return A list containing the lNOCPBNPHIE.
+     * <pre>
+     *LNOCPBNPHIE
+     * </pre>
+     *
+     * <code>repeated uint32 finish_dialog_list = 12;</code>
+     * @return A list containing the finishDialogList.
      */
     @java.lang.Override
     public java.util.List<java.lang.Integer>
-        getLNOCPBNPHIEList() {
-      return lNOCPBNPHIE_;
+        getFinishDialogListList() {
+      return finishDialogList_;
     }
     /**
-     * <code>repeated uint32 LNOCPBNPHIE = 12;</code>
-     * @return The count of lNOCPBNPHIE.
+     * <pre>
+     *LNOCPBNPHIE
+     * </pre>
+     *
+     * <code>repeated uint32 finish_dialog_list = 12;</code>
+     * @return The count of finishDialogList.
      */
-    public int getLNOCPBNPHIECount() {
-      return lNOCPBNPHIE_.size();
+    public int getFinishDialogListCount() {
+      return finishDialogList_.size();
     }
     /**
-     * <code>repeated uint32 LNOCPBNPHIE = 12;</code>
+     * <pre>
+     *LNOCPBNPHIE
+     * </pre>
+     *
+     * <code>repeated uint32 finish_dialog_list = 12;</code>
      * @param index The index of the element to return.
-     * @return The lNOCPBNPHIE at the given index.
+     * @return The finishDialogList at the given index.
      */
-    public int getLNOCPBNPHIE(int index) {
-      return lNOCPBNPHIE_.getInt(index);
+    public int getFinishDialogList(int index) {
+      return finishDialogList_.getInt(index);
     }
-    private int lNOCPBNPHIEMemoizedSerializedSize = -1;
+    private int finishDialogListMemoizedSerializedSize = -1;
 
     public static final int ID_FIELD_NUMBER = 1;
     private int id_;
@@ -874,12 +922,12 @@ public final class CoopChapterOuterClass {
       if (totalEndCount_ != 0) {
         output.writeUInt32(6, totalEndCount_);
       }
-      if (getKAKALNAGLGJList().size() > 0) {
+      if (getLockReasonListList().size() > 0) {
         output.writeUInt32NoTag(58);
-        output.writeUInt32NoTag(kAKALNAGLGJMemoizedSerializedSize);
+        output.writeUInt32NoTag(lockReasonListMemoizedSerializedSize);
       }
-      for (int i = 0; i < kAKALNAGLGJ_.size(); i++) {
-        output.writeUInt32NoTag(kAKALNAGLGJ_.getInt(i));
+      for (int i = 0; i < lockReasonList_.size(); i++) {
+        output.writeUInt32NoTag(lockReasonList_.getInt(i));
       }
       for (int i = 0; i < coopPointList_.size(); i++) {
         output.writeMessage(8, coopPointList_.get(i));
@@ -887,12 +935,12 @@ public final class CoopChapterOuterClass {
       for (int i = 0; i < coopCgList_.size(); i++) {
         output.writeMessage(10, coopCgList_.get(i));
       }
-      if (getLNOCPBNPHIEList().size() > 0) {
+      if (getFinishDialogListList().size() > 0) {
         output.writeUInt32NoTag(98);
-        output.writeUInt32NoTag(lNOCPBNPHIEMemoizedSerializedSize);
+        output.writeUInt32NoTag(finishDialogListMemoizedSerializedSize);
       }
-      for (int i = 0; i < lNOCPBNPHIE_.size(); i++) {
-        output.writeUInt32NoTag(lNOCPBNPHIE_.getInt(i));
+      for (int i = 0; i < finishDialogList_.size(); i++) {
+        output.writeUInt32NoTag(finishDialogList_.getInt(i));
       }
       com.google.protobuf.GeneratedMessageV3
         .serializeIntegerMapTo(
@@ -931,17 +979,17 @@ public final class CoopChapterOuterClass {
       }
       {
         int dataSize = 0;
-        for (int i = 0; i < kAKALNAGLGJ_.size(); i++) {
+        for (int i = 0; i < lockReasonList_.size(); i++) {
           dataSize += com.google.protobuf.CodedOutputStream
-            .computeUInt32SizeNoTag(kAKALNAGLGJ_.getInt(i));
+            .computeUInt32SizeNoTag(lockReasonList_.getInt(i));
         }
         size += dataSize;
-        if (!getKAKALNAGLGJList().isEmpty()) {
+        if (!getLockReasonListList().isEmpty()) {
           size += 1;
           size += com.google.protobuf.CodedOutputStream
               .computeInt32SizeNoTag(dataSize);
         }
-        kAKALNAGLGJMemoizedSerializedSize = dataSize;
+        lockReasonListMemoizedSerializedSize = dataSize;
       }
       for (int i = 0; i < coopPointList_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
@@ -953,17 +1001,17 @@ public final class CoopChapterOuterClass {
       }
       {
         int dataSize = 0;
-        for (int i = 0; i < lNOCPBNPHIE_.size(); i++) {
+        for (int i = 0; i < finishDialogList_.size(); i++) {
           dataSize += com.google.protobuf.CodedOutputStream
-            .computeUInt32SizeNoTag(lNOCPBNPHIE_.getInt(i));
+            .computeUInt32SizeNoTag(finishDialogList_.getInt(i));
         }
         size += dataSize;
-        if (!getLNOCPBNPHIEList().isEmpty()) {
+        if (!getFinishDialogListList().isEmpty()) {
           size += 1;
           size += com.google.protobuf.CodedOutputStream
               .computeInt32SizeNoTag(dataSize);
         }
-        lNOCPBNPHIEMemoizedSerializedSize = dataSize;
+        finishDialogListMemoizedSerializedSize = dataSize;
       }
       for (java.util.Map.Entry<java.lang.Integer, java.lang.Integer> entry
            : internalGetSeenEndingMap().getMap().entrySet()) {
@@ -992,16 +1040,16 @@ public final class CoopChapterOuterClass {
 
       if (getFinishedEndCount()
           != other.getFinishedEndCount()) return false;
-      if (!getKAKALNAGLGJList()
-          .equals(other.getKAKALNAGLGJList())) return false;
+      if (!getLockReasonListList()
+          .equals(other.getLockReasonListList())) return false;
       if (!internalGetSeenEndingMap().equals(
           other.internalGetSeenEndingMap())) return false;
       if (!getCoopRewardListList()
           .equals(other.getCoopRewardListList())) return false;
       if (!getCoopPointListList()
           .equals(other.getCoopPointListList())) return false;
-      if (!getLNOCPBNPHIEList()
-          .equals(other.getLNOCPBNPHIEList())) return false;
+      if (!getFinishDialogListList()
+          .equals(other.getFinishDialogListList())) return false;
       if (getId()
           != other.getId()) return false;
       if (getTotalEndCount()
@@ -1022,9 +1070,9 @@ public final class CoopChapterOuterClass {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + FINISHED_END_COUNT_FIELD_NUMBER;
       hash = (53 * hash) + getFinishedEndCount();
-      if (getKAKALNAGLGJCount() > 0) {
-        hash = (37 * hash) + KAKALNAGLGJ_FIELD_NUMBER;
-        hash = (53 * hash) + getKAKALNAGLGJList().hashCode();
+      if (getLockReasonListCount() > 0) {
+        hash = (37 * hash) + LOCK_REASON_LIST_FIELD_NUMBER;
+        hash = (53 * hash) + getLockReasonListList().hashCode();
       }
       if (!internalGetSeenEndingMap().getMap().isEmpty()) {
         hash = (37 * hash) + SEEN_ENDING_MAP_FIELD_NUMBER;
@@ -1038,9 +1086,9 @@ public final class CoopChapterOuterClass {
         hash = (37 * hash) + COOP_POINT_LIST_FIELD_NUMBER;
         hash = (53 * hash) + getCoopPointListList().hashCode();
       }
-      if (getLNOCPBNPHIECount() > 0) {
-        hash = (37 * hash) + LNOCPBNPHIE_FIELD_NUMBER;
-        hash = (53 * hash) + getLNOCPBNPHIEList().hashCode();
+      if (getFinishDialogListCount() > 0) {
+        hash = (37 * hash) + FINISH_DIALOG_LIST_FIELD_NUMBER;
+        hash = (53 * hash) + getFinishDialogListList().hashCode();
       }
       hash = (37 * hash) + ID_FIELD_NUMBER;
       hash = (53 * hash) + getId();
@@ -1216,7 +1264,7 @@ public final class CoopChapterOuterClass {
         super.clear();
         finishedEndCount_ = 0;
 
-        kAKALNAGLGJ_ = emptyIntList();
+        lockReasonList_ = emptyIntList();
         bitField0_ = (bitField0_ & ~0x00000001);
         internalGetMutableSeenEndingMap().clear();
         if (coopRewardListBuilder_ == null) {
@@ -1231,7 +1279,7 @@ public final class CoopChapterOuterClass {
         } else {
           coopPointListBuilder_.clear();
         }
-        lNOCPBNPHIE_ = emptyIntList();
+        finishDialogList_ = emptyIntList();
         bitField0_ = (bitField0_ & ~0x00000010);
         id_ = 0;
 
@@ -1274,10 +1322,10 @@ public final class CoopChapterOuterClass {
         int from_bitField0_ = bitField0_;
         result.finishedEndCount_ = finishedEndCount_;
         if (((bitField0_ & 0x00000001) != 0)) {
-          kAKALNAGLGJ_.makeImmutable();
+          lockReasonList_.makeImmutable();
           bitField0_ = (bitField0_ & ~0x00000001);
         }
-        result.kAKALNAGLGJ_ = kAKALNAGLGJ_;
+        result.lockReasonList_ = lockReasonList_;
         result.seenEndingMap_ = internalGetSeenEndingMap();
         result.seenEndingMap_.makeImmutable();
         if (coopRewardListBuilder_ == null) {
@@ -1299,10 +1347,10 @@ public final class CoopChapterOuterClass {
           result.coopPointList_ = coopPointListBuilder_.build();
         }
         if (((bitField0_ & 0x00000010) != 0)) {
-          lNOCPBNPHIE_.makeImmutable();
+          finishDialogList_.makeImmutable();
           bitField0_ = (bitField0_ & ~0x00000010);
         }
-        result.lNOCPBNPHIE_ = lNOCPBNPHIE_;
+        result.finishDialogList_ = finishDialogList_;
         result.id_ = id_;
         result.totalEndCount_ = totalEndCount_;
         result.state_ = state_;
@@ -1366,13 +1414,13 @@ public final class CoopChapterOuterClass {
         if (other.getFinishedEndCount() != 0) {
           setFinishedEndCount(other.getFinishedEndCount());
         }
-        if (!other.kAKALNAGLGJ_.isEmpty()) {
-          if (kAKALNAGLGJ_.isEmpty()) {
-            kAKALNAGLGJ_ = other.kAKALNAGLGJ_;
+        if (!other.lockReasonList_.isEmpty()) {
+          if (lockReasonList_.isEmpty()) {
+            lockReasonList_ = other.lockReasonList_;
             bitField0_ = (bitField0_ & ~0x00000001);
           } else {
-            ensureKAKALNAGLGJIsMutable();
-            kAKALNAGLGJ_.addAll(other.kAKALNAGLGJ_);
+            ensureLockReasonListIsMutable();
+            lockReasonList_.addAll(other.lockReasonList_);
           }
           onChanged();
         }
@@ -1430,13 +1478,13 @@ public final class CoopChapterOuterClass {
             }
           }
         }
-        if (!other.lNOCPBNPHIE_.isEmpty()) {
-          if (lNOCPBNPHIE_.isEmpty()) {
-            lNOCPBNPHIE_ = other.lNOCPBNPHIE_;
+        if (!other.finishDialogList_.isEmpty()) {
+          if (finishDialogList_.isEmpty()) {
+            finishDialogList_ = other.finishDialogList_;
             bitField0_ = (bitField0_ & ~0x00000010);
           } else {
-            ensureLNOCPBNPHIEIsMutable();
-            lNOCPBNPHIE_.addAll(other.lNOCPBNPHIE_);
+            ensureFinishDialogListIsMutable();
+            finishDialogList_.addAll(other.finishDialogList_);
           }
           onChanged();
         }
@@ -1536,80 +1584,108 @@ public final class CoopChapterOuterClass {
         return this;
       }
 
-      private com.google.protobuf.Internal.IntList kAKALNAGLGJ_ = emptyIntList();
-      private void ensureKAKALNAGLGJIsMutable() {
+      private com.google.protobuf.Internal.IntList lockReasonList_ = emptyIntList();
+      private void ensureLockReasonListIsMutable() {
         if (!((bitField0_ & 0x00000001) != 0)) {
-          kAKALNAGLGJ_ = mutableCopy(kAKALNAGLGJ_);
+          lockReasonList_ = mutableCopy(lockReasonList_);
           bitField0_ |= 0x00000001;
          }
       }
       /**
-       * <code>repeated uint32 KAKALNAGLGJ = 7;</code>
-       * @return A list containing the kAKALNAGLGJ.
+       * <pre>
+       *KAKALNAGLGJ
+       * </pre>
+       *
+       * <code>repeated uint32 lock_reason_list = 7;</code>
+       * @return A list containing the lockReasonList.
        */
       public java.util.List<java.lang.Integer>
-          getKAKALNAGLGJList() {
+          getLockReasonListList() {
         return ((bitField0_ & 0x00000001) != 0) ?
-                 java.util.Collections.unmodifiableList(kAKALNAGLGJ_) : kAKALNAGLGJ_;
+                 java.util.Collections.unmodifiableList(lockReasonList_) : lockReasonList_;
       }
       /**
-       * <code>repeated uint32 KAKALNAGLGJ = 7;</code>
-       * @return The count of kAKALNAGLGJ.
+       * <pre>
+       *KAKALNAGLGJ
+       * </pre>
+       *
+       * <code>repeated uint32 lock_reason_list = 7;</code>
+       * @return The count of lockReasonList.
        */
-      public int getKAKALNAGLGJCount() {
-        return kAKALNAGLGJ_.size();
+      public int getLockReasonListCount() {
+        return lockReasonList_.size();
       }
       /**
-       * <code>repeated uint32 KAKALNAGLGJ = 7;</code>
+       * <pre>
+       *KAKALNAGLGJ
+       * </pre>
+       *
+       * <code>repeated uint32 lock_reason_list = 7;</code>
        * @param index The index of the element to return.
-       * @return The kAKALNAGLGJ at the given index.
+       * @return The lockReasonList at the given index.
        */
-      public int getKAKALNAGLGJ(int index) {
-        return kAKALNAGLGJ_.getInt(index);
+      public int getLockReasonList(int index) {
+        return lockReasonList_.getInt(index);
       }
       /**
-       * <code>repeated uint32 KAKALNAGLGJ = 7;</code>
+       * <pre>
+       *KAKALNAGLGJ
+       * </pre>
+       *
+       * <code>repeated uint32 lock_reason_list = 7;</code>
        * @param index The index to set the value at.
-       * @param value The kAKALNAGLGJ to set.
+       * @param value The lockReasonList to set.
        * @return This builder for chaining.
        */
-      public Builder setKAKALNAGLGJ(
+      public Builder setLockReasonList(
           int index, int value) {
-        ensureKAKALNAGLGJIsMutable();
-        kAKALNAGLGJ_.setInt(index, value);
+        ensureLockReasonListIsMutable();
+        lockReasonList_.setInt(index, value);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated uint32 KAKALNAGLGJ = 7;</code>
-       * @param value The kAKALNAGLGJ to add.
+       * <pre>
+       *KAKALNAGLGJ
+       * </pre>
+       *
+       * <code>repeated uint32 lock_reason_list = 7;</code>
+       * @param value The lockReasonList to add.
        * @return This builder for chaining.
        */
-      public Builder addKAKALNAGLGJ(int value) {
-        ensureKAKALNAGLGJIsMutable();
-        kAKALNAGLGJ_.addInt(value);
+      public Builder addLockReasonList(int value) {
+        ensureLockReasonListIsMutable();
+        lockReasonList_.addInt(value);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated uint32 KAKALNAGLGJ = 7;</code>
-       * @param values The kAKALNAGLGJ to add.
+       * <pre>
+       *KAKALNAGLGJ
+       * </pre>
+       *
+       * <code>repeated uint32 lock_reason_list = 7;</code>
+       * @param values The lockReasonList to add.
        * @return This builder for chaining.
        */
-      public Builder addAllKAKALNAGLGJ(
+      public Builder addAllLockReasonList(
           java.lang.Iterable<? extends java.lang.Integer> values) {
-        ensureKAKALNAGLGJIsMutable();
+        ensureLockReasonListIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, kAKALNAGLGJ_);
+            values, lockReasonList_);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated uint32 KAKALNAGLGJ = 7;</code>
+       * <pre>
+       *KAKALNAGLGJ
+       * </pre>
+       *
+       * <code>repeated uint32 lock_reason_list = 7;</code>
        * @return This builder for chaining.
        */
-      public Builder clearKAKALNAGLGJ() {
-        kAKALNAGLGJ_ = emptyIntList();
+      public Builder clearLockReasonList() {
+        lockReasonList_ = emptyIntList();
         bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
         return this;
@@ -2223,80 +2299,108 @@ public final class CoopChapterOuterClass {
         return coopPointListBuilder_;
       }
 
-      private com.google.protobuf.Internal.IntList lNOCPBNPHIE_ = emptyIntList();
-      private void ensureLNOCPBNPHIEIsMutable() {
+      private com.google.protobuf.Internal.IntList finishDialogList_ = emptyIntList();
+      private void ensureFinishDialogListIsMutable() {
         if (!((bitField0_ & 0x00000010) != 0)) {
-          lNOCPBNPHIE_ = mutableCopy(lNOCPBNPHIE_);
+          finishDialogList_ = mutableCopy(finishDialogList_);
           bitField0_ |= 0x00000010;
          }
       }
       /**
-       * <code>repeated uint32 LNOCPBNPHIE = 12;</code>
-       * @return A list containing the lNOCPBNPHIE.
+       * <pre>
+       *LNOCPBNPHIE
+       * </pre>
+       *
+       * <code>repeated uint32 finish_dialog_list = 12;</code>
+       * @return A list containing the finishDialogList.
        */
       public java.util.List<java.lang.Integer>
-          getLNOCPBNPHIEList() {
+          getFinishDialogListList() {
         return ((bitField0_ & 0x00000010) != 0) ?
-                 java.util.Collections.unmodifiableList(lNOCPBNPHIE_) : lNOCPBNPHIE_;
+                 java.util.Collections.unmodifiableList(finishDialogList_) : finishDialogList_;
       }
       /**
-       * <code>repeated uint32 LNOCPBNPHIE = 12;</code>
-       * @return The count of lNOCPBNPHIE.
+       * <pre>
+       *LNOCPBNPHIE
+       * </pre>
+       *
+       * <code>repeated uint32 finish_dialog_list = 12;</code>
+       * @return The count of finishDialogList.
        */
-      public int getLNOCPBNPHIECount() {
-        return lNOCPBNPHIE_.size();
+      public int getFinishDialogListCount() {
+        return finishDialogList_.size();
       }
       /**
-       * <code>repeated uint32 LNOCPBNPHIE = 12;</code>
+       * <pre>
+       *LNOCPBNPHIE
+       * </pre>
+       *
+       * <code>repeated uint32 finish_dialog_list = 12;</code>
        * @param index The index of the element to return.
-       * @return The lNOCPBNPHIE at the given index.
+       * @return The finishDialogList at the given index.
        */
-      public int getLNOCPBNPHIE(int index) {
-        return lNOCPBNPHIE_.getInt(index);
+      public int getFinishDialogList(int index) {
+        return finishDialogList_.getInt(index);
       }
       /**
-       * <code>repeated uint32 LNOCPBNPHIE = 12;</code>
+       * <pre>
+       *LNOCPBNPHIE
+       * </pre>
+       *
+       * <code>repeated uint32 finish_dialog_list = 12;</code>
        * @param index The index to set the value at.
-       * @param value The lNOCPBNPHIE to set.
+       * @param value The finishDialogList to set.
        * @return This builder for chaining.
        */
-      public Builder setLNOCPBNPHIE(
+      public Builder setFinishDialogList(
           int index, int value) {
-        ensureLNOCPBNPHIEIsMutable();
-        lNOCPBNPHIE_.setInt(index, value);
+        ensureFinishDialogListIsMutable();
+        finishDialogList_.setInt(index, value);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated uint32 LNOCPBNPHIE = 12;</code>
-       * @param value The lNOCPBNPHIE to add.
+       * <pre>
+       *LNOCPBNPHIE
+       * </pre>
+       *
+       * <code>repeated uint32 finish_dialog_list = 12;</code>
+       * @param value The finishDialogList to add.
        * @return This builder for chaining.
        */
-      public Builder addLNOCPBNPHIE(int value) {
-        ensureLNOCPBNPHIEIsMutable();
-        lNOCPBNPHIE_.addInt(value);
+      public Builder addFinishDialogList(int value) {
+        ensureFinishDialogListIsMutable();
+        finishDialogList_.addInt(value);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated uint32 LNOCPBNPHIE = 12;</code>
-       * @param values The lNOCPBNPHIE to add.
+       * <pre>
+       *LNOCPBNPHIE
+       * </pre>
+       *
+       * <code>repeated uint32 finish_dialog_list = 12;</code>
+       * @param values The finishDialogList to add.
        * @return This builder for chaining.
        */
-      public Builder addAllLNOCPBNPHIE(
+      public Builder addAllFinishDialogList(
           java.lang.Iterable<? extends java.lang.Integer> values) {
-        ensureLNOCPBNPHIEIsMutable();
+        ensureFinishDialogListIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, lNOCPBNPHIE_);
+            values, finishDialogList_);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated uint32 LNOCPBNPHIE = 12;</code>
+       * <pre>
+       *LNOCPBNPHIE
+       * </pre>
+       *
+       * <code>repeated uint32 finish_dialog_list = 12;</code>
        * @return This builder for chaining.
        */
-      public Builder clearLNOCPBNPHIE() {
-        lNOCPBNPHIE_ = emptyIntList();
+      public Builder clearFinishDialogList() {
+        finishDialogList_ = emptyIntList();
         bitField0_ = (bitField0_ & ~0x00000010);
         onChanged();
         return this;
@@ -2730,20 +2834,20 @@ public final class CoopChapterOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\021CoopChapter.proto\032\014CoopCg.proto\032\017CoopP" +
-      "oint.proto\032\020CoopReward.proto\"\320\003\n\013CoopCha" +
-      "pter\022\032\n\022finished_end_count\030\004 \001(\r\022\023\n\013KAKA" +
-      "LNAGLGJ\030\007 \003(\r\0228\n\017seen_ending_map\030\016 \003(\0132\037" +
-      ".CoopChapter.SeenEndingMapEntry\022%\n\020coop_" +
-      "reward_list\030\005 \003(\0132\013.CoopReward\022#\n\017coop_p" +
-      "oint_list\030\010 \003(\0132\n.CoopPoint\022\023\n\013LNOCPBNPH" +
-      "IE\030\014 \003(\r\022\n\n\002id\030\001 \001(\r\022\027\n\017total_end_count\030" +
-      "\006 \001(\r\022!\n\005state\030\002 \001(\0162\022.CoopChapter.State" +
-      "\022\035\n\014coop_cg_list\030\n \003(\0132\007.CoopCg\0324\n\022SeenE" +
-      "ndingMapEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(" +
-      "\r:\0028\001\"X\n\005State\022\017\n\013STATE_CLOSE\020\000\022\027\n\023STATE" +
-      "_COND_NOT_MEET\020\001\022\023\n\017STATE_COND_MEET\020\002\022\020\n" +
-      "\014STATE_ACCEPT\020\003B\033\n\031emu.grasscutter.net.p" +
-      "rotob\006proto3"
+      "oint.proto\032\020CoopReward.proto\"\334\003\n\013CoopCha" +
+      "pter\022\032\n\022finished_end_count\030\004 \001(\r\022\030\n\020lock" +
+      "_reason_list\030\007 \003(\r\0228\n\017seen_ending_map\030\016 " +
+      "\003(\0132\037.CoopChapter.SeenEndingMapEntry\022%\n\020" +
+      "coop_reward_list\030\005 \003(\0132\013.CoopReward\022#\n\017c" +
+      "oop_point_list\030\010 \003(\0132\n.CoopPoint\022\032\n\022fini" +
+      "sh_dialog_list\030\014 \003(\r\022\n\n\002id\030\001 \001(\r\022\027\n\017tota" +
+      "l_end_count\030\006 \001(\r\022!\n\005state\030\002 \001(\0162\022.CoopC" +
+      "hapter.State\022\035\n\014coop_cg_list\030\n \003(\0132\007.Coo" +
+      "pCg\0324\n\022SeenEndingMapEntry\022\013\n\003key\030\001 \001(\r\022\r" +
+      "\n\005value\030\002 \001(\r:\0028\001\"X\n\005State\022\017\n\013STATE_CLOS" +
+      "E\020\000\022\027\n\023STATE_COND_NOT_MEET\020\001\022\023\n\017STATE_CO" +
+      "ND_MEET\020\002\022\020\n\014STATE_ACCEPT\020\003B\033\n\031emu.grass" +
+      "cutter.net.protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -2757,7 +2861,7 @@ public final class CoopChapterOuterClass {
     internal_static_CoopChapter_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_CoopChapter_descriptor,
-        new java.lang.String[] { "FinishedEndCount", "KAKALNAGLGJ", "SeenEndingMap", "CoopRewardList", "CoopPointList", "LNOCPBNPHIE", "Id", "TotalEndCount", "State", "CoopCgList", });
+        new java.lang.String[] { "FinishedEndCount", "LockReasonList", "SeenEndingMap", "CoopRewardList", "CoopPointList", "FinishDialogList", "Id", "TotalEndCount", "State", "CoopCgList", });
     internal_static_CoopChapter_SeenEndingMapEntry_descriptor =
       internal_static_CoopChapter_descriptor.getNestedTypes().get(0);
     internal_static_CoopChapter_SeenEndingMapEntry_fieldAccessorTable = new
