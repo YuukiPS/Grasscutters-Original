@@ -88,6 +88,8 @@ public final class Grasscutter {
         // Attempt to update configuration.
         ConfigContainer.updateConfig();
 
+        Grasscutter.getLogger().info("Loading Grasscutter...");
+
         // Load translation files.
         Grasscutter.loadLanguage();
 

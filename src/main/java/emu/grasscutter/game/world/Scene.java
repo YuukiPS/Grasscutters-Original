@@ -36,6 +36,7 @@ import emu.grasscutter.scripts.constants.EventType;
 import emu.grasscutter.scripts.data.SceneBlock;
 import emu.grasscutter.scripts.data.SceneGroup;
 import emu.grasscutter.scripts.data.ScriptArgs;
+import emu.grasscutter.server.event.entity.EntityCreationEvent;
 import emu.grasscutter.server.event.player.PlayerTeleportEvent;
 import emu.grasscutter.server.packet.send.*;
 import emu.grasscutter.utils.objects.KahnsSort;
@@ -246,7 +247,14 @@ public final class Scene {
                 }
                 if (avatar == null) continue;
             }
-            player.getTeamManager().getActiveTeam().add(new EntityAvatar(player.getScene(), avatar));
+            player
+                    .getTeamManager()
+                    .getActiveTeam()
+                    .add(
+                            EntityCreationEvent.call(
+                                    EntityAvatar.class,
+                                    new Class<?>[] {Scene.class, Avatar.class},
+                                    new Object[] {player.getScene(), avatar}));
         }
 
         // Limit character index in case its out of bounds

@@ -81,6 +81,8 @@ public final class PlayerProgressManager extends BasePlayerDataManager {
             // Auto-unlock the first statue and map area.
             this.player.getUnlockedScenePoints(3).add(7);
             this.player.getUnlockedSceneAreas(3).add(1);
+            // Allow the player to visit all areas.
+            this.setOpenState(47, 1, true);
         }
     }
 
