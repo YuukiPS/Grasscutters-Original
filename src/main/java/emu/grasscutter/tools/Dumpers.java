@@ -337,6 +337,43 @@ public interface Dumpers {
         }
     }
 
+    /**
+     * Dumps all areas to a CSV file.
+     *
+     * @param locale The language to dump the areas in.
+     */
+    static void dumpAreas(String locale) {
+        // Reload resources.
+        ResourceLoader.loadAll();
+        Language.loadTextMaps();
+
+        // Convert all known areas to an area map.
+        var dump = new HashMap<Integer, AreaInfo>();
+        GameData.getWorldAreaDataMap()
+                .forEach(
+                        (id, area) -> {
+                            var langHash = area.getTextMapHash();
+                            dump.put(
+                                    area.getChildArea() == 0 ? area.getParentArea() : area.getChildArea(),
+                                    new AreaInfo(
+                                            area.getParentArea(),
+                                            langHash == 0 ? "Unknown" : Language.getTextMapKey(langHash).get(locale)));
+                        });
+
+        try {
+            // Create a file for the dump.
+            var file = new File("areas.csv");
+            if (file.exists() && !file.delete()) throw new RuntimeException("Failed to delete file.");
+            if (!file.exists() && !file.createNewFile())
+                throw new RuntimeException("Failed to create file.");
+
+            // Write the dump to the file.
+            Files.writeString(file.toPath(), Dumpers.miniEncode(dump, "id", "parent", "name"));
+        } catch (IOException ignored) {
+            throw new RuntimeException("Failed to write to file.");
+        }
+    }
+
     @AllArgsConstructor
     class CommandInfo {
         public List<String> name;
@@ -411,6 +448,17 @@ public interface Dumpers {
         @Override
         public String toString() {
             return this.description + "," + this.mainQuest;
+        }
+    }
+
+    @AllArgsConstructor
+    class AreaInfo {
+        public int parent;
+        public String name;
+
+        @Override
+        public String toString() {
+            return this.parent + "," + this.name;
         }
     }
 

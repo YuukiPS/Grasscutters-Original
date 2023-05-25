@@ -164,6 +164,7 @@ public interface StartupArguments {
                 case "scenes" -> Dumpers.dumpScenes();
                 case "entities" -> Dumpers.dumpEntities(language);
                 case "quests" -> Dumpers.dumpQuests(language);
+                case "areas" -> Dumpers.dumpAreas(language);
             }
 
             Grasscutter.getLogger().info("Finished dumping.");
