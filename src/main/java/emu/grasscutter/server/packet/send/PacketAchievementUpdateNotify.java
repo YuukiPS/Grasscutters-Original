@@ -7,14 +7,14 @@ import emu.grasscutter.net.proto.AchievementUpdateNotifyOuterClass;
 import java.util.List;
 
 public class PacketAchievementUpdateNotify extends BasePacket {
-    public PacketAchievementUpdateNotify(List<Achievement> achievements) {
-        super(PacketOpcodes.AchievementUpdateNotify);
 
-        var notify =
-                AchievementUpdateNotifyOuterClass.AchievementUpdateNotify.newBuilder()
-                        .addAllAchievementList(achievements.stream().map(Achievement::toProto).toList())
-                        .build();
+	public PacketAchievementUpdateNotify(List<Achievement> achievements) {
+		super(PacketOpcodes.AchievementUpdateNotify);
+		var notify = AchievementUpdateNotifyOuterClass.AchievementUpdateNotify
+			.newBuilder()
+			.addAllAchievementList(achievements.stream().map(Achievement::toProto).toList())
+			.build();
 
-        this.setData(notify);
-    }
+		this.setData(notify);
+	}
 }

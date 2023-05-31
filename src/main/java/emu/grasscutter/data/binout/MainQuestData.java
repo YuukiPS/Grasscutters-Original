@@ -10,86 +10,89 @@ import java.util.Objects;
 import lombok.Data;
 
 public class MainQuestData {
-    private int id;
-    private int ICLLDPJFIMA;
-    private int series;
-    private QuestType type;
 
-    private long titleTextMapHash;
-    private int[] suggestTrackMainQuestList;
-    private int[] rewardIdList;
+	private int id;
+	private int ICLLDPJFIMA;
+	private int series;
+	private QuestType type;
 
-    private SubQuestData[] subQuests;
-    private List<TalkData> talks;
-    private long[] preloadLuaList;
+	private long titleTextMapHash;
+	private int[] suggestTrackMainQuestList;
+	private int[] rewardIdList;
 
-    public int getId() {
-        return id;
-    }
+	private SubQuestData[] subQuests;
+	private List<TalkData> talks;
+	private long[] preloadLuaList;
 
-    public int getSeries() {
-        return series;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public QuestType getType() {
-        return type;
-    }
+	public int getSeries() {
+		return series;
+	}
 
-    public long getTitleTextMapHash() {
-        return titleTextMapHash;
-    }
+	public QuestType getType() {
+		return type;
+	}
 
-    public int[] getSuggestTrackMainQuestList() {
-        return suggestTrackMainQuestList;
-    }
+	public long getTitleTextMapHash() {
+		return titleTextMapHash;
+	}
 
-    public int[] getRewardIdList() {
-        return rewardIdList;
-    }
+	public int[] getSuggestTrackMainQuestList() {
+		return suggestTrackMainQuestList;
+	}
 
-    public SubQuestData[] getSubQuests() {
-        return subQuests;
-    }
+	public int[] getRewardIdList() {
+		return rewardIdList;
+	}
 
-    public List<TalkData> getTalks() {
-        return talks;
-    }
+	public SubQuestData[] getSubQuests() {
+		return subQuests;
+	}
 
-    public void onLoad() {
-        if (this.talks == null) this.talks = new ArrayList<>();
-        if (this.subQuests == null) this.subQuests = new SubQuestData[0];
+	public List<TalkData> getTalks() {
+		return talks;
+	}
 
-        this.talks = this.talks.stream().filter(Objects::nonNull).toList();
-        // Apply talk data to the quest talk map.
-        this.talks.forEach(talkData -> GameData.getQuestTalkMap().put(talkData.getId(), this.getId()));
-        // Apply additional sub-quest data to sub-quests.
-        Arrays.stream(this.subQuests)
-                .forEach(
-                        quest -> {
-                            var questData = GameData.getQuestDataMap().get(quest.getSubId());
-                            if (questData != null) questData.applyFrom(quest);
-                        });
-    }
+	public void onLoad() {
+		if (this.talks == null) this.talks = new ArrayList<>();
+		if (this.subQuests == null) this.subQuests = new SubQuestData[0];
 
-    @Data
-    public static class SubQuestData {
-        private int subId;
-        private int order;
-        private boolean isMpBlock;
-        private boolean isRewind, finishParent;
-    }
+		this.talks = this.talks.stream().filter(Objects::nonNull).toList();
+		// Apply talk data to the quest talk map.
+		this.talks.forEach(talkData -> GameData.getQuestTalkMap().put(talkData.getId(), this.getId()));
+		// Apply additional sub-quest data to sub-quests.
+		Arrays
+			.stream(this.subQuests)
+			.forEach(quest -> {
+				var questData = GameData.getQuestDataMap().get(quest.getSubId());
+				if (questData != null) questData.applyFrom(quest);
+			});
+	}
 
-    @Data
-    @Entity
-    public static class TalkData {
-        private int id;
-        private String heroTalk;
+	@Data
+	public static class SubQuestData {
 
-        public TalkData() {}
+		private int subId;
+		private int order;
+		private boolean isMpBlock;
+		private boolean isRewind, finishParent;
+	}
 
-        public TalkData(int id, String heroTalk) {
-            this.id = id;
-            this.heroTalk = heroTalk;
-        }
-    }
+	@Data
+	@Entity
+	public static class TalkData {
+
+		private int id;
+		private String heroTalk;
+
+		public TalkData() {}
+
+		public TalkData(int id, String heroTalk) {
+			this.id = id;
+			this.heroTalk = heroTalk;
+		}
+	}
 }

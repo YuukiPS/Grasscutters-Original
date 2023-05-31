@@ -14,47 +14,52 @@ import org.junit.jupiter.api.Test;
 
 /** Testing entrypoint for {@link Grasscutter}. */
 public final class GrasscutterTest {
-    @Getter private static final OkHttpClient httpClient = new OkHttpClient();
 
-    @Getter private static int httpPort = -1;
-    @Getter private static int gamePort = -1;
+	@Getter
+	private static final OkHttpClient httpClient = new OkHttpClient();
 
-    /**
-     * Creates an HTTP URL.
-     *
-     * @param route The route to use.
-     * @return The URL.
-     */
-    public static String http(String route) {
-        return "http://127.0.0.1:" + GrasscutterTest.httpPort + "/" + route;
-    }
+	@Getter
+	private static int httpPort = -1;
 
-    @BeforeAll
-    public static void entry() {
-        try {
-            // Start Grasscutter.
-            Grasscutter.main(new String[] {"-test"});
-        } catch (Exception ignored) {
-            throw new AssertException("Grasscutter failed to start.");
-        }
+	@Getter
+	private static int gamePort = -1;
 
-        // Set the ports.
-        GrasscutterTest.httpPort = Configuration.SERVER.http.bindPort;
-        GrasscutterTest.gamePort = Configuration.SERVER.game.bindPort;
-    }
+	/**
+	 * Creates an HTTP URL.
+	 *
+	 * @param route The route to use.
+	 * @return The URL.
+	 */
+	public static String http(String route) {
+		return "http://127.0.0.1:" + GrasscutterTest.httpPort + "/" + route;
+	}
 
-    @Test
-    @DisplayName("HTTP server check")
-    public void checkHttpServer() {
-        // Create a request.
-        var request = new Request.Builder().url(GrasscutterTest.http("")).build();
+	@BeforeAll
+	public static void entry() {
+		try {
+			// Start Grasscutter.
+			Grasscutter.main(new String[] { "-test" });
+		} catch (Exception ignored) {
+			throw new AssertException("Grasscutter failed to start.");
+		}
 
-        // Perform the request.
-        try (var response = GrasscutterTest.httpClient.newCall(request).execute()) {
-            // Check the response.
-            Assertions.assertTrue(response.isSuccessful());
-        } catch (IOException exception) {
-            throw new AssertionError(exception);
-        }
-    }
+		// Set the ports.
+		GrasscutterTest.httpPort = Configuration.SERVER.http.bindPort;
+		GrasscutterTest.gamePort = Configuration.SERVER.game.bindPort;
+	}
+
+	@Test
+	@DisplayName("HTTP server check")
+	public void checkHttpServer() {
+		// Create a request.
+		var request = new Request.Builder().url(GrasscutterTest.http("")).build();
+
+		// Perform the request.
+		try (var response = GrasscutterTest.httpClient.newCall(request).execute()) {
+			// Check the response.
+			Assertions.assertTrue(response.isSuccessful());
+		} catch (IOException exception) {
+			throw new AssertionError(exception);
+		}
+	}
 }

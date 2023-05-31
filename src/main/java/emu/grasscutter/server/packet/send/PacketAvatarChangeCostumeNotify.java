@@ -7,12 +7,13 @@ import emu.grasscutter.net.proto.AvatarChangeCostumeNotifyOuterClass.AvatarChang
 
 public class PacketAvatarChangeCostumeNotify extends BasePacket {
 
-    public PacketAvatarChangeCostumeNotify(EntityAvatar entity) {
-        super(PacketOpcodes.AvatarChangeCostumeNotify);
+	public PacketAvatarChangeCostumeNotify(EntityAvatar entity) {
+		super(PacketOpcodes.AvatarChangeCostumeNotify);
+		AvatarChangeCostumeNotify proto = AvatarChangeCostumeNotify
+			.newBuilder()
+			.setEntityInfo(entity.toProto())
+			.build();
 
-        AvatarChangeCostumeNotify proto =
-                AvatarChangeCostumeNotify.newBuilder().setEntityInfo(entity.toProto()).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

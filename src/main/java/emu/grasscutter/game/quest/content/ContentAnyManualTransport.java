@@ -8,9 +8,9 @@ import emu.grasscutter.game.quest.QuestValueContent;
 
 @QuestValueContent(QUEST_CONTENT_ANY_MANUAL_TRANSPORT)
 public class ContentAnyManualTransport extends BaseContent {
-    @Override
-    public boolean execute(
-            GameQuest quest, QuestData.QuestContentCondition condition, String paramStr, int... params) {
-        return true;
-    }
+
+	@Override
+	public boolean execute(GameQuest quest, QuestData.QuestContentCondition condition, String paramStr, int... params) {
+		return true;
+	}
 }

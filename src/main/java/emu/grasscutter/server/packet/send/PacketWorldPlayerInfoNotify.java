@@ -8,18 +8,17 @@ import emu.grasscutter.net.proto.WorldPlayerInfoNotifyOuterClass.WorldPlayerInfo
 
 public class PacketWorldPlayerInfoNotify extends BasePacket {
 
-    public PacketWorldPlayerInfoNotify(World world) {
-        super(PacketOpcodes.WorldPlayerInfoNotify);
+	public PacketWorldPlayerInfoNotify(World world) {
+		super(PacketOpcodes.WorldPlayerInfoNotify);
+		WorldPlayerInfoNotify.Builder proto = WorldPlayerInfoNotify.newBuilder();
 
-        WorldPlayerInfoNotify.Builder proto = WorldPlayerInfoNotify.newBuilder();
+		for (int i = 0; i < world.getPlayers().size(); i++) {
+			Player p = world.getPlayers().get(i);
 
-        for (int i = 0; i < world.getPlayers().size(); i++) {
-            Player p = world.getPlayers().get(i);
+			proto.addPlayerInfoList(p.getOnlinePlayerInfo());
+			proto.addPlayerUidList(p.getUid());
+		}
 
-            proto.addPlayerInfoList(p.getOnlinePlayerInfo());
-            proto.addPlayerUidList(p.getUid());
-        }
-
-        this.setData(proto.build());
-    }
+		this.setData(proto.build());
+	}
 }

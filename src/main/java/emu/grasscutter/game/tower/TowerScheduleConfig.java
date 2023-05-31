@@ -3,32 +3,33 @@ package emu.grasscutter.game.tower;
 import java.util.Date;
 
 public class TowerScheduleConfig {
-    private int scheduleId;
 
-    private Date scheduleStartTime;
-    private Date nextScheduleChangeTime;
+	private int scheduleId;
 
-    public int getScheduleId() {
-        return scheduleId;
-    }
+	private Date scheduleStartTime;
+	private Date nextScheduleChangeTime;
 
-    public void setScheduleId(int scheduleId) {
-        this.scheduleId = scheduleId;
-    }
+	public int getScheduleId() {
+		return scheduleId;
+	}
 
-    public Date getScheduleStartTime() {
-        return scheduleStartTime;
-    }
+	public void setScheduleId(int scheduleId) {
+		this.scheduleId = scheduleId;
+	}
 
-    public void setScheduleStartTime(Date scheduleStartTime) {
-        this.scheduleStartTime = scheduleStartTime;
-    }
+	public Date getScheduleStartTime() {
+		return scheduleStartTime;
+	}
 
-    public Date getNextScheduleChangeTime() {
-        return nextScheduleChangeTime;
-    }
+	public void setScheduleStartTime(Date scheduleStartTime) {
+		this.scheduleStartTime = scheduleStartTime;
+	}
 
-    public void setNextScheduleChangeTime(Date nextScheduleChangeTime) {
-        this.nextScheduleChangeTime = nextScheduleChangeTime;
-    }
+	public Date getNextScheduleChangeTime() {
+		return nextScheduleChangeTime;
+	}
+
+	public void setNextScheduleChangeTime(Date nextScheduleChangeTime) {
+		this.nextScheduleChangeTime = nextScheduleChangeTime;
+	}
 }

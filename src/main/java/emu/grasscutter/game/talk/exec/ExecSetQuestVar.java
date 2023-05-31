@@ -9,15 +9,14 @@ import emu.grasscutter.game.talk.TalkValueExec;
 
 @TalkValueExec(TalkExec.TALK_EXEC_SET_QUEST_VAR)
 public final class ExecSetQuestVar extends TalkExecHandler {
-    @Override
-    public void execute(Player player, TalkConfigData talkData, TalkExecParam execParam) {
-        if (execParam.getParam().length < 3) return;
 
-        var mainQuest =
-                player.getQuestManager().getMainQuestById(Integer.parseInt(execParam.getParam()[2]));
-        if (mainQuest == null) return;
+	@Override
+	public void execute(Player player, TalkConfigData talkData, TalkExecParam execParam) {
+		if (execParam.getParam().length < 3) return;
 
-        mainQuest.setQuestVar(
-                Integer.parseInt(execParam.getParam()[0]), Integer.parseInt(execParam.getParam()[1]));
-    }
+		var mainQuest = player.getQuestManager().getMainQuestById(Integer.parseInt(execParam.getParam()[2]));
+		if (mainQuest == null) return;
+
+		mainQuest.setQuestVar(Integer.parseInt(execParam.getParam()[0]), Integer.parseInt(execParam.getParam()[1]));
+	}
 }

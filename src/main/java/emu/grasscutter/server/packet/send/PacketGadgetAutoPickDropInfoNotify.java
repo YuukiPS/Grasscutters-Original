@@ -8,13 +8,12 @@ import java.util.Collection;
 
 public class PacketGadgetAutoPickDropInfoNotify extends BasePacket {
 
-    public PacketGadgetAutoPickDropInfoNotify(Collection<GameItem> items) {
-        super(PacketOpcodes.GadgetAutoPickDropInfoNotify);
+	public PacketGadgetAutoPickDropInfoNotify(Collection<GameItem> items) {
+		super(PacketOpcodes.GadgetAutoPickDropInfoNotify);
+		GadgetAutoPickDropInfoNotify.Builder proto = GadgetAutoPickDropInfoNotify.newBuilder();
 
-        GadgetAutoPickDropInfoNotify.Builder proto = GadgetAutoPickDropInfoNotify.newBuilder();
+		items.forEach(item -> proto.addItemList(item.toProto()));
 
-        items.forEach(item -> proto.addItemList(item.toProto()));
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

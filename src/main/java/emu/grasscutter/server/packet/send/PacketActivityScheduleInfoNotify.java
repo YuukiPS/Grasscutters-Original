@@ -10,23 +10,23 @@ import java.util.Collection;
 
 public class PacketActivityScheduleInfoNotify extends BasePacket {
 
-    public PacketActivityScheduleInfoNotify(Collection<ActivityConfigItem> activityConfigItemList) {
-        super(PacketOpcodes.ActivityScheduleInfoNotify);
+	public PacketActivityScheduleInfoNotify(Collection<ActivityConfigItem> activityConfigItemList) {
+		super(PacketOpcodes.ActivityScheduleInfoNotify);
+		var proto = ActivityScheduleInfoNotifyOuterClass.ActivityScheduleInfoNotify.newBuilder();
 
-        var proto = ActivityScheduleInfoNotifyOuterClass.ActivityScheduleInfoNotify.newBuilder();
+		activityConfigItemList.forEach(item -> {
+			proto.addActivityScheduleList(
+				ActivityScheduleInfoOuterClass.ActivityScheduleInfo
+					.newBuilder()
+					.setActivityId(item.getActivityId())
+					.setScheduleId(item.getScheduleId())
+					.setIsOpen(true)
+					.setBeginTime(DateHelper.getUnixTime(item.getBeginTime()))
+					.setEndTime(DateHelper.getUnixTime(item.getEndTime()))
+					.build()
+			);
+		});
 
-        activityConfigItemList.forEach(
-                item -> {
-                    proto.addActivityScheduleList(
-                            ActivityScheduleInfoOuterClass.ActivityScheduleInfo.newBuilder()
-                                    .setActivityId(item.getActivityId())
-                                    .setScheduleId(item.getScheduleId())
-                                    .setIsOpen(true)
-                                    .setBeginTime(DateHelper.getUnixTime(item.getBeginTime()))
-                                    .setEndTime(DateHelper.getUnixTime(item.getEndTime()))
-                                    .build());
-                });
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

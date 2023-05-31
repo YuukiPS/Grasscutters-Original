@@ -7,30 +7,25 @@ import emu.grasscutter.net.proto.AvatarTeamUpdateNotifyOuterClass.AvatarTeamUpda
 
 public class PacketAvatarTeamUpdateNotify extends BasePacket {
 
-    public PacketAvatarTeamUpdateNotify(Player player) {
-        super(PacketOpcodes.AvatarTeamUpdateNotify);
+	public PacketAvatarTeamUpdateNotify(Player player) {
+		super(PacketOpcodes.AvatarTeamUpdateNotify);
+		AvatarTeamUpdateNotify.Builder proto = AvatarTeamUpdateNotify.newBuilder();
 
-        AvatarTeamUpdateNotify.Builder proto = AvatarTeamUpdateNotify.newBuilder();
+		var teamManager = player.getTeamManager();
+		if (teamManager.isUsingTrialTeam()) {
+			proto.addAllTempAvatarGuidList(
+				teamManager.getActiveTeam().stream().map(entity -> entity.getAvatar().getGuid()).toList()
+			);
+		} else {
+			teamManager.getTeams().forEach((key, value) -> proto.putAvatarTeamMap(key, value.toProto(player)));
+		}
 
-        var teamManager = player.getTeamManager();
-        if (teamManager.isUsingTrialTeam()) {
-            proto.addAllTempAvatarGuidList(
-                    teamManager.getActiveTeam().stream()
-                            .map(entity -> entity.getAvatar().getGuid())
-                            .toList());
-        } else {
-            teamManager
-                    .getTeams()
-                    .forEach((key, value) -> proto.putAvatarTeamMap(key, value.toProto(player)));
-        }
+		this.setData(proto);
+	}
 
-        this.setData(proto);
-    }
-
-    /** Used for locking/unlocking team modification. */
-    public PacketAvatarTeamUpdateNotify() {
-        super(PacketOpcodes.AvatarTeamUpdateNotify);
-
-        this.setData(AvatarTeamUpdateNotify.newBuilder().build());
-    }
+	/** Used for locking/unlocking team modification. */
+	public PacketAvatarTeamUpdateNotify() {
+		super(PacketOpcodes.AvatarTeamUpdateNotify);
+		this.setData(AvatarTeamUpdateNotify.newBuilder().build());
+	}
 }

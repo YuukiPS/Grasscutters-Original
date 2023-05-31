@@ -10,16 +10,17 @@ import emu.grasscutter.server.packet.send.PacketAddQuestContentProgressRsp;
 
 @Opcodes(PacketOpcodes.AddQuestContentProgressReq)
 public class HandlerAddQuestContentProgressReq extends PacketHandler {
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        var req = AddQuestContentProgressReq.parseFrom(payload);
 
-        // Find all conditions in quest that are the same as the given one
-        var type = QuestContent.getContentTriggerByValue(req.getContentType());
-        if (type != null) {
-            session.getPlayer().getQuestManager().queueEvent(type, req.getParam());
-        }
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		var req = AddQuestContentProgressReq.parseFrom(payload);
 
-        session.send(new PacketAddQuestContentProgressRsp(req.getContentType()));
-    }
+		// Find all conditions in quest that are the same as the given one
+		var type = QuestContent.getContentTriggerByValue(req.getContentType());
+		if (type != null) {
+			session.getPlayer().getQuestManager().queueEvent(type, req.getParam());
+		}
+
+		session.send(new PacketAddQuestContentProgressRsp(req.getContentType()));
+	}
 }

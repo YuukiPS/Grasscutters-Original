@@ -13,12 +13,13 @@ import lombok.experimental.FieldDefaults;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SceneNpcBornData {
-    int sceneId;
-    List<SceneNpcBornEntry> bornPosList;
 
-    /** Spatial Index For NPC */
-    transient RTree<SceneNpcBornEntry, Geometry> index;
+	int sceneId;
+	List<SceneNpcBornEntry> bornPosList;
 
-    /** npc groups */
-    transient Map<Integer, SceneGroup> groups = new ConcurrentHashMap<>();
+	/** Spatial Index For NPC */
+	transient RTree<SceneNpcBornEntry, Geometry> index;
+
+	/** npc groups */
+	transient Map<Integer, SceneGroup> groups = new ConcurrentHashMap<>();
 }

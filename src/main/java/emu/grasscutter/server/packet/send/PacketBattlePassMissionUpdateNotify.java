@@ -8,25 +8,21 @@ import java.util.Collection;
 
 public class PacketBattlePassMissionUpdateNotify extends BasePacket {
 
-    public PacketBattlePassMissionUpdateNotify(BattlePassMission mission) {
-        super(PacketOpcodes.BattlePassMissionUpdateNotify);
+	public PacketBattlePassMissionUpdateNotify(BattlePassMission mission) {
+		super(PacketOpcodes.BattlePassMissionUpdateNotify);
+		var proto = BattlePassMissionUpdateNotify.newBuilder().addMissionList(mission.toProto()).build();
 
-        var proto =
-                BattlePassMissionUpdateNotify.newBuilder().addMissionList(mission.toProto()).build();
+		this.setData(proto);
+	}
 
-        this.setData(proto);
-    }
+	public PacketBattlePassMissionUpdateNotify(Collection<BattlePassMission> missions) {
+		super(PacketOpcodes.BattlePassMissionUpdateNotify);
+		var proto = BattlePassMissionUpdateNotify.newBuilder();
 
-    public PacketBattlePassMissionUpdateNotify(Collection<BattlePassMission> missions) {
-        super(PacketOpcodes.BattlePassMissionUpdateNotify);
+		missions.forEach(mission -> {
+			proto.addMissionList(mission.toProto());
+		});
 
-        var proto = BattlePassMissionUpdateNotify.newBuilder();
-
-        missions.forEach(
-                mission -> {
-                    proto.addMissionList(mission.toProto());
-                });
-
-        this.setData(proto.build());
-    }
+		this.setData(proto.build());
+	}
 }

@@ -13,26 +13,29 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder(builderMethodName = "of")
 public class HomeNPCItem {
-    int avatarId;
-    Position spawnPos;
-    Position spawnRot;
-    int costumeId;
 
-    public static HomeNPCItem parseFrom(HomeNpcDataOuterClass.HomeNpcData homeNpcData) {
-        return HomeNPCItem.of()
-                .avatarId(homeNpcData.getAvatarId())
-                .spawnPos(new Position(homeNpcData.getSpawnPos()))
-                .spawnRot(new Position(homeNpcData.getSpawnRot()))
-                .costumeId(homeNpcData.getCostumeId())
-                .build();
-    }
+	int avatarId;
+	Position spawnPos;
+	Position spawnRot;
+	int costumeId;
 
-    public HomeNpcDataOuterClass.HomeNpcData toProto() {
-        return HomeNpcDataOuterClass.HomeNpcData.newBuilder()
-                .setAvatarId(avatarId)
-                .setSpawnPos(spawnPos.toProto())
-                .setSpawnRot(spawnRot.toProto())
-                .setCostumeId(costumeId)
-                .build();
-    }
+	public static HomeNPCItem parseFrom(HomeNpcDataOuterClass.HomeNpcData homeNpcData) {
+		return HomeNPCItem
+			.of()
+			.avatarId(homeNpcData.getAvatarId())
+			.spawnPos(new Position(homeNpcData.getSpawnPos()))
+			.spawnRot(new Position(homeNpcData.getSpawnRot()))
+			.costumeId(homeNpcData.getCostumeId())
+			.build();
+	}
+
+	public HomeNpcDataOuterClass.HomeNpcData toProto() {
+		return HomeNpcDataOuterClass.HomeNpcData
+			.newBuilder()
+			.setAvatarId(avatarId)
+			.setSpawnPos(spawnPos.toProto())
+			.setSpawnRot(spawnRot.toProto())
+			.setCostumeId(costumeId)
+			.build();
+	}
 }

@@ -9,34 +9,35 @@ import java.util.List;
 
 public class PacketWidgetGadgetDataNotify extends BasePacket {
 
-    public PacketWidgetGadgetDataNotify(int gadgetId, List<Integer> gadgetEntityIdList)
-            throws IOException {
-        super(PacketOpcodes.WidgetGadgetDataNotify);
+	public PacketWidgetGadgetDataNotify(int gadgetId, List<Integer> gadgetEntityIdList) throws IOException {
+		super(PacketOpcodes.WidgetGadgetDataNotify);
+		WidgetGadgetDataNotifyOuterClass.WidgetGadgetDataNotify proto = WidgetGadgetDataNotifyOuterClass.WidgetGadgetDataNotify
+			.newBuilder()
+			.setWidgetGadgetData(
+				WidgetGadgetDataOuterClass.WidgetGadgetData
+					.newBuilder()
+					.setGadgetId(gadgetId)
+					.addAllGadgetEntityIdList(gadgetEntityIdList)
+					.build()
+			)
+			.build();
 
-        WidgetGadgetDataNotifyOuterClass.WidgetGadgetDataNotify proto =
-                WidgetGadgetDataNotifyOuterClass.WidgetGadgetDataNotify.newBuilder()
-                        .setWidgetGadgetData(
-                                WidgetGadgetDataOuterClass.WidgetGadgetData.newBuilder()
-                                        .setGadgetId(gadgetId)
-                                        .addAllGadgetEntityIdList(gadgetEntityIdList)
-                                        .build())
-                        .build();
+		this.setData(proto);
+	}
 
-        this.setData(proto);
-    }
+	public PacketWidgetGadgetDataNotify(int gadgetId, int gadgetEntityIdList) throws IOException {
+		super(PacketOpcodes.WidgetGadgetDataNotify);
+		WidgetGadgetDataNotifyOuterClass.WidgetGadgetDataNotify proto = WidgetGadgetDataNotifyOuterClass.WidgetGadgetDataNotify
+			.newBuilder()
+			.setWidgetGadgetData(
+				WidgetGadgetDataOuterClass.WidgetGadgetData
+					.newBuilder()
+					.setGadgetId(gadgetId)
+					.addGadgetEntityIdList(gadgetEntityIdList)
+					.build()
+			)
+			.build();
 
-    public PacketWidgetGadgetDataNotify(int gadgetId, int gadgetEntityIdList) throws IOException {
-        super(PacketOpcodes.WidgetGadgetDataNotify);
-
-        WidgetGadgetDataNotifyOuterClass.WidgetGadgetDataNotify proto =
-                WidgetGadgetDataNotifyOuterClass.WidgetGadgetDataNotify.newBuilder()
-                        .setWidgetGadgetData(
-                                WidgetGadgetDataOuterClass.WidgetGadgetData.newBuilder()
-                                        .setGadgetId(gadgetId)
-                                        .addGadgetEntityIdList(gadgetEntityIdList)
-                                        .build())
-                        .build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

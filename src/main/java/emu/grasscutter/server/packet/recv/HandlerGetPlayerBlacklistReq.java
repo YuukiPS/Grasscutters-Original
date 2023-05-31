@@ -9,8 +9,8 @@ import emu.grasscutter.server.game.GameSession;
 @Opcodes(PacketOpcodes.GetPlayerBlacklistReq)
 public class HandlerGetPlayerBlacklistReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        session.send(new BasePacket(PacketOpcodes.GetPlayerBlacklistRsp).buildHeader(3));
-    }
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		session.send(new BasePacket(PacketOpcodes.GetPlayerBlacklistRsp).buildHeader(3));
+	}
 }

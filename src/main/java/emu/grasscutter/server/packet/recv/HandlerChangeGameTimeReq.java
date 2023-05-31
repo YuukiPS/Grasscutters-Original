@@ -10,13 +10,11 @@ import emu.grasscutter.server.packet.send.PacketChangeGameTimeRsp;
 @Opcodes(PacketOpcodes.ChangeGameTimeReq)
 public class HandlerChangeGameTimeReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        var req = ChangeGameTimeReq.parseFrom(payload);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		var req = ChangeGameTimeReq.parseFrom(payload);
 
-        session.getPlayer().getWorld().changeTime(req.getGameTime(), req.getExtraDays());
-        session
-                .getPlayer()
-                .sendPacket(new PacketChangeGameTimeRsp(session.getPlayer(), req.getExtraDays()));
-    }
+		session.getPlayer().getWorld().changeTime(req.getGameTime(), req.getExtraDays());
+		session.getPlayer().sendPacket(new PacketChangeGameTimeRsp(session.getPlayer(), req.getExtraDays()));
+	}
 }

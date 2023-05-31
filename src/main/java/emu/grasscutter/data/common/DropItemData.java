@@ -5,9 +5,10 @@ import lombok.Getter;
 
 @Getter
 public class DropItemData {
-    @SerializedName(value = "itemId")
-    private int id;
 
-    private String countRange;
-    private int weight;
+	@SerializedName(value = "itemId")
+	private int id;
+
+	private String countRange;
+	private int weight;
 }

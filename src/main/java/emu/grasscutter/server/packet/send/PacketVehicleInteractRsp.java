@@ -12,62 +12,63 @@ import emu.grasscutter.net.proto.VehicleMemberOuterClass.VehicleMember;
 
 public class PacketVehicleInteractRsp extends BasePacket {
 
-    public PacketVehicleInteractRsp(Player player, int entityId, VehicleInteractType interactType) {
-        super(PacketOpcodes.VehicleInteractRsp);
-        VehicleInteractRsp.Builder proto = VehicleInteractRsp.newBuilder();
+	public PacketVehicleInteractRsp(Player player, int entityId, VehicleInteractType interactType) {
+		super(PacketOpcodes.VehicleInteractRsp);
+		VehicleInteractRsp.Builder proto = VehicleInteractRsp.newBuilder();
 
-        GameEntity vehicle = player.getScene().getEntityById(entityId);
+		GameEntity vehicle = player.getScene().getEntityById(entityId);
 
-        if (vehicle instanceof EntityVehicle) {
-            proto.setEntityId(vehicle.getId());
+		if (vehicle instanceof EntityVehicle) {
+			proto.setEntityId(vehicle.getId());
 
-            VehicleMember vehicleMember =
-                    VehicleMember.newBuilder()
-                            .setUid(player.getUid())
-                            .setAvatarGuid(player.getTeamManager().getCurrentCharacterGuid())
-                            .build();
+			VehicleMember vehicleMember = VehicleMember
+				.newBuilder()
+				.setUid(player.getUid())
+				.setAvatarGuid(player.getTeamManager().getCurrentCharacterGuid())
+				.build();
 
-            proto.setInteractType(interactType);
-            proto.setMember(vehicleMember);
+			proto.setInteractType(interactType);
+			proto.setMember(vehicleMember);
 
-            switch (interactType) {
-                case VEHICLE_INTERACT_TYPE_IN -> {
-                    ((EntityVehicle) vehicle).getVehicleMembers().add(vehicleMember);
-                    player
-                            .getQuestManager()
-                            .queueEvent(
-                                    QuestContent.QUEST_CONTENT_ENTER_VEHICLE,
-                                    ((EntityVehicle) vehicle).getGadgetId());
-                }
-                case VEHICLE_INTERACT_TYPE_OUT -> {
-                    ((EntityVehicle) vehicle).getVehicleMembers().remove(vehicleMember);
-                }
-                default -> {}
-            }
-        }
-        this.setData(proto.build());
-    }
+			switch (interactType) {
+				case VEHICLE_INTERACT_TYPE_IN -> {
+					((EntityVehicle) vehicle).getVehicleMembers().add(vehicleMember);
+					player
+						.getQuestManager()
+						.queueEvent(QuestContent.QUEST_CONTENT_ENTER_VEHICLE, ((EntityVehicle) vehicle).getGadgetId());
+				}
+				case VEHICLE_INTERACT_TYPE_OUT -> {
+					((EntityVehicle) vehicle).getVehicleMembers().remove(vehicleMember);
+				}
+				default -> {}
+			}
+		}
+		this.setData(proto.build());
+	}
 
-    public PacketVehicleInteractRsp(
-            EntityVehicle vehicle, VehicleMember vehicleMember, VehicleInteractType interactType) {
-        super(PacketOpcodes.VehicleInteractRsp);
-        VehicleInteractRsp.Builder proto = VehicleInteractRsp.newBuilder();
+	public PacketVehicleInteractRsp(
+		EntityVehicle vehicle,
+		VehicleMember vehicleMember,
+		VehicleInteractType interactType
+	) {
+		super(PacketOpcodes.VehicleInteractRsp);
+		VehicleInteractRsp.Builder proto = VehicleInteractRsp.newBuilder();
 
-        if (vehicle != null) {
-            proto.setEntityId(vehicle.getId());
-            proto.setInteractType(interactType);
-            proto.setMember(vehicleMember);
+		if (vehicle != null) {
+			proto.setEntityId(vehicle.getId());
+			proto.setInteractType(interactType);
+			proto.setMember(vehicleMember);
 
-            switch (interactType) {
-                case VEHICLE_INTERACT_TYPE_IN -> {
-                    vehicle.getVehicleMembers().add(vehicleMember);
-                }
-                case VEHICLE_INTERACT_TYPE_OUT -> {
-                    vehicle.getVehicleMembers().remove(vehicleMember);
-                }
-                default -> {}
-            }
-        }
-        this.setData(proto.build());
-    }
+			switch (interactType) {
+				case VEHICLE_INTERACT_TYPE_IN -> {
+					vehicle.getVehicleMembers().add(vehicleMember);
+				}
+				case VEHICLE_INTERACT_TYPE_OUT -> {
+					vehicle.getVehicleMembers().remove(vehicleMember);
+				}
+				default -> {}
+			}
+		}
+		this.setData(proto.build());
+	}
 }

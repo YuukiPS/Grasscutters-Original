@@ -9,17 +9,16 @@ import java.util.List;
 
 public class PacketWeaponUpgradeRsp extends BasePacket {
 
-    public PacketWeaponUpgradeRsp(GameItem item, int oldLevel, List<ItemParam> leftoverOres) {
-        super(PacketOpcodes.WeaponUpgradeRsp);
+	public PacketWeaponUpgradeRsp(GameItem item, int oldLevel, List<ItemParam> leftoverOres) {
+		super(PacketOpcodes.WeaponUpgradeRsp);
+		WeaponUpgradeRsp proto = WeaponUpgradeRsp
+			.newBuilder()
+			.setTargetWeaponGuid(item.getGuid())
+			.setCurLevel(item.getLevel())
+			.setOldLevel(oldLevel)
+			.addAllItemParamList(leftoverOres)
+			.build();
 
-        WeaponUpgradeRsp proto =
-                WeaponUpgradeRsp.newBuilder()
-                        .setTargetWeaponGuid(item.getGuid())
-                        .setCurLevel(item.getLevel())
-                        .setOldLevel(oldLevel)
-                        .addAllItemParamList(leftoverOres)
-                        .build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

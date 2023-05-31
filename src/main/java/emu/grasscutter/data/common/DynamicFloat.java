@@ -13,133 +13,134 @@ import lombok.val;
 
 @Getter
 public class DynamicFloat {
-    public static DynamicFloat ZERO = new DynamicFloat(0f);
-    public static DynamicFloat ONE = new DynamicFloat(1f);
 
-    private List<StackOp> ops;
-    private boolean dynamic = false;
-    private float constant = 0f;
+	public static DynamicFloat ZERO = new DynamicFloat(0f);
+	public static DynamicFloat ONE = new DynamicFloat(1f);
 
-    public DynamicFloat(float constant) {
-        this.constant = constant;
-    }
+	private List<StackOp> ops;
+	private boolean dynamic = false;
+	private float constant = 0f;
 
-    public DynamicFloat(String key) {
-        this.dynamic = true;
-        this.ops = List.of(new StackOp(key));
-    }
+	public DynamicFloat(float constant) {
+		this.constant = constant;
+	}
 
-    public DynamicFloat(boolean b) {
-        this.dynamic = true;
-        this.ops = List.of(new StackOp(String.valueOf(b)));
-    }
+	public DynamicFloat(String key) {
+		this.dynamic = true;
+		this.ops = List.of(new StackOp(key));
+	}
 
-    public DynamicFloat(List<StackOp> ops) {
-        this.dynamic = true;
-        this.ops = ops;
-    }
+	public DynamicFloat(boolean b) {
+		this.dynamic = true;
+		this.ops = List.of(new StackOp(String.valueOf(b)));
+	}
 
-    public String toString(boolean nextBoolean) {
-        var key = String.valueOf(nextBoolean);
-        this.ops = List.of(new StackOp(key));
-        return ops.toString();
-    }
+	public DynamicFloat(List<StackOp> ops) {
+		this.dynamic = true;
+		this.ops = ops;
+	}
 
-    public float get() {
-        return this.get(new Object2FloatArrayMap<>(), 0);
-    }
+	public String toString(boolean nextBoolean) {
+		var key = String.valueOf(nextBoolean);
+		this.ops = List.of(new StackOp(key));
+		return ops.toString();
+	}
 
-    public float get(float defaultValue) {
-        return this.get(new Object2FloatArrayMap<>(), defaultValue);
-    }
+	public float get() {
+		return this.get(new Object2FloatArrayMap<>(), 0);
+	}
 
-    public float get(Ability ability, float defaultValue) {
-        return this.get(ability.getAbilitySpecials(), defaultValue);
-    }
+	public float get(float defaultValue) {
+		return this.get(new Object2FloatArrayMap<>(), defaultValue);
+	}
 
-    public float get(Ability ability) {
-        return this.get(ability.getAbilitySpecials(), 0f);
-    }
+	public float get(Ability ability, float defaultValue) {
+		return this.get(ability.getAbilitySpecials(), defaultValue);
+	}
 
-    public float get(Object2FloatMap<String> props, float defaultValue) {
-        if (!this.dynamic) return constant;
+	public float get(Ability ability) {
+		return this.get(ability.getAbilitySpecials(), 0f);
+	}
 
-        val fl = new FloatArrayList();
-        for (var op : this.ops) {
-            switch (op.op) {
-                case CONSTANT -> fl.push(op.fValue);
-                case KEY -> fl.push(props.getOrDefault(op.sValue, 0f) * (op.negative ? -1 : 1));
-                case ADD -> fl.push(fl.popFloat() + fl.popFloat());
-                case SUB -> fl.push(
-                        -fl.popFloat() + fl.popFloat()); // [f0, f1, f2] -> [f0, f1-f2]  (opposite of RPN order)
-                case MUL -> fl.push(fl.popFloat() * fl.popFloat());
-                case DIV -> fl.push((1f / fl.popFloat()) * fl.popFloat()); // [f0, f1, f2] -> [f0, f1/f2]
-                case NEXBOOLEAN -> fl.push(props.getOrDefault(Optional.of(op.bValue), 0f));
-            }
-        }
+	public float get(Object2FloatMap<String> props, float defaultValue) {
+		if (!this.dynamic) return constant;
 
-        try {
-            return fl.popFloat(); // well-formed data will always have only one value left at this point
-        } catch (NoSuchElementException e) {
-            return defaultValue;
-        }
-    }
+		val fl = new FloatArrayList();
+		for (var op : this.ops) {
+			switch (op.op) {
+				case CONSTANT -> fl.push(op.fValue);
+				case KEY -> fl.push(props.getOrDefault(op.sValue, 0f) * (op.negative ? -1 : 1));
+				case ADD -> fl.push(fl.popFloat() + fl.popFloat());
+				case SUB -> fl.push(-fl.popFloat() + fl.popFloat()); // [f0, f1, f2] -> [f0, f1-f2]  (opposite of RPN order)
+				case MUL -> fl.push(fl.popFloat() * fl.popFloat());
+				case DIV -> fl.push((1f / fl.popFloat()) * fl.popFloat()); // [f0, f1, f2] -> [f0, f1/f2]
+				case NEXBOOLEAN -> fl.push(props.getOrDefault(Optional.of(op.bValue), 0f));
+			}
+		}
 
-    public float get(ProudSkillData skill) {
-        // Construct the map
-        return get(skill.getParamListMap(), 0f);
-    }
+		try {
+			return fl.popFloat(); // well-formed data will always have only one value left at this point
+		} catch (NoSuchElementException e) {
+			return defaultValue;
+		}
+	}
 
-    public float get(ProudSkillData skill, float defaultValue) {
-        // Construct the map
-        return get(skill.getParamListMap(), defaultValue);
-    }
+	public float get(ProudSkillData skill) {
+		// Construct the map
+		return get(skill.getParamListMap(), 0f);
+	}
 
-    public static class StackOp {
-        public Op op;
+	public float get(ProudSkillData skill, float defaultValue) {
+		// Construct the map
+		return get(skill.getParamListMap(), defaultValue);
+	}
 
-        public float fValue;
-        public String sValue;
-        public boolean bValue;
-        public boolean negative = false;
+	public static class StackOp {
 
-        public StackOp(String s) {
-            switch (s.toUpperCase()) {
-                case "ADD" -> this.op = Op.ADD;
-                case "SUB" -> this.op = Op.SUB;
-                case "MUL" -> this.op = Op.MUL;
-                case "DIV" -> this.op = Op.DIV;
-                default -> {
-                    if (s.startsWith("%")) {
-                        s = s.substring(1);
-                    } else if (s.startsWith("-%")) {
-                        s = s.substring(2);
-                    }
+		public Op op;
 
-                    this.op = Op.KEY;
-                    this.sValue = s;
-                }
-            }
-        }
+		public float fValue;
+		public String sValue;
+		public boolean bValue;
+		public boolean negative = false;
 
-        public StackOp(boolean b) {
-            this.op = Op.NEXBOOLEAN;
-            this.bValue = Boolean.parseBoolean(String.valueOf(b));
-        }
+		public StackOp(String s) {
+			switch (s.toUpperCase()) {
+				case "ADD" -> this.op = Op.ADD;
+				case "SUB" -> this.op = Op.SUB;
+				case "MUL" -> this.op = Op.MUL;
+				case "DIV" -> this.op = Op.DIV;
+				default -> {
+					if (s.startsWith("%")) {
+						s = s.substring(1);
+					} else if (s.startsWith("-%")) {
+						s = s.substring(2);
+					}
 
-        public StackOp(float f) {
-            this.op = Op.CONSTANT;
-            this.fValue = f;
-        }
+					this.op = Op.KEY;
+					this.sValue = s;
+				}
+			}
+		}
 
-        enum Op {
-            CONSTANT,
-            KEY,
-            ADD,
-            SUB,
-            MUL,
-            DIV,
-            NEXBOOLEAN
-        }
-    }
+		public StackOp(boolean b) {
+			this.op = Op.NEXBOOLEAN;
+			this.bValue = Boolean.parseBoolean(String.valueOf(b));
+		}
+
+		public StackOp(float f) {
+			this.op = Op.CONSTANT;
+			this.fValue = f;
+		}
+
+		enum Op {
+			CONSTANT,
+			KEY,
+			ADD,
+			SUB,
+			MUL,
+			DIV,
+			NEXBOOLEAN
+		}
+	}
 }

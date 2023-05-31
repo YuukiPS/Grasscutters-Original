@@ -8,9 +8,10 @@ import emu.grasscutter.server.game.GameSession;
 
 @Opcodes(PacketOpcodes.TakeCompoundOutputReq)
 public class HandlerTakeCompoundOutputReq extends PacketHandler {
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        var req = TakeCompoundOutputReqOuterClass.TakeCompoundOutputReq.parseFrom(payload);
-        session.getPlayer().getCookingCompoundManager().handleTakeCompoundOutputReq(req);
-    }
+
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		var req = TakeCompoundOutputReqOuterClass.TakeCompoundOutputReq.parseFrom(payload);
+		session.getPlayer().getCookingCompoundManager().handleTakeCompoundOutputReq(req);
+	}
 }

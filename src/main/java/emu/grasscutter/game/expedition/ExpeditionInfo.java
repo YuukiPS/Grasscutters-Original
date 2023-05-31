@@ -9,17 +9,19 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ExpeditionInfo {
-    private int state;
-    private int expId;
-    private int hourTime;
-    private int startTime;
 
-    public AvatarExpeditionInfo toProto() {
-        return AvatarExpeditionInfo.newBuilder()
-                .setStateValue(this.getState())
-                .setExpId(this.getExpId())
-                .setHourTime(this.getHourTime())
-                .setStartTime(this.getStartTime())
-                .build();
-    }
+	private int state;
+	private int expId;
+	private int hourTime;
+	private int startTime;
+
+	public AvatarExpeditionInfo toProto() {
+		return AvatarExpeditionInfo
+			.newBuilder()
+			.setStateValue(this.getState())
+			.setExpId(this.getExpId())
+			.setHourTime(this.getHourTime())
+			.setStartTime(this.getStartTime())
+			.build();
+	}
 }

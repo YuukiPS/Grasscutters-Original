@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class GadgetMapping {
-    private int gadgetId;
-    private String serverController;
+
+	private int gadgetId;
+	private String serverController;
 }

@@ -10,14 +10,14 @@ import emu.grasscutter.server.packet.send.PacketPlayerApplyEnterMpResultRsp;
 @Opcodes(PacketOpcodes.PlayerApplyEnterMpResultReq)
 public class HandlerPlayerApplyEnterMpResultReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        PlayerApplyEnterMpResultReq req = PlayerApplyEnterMpResultReq.parseFrom(payload);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		PlayerApplyEnterMpResultReq req = PlayerApplyEnterMpResultReq.parseFrom(payload);
 
-        session
-                .getServer()
-                .getMultiplayerSystem()
-                .applyEnterMpReply(session.getPlayer(), req.getApplyUid(), req.getIsAgreed());
-        session.send(new PacketPlayerApplyEnterMpResultRsp(req.getApplyUid(), req.getIsAgreed()));
-    }
+		session
+			.getServer()
+			.getMultiplayerSystem()
+			.applyEnterMpReply(session.getPlayer(), req.getApplyUid(), req.getIsAgreed());
+		session.send(new PacketPlayerApplyEnterMpResultRsp(req.getApplyUid(), req.getIsAgreed()));
+	}
 }

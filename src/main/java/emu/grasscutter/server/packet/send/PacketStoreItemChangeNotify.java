@@ -9,29 +9,28 @@ import java.util.Collection;
 
 public class PacketStoreItemChangeNotify extends BasePacket {
 
-    private PacketStoreItemChangeNotify() {
-        super(PacketOpcodes.StoreItemChangeNotify);
-    }
+	private PacketStoreItemChangeNotify() {
+		super(PacketOpcodes.StoreItemChangeNotify);
+	}
 
-    public PacketStoreItemChangeNotify(GameItem item) {
-        this();
+	public PacketStoreItemChangeNotify(GameItem item) {
+		this();
+		StoreItemChangeNotify.Builder proto = StoreItemChangeNotify
+			.newBuilder()
+			.setStoreType(StoreType.STORE_TYPE_PACK)
+			.addItemList(item.toProto());
 
-        StoreItemChangeNotify.Builder proto =
-                StoreItemChangeNotify.newBuilder()
-                        .setStoreType(StoreType.STORE_TYPE_PACK)
-                        .addItemList(item.toProto());
+		this.setData(proto);
+	}
 
-        this.setData(proto);
-    }
+	public PacketStoreItemChangeNotify(Collection<GameItem> items) {
+		this();
+		StoreItemChangeNotify.Builder proto = StoreItemChangeNotify
+			.newBuilder()
+			.setStoreType(StoreType.STORE_TYPE_PACK);
 
-    public PacketStoreItemChangeNotify(Collection<GameItem> items) {
-        this();
+		items.forEach(item -> proto.addItemList(item.toProto()));
 
-        StoreItemChangeNotify.Builder proto =
-                StoreItemChangeNotify.newBuilder().setStoreType(StoreType.STORE_TYPE_PACK);
-
-        items.forEach(item -> proto.addItemList(item.toProto()));
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

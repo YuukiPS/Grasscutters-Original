@@ -9,27 +9,25 @@ import java.util.Collection;
 
 public class PacketItemAddHintNotify extends BasePacket {
 
-    public PacketItemAddHintNotify(GameItem item, ActionReason reason) {
-        super(PacketOpcodes.ItemAddHintNotify);
+	public PacketItemAddHintNotify(GameItem item, ActionReason reason) {
+		super(PacketOpcodes.ItemAddHintNotify);
+		ItemAddHintNotify proto = ItemAddHintNotify
+			.newBuilder()
+			.addItemList(item.toItemHintProto())
+			.setReason(reason.getValue())
+			.build();
 
-        ItemAddHintNotify proto =
-                ItemAddHintNotify.newBuilder()
-                        .addItemList(item.toItemHintProto())
-                        .setReason(reason.getValue())
-                        .build();
+		this.setData(proto);
+	}
 
-        this.setData(proto);
-    }
+	public PacketItemAddHintNotify(Collection<GameItem> items, ActionReason reason) {
+		super(PacketOpcodes.ItemAddHintNotify);
+		ItemAddHintNotify.Builder proto = ItemAddHintNotify.newBuilder().setReason(reason.getValue());
 
-    public PacketItemAddHintNotify(Collection<GameItem> items, ActionReason reason) {
-        super(PacketOpcodes.ItemAddHintNotify);
+		for (GameItem item : items) {
+			proto.addItemList(item.toItemHintProto());
+		}
 
-        ItemAddHintNotify.Builder proto = ItemAddHintNotify.newBuilder().setReason(reason.getValue());
-
-        for (GameItem item : items) {
-            proto.addItemList(item.toItemHintProto());
-        }
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

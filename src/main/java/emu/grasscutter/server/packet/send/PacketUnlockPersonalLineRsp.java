@@ -7,23 +7,21 @@ import emu.grasscutter.net.proto.UnlockPersonalLineRspOuterClass;
 
 public class PacketUnlockPersonalLineRsp extends BasePacket {
 
-    public PacketUnlockPersonalLineRsp(int id, int level, int chapterId) {
-        super(PacketOpcodes.UnlockPersonalLineRsp);
+	public PacketUnlockPersonalLineRsp(int id, int level, int chapterId) {
+		super(PacketOpcodes.UnlockPersonalLineRsp);
+		var proto = UnlockPersonalLineRspOuterClass.UnlockPersonalLineRsp.newBuilder();
 
-        var proto = UnlockPersonalLineRspOuterClass.UnlockPersonalLineRsp.newBuilder();
+		proto.setPersonalLineId(id).setLevel(level).setChapterId(chapterId);
 
-        proto.setPersonalLineId(id).setLevel(level).setChapterId(chapterId);
+		this.setData(proto);
+	}
 
-        this.setData(proto);
-    }
+	public PacketUnlockPersonalLineRsp(int id, Retcode retCode) {
+		super(PacketOpcodes.UnlockPersonalLineRsp);
+		var proto = UnlockPersonalLineRspOuterClass.UnlockPersonalLineRsp.newBuilder();
 
-    public PacketUnlockPersonalLineRsp(int id, Retcode retCode) {
-        super(PacketOpcodes.UnlockPersonalLineRsp);
+		proto.setPersonalLineId(id).setRetcode(retCode.getNumber());
 
-        var proto = UnlockPersonalLineRspOuterClass.UnlockPersonalLineRsp.newBuilder();
-
-        proto.setPersonalLineId(id).setRetcode(retCode.getNumber());
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

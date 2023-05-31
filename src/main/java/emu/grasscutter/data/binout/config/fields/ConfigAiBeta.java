@@ -4,5 +4,6 @@ import lombok.Data;
 
 @Data
 public class ConfigAiBeta {
-    boolean enable;
+
+	boolean enable;
 }

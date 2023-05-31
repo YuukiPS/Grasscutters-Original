@@ -19,155 +19,159 @@ import org.bson.types.ObjectId;
 
 @Entity(value = "mail", useDiscriminator = false)
 public final class Mail {
-    @Id private ObjectId id;
-    @Indexed private int ownerUid;
-    public MailContent mailContent;
-    public List<MailItem> itemList;
-    public long sendTime;
-    public long expireTime;
-    public int importance;
-    public boolean isRead;
-    public boolean isAttachmentGot;
-    public int stateValue;
-    @Transient private boolean shouldDelete;
 
-    public Mail() {
-        this(
-                new MailContent(),
-                new ArrayList<MailItem>(),
-                (int) Instant.now().getEpochSecond()
-                        + 604800); // TODO: add expire time to send mail command
-    }
+	@Id
+	private ObjectId id;
 
-    public Mail(MailContent mailContent, List<MailItem> itemList, long expireTime) {
-        this(mailContent, itemList, expireTime, 0);
-    }
+	@Indexed
+	private int ownerUid;
 
-    public Mail(MailContent mailContent, List<MailItem> itemList, long expireTime, int importance) {
-        this(mailContent, itemList, expireTime, importance, 1);
-    }
+	public MailContent mailContent;
+	public List<MailItem> itemList;
+	public long sendTime;
+	public long expireTime;
+	public int importance;
+	public boolean isRead;
+	public boolean isAttachmentGot;
+	public int stateValue;
 
-    public Mail(
-            MailContent mailContent,
-            List<MailItem> itemList,
-            long expireTime,
-            int importance,
-            int state) {
-        this.mailContent = mailContent;
-        this.itemList = itemList;
-        this.sendTime = (int) Instant.now().getEpochSecond();
-        this.expireTime = expireTime;
-        this.importance = importance; // Starred mail, 0 = No star, 1 = Star.
-        this.isRead = false;
-        this.isAttachmentGot = false;
-        this.stateValue = state; // Different mailboxes, 1 = Default, 3 = Gift-box.
-    }
+	@Transient
+	private boolean shouldDelete;
 
-    public ObjectId getId() {
-        return id;
-    }
+	public Mail() {
+		this(new MailContent(), new ArrayList<MailItem>(), (int) Instant.now().getEpochSecond() + 604800); // TODO: add expire time to send mail command
+	}
 
-    public int getOwnerUid() {
-        return ownerUid;
-    }
+	public Mail(MailContent mailContent, List<MailItem> itemList, long expireTime) {
+		this(mailContent, itemList, expireTime, 0);
+	}
 
-    public void setOwnerUid(int ownerUid) {
-        this.ownerUid = ownerUid;
-    }
+	public Mail(MailContent mailContent, List<MailItem> itemList, long expireTime, int importance) {
+		this(mailContent, itemList, expireTime, importance, 1);
+	}
 
-    public MailDataOuterClass.MailData toProto(Player player) {
-        return MailDataOuterClass.MailData.newBuilder()
-                .setMailId(player.getMailId(this))
-                .setMailTextContent(this.mailContent.toProto())
-                .addAllItemList(this.itemList.stream().map(MailItem::toProto).toList())
-                .setSendTime((int) this.sendTime)
-                .setExpireTime((int) this.expireTime)
-                .setImportance(this.importance)
-                .setIsRead(this.isRead)
-                .setIsAttachmentGot(this.isAttachmentGot)
-                .setCollectState(MailCollectState.MAIL_COLLECT_STATE_NOT_COLLECTIBLE)
-                .build();
-    }
+	public Mail(MailContent mailContent, List<MailItem> itemList, long expireTime, int importance, int state) {
+		this.mailContent = mailContent;
+		this.itemList = itemList;
+		this.sendTime = (int) Instant.now().getEpochSecond();
+		this.expireTime = expireTime;
+		this.importance = importance; // Starred mail, 0 = No star, 1 = Star.
+		this.isRead = false;
+		this.isAttachmentGot = false;
+		this.stateValue = state; // Different mailboxes, 1 = Default, 3 = Gift-box.
+	}
 
-    @Entity
-    public static class MailContent {
-        public String title;
-        public String content;
-        public String sender;
+	public ObjectId getId() {
+		return id;
+	}
 
-        public MailContent() {
-            this.title = "";
-            this.content = "loading...";
-            this.sender = "loading";
-        }
+	public int getOwnerUid() {
+		return ownerUid;
+	}
 
-        public MailContent(String title, String content) {
-            this(title, content, "Server");
-        }
+	public void setOwnerUid(int ownerUid) {
+		this.ownerUid = ownerUid;
+	}
 
-        public MailContent(String title, String content, Player sender) {
-            this(title, content, sender.getNickname());
-        }
+	public MailDataOuterClass.MailData toProto(Player player) {
+		return MailDataOuterClass.MailData
+			.newBuilder()
+			.setMailId(player.getMailId(this))
+			.setMailTextContent(this.mailContent.toProto())
+			.addAllItemList(this.itemList.stream().map(MailItem::toProto).toList())
+			.setSendTime((int) this.sendTime)
+			.setExpireTime((int) this.expireTime)
+			.setImportance(this.importance)
+			.setIsRead(this.isRead)
+			.setIsAttachmentGot(this.isAttachmentGot)
+			.setCollectState(MailCollectState.MAIL_COLLECT_STATE_NOT_COLLECTIBLE)
+			.build();
+	}
 
-        public MailContent(String title, String content, String sender) {
-            this.title = title;
-            this.content = content;
-            this.sender = sender;
-        }
+	@Entity
+	public static class MailContent {
 
-        public MailTextContent toProto() {
-            return MailTextContent.newBuilder()
-                    .setTitle(this.title)
-                    .setContent(this.content)
-                    .setSender(this.sender)
-                    .build();
-        }
-    }
+		public String title;
+		public String content;
+		public String sender;
 
-    @Entity
-    public static class MailItem {
-        public int itemId;
-        public int itemCount;
-        public int itemLevel;
+		public MailContent() {
+			this.title = "";
+			this.content = "loading...";
+			this.sender = "loading";
+		}
 
-        public MailItem() {
-            this.itemId = 11101;
-            this.itemCount = 1;
-            this.itemLevel = 1;
-        }
+		public MailContent(String title, String content) {
+			this(title, content, "Server");
+		}
 
-        public MailItem(int itemId) {
-            this(itemId, 1);
-        }
+		public MailContent(String title, String content, Player sender) {
+			this(title, content, sender.getNickname());
+		}
 
-        public MailItem(int itemId, int itemCount) {
-            this(itemId, itemCount, 1);
-        }
+		public MailContent(String title, String content, String sender) {
+			this.title = title;
+			this.content = content;
+			this.sender = sender;
+		}
 
-        public MailItem(int itemId, int itemCount, int itemLevel) {
-            this.itemId = itemId;
-            this.itemCount = itemCount;
-            this.itemLevel = itemLevel;
-        }
+		public MailTextContent toProto() {
+			return MailTextContent
+				.newBuilder()
+				.setTitle(this.title)
+				.setContent(this.content)
+				.setSender(this.sender)
+				.build();
+		}
+	}
 
-        public MailItemOuterClass.MailItem toProto() {
-            return newBuilder()
-                    .setEquipParam(
-                            EquipParam.newBuilder()
-                                    .setItemId(this.itemId)
-                                    .setItemNum(this.itemCount)
-                                    .setItemLevel(this.itemLevel)
-                                    .setPromoteLevel(0) // mock
-                                    .build())
-                    .build();
-        }
-    }
+	@Entity
+	public static class MailItem {
 
-    public void save() {
-        if (this.expireTime * 1000 < System.currentTimeMillis()) {
-            DatabaseHelper.deleteMail(this);
-        } else {
-            DatabaseHelper.saveMail(this);
-        }
-    }
+		public int itemId;
+		public int itemCount;
+		public int itemLevel;
+
+		public MailItem() {
+			this.itemId = 11101;
+			this.itemCount = 1;
+			this.itemLevel = 1;
+		}
+
+		public MailItem(int itemId) {
+			this(itemId, 1);
+		}
+
+		public MailItem(int itemId, int itemCount) {
+			this(itemId, itemCount, 1);
+		}
+
+		public MailItem(int itemId, int itemCount, int itemLevel) {
+			this.itemId = itemId;
+			this.itemCount = itemCount;
+			this.itemLevel = itemLevel;
+		}
+
+		public MailItemOuterClass.MailItem toProto() {
+			return newBuilder()
+				.setEquipParam(
+					EquipParam
+						.newBuilder()
+						.setItemId(this.itemId)
+						.setItemNum(this.itemCount)
+						.setItemLevel(this.itemLevel)
+						.setPromoteLevel(0) // mock
+						.build()
+				)
+				.build();
+		}
+	}
+
+	public void save() {
+		if (this.expireTime * 1000 < System.currentTimeMillis()) {
+			DatabaseHelper.deleteMail(this);
+		} else {
+			DatabaseHelper.saveMail(this);
+		}
+	}
 }

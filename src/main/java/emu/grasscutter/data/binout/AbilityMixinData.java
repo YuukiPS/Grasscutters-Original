@@ -9,27 +9,28 @@ import java.util.Arrays;
 import java.util.List;
 
 public class AbilityMixinData implements Serializable {
-    private static final long serialVersionUID = -2001232313615923575L;
 
-    public enum Type {
-        AttachToGadgetStateMixin,
-        AttachToStateIDMixin,
-        ShieldBarMixin,
-        TileAttackManagerMixin;
-    }
+	private static final long serialVersionUID = -2001232313615923575L;
 
-    @SerializedName("$type")
-    public Type type;
+	public enum Type {
+		AttachToGadgetStateMixin,
+		AttachToStateIDMixin,
+		ShieldBarMixin,
+		TileAttackManagerMixin
+	}
 
-    private JsonElement modifierName;
+	@SerializedName("$type")
+	public Type type;
 
-    public List<String> getModifierNames() {
-        if (modifierName.isJsonArray()) {
-            java.lang.reflect.Type listType = (new TypeToken<List<String>>() {}).getType();
-            List<String> list = (new Gson()).fromJson(modifierName, listType);
-            return list;
-        } else {
-            return Arrays.asList(modifierName.getAsString());
-        }
-    }
+	private JsonElement modifierName;
+
+	public List<String> getModifierNames() {
+		if (modifierName.isJsonArray()) {
+			java.lang.reflect.Type listType = (new TypeToken<List<String>>() {}).getType();
+			List<String> list = (new Gson()).fromJson(modifierName, listType);
+			return list;
+		} else {
+			return Arrays.asList(modifierName.getAsString());
+		}
+	}
 }

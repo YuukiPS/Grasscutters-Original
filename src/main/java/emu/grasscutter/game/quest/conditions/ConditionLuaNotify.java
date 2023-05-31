@@ -10,15 +10,16 @@ import lombok.val;
 @QuestValueCond(QUEST_COND_LUA_NOTIFY)
 public class ConditionLuaNotify extends BaseCondition {
 
-    @Override
-    public boolean execute(
-            Player owner,
-            QuestData questData,
-            QuestData.QuestAcceptCondition condition,
-            String paramStr,
-            int... params) {
-        val triggerId = Integer.parseInt(paramStr);
-        val targetTrigger = condition.getParam()[0];
-        return targetTrigger == triggerId;
-    }
+	@Override
+	public boolean execute(
+		Player owner,
+		QuestData questData,
+		QuestData.QuestAcceptCondition condition,
+		String paramStr,
+		int... params
+	) {
+		val triggerId = Integer.parseInt(paramStr);
+		val targetTrigger = condition.getParam()[0];
+		return targetTrigger == triggerId;
+	}
 }

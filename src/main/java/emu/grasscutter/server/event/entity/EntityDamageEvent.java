@@ -9,19 +9,28 @@ import lombok.Getter;
 import lombok.Setter;
 
 public final class EntityDamageEvent extends EntityEvent implements Cancellable {
-    @Getter @Setter private float damage;
-    @Getter @Setter private ElementType attackElementType;
-    @Getter @Nullable private final GameEntity damager;
 
-    public EntityDamageEvent(
-            GameEntity entity,
-            float damage,
-            ElementType attackElementType,
-            @Nullable GameEntity damager) {
-        super(entity);
+	@Getter
+	@Setter
+	private float damage;
 
-        this.damage = damage;
-        this.attackElementType = attackElementType;
-        this.damager = damager;
-    }
+	@Getter
+	@Setter
+	private ElementType attackElementType;
+
+	@Getter
+	@Nullable
+	private final GameEntity damager;
+
+	public EntityDamageEvent(
+		GameEntity entity,
+		float damage,
+		ElementType attackElementType,
+		@Nullable GameEntity damager
+	) {
+		super(entity);
+		this.damage = damage;
+		this.attackElementType = attackElementType;
+		this.damager = damager;
+	}
 }

@@ -7,13 +7,12 @@ import emu.grasscutter.net.proto.FireworkSetNotifyOuterClass;
 
 public class PacketFireworkSetNotify extends BasePacket {
 
-    public PacketFireworkSetNotify(FireworkSetDataOuterClass.FireworkSetData notify) {
-        super(PacketOpcodes.FireworkSetNotify);
+	public PacketFireworkSetNotify(FireworkSetDataOuterClass.FireworkSetData notify) {
+		super(PacketOpcodes.FireworkSetNotify);
+		var proto = FireworkSetNotifyOuterClass.FireworkSetNotify.newBuilder();
 
-        var proto = FireworkSetNotifyOuterClass.FireworkSetNotify.newBuilder();
+		proto.setCode(1).addData(notify);
 
-        proto.setCode(1).addData(notify);
-
-        setData(proto.build());
-    }
+		setData(proto.build());
+	}
 }

@@ -11,16 +11,16 @@ import emu.grasscutter.server.packet.send.PacketGetPlayerSocialDetailRsp;
 @Opcodes(PacketOpcodes.GetPlayerSocialDetailReq)
 public class HandlerGetPlayerSocialDetailReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        GetPlayerSocialDetailReq req = GetPlayerSocialDetailReq.parseFrom(payload);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		GetPlayerSocialDetailReq req = GetPlayerSocialDetailReq.parseFrom(payload);
 
-        SocialDetail.Builder detail = session.getServer().getSocialDetailByUid(req.getUid());
+		SocialDetail.Builder detail = session.getServer().getSocialDetailByUid(req.getUid());
 
-        if (detail != null) {
-            detail.setIsFriend(session.getPlayer().getFriendsList().isFriendsWith(req.getUid()));
-        }
+		if (detail != null) {
+			detail.setIsFriend(session.getPlayer().getFriendsList().isFriendsWith(req.getUid()));
+		}
 
-        session.send(new PacketGetPlayerSocialDetailRsp(detail));
-    }
+		session.send(new PacketGetPlayerSocialDetailRsp(detail));
+	}
 }

@@ -7,12 +7,10 @@ import emu.grasscutter.net.proto.MonsterForceAlertNotifyOuterClass.MonsterForceA
 // Sets openState to value
 public class PacketMonsterForceAlertNotify extends BasePacket {
 
-    public PacketMonsterForceAlertNotify(int monsterId) {
-        super(PacketOpcodes.MonsterForceAlertNotify);
+	public PacketMonsterForceAlertNotify(int monsterId) {
+		super(PacketOpcodes.MonsterForceAlertNotify);
+		MonsterForceAlertNotify proto = MonsterForceAlertNotify.newBuilder().setMonsterEntityId(monsterId).build();
 
-        MonsterForceAlertNotify proto =
-                MonsterForceAlertNotify.newBuilder().setMonsterEntityId(monsterId).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

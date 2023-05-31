@@ -8,12 +8,13 @@ import java.util.List;
 
 public class PacketClientAbilitiesInitFinishCombineNotify extends BasePacket {
 
-    public PacketClientAbilitiesInitFinishCombineNotify(List<EntityAbilityInvokeEntry> entries) {
-        super(PacketOpcodes.ClientAbilitiesInitFinishCombineNotify, true);
+	public PacketClientAbilitiesInitFinishCombineNotify(List<EntityAbilityInvokeEntry> entries) {
+		super(PacketOpcodes.ClientAbilitiesInitFinishCombineNotify, true);
+		ClientAbilitiesInitFinishCombineNotify proto = ClientAbilitiesInitFinishCombineNotify
+			.newBuilder()
+			.addAllEntityInvokeList(entries)
+			.build();
 
-        ClientAbilitiesInitFinishCombineNotify proto =
-                ClientAbilitiesInitFinishCombineNotify.newBuilder().addAllEntityInvokeList(entries).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

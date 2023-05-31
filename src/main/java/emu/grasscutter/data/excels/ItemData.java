@@ -19,137 +19,142 @@ import java.util.Objects;
 import lombok.Getter;
 
 @ResourceType(
-        name = {
-            "MaterialExcelConfigData.json",
-            "WeaponExcelConfigData.json",
-            "ReliquaryExcelConfigData.json",
-            "HomeWorldFurnitureExcelConfigData.json"
-        })
+	name = {
+		"MaterialExcelConfigData.json",
+		"WeaponExcelConfigData.json",
+		"ReliquaryExcelConfigData.json",
+		"HomeWorldFurnitureExcelConfigData.json"
+	}
+)
 @Getter
 public class ItemData extends GameResource {
-    // Main
-    @Getter(onMethod_ = @Override)
-    private int id;
 
-    private int stackLimit = 1;
-    private int maxUseCount;
-    private int rankLevel;
-    private String effectName;
-    private int rank;
-    private int weight;
-    private int gadgetId;
-    private String icon;
+	// Main
+	@Getter(onMethod_ = @Override)
+	private int id;
 
-    private int[] destroyReturnMaterial;
-    private int[] destroyReturnMaterialCount;
+	private int stackLimit = 1;
+	private int maxUseCount;
+	private int rankLevel;
+	private String effectName;
+	private int rank;
+	private int weight;
+	private int gadgetId;
+	private String icon;
 
-    // Enums
-    private ItemType itemType = ItemType.ITEM_NONE;
-    private MaterialType materialType = MaterialType.MATERIAL_NONE;
-    private EquipType equipType = EquipType.EQUIP_NONE;
-    private String effectType;
-    private String destroyRule;
+	private int[] destroyReturnMaterial;
+	private int[] destroyReturnMaterialCount;
 
-    // Food
-    private String foodQuality;
-    private int[] satiationParams;
+	// Enums
+	private ItemType itemType = ItemType.ITEM_NONE;
+	private MaterialType materialType = MaterialType.MATERIAL_NONE;
+	private EquipType equipType = EquipType.EQUIP_NONE;
+	private String effectType;
+	private String destroyRule;
 
-    // Usable item
-    private ItemUseTarget useTarget = ItemUseTarget.ITEM_USE_TARGET_NONE;
-    private List<ItemUseData> itemUse;
-    private List<ItemUseAction> itemUseActions;
-    private boolean useOnGain = false;
+	// Food
+	private String foodQuality;
+	private int[] satiationParams;
 
-    // Relic
-    private int mainPropDepotId;
-    private int appendPropDepotId;
-    private int appendPropNum;
-    private int setId;
-    private int[] addPropLevels;
-    private int baseConvExp;
-    private int maxLevel;
+	// Usable item
+	private ItemUseTarget useTarget = ItemUseTarget.ITEM_USE_TARGET_NONE;
+	private List<ItemUseData> itemUse;
+	private List<ItemUseAction> itemUseActions;
+	private boolean useOnGain = false;
 
-    // Weapon
-    private int weaponPromoteId;
-    private int weaponBaseExp;
-    private int storyId;
-    private int avatarPromoteId;
-    private int awakenMaterial;
-    private int[] awakenCosts;
-    private int[] skillAffix;
-    private WeaponProperty[] weaponProp;
+	// Relic
+	private int mainPropDepotId;
+	private int appendPropDepotId;
+	private int appendPropNum;
+	private int setId;
+	private int[] addPropLevels;
+	private int baseConvExp;
+	private int maxLevel;
 
-    // Hash
-    private long nameTextMapHash;
+	// Weapon
+	private int weaponPromoteId;
+	private int weaponBaseExp;
+	private int storyId;
+	private int avatarPromoteId;
+	private int awakenMaterial;
+	private int[] awakenCosts;
+	private int[] skillAffix;
+	private WeaponProperty[] weaponProp;
 
-    // Furniture
-    private int comfort;
-    private List<Integer> furnType;
-    private List<Integer> furnitureGadgetID;
+	// Hash
+	private long nameTextMapHash;
 
-    @SerializedName(
-            value = "roomSceneId",
-            alternate = {"BMEPAMCNABE", "DANFGGLKLNO", "JFDLJGDFIGL", "OHIANNAEEAK", "MFGACDIOHGF"})
-    private int roomSceneId;
+	// Furniture
+	private int comfort;
+	private List<Integer> furnType;
+	private List<Integer> furnitureGadgetID;
 
-    // Custom
-    private transient IntSet addPropLevelSet;
+	@SerializedName(
+		value = "roomSceneId",
+		alternate = { "BMEPAMCNABE", "DANFGGLKLNO", "JFDLJGDFIGL", "OHIANNAEEAK", "MFGACDIOHGF" }
+	)
+	private int roomSceneId;
 
-    public WeaponProperty[] getWeaponProperties() {
-        return this.weaponProp;
-    }
+	// Custom
+	private transient IntSet addPropLevelSet;
 
-    public boolean canAddRelicProp(int level) {
-        return this.addPropLevelSet != null && this.addPropLevelSet.contains(level);
-    }
+	public WeaponProperty[] getWeaponProperties() {
+		return this.weaponProp;
+	}
 
-    public boolean isEquip() {
-        return this.itemType == ItemType.ITEM_RELIQUARY || this.itemType == ItemType.ITEM_WEAPON;
-    }
+	public boolean canAddRelicProp(int level) {
+		return this.addPropLevelSet != null && this.addPropLevelSet.contains(level);
+	}
 
-    @Override
-    public void onLoad() {
-        if (this.itemType == ItemType.ITEM_RELIQUARY) {
-            if (this.addPropLevels != null && this.addPropLevels.length > 0) {
-                this.addPropLevelSet = new IntOpenHashSet(this.addPropLevels);
-            }
-        } else if (this.itemType == ItemType.ITEM_WEAPON) {
-            this.equipType = EquipType.EQUIP_WEAPON;
-        } else {
-            this.equipType = EquipType.EQUIP_NONE;
-        }
+	public boolean isEquip() {
+		return this.itemType == ItemType.ITEM_RELIQUARY || this.itemType == ItemType.ITEM_WEAPON;
+	}
 
-        if (this.weaponProp != null) {
-            this.weaponProp =
-                    Arrays.stream(this.weaponProp)
-                            .filter(prop -> prop.getPropType() != null)
-                            .toArray(WeaponProperty[]::new);
-        }
+	@Override
+	public void onLoad() {
+		if (this.itemType == ItemType.ITEM_RELIQUARY) {
+			if (this.addPropLevels != null && this.addPropLevels.length > 0) {
+				this.addPropLevelSet = new IntOpenHashSet(this.addPropLevels);
+			}
+		} else if (this.itemType == ItemType.ITEM_WEAPON) {
+			this.equipType = EquipType.EQUIP_WEAPON;
+		} else {
+			this.equipType = EquipType.EQUIP_NONE;
+		}
 
-        if (this.getFurnType() != null) {
-            this.furnType = this.furnType.stream().filter(x -> x > 0).toList();
-        }
-        if (this.getFurnitureGadgetID() != null) {
-            this.furnitureGadgetID = this.furnitureGadgetID.stream().filter(x -> x > 0).toList();
-        }
+		if (this.weaponProp != null) {
+			this.weaponProp =
+				Arrays
+					.stream(this.weaponProp)
+					.filter(prop -> prop.getPropType() != null)
+					.toArray(WeaponProperty[]::new);
+		}
 
-        // Prevent material type from being null
-        this.materialType = this.materialType == null ? MaterialType.MATERIAL_NONE : this.materialType;
+		if (this.getFurnType() != null) {
+			this.furnType = this.furnType.stream().filter(x -> x > 0).toList();
+		}
+		if (this.getFurnitureGadgetID() != null) {
+			this.furnitureGadgetID = this.furnitureGadgetID.stream().filter(x -> x > 0).toList();
+		}
 
-        if (this.itemUse != null && !this.itemUse.isEmpty()) {
-            this.itemUseActions =
-                    this.itemUse.stream()
-                            .filter(x -> x.getUseOp() != ItemUseOp.ITEM_USE_NONE)
-                            .map(ItemUseAction::fromItemUseData)
-                            .filter(Objects::nonNull)
-                            .toList();
-        }
-    }
+		// Prevent material type from being null
+		this.materialType = this.materialType == null ? MaterialType.MATERIAL_NONE : this.materialType;
 
-    @Getter
-    public static class WeaponProperty {
-        private FightProperty propType;
-        private float initValue;
-        private String type;
-    }
+		if (this.itemUse != null && !this.itemUse.isEmpty()) {
+			this.itemUseActions =
+				this.itemUse.stream()
+					.filter(x -> x.getUseOp() != ItemUseOp.ITEM_USE_NONE)
+					.map(ItemUseAction::fromItemUseData)
+					.filter(Objects::nonNull)
+					.toList();
+		}
+	}
+
+	@Getter
+	public static class WeaponProperty {
+
+		private FightProperty propType;
+		private float initValue;
+		private String type;
+	}
 }

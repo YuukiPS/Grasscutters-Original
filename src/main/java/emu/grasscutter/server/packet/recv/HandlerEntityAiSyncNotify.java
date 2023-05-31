@@ -10,12 +10,12 @@ import emu.grasscutter.server.packet.send.PacketEntityAiSyncNotify;
 @Opcodes(PacketOpcodes.EntityAiSyncNotify)
 public class HandlerEntityAiSyncNotify extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        EntityAiSyncNotify notify = EntityAiSyncNotify.parseFrom(payload);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		EntityAiSyncNotify notify = EntityAiSyncNotify.parseFrom(payload);
 
-        if (notify.getLocalAvatarAlertedMonsterListCount() > 0) {
-            session.getPlayer().getScene().broadcastPacket(new PacketEntityAiSyncNotify(notify));
-        }
-    }
+		if (notify.getLocalAvatarAlertedMonsterListCount() > 0) {
+			session.getPlayer().getScene().broadcastPacket(new PacketEntityAiSyncNotify(notify));
+		}
+	}
 }

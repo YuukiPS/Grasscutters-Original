@@ -6,11 +6,10 @@ import emu.grasscutter.net.proto.UnlockNameCardNotifyOuterClass.UnlockNameCardNo
 
 public class PacketUnlockNameCardNotify extends BasePacket {
 
-    public PacketUnlockNameCardNotify(int nameCard) {
-        super(PacketOpcodes.UnlockNameCardNotify);
+	public PacketUnlockNameCardNotify(int nameCard) {
+		super(PacketOpcodes.UnlockNameCardNotify);
+		UnlockNameCardNotify proto = UnlockNameCardNotify.newBuilder().setNameCardId(nameCard).build();
 
-        UnlockNameCardNotify proto = UnlockNameCardNotify.newBuilder().setNameCardId(nameCard).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

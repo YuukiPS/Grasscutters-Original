@@ -6,11 +6,10 @@ import emu.grasscutter.net.proto.QuestDelNotifyOuterClass.QuestDelNotify;
 
 public class PacketDelQuestNotify extends BasePacket {
 
-    public PacketDelQuestNotify(int questId) {
-        super(PacketOpcodes.QuestDelNotify);
+	public PacketDelQuestNotify(int questId) {
+		super(PacketOpcodes.QuestDelNotify);
+		QuestDelNotify proto = QuestDelNotify.newBuilder().setQuestId(questId).build();
 
-        QuestDelNotify proto = QuestDelNotify.newBuilder().setQuestId(questId).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

@@ -10,245 +10,243 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import java.util.List;
 
 public class FriendsList extends BasePlayerManager {
-    private final Int2ObjectMap<Friendship> friends;
-    private final Int2ObjectMap<Friendship> pendingFriends;
 
-    private boolean loaded = false;
+	private final Int2ObjectMap<Friendship> friends;
+	private final Int2ObjectMap<Friendship> pendingFriends;
 
-    public FriendsList(Player player) {
-        super(player);
-        this.friends = new Int2ObjectOpenHashMap<Friendship>();
-        this.pendingFriends = new Int2ObjectOpenHashMap<Friendship>();
-    }
+	private boolean loaded = false;
 
-    public boolean hasLoaded() {
-        return loaded;
-    }
+	public FriendsList(Player player) {
+		super(player);
+		this.friends = new Int2ObjectOpenHashMap<Friendship>();
+		this.pendingFriends = new Int2ObjectOpenHashMap<Friendship>();
+	}
 
-    public synchronized Int2ObjectMap<Friendship> getFriends() {
-        return friends;
-    }
+	public boolean hasLoaded() {
+		return loaded;
+	}
 
-    public synchronized Int2ObjectMap<Friendship> getPendingFriends() {
-        return this.pendingFriends;
-    }
+	public synchronized Int2ObjectMap<Friendship> getFriends() {
+		return friends;
+	}
 
-    public synchronized boolean isFriendsWith(int uid) {
-        return this.getFriends().containsKey(uid);
-    }
+	public synchronized Int2ObjectMap<Friendship> getPendingFriends() {
+		return this.pendingFriends;
+	}
 
-    private synchronized Friendship getFriendshipById(int id) {
-        Friendship friendship = this.getFriends().get(id);
-        if (friendship == null) {
-            friendship = this.getPendingFriendById(id);
-        }
-        return friendship;
-    }
+	public synchronized boolean isFriendsWith(int uid) {
+		return this.getFriends().containsKey(uid);
+	}
 
-    private synchronized Friendship getFriendById(int id) {
-        return this.getFriends().get(id);
-    }
+	private synchronized Friendship getFriendshipById(int id) {
+		Friendship friendship = this.getFriends().get(id);
+		if (friendship == null) {
+			friendship = this.getPendingFriendById(id);
+		}
+		return friendship;
+	}
 
-    private synchronized Friendship getPendingFriendById(int id) {
-        return this.getPendingFriends().get(id);
-    }
+	private synchronized Friendship getFriendById(int id) {
+		return this.getFriends().get(id);
+	}
 
-    public void addFriend(Friendship friendship) {
-        getFriends().put(friendship.getFriendId(), friendship);
-    }
+	private synchronized Friendship getPendingFriendById(int id) {
+		return this.getPendingFriends().get(id);
+	}
 
-    public void addPendingFriend(Friendship friendship) {
-        getPendingFriends().put(friendship.getFriendId(), friendship);
-    }
+	public void addFriend(Friendship friendship) {
+		getFriends().put(friendship.getFriendId(), friendship);
+	}
 
-    public synchronized void handleFriendRequest(int targetUid, DealAddFriendResultType result) {
-        // Check if player has sent friend request
-        Friendship myFriendship = this.getPendingFriendById(targetUid);
-        if (myFriendship == null) {
-            return;
-        }
+	public void addPendingFriend(Friendship friendship) {
+		getPendingFriends().put(friendship.getFriendId(), friendship);
+	}
 
-        // Make sure asker cant do anything
-        if (myFriendship.getAskerId() == this.getPlayer().getUid()) {
-            return;
-        }
+	public synchronized void handleFriendRequest(int targetUid, DealAddFriendResultType result) {
+		// Check if player has sent friend request
+		Friendship myFriendship = this.getPendingFriendById(targetUid);
+		if (myFriendship == null) {
+			return;
+		}
 
-        Player target = getPlayer().getSession().getServer().getPlayerByUid(targetUid, true);
-        if (target == null) {
-            return; // Should never happen
-        }
+		// Make sure asker cant do anything
+		if (myFriendship.getAskerId() == this.getPlayer().getUid()) {
+			return;
+		}
 
-        // Get target's friendship
-        Friendship theirFriendship = null;
-        if (target.isOnline()) {
-            theirFriendship = target.getFriendsList().getPendingFriendById(this.getPlayer().getUid());
-        } else {
-            theirFriendship = DatabaseHelper.getReverseFriendship(myFriendship);
-        }
+		Player target = getPlayer().getSession().getServer().getPlayerByUid(targetUid, true);
+		if (target == null) {
+			return; // Should never happen
+		}
 
-        if (theirFriendship == null) {
-            // They dont have us on their friends list anymore, rip
-            this.getPendingFriends().remove(myFriendship.getOwnerId());
-            myFriendship.delete();
-            return;
-        }
+		// Get target's friendship
+		Friendship theirFriendship = null;
+		if (target.isOnline()) {
+			theirFriendship = target.getFriendsList().getPendingFriendById(this.getPlayer().getUid());
+		} else {
+			theirFriendship = DatabaseHelper.getReverseFriendship(myFriendship);
+		}
 
-        // Handle
-        if (result == DealAddFriendResultType.DEAL_ADD_FRIEND_RESULT_TYPE_ACCEPT) { // Request accepted
-            myFriendship.setIsFriend(true);
-            theirFriendship.setIsFriend(true);
+		if (theirFriendship == null) {
+			// They dont have us on their friends list anymore, rip
+			this.getPendingFriends().remove(myFriendship.getOwnerId());
+			myFriendship.delete();
+			return;
+		}
 
-            this.getPendingFriends().remove(myFriendship.getOwnerId());
-            this.addFriend(myFriendship);
+		// Handle
+		if (result == DealAddFriendResultType.DEAL_ADD_FRIEND_RESULT_TYPE_ACCEPT) { // Request accepted
+			myFriendship.setIsFriend(true);
+			theirFriendship.setIsFriend(true);
 
-            if (target.isOnline()) {
-                target.getFriendsList().getPendingFriends().remove(this.getPlayer().getUid());
-                target.getFriendsList().addFriend(theirFriendship);
-            }
+			this.getPendingFriends().remove(myFriendship.getOwnerId());
+			this.addFriend(myFriendship);
 
-            myFriendship.save();
-            theirFriendship.save();
-        } else { // Request declined
-            // Delete from my pending friends
-            this.getPendingFriends().remove(myFriendship.getOwnerId());
-            myFriendship.delete();
-            // Delete from target uid
-            if (target.isOnline()) {
-                theirFriendship = target.getFriendsList().getPendingFriendById(this.getPlayer().getUid());
-            }
-            theirFriendship.delete();
-        }
+			if (target.isOnline()) {
+				target.getFriendsList().getPendingFriends().remove(this.getPlayer().getUid());
+				target.getFriendsList().addFriend(theirFriendship);
+			}
 
-        // Packet
-        this.getPlayer().sendPacket(new PacketDealAddFriendRsp(targetUid, result));
-    }
+			myFriendship.save();
+			theirFriendship.save();
+		} else { // Request declined
+			// Delete from my pending friends
+			this.getPendingFriends().remove(myFriendship.getOwnerId());
+			myFriendship.delete();
+			// Delete from target uid
+			if (target.isOnline()) {
+				theirFriendship = target.getFriendsList().getPendingFriendById(this.getPlayer().getUid());
+			}
+			theirFriendship.delete();
+		}
 
-    public synchronized void deleteFriend(int targetUid) {
-        Friendship myFriendship = this.getFriendById(targetUid);
-        if (myFriendship == null) {
-            return;
-        }
+		// Packet
+		this.getPlayer().sendPacket(new PacketDealAddFriendRsp(targetUid, result));
+	}
 
-        this.getFriends().remove(targetUid);
-        myFriendship.delete();
+	public synchronized void deleteFriend(int targetUid) {
+		Friendship myFriendship = this.getFriendById(targetUid);
+		if (myFriendship == null) {
+			return;
+		}
 
-        Friendship theirFriendship = null;
-        Player friend = myFriendship.getFriendProfile().getPlayer();
-        if (friend != null) {
-            // Friend online
-            theirFriendship = friend.getFriendsList().getFriendById(this.getPlayer().getUid());
-            if (theirFriendship != null) {
-                friend.getFriendsList().getFriends().remove(theirFriendship.getFriendId());
-                theirFriendship.delete();
-                friend.sendPacket(new PacketDeleteFriendNotify(theirFriendship.getFriendId()));
-            }
-        } else {
-            // Friend offline
-            theirFriendship = DatabaseHelper.getReverseFriendship(myFriendship);
-            if (theirFriendship != null) {
-                theirFriendship.delete();
-            }
-        }
+		this.getFriends().remove(targetUid);
+		myFriendship.delete();
 
-        // Packet
-        this.getPlayer().sendPacket(new PacketDeleteFriendRsp(targetUid));
-    }
+		Friendship theirFriendship = null;
+		Player friend = myFriendship.getFriendProfile().getPlayer();
+		if (friend != null) {
+			// Friend online
+			theirFriendship = friend.getFriendsList().getFriendById(this.getPlayer().getUid());
+			if (theirFriendship != null) {
+				friend.getFriendsList().getFriends().remove(theirFriendship.getFriendId());
+				theirFriendship.delete();
+				friend.sendPacket(new PacketDeleteFriendNotify(theirFriendship.getFriendId()));
+			}
+		} else {
+			// Friend offline
+			theirFriendship = DatabaseHelper.getReverseFriendship(myFriendship);
+			if (theirFriendship != null) {
+				theirFriendship.delete();
+			}
+		}
 
-    public synchronized void sendFriendRequest(int targetUid) {
-        Player target = getPlayer().getSession().getServer().getPlayerByUid(targetUid, true);
+		// Packet
+		this.getPlayer().sendPacket(new PacketDeleteFriendRsp(targetUid));
+	}
 
-        if (target == null || target == this.getPlayer()) {
-            return;
-        }
+	public synchronized void sendFriendRequest(int targetUid) {
+		Player target = getPlayer().getSession().getServer().getPlayerByUid(targetUid, true);
 
-        // Check if friend already exists
-        if (this.getPendingFriends().containsKey(targetUid)
-                || this.getFriends().containsKey(targetUid)) {
-            return;
-        }
+		if (target == null || target == this.getPlayer()) {
+			return;
+		}
 
-        // Create friendships
-        Friendship myFriendship = new Friendship(getPlayer(), target, getPlayer());
-        Friendship theirFriendship = new Friendship(target, getPlayer(), getPlayer());
+		// Check if friend already exists
+		if (this.getPendingFriends().containsKey(targetUid) || this.getFriends().containsKey(targetUid)) {
+			return;
+		}
 
-        // Add pending lists
-        this.addPendingFriend(myFriendship);
+		// Create friendships
+		Friendship myFriendship = new Friendship(getPlayer(), target, getPlayer());
+		Friendship theirFriendship = new Friendship(target, getPlayer(), getPlayer());
 
-        if (target.isOnline() && target.getFriendsList().hasLoaded()) {
-            target.getFriendsList().addPendingFriend(theirFriendship);
-            target.sendPacket(new PacketAskAddFriendNotify(theirFriendship));
-        }
+		// Add pending lists
+		this.addPendingFriend(myFriendship);
 
-        // Save
-        myFriendship.save();
-        theirFriendship.save();
+		if (target.isOnline() && target.getFriendsList().hasLoaded()) {
+			target.getFriendsList().addPendingFriend(theirFriendship);
+			target.sendPacket(new PacketAskAddFriendNotify(theirFriendship));
+		}
 
-        // Packets
-        this.getPlayer().sendPacket(new PacketAskAddFriendRsp(targetUid));
-    }
+		// Save
+		myFriendship.save();
+		theirFriendship.save();
 
-    /** Gets total amount of potential friends */
-    public int getFullFriendCount() {
-        return this.getPendingFriends().size() + this.getFriends().size();
-    }
+		// Packets
+		this.getPlayer().sendPacket(new PacketAskAddFriendRsp(targetUid));
+	}
 
-    public synchronized void loadFromDatabase() {
-        if (this.hasLoaded()) {
-            return;
-        }
+	/** Gets total amount of potential friends */
+	public int getFullFriendCount() {
+		return this.getPendingFriends().size() + this.getFriends().size();
+	}
 
-        // Get friendships from the db
-        List<Friendship> friendships = DatabaseHelper.getFriends(player);
-        friendships.forEach(this::loadFriendFromDatabase);
+	public synchronized void loadFromDatabase() {
+		if (this.hasLoaded()) {
+			return;
+		}
 
-        // Set loaded flag
-        this.loaded = true;
-    }
+		// Get friendships from the db
+		List<Friendship> friendships = DatabaseHelper.getFriends(player);
+		friendships.forEach(this::loadFriendFromDatabase);
 
-    private void loadFriendFromDatabase(Friendship friendship) {
-        // Set friendship owner
-        friendship.setOwner(getPlayer());
+		// Set loaded flag
+		this.loaded = true;
+	}
 
-        // Check if friend is online
-        Player friend =
-                getPlayer().getSession().getServer().getPlayerByUid(friendship.getFriendProfile().getUid());
-        if (friend != null) {
-            // Set friend to online mode
-            friendship.setFriendProfile(friend);
+	private void loadFriendFromDatabase(Friendship friendship) {
+		// Set friendship owner
+		friendship.setOwner(getPlayer());
 
-            // Update our status on friend's client if theyre online
-            if (friend.getFriendsList().hasLoaded()) {
-                Friendship theirFriendship =
-                        friend.getFriendsList().getFriendshipById(getPlayer().getUid());
-                if (theirFriendship != null) {
-                    // Update friend profile
-                    theirFriendship.setFriendProfile(getPlayer());
-                } else {
-                    // They dont have us on their friends list anymore, rip
-                    friendship.delete();
-                    return;
-                }
-            }
-        }
+		// Check if friend is online
+		Player friend = getPlayer().getSession().getServer().getPlayerByUid(friendship.getFriendProfile().getUid());
+		if (friend != null) {
+			// Set friend to online mode
+			friendship.setFriendProfile(friend);
 
-        // Finally, load to our friends list
-        if (friendship.isFriend()) {
-            getFriends().put(friendship.getFriendId(), friendship);
-        } else {
-            getPendingFriends().put(friendship.getFriendId(), friendship);
-            // TODO - Hacky fix to force client to see a notification for a friendship
-            if (getPendingFriends().size() == 1) {
-                getPlayer().getSession().send(new PacketAskAddFriendNotify(friendship));
-            }
-        }
-    }
+			// Update our status on friend's client if theyre online
+			if (friend.getFriendsList().hasLoaded()) {
+				Friendship theirFriendship = friend.getFriendsList().getFriendshipById(getPlayer().getUid());
+				if (theirFriendship != null) {
+					// Update friend profile
+					theirFriendship.setFriendProfile(getPlayer());
+				} else {
+					// They dont have us on their friends list anymore, rip
+					friendship.delete();
+					return;
+				}
+			}
+		}
 
-    public void save() {
-        // Update all our friends
-        List<Friendship> friendships = DatabaseHelper.getReverseFriends(getPlayer());
-        for (Friendship friend : friendships) {
-            friend.setFriendProfile(this.getPlayer());
-            friend.save();
-        }
-    }
+		// Finally, load to our friends list
+		if (friendship.isFriend()) {
+			getFriends().put(friendship.getFriendId(), friendship);
+		} else {
+			getPendingFriends().put(friendship.getFriendId(), friendship);
+			// TODO - Hacky fix to force client to see a notification for a friendship
+			if (getPendingFriends().size() == 1) {
+				getPlayer().getSession().send(new PacketAskAddFriendNotify(friendship));
+			}
+		}
+	}
+
+	public void save() {
+		// Update all our friends
+		List<Friendship> friendships = DatabaseHelper.getReverseFriends(getPlayer());
+		for (Friendship friend : friendships) {
+			friend.setFriendProfile(this.getPlayer());
+			friend.save();
+		}
+	}
 }

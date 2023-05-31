@@ -10,11 +10,10 @@ import emu.grasscutter.game.quest.QuestValueContent;
 @QuestValueContent(QUEST_CONTENT_QUEST_VAR_EQUAL)
 public class ContentQuestVarEqual extends BaseContent {
 
-    @Override
-    public boolean execute(
-            GameQuest quest, QuestData.QuestContentCondition condition, String paramStr, int... params) {
-        int questVarValue = quest.getMainQuest().getQuestVars()[params[0]];
-        Grasscutter.getLogger().debug("questVar {} : {}", params[0], questVarValue);
-        return questVarValue == params[1];
-    }
+	@Override
+	public boolean execute(GameQuest quest, QuestData.QuestContentCondition condition, String paramStr, int... params) {
+		int questVarValue = quest.getMainQuest().getQuestVars()[params[0]];
+		Grasscutter.getLogger().debug("questVar {} : {}", params[0], questVarValue);
+		return questVarValue == params[1];
+	}
 }

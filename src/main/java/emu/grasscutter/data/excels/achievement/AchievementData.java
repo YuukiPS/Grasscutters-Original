@@ -15,86 +15,85 @@ import lombok.Getter;
 @Getter
 @ResourceType(name = "AchievementExcelConfigData.json")
 public class AchievementData extends GameResource {
-    private static final AtomicBoolean isDivided = new AtomicBoolean();
-    private int goalId;
-    private int preStageAchievementId;
-    private Set<Integer> groupAchievementIdList = new HashSet<>();
-    private boolean isParent;
-    private long titleTextMapHash;
-    private long descTextMapHash;
-    private int finishRewardId;
-    private boolean isDeleteWatcherAfterFinish;
-    private int id;
-    private BattlePassMissionData.TriggerConfig triggerConfig;
-    private int progress;
-    private boolean isDisuse;
 
-    public static void divideIntoGroups() {
-        if (isDivided.get()) {
-            return;
-        }
+	private static final AtomicBoolean isDivided = new AtomicBoolean();
+	private int goalId;
+	private int preStageAchievementId;
+	private Set<Integer> groupAchievementIdList = new HashSet<>();
+	private boolean isParent;
+	private long titleTextMapHash;
+	private long descTextMapHash;
+	private int finishRewardId;
+	private boolean isDeleteWatcherAfterFinish;
+	private int id;
+	private BattlePassMissionData.TriggerConfig triggerConfig;
+	private int progress;
+	private boolean isDisuse;
 
-        isDivided.set(true);
-        var map = GameData.getAchievementDataMap();
-        var achievementDataList = map.values().stream().filter(AchievementData::isUsed).toList();
-        for (var data : achievementDataList) {
-            if (!data.hasPreStageAchievement() || data.hasGroupAchievements()) {
-                continue;
-            }
+	public static void divideIntoGroups() {
+		if (isDivided.get()) {
+			return;
+		}
 
-            List<Integer> ids = Lists.newArrayList();
-            int parentId = data.getId();
-            while (true) {
-                var next = map.get(parentId + 1);
-                if (next == null || parentId != next.getPreStageAchievementId()) {
-                    break;
-                }
+		isDivided.set(true);
+		var map = GameData.getAchievementDataMap();
+		var achievementDataList = map.values().stream().filter(AchievementData::isUsed).toList();
+		for (var data : achievementDataList) {
+			if (!data.hasPreStageAchievement() || data.hasGroupAchievements()) {
+				continue;
+			}
 
-                parentId++;
-            }
+			List<Integer> ids = Lists.newArrayList();
+			int parentId = data.getId();
+			while (true) {
+				var next = map.get(parentId + 1);
+				if (next == null || parentId != next.getPreStageAchievementId()) {
+					break;
+				}
 
-            map.get(parentId).isParent = true;
+				parentId++;
+			}
 
-            while (true) {
-                ids.add(parentId);
-                var previous = map.get(--parentId);
-                if (previous == null) {
-                    break;
-                } else if (!previous.hasPreStageAchievement()) {
-                    ids.add(parentId);
-                    break;
-                }
-            }
+			map.get(parentId).isParent = true;
 
-            for (int i : ids) {
-                map.get(i).groupAchievementIdList.addAll(ids);
-            }
-        }
+			while (true) {
+				ids.add(parentId);
+				var previous = map.get(--parentId);
+				if (previous == null) {
+					break;
+				} else if (!previous.hasPreStageAchievement()) {
+					ids.add(parentId);
+					break;
+				}
+			}
 
-        map.values().stream()
-                .filter(a -> !a.hasGroupAchievements() && a.isUsed())
-                .forEach(a -> a.isParent = true);
-    }
+			for (int i : ids) {
+				map.get(i).groupAchievementIdList.addAll(ids);
+			}
+		}
 
-    public boolean hasPreStageAchievement() {
-        return this.preStageAchievementId != 0;
-    }
+		map.values().stream().filter(a -> !a.hasGroupAchievements() && a.isUsed()).forEach(a -> a.isParent = true);
+	}
 
-    public boolean hasGroupAchievements() {
-        return !this.groupAchievementIdList.isEmpty();
-    }
+	public boolean hasPreStageAchievement() {
+		return this.preStageAchievementId != 0;
+	}
 
-    public boolean isUsed() {
-        return !this.isDisuse;
-    }
+	public boolean hasGroupAchievements() {
+		return !this.groupAchievementIdList.isEmpty();
+	}
 
-    public Set<Integer> getGroupAchievementIdList() {
-        return this.groupAchievementIdList.stream().collect(Collectors.toUnmodifiableSet());
-    }
+	public boolean isUsed() {
+		return !this.isDisuse;
+	}
 
-    public Set<Integer> getExcludedGroupAchievementIdList() {
-        return this.groupAchievementIdList.stream()
-                .filter(integer -> integer != this.getId())
-                .collect(Collectors.toUnmodifiableSet());
-    }
+	public Set<Integer> getGroupAchievementIdList() {
+		return this.groupAchievementIdList.stream().collect(Collectors.toUnmodifiableSet());
+	}
+
+	public Set<Integer> getExcludedGroupAchievementIdList() {
+		return this.groupAchievementIdList.stream()
+			.filter(integer -> integer != this.getId())
+			.collect(Collectors.toUnmodifiableSet());
+	}
 }

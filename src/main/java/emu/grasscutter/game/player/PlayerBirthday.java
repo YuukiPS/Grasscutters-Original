@@ -5,60 +5,61 @@ import emu.grasscutter.net.proto.BirthdayOuterClass.Birthday;
 
 @Entity
 public class PlayerBirthday {
-    private int day;
-    private int month;
 
-    public PlayerBirthday() {
-        this.day = 0;
-        this.month = 0;
-    }
+	private int day;
+	private int month;
 
-    public PlayerBirthday(int day, int month) {
-        this.day = day;
-        this.month = month;
-    }
+	public PlayerBirthday() {
+		this.day = 0;
+		this.month = 0;
+	}
 
-    public PlayerBirthday set(PlayerBirthday birth) {
-        this.day = birth.day;
-        this.month = birth.month;
+	public PlayerBirthday(int day, int month) {
+		this.day = day;
+		this.month = month;
+	}
 
-        return this;
-    }
+	public PlayerBirthday set(PlayerBirthday birth) {
+		this.day = birth.day;
+		this.month = birth.month;
 
-    public PlayerBirthday set(int d, int m) {
-        this.day = d;
-        this.month = m;
+		return this;
+	}
 
-        return this;
-    }
+	public PlayerBirthday set(int d, int m) {
+		this.day = d;
+		this.month = m;
 
-    public int getDay() {
-        return this.day;
-    }
+		return this;
+	}
 
-    public PlayerBirthday setDay(int value) {
-        this.day = value;
-        return this;
-    }
+	public int getDay() {
+		return this.day;
+	}
 
-    public int getMonth() {
-        return this.month;
-    }
+	public PlayerBirthday setDay(int value) {
+		this.day = value;
+		return this;
+	}
 
-    public PlayerBirthday setMonth(int value) {
-        this.month = value;
-        return this;
-    }
+	public int getMonth() {
+		return this.month;
+	}
 
-    public Birthday toProto() {
-        return Birthday.newBuilder().setDay(this.getDay()).setMonth(this.getMonth()).build();
-    }
+	public PlayerBirthday setMonth(int value) {
+		this.month = value;
+		return this;
+	}
 
-    public Birthday.Builder getFilledProtoWhenNotEmpty() {
-        if (this.getDay() > 0) {
-            return Birthday.newBuilder().setDay(this.getDay()).setMonth(this.getMonth());
-        }
+	public Birthday toProto() {
+		return Birthday.newBuilder().setDay(this.getDay()).setMonth(this.getMonth()).build();
+	}
 
-        return Birthday.newBuilder();
-    }
+	public Birthday.Builder getFilledProtoWhenNotEmpty() {
+		if (this.getDay() > 0) {
+			return Birthday.newBuilder().setDay(this.getDay()).setMonth(this.getMonth());
+		}
+
+		return Birthday.newBuilder();
+	}
 }

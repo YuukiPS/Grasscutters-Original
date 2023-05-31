@@ -8,24 +8,24 @@ import lombok.val;
 
 @QuestValueContent(QuestContent.QUEST_CONTENT_TIME_VAR_PASS_DAY)
 public class ContentTimeVarPassDay extends BaseContent {
-    @Override
-    public boolean execute(
-            GameQuest quest, QuestData.QuestContentCondition condition, String paramStr, int... params) {
-        val mainQuestId = condition.getParam()[0];
-        val timeVarIndex = condition.getParam()[1];
-        val minDays = Integer.parseInt(condition.getParamStr());
 
-        val mainQuest = quest.getOwner().getQuestManager().getMainQuestById(mainQuestId);
+	@Override
+	public boolean execute(GameQuest quest, QuestData.QuestContentCondition condition, String paramStr, int... params) {
+		val mainQuestId = condition.getParam()[0];
+		val timeVarIndex = condition.getParam()[1];
+		val minDays = Integer.parseInt(condition.getParamStr());
 
-        if (mainQuest == null) {
-            return false;
-        }
+		val mainQuest = quest.getOwner().getQuestManager().getMainQuestById(mainQuestId);
 
-        val daysSinceTimeVar = mainQuest.getDaysSinceTimeVar(timeVarIndex);
-        if (daysSinceTimeVar == -1) {
-            return false;
-        }
+		if (mainQuest == null) {
+			return false;
+		}
 
-        return daysSinceTimeVar >= minDays;
-    }
+		val daysSinceTimeVar = mainQuest.getDaysSinceTimeVar(timeVarIndex);
+		if (daysSinceTimeVar == -1) {
+			return false;
+		}
+
+		return daysSinceTimeVar >= minDays;
+	}
 }

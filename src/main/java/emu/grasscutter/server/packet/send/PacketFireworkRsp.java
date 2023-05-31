@@ -5,7 +5,7 @@ import emu.grasscutter.net.packet.PacketOpcodes;
 
 public class PacketFireworkRsp extends BasePacket {
 
-    public PacketFireworkRsp() {
-        super(PacketOpcodes.FireworkRsp);
-    }
+	public PacketFireworkRsp() {
+		super(PacketOpcodes.FireworkRsp);
+	}
 }

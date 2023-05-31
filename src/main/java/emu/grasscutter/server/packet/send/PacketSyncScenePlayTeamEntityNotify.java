@@ -7,12 +7,13 @@ import emu.grasscutter.net.proto.SyncScenePlayTeamEntityNotifyOuterClass.SyncSce
 
 public class PacketSyncScenePlayTeamEntityNotify extends BasePacket {
 
-    public PacketSyncScenePlayTeamEntityNotify(Player player) {
-        super(PacketOpcodes.SyncScenePlayTeamEntityNotify);
+	public PacketSyncScenePlayTeamEntityNotify(Player player) {
+		super(PacketOpcodes.SyncScenePlayTeamEntityNotify);
+		SyncScenePlayTeamEntityNotify proto = SyncScenePlayTeamEntityNotify
+			.newBuilder()
+			.setSceneId(player.getSceneId())
+			.build();
 
-        SyncScenePlayTeamEntityNotify proto =
-                SyncScenePlayTeamEntityNotify.newBuilder().setSceneId(player.getSceneId()).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

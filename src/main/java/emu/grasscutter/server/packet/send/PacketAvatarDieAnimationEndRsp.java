@@ -6,12 +6,14 @@ import emu.grasscutter.net.proto.AvatarDieAnimationEndRspOuterClass.AvatarDieAni
 
 public class PacketAvatarDieAnimationEndRsp extends BasePacket {
 
-    public PacketAvatarDieAnimationEndRsp(long dieGuid, int skillId) {
-        super(PacketOpcodes.AvatarDieAnimationEndRsp);
+	public PacketAvatarDieAnimationEndRsp(long dieGuid, int skillId) {
+		super(PacketOpcodes.AvatarDieAnimationEndRsp);
+		AvatarDieAnimationEndRsp proto = AvatarDieAnimationEndRsp
+			.newBuilder()
+			.setDieGuid(dieGuid)
+			.setSkillId(skillId)
+			.build();
 
-        AvatarDieAnimationEndRsp proto =
-                AvatarDieAnimationEndRsp.newBuilder().setDieGuid(dieGuid).setSkillId(skillId).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

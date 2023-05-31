@@ -9,35 +9,33 @@ import emu.grasscutter.net.proto.InteractTypeOuterClass.InteractType;
 import emu.grasscutter.net.proto.RetcodeOuterClass;
 
 public class PacketGadgetInteractRsp extends BasePacket {
-    public PacketGadgetInteractRsp(EntityBaseGadget gadget, InteractType interact) {
-        this(gadget, interact, null);
-    }
 
-    public PacketGadgetInteractRsp(
-            EntityBaseGadget gadget, InteractType interact, InterOpType opType) {
-        super(PacketOpcodes.GadgetInteractRsp);
+	public PacketGadgetInteractRsp(EntityBaseGadget gadget, InteractType interact) {
+		this(gadget, interact, null);
+	}
 
-        var proto =
-                GadgetInteractRsp.newBuilder()
-                        .setGadgetEntityId(gadget.getId())
-                        .setInteractType(interact)
-                        .setGadgetId(gadget.getGadgetId());
+	public PacketGadgetInteractRsp(EntityBaseGadget gadget, InteractType interact, InterOpType opType) {
+		super(PacketOpcodes.GadgetInteractRsp);
+		var proto = GadgetInteractRsp
+			.newBuilder()
+			.setGadgetEntityId(gadget.getId())
+			.setInteractType(interact)
+			.setGadgetId(gadget.getGadgetId());
 
-        if (opType != null) {
-            proto.setOpType(opType);
-        }
+		if (opType != null) {
+			proto.setOpType(opType);
+		}
 
-        this.setData(proto.build());
-    }
+		this.setData(proto.build());
+	}
 
-    public PacketGadgetInteractRsp() {
-        super(PacketOpcodes.GadgetInteractRsp);
+	public PacketGadgetInteractRsp() {
+		super(PacketOpcodes.GadgetInteractRsp);
+		GadgetInteractRsp proto = GadgetInteractRsp
+			.newBuilder()
+			.setRetcode(RetcodeOuterClass.Retcode.RET_SVR_ERROR_VALUE)
+			.build();
 
-        GadgetInteractRsp proto =
-                GadgetInteractRsp.newBuilder()
-                        .setRetcode(RetcodeOuterClass.Retcode.RET_SVR_ERROR_VALUE)
-                        .build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

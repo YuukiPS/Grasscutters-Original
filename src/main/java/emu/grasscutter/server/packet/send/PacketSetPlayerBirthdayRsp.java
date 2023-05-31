@@ -7,20 +7,20 @@ import emu.grasscutter.net.proto.SetPlayerBirthdayRspOuterClass.SetPlayerBirthda
 
 public class PacketSetPlayerBirthdayRsp extends BasePacket {
 
-    public PacketSetPlayerBirthdayRsp(int retCode) {
-        super(PacketOpcodes.SetPlayerBirthdayRsp);
+	public PacketSetPlayerBirthdayRsp(int retCode) {
+		super(PacketOpcodes.SetPlayerBirthdayRsp);
+		SetPlayerBirthdayRsp proto = SetPlayerBirthdayRsp.newBuilder().setRetcode(retCode).build();
 
-        SetPlayerBirthdayRsp proto = SetPlayerBirthdayRsp.newBuilder().setRetcode(retCode).build();
+		this.setData(proto);
+	}
 
-        this.setData(proto);
-    }
+	public PacketSetPlayerBirthdayRsp(Player player) {
+		super(PacketOpcodes.SetPlayerBirthdayRsp);
+		SetPlayerBirthdayRsp proto = SetPlayerBirthdayRsp
+			.newBuilder()
+			.setBirthday(player.getBirthday().toProto())
+			.build();
 
-    public PacketSetPlayerBirthdayRsp(Player player) {
-        super(PacketOpcodes.SetPlayerBirthdayRsp);
-
-        SetPlayerBirthdayRsp proto =
-                SetPlayerBirthdayRsp.newBuilder().setBirthday(player.getBirthday().toProto()).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

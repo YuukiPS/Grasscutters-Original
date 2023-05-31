@@ -8,17 +8,16 @@ import emu.grasscutter.net.proto.SocialDetailOuterClass.SocialDetail;
 
 public class PacketGetPlayerSocialDetailRsp extends BasePacket {
 
-    public PacketGetPlayerSocialDetailRsp(SocialDetail.Builder detail) {
-        super(PacketOpcodes.GetPlayerSocialDetailRsp);
+	public PacketGetPlayerSocialDetailRsp(SocialDetail.Builder detail) {
+		super(PacketOpcodes.GetPlayerSocialDetailRsp);
+		GetPlayerSocialDetailRsp.Builder proto = GetPlayerSocialDetailRsp.newBuilder();
 
-        GetPlayerSocialDetailRsp.Builder proto = GetPlayerSocialDetailRsp.newBuilder();
+		if (detail != null) {
+			proto.setDetailData(detail);
+		} else {
+			proto.setRetcode(RetcodeOuterClass.Retcode.RET_SVR_ERROR_VALUE);
+		}
 
-        if (detail != null) {
-            proto.setDetailData(detail);
-        } else {
-            proto.setRetcode(RetcodeOuterClass.Retcode.RET_SVR_ERROR_VALUE);
-        }
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

@@ -9,10 +9,11 @@ import lombok.val;
 
 @QuestValueExec(QuestExec.QUEST_EXEC_INIT_TIME_VAR)
 public class ExecInitTimeVar extends QuestExecHandler {
-    @Override
-    public boolean execute(GameQuest quest, QuestData.QuestExecParam condition, String... paramStr) {
-        val timeVarId = Integer.parseInt(condition.getParam()[0]);
-        val mainQuest = quest.getMainQuest();
-        return mainQuest.initTimeVar(timeVarId);
-    }
+
+	@Override
+	public boolean execute(GameQuest quest, QuestData.QuestExecParam condition, String... paramStr) {
+		val timeVarId = Integer.parseInt(condition.getParam()[0]);
+		val mainQuest = quest.getMainQuest();
+		return mainQuest.initTimeVar(timeVarId);
+	}
 }

@@ -10,17 +10,18 @@ import emu.grasscutter.server.packet.send.PacketHomeChangeBgmRsp;
 
 @Opcodes(PacketOpcodes.HomeChangeBgmReq)
 public class HandlerHomeChangeBgmReq extends PacketHandler {
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        var req = HomeChangeBgmReqOuterClass.HomeChangeBgmReq.parseFrom(payload);
 
-        int homeBgmId = req.getBgmId();
-        var home = session.getPlayer().getHome();
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		var req = HomeChangeBgmReqOuterClass.HomeChangeBgmReq.parseFrom(payload);
 
-        home.getHomeSceneItem(session.getPlayer().getSceneId()).setHomeBgmId(homeBgmId);
-        home.save();
+		int homeBgmId = req.getBgmId();
+		var home = session.getPlayer().getHome();
 
-        session.send(new PacketHomeChangeBgmNotify(homeBgmId));
-        session.send(new PacketHomeChangeBgmRsp());
-    }
+		home.getHomeSceneItem(session.getPlayer().getSceneId()).setHomeBgmId(homeBgmId);
+		home.save();
+
+		session.send(new PacketHomeChangeBgmNotify(homeBgmId));
+		session.send(new PacketHomeChangeBgmRsp());
+	}
 }

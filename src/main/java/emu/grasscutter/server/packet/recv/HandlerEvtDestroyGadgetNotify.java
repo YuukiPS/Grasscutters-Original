@@ -9,10 +9,10 @@ import emu.grasscutter.server.game.GameSession;
 @Opcodes(PacketOpcodes.EvtDestroyGadgetNotify)
 public class HandlerEvtDestroyGadgetNotify extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        EvtDestroyGadgetNotify notify = EvtDestroyGadgetNotify.parseFrom(payload);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		EvtDestroyGadgetNotify notify = EvtDestroyGadgetNotify.parseFrom(payload);
 
-        session.getPlayer().getScene().onPlayerDestroyGadget(notify.getEntityId());
-    }
+		session.getPlayer().getScene().onPlayerDestroyGadget(notify.getEntityId());
+	}
 }

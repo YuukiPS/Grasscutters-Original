@@ -11,18 +11,18 @@ import emu.grasscutter.server.packet.send.PacketPlayerSetPauseRsp;
 @Opcodes(PacketOpcodes.PlayerSetPauseReq)
 public class HandlerPlayerSetPauseReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        var req = PlayerSetPauseReq.parseFrom(payload);
-        var player = session.getPlayer();
-        var world = player.getWorld();
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		var req = PlayerSetPauseReq.parseFrom(payload);
+		var player = session.getPlayer();
+		var world = player.getWorld();
 
-        // Check if the player is in a multiplayer world.
-        if (player.isInMultiplayer()) {
-            session.send(new PacketPlayerSetPauseRsp(Retcode.RET_FAIL));
-        } else {
-            world.setPaused(req.getIsPaused());
-            session.send(new PacketPlayerSetPauseRsp(Retcode.RET_SUCC));
-        }
-    }
+		// Check if the player is in a multiplayer world.
+		if (player.isInMultiplayer()) {
+			session.send(new PacketPlayerSetPauseRsp(Retcode.RET_FAIL));
+		} else {
+			world.setPaused(req.getIsPaused());
+			session.send(new PacketPlayerSetPauseRsp(Retcode.RET_SUCC));
+		}
+	}
 }

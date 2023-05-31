@@ -7,24 +7,25 @@ import java.util.List;
 
 public class PacketDelTeamEntityNotify extends BasePacket {
 
-    public PacketDelTeamEntityNotify(int sceneId, int teamEntityId) {
-        super(PacketOpcodes.DelTeamEntityNotify);
+	public PacketDelTeamEntityNotify(int sceneId, int teamEntityId) {
+		super(PacketOpcodes.DelTeamEntityNotify);
+		DelTeamEntityNotify proto = DelTeamEntityNotify
+			.newBuilder()
+			.setSceneId(sceneId)
+			.addDelEntityIdList(teamEntityId)
+			.build();
 
-        DelTeamEntityNotify proto =
-                DelTeamEntityNotify.newBuilder()
-                        .setSceneId(sceneId)
-                        .addDelEntityIdList(teamEntityId)
-                        .build();
+		this.setData(proto);
+	}
 
-        this.setData(proto);
-    }
+	public PacketDelTeamEntityNotify(int sceneId, List<Integer> list) {
+		super(PacketOpcodes.DelTeamEntityNotify);
+		DelTeamEntityNotify proto = DelTeamEntityNotify
+			.newBuilder()
+			.setSceneId(sceneId)
+			.addAllDelEntityIdList(list)
+			.build();
 
-    public PacketDelTeamEntityNotify(int sceneId, List<Integer> list) {
-        super(PacketOpcodes.DelTeamEntityNotify);
-
-        DelTeamEntityNotify proto =
-                DelTeamEntityNotify.newBuilder().setSceneId(sceneId).addAllDelEntityIdList(list).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

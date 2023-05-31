@@ -8,22 +8,21 @@ import java.util.List;
 
 public class PacketClientAbilityInitFinishNotify extends BasePacket {
 
-    public PacketClientAbilityInitFinishNotify(List<AbilityInvokeEntry> entries) {
-        super(PacketOpcodes.ClientAbilityInitFinishNotify, true);
+	public PacketClientAbilityInitFinishNotify(List<AbilityInvokeEntry> entries) {
+		super(PacketOpcodes.ClientAbilityInitFinishNotify, true);
+		int entityId = 0;
 
-        int entityId = 0;
+		if (entries.size() > 0) {
+			AbilityInvokeEntry entry = entries.get(0);
+			entityId = entry.getEntityId();
+		}
 
-        if (entries.size() > 0) {
-            AbilityInvokeEntry entry = entries.get(0);
-            entityId = entry.getEntityId();
-        }
+		ClientAbilityInitFinishNotify proto = ClientAbilityInitFinishNotify
+			.newBuilder()
+			.setEntityId(entityId)
+			.addAllInvokes(entries)
+			.build();
 
-        ClientAbilityInitFinishNotify proto =
-                ClientAbilityInitFinishNotify.newBuilder()
-                        .setEntityId(entityId)
-                        .addAllInvokes(entries)
-                        .build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

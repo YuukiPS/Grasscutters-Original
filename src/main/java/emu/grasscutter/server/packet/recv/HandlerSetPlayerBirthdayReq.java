@@ -11,56 +11,56 @@ import emu.grasscutter.server.packet.send.PacketSetPlayerBirthdayRsp;
 
 @Opcodes(PacketOpcodes.SetPlayerBirthdayReq)
 public class HandlerSetPlayerBirthdayReq extends PacketHandler {
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        SetPlayerBirthdayReq req = SetPlayerBirthdayReq.parseFrom(payload);
 
-        // RET_BIRTHDAY_CANNOT_BE_SET_TWICE = 7009
-        if (session.getPlayer().hasBirthday()) {
-            session.send(new PacketSetPlayerBirthdayRsp(7009));
-            return;
-        }
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		SetPlayerBirthdayReq req = SetPlayerBirthdayReq.parseFrom(payload);
 
-        int month = req.getBirthday().getMonth();
-        int day = req.getBirthday().getDay();
+		// RET_BIRTHDAY_CANNOT_BE_SET_TWICE = 7009
+		if (session.getPlayer().hasBirthday()) {
+			session.send(new PacketSetPlayerBirthdayRsp(7009));
+			return;
+		}
 
-        // RET_BIRTHDAY_FORMAT_ERROR = 7022
-        if (!isValidBirthday(month, day)) {
-            session.send(new PacketSetPlayerBirthdayRsp(7022));
-            return;
-        }
+		int month = req.getBirthday().getMonth();
+		int day = req.getBirthday().getDay();
 
-        // Update birthday value
-        session.getPlayer().setBirthday(day, month);
+		// RET_BIRTHDAY_FORMAT_ERROR = 7022
+		if (!isValidBirthday(month, day)) {
+			session.send(new PacketSetPlayerBirthdayRsp(7022));
+			return;
+		}
 
-        // Save birthday month and day
-        session.getPlayer().save();
-        SocialDetail.Builder detail = session.getPlayer().getSocialDetail();
+		// Update birthday value
+		session.getPlayer().setBirthday(day, month);
 
-        session.send(new PacketSetPlayerBirthdayRsp(session.getPlayer()));
-        session.send(new PacketGetPlayerSocialDetailRsp(detail));
-    }
+		// Save birthday month and day
+		session.getPlayer().save();
+		SocialDetail.Builder detail = session.getPlayer().getSocialDetail();
 
-    private boolean isValidBirthday(int month, int day) {
+		session.send(new PacketSetPlayerBirthdayRsp(session.getPlayer()));
+		session.send(new PacketGetPlayerSocialDetailRsp(detail));
+	}
 
-        switch (month) {
-            case 1:
-            case 3:
-            case 5:
-            case 7:
-            case 8:
-            case 10:
-            case 12:
-                return day > 0 & day <= 31;
-            case 4:
-            case 6:
-            case 9:
-            case 11:
-                return day > 0 && day <= 30;
-            case 2:
-                return day > 0 & day <= 29;
-        }
+	private boolean isValidBirthday(int month, int day) {
+		switch (month) {
+			case 1:
+			case 3:
+			case 5:
+			case 7:
+			case 8:
+			case 10:
+			case 12:
+				return day > 0 & day <= 31;
+			case 4:
+			case 6:
+			case 9:
+			case 11:
+				return day > 0 && day <= 30;
+			case 2:
+				return day > 0 & day <= 29;
+		}
 
-        return false;
-    }
+		return false;
+	}
 }

@@ -6,13 +6,12 @@ import emu.grasscutter.net.proto.DungeonShowReminderNotifyOuterClass;
 
 public class PacketDungeonShowReminderNotify extends BasePacket {
 
-    public PacketDungeonShowReminderNotify(int reminderId) {
-        super(PacketOpcodes.DungeonShowReminderNotify);
+	public PacketDungeonShowReminderNotify(int reminderId) {
+		super(PacketOpcodes.DungeonShowReminderNotify);
+		var proto = DungeonShowReminderNotifyOuterClass.DungeonShowReminderNotify.newBuilder();
 
-        var proto = DungeonShowReminderNotifyOuterClass.DungeonShowReminderNotify.newBuilder();
+		proto.setReminderId(reminderId);
 
-        proto.setReminderId(reminderId);
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

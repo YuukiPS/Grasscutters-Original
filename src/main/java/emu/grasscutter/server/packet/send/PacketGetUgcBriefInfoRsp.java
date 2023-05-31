@@ -9,23 +9,21 @@ import emu.grasscutter.net.proto.UgcTypeOuterClass.UgcType;
 
 public class PacketGetUgcBriefInfoRsp extends BasePacket {
 
-    public PacketGetUgcBriefInfoRsp(RetcodeOuterClass.Retcode ret, UgcType unknownEnum1) {
-        super(PacketOpcodes.GetUgcBriefInfoRsp);
+	public PacketGetUgcBriefInfoRsp(RetcodeOuterClass.Retcode ret, UgcType unknownEnum1) {
+		super(PacketOpcodes.GetUgcBriefInfoRsp);
+		var proto = GetUgcBriefInfoRsp.newBuilder();
 
-        var proto = GetUgcBriefInfoRsp.newBuilder();
+		proto.setRetcode(ret.getNumber()).setUgcType(unknownEnum1);
 
-        proto.setRetcode(ret.getNumber()).setUgcType(unknownEnum1);
+		this.setData(proto);
+	}
 
-        this.setData(proto);
-    }
+	public PacketGetUgcBriefInfoRsp(UgcMusicBriefInfo briefInfo, UgcType ugcType) {
+		super(PacketOpcodes.GetUgcBriefInfoRsp);
+		var proto = GetUgcBriefInfoRsp.newBuilder();
 
-    public PacketGetUgcBriefInfoRsp(UgcMusicBriefInfo briefInfo, UgcType ugcType) {
-        super(PacketOpcodes.GetUgcBriefInfoRsp);
+		proto.setMusicBriefInfo(briefInfo).setUgcType(ugcType);
 
-        var proto = GetUgcBriefInfoRsp.newBuilder();
-
-        proto.setMusicBriefInfo(briefInfo).setUgcType(ugcType);
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

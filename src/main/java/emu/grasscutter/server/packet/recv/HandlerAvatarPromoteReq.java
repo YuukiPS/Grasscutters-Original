@@ -9,11 +9,11 @@ import emu.grasscutter.server.game.GameSession;
 @Opcodes(PacketOpcodes.AvatarPromoteReq)
 public class HandlerAvatarPromoteReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        AvatarPromoteReq req = AvatarPromoteReq.parseFrom(payload);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		AvatarPromoteReq req = AvatarPromoteReq.parseFrom(payload);
 
-        // Ascend avatar
-        session.getServer().getInventorySystem().promoteAvatar(session.getPlayer(), req.getGuid());
-    }
+		// Ascend avatar
+		session.getServer().getInventorySystem().promoteAvatar(session.getPlayer(), req.getGuid());
+	}
 }

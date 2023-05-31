@@ -7,12 +7,12 @@ import emu.grasscutter.game.entity.GameEntity;
 
 @AbilityAction(AbilityModifierAction.Type.KillSelf)
 public final class ActionKillSelf extends AbilityActionHandler {
-    @Override
-    public boolean execute(
-            Ability ability, AbilityModifierAction action, ByteString abilityData, GameEntity target) {
-        GameEntity owner = ability.getOwner();
-        owner.getScene().killEntity(owner);
 
-        return true;
-    }
+	@Override
+	public boolean execute(Ability ability, AbilityModifierAction action, ByteString abilityData, GameEntity target) {
+		GameEntity owner = ability.getOwner();
+		owner.getScene().killEntity(owner);
+
+		return true;
+	}
 }

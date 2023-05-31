@@ -20,78 +20,80 @@ import lombok.experimental.FieldDefaults;
 @Builder(builderMethodName = "of")
 public class MusicGameBeatmap {
 
-    @Id long musicShareId;
-    int authorUid;
-    int musicId;
-    int musicNoteCount;
-    int savePosition;
-    int maxScore;
-    int createTime;
+	@Id
+	long musicShareId;
 
-    List<List<BeatmapNote>> beatmap;
+	int authorUid;
+	int musicId;
+	int musicNoteCount;
+	int savePosition;
+	int maxScore;
+	int createTime;
 
-    public static MusicGameBeatmap getByShareId(long musicShareId) {
-        return DatabaseHelper.getMusicGameBeatmap(musicShareId);
-    }
+	List<List<BeatmapNote>> beatmap;
 
-    public static List<List<BeatmapNote>> parse(
-            List<UgcMusicTrackOuterClass.UgcMusicTrack> beatmapItemListList) {
-        return beatmapItemListList.stream()
-                .map(item -> item.getMusicNoteListList().stream().map(BeatmapNote::parse).toList())
-                .toList();
-    }
+	public static MusicGameBeatmap getByShareId(long musicShareId) {
+		return DatabaseHelper.getMusicGameBeatmap(musicShareId);
+	}
 
-    public void save() {
-        if (musicShareId == 0) {
-            musicShareId = new Random().nextLong(100000000000000L, 999999999999999L);
-        }
-        DatabaseHelper.saveMusicGameBeatmap(this);
-    }
+	public static List<List<BeatmapNote>> parse(List<UgcMusicTrackOuterClass.UgcMusicTrack> beatmapItemListList) {
+		return beatmapItemListList
+			.stream()
+			.map(item -> item.getMusicNoteListList().stream().map(BeatmapNote::parse).toList())
+			.toList();
+	}
 
-    public UgcMusicRecordOuterClass.UgcMusicRecord toProto() {
-        return UgcMusicRecordOuterClass.UgcMusicRecord.newBuilder()
-                .setMusicId(musicId)
-                .addAllMusicTrackList(beatmap.stream().map(this::musicBeatmapListToProto).toList())
-                .build();
-    }
+	public void save() {
+		if (musicShareId == 0) {
+			musicShareId = new Random().nextLong(100000000000000L, 999999999999999L);
+		}
+		DatabaseHelper.saveMusicGameBeatmap(this);
+	}
 
-    public UgcMusicBriefInfoOuterClass.UgcMusicBriefInfo.Builder toBriefProto() {
-        var player = DatabaseHelper.getPlayerByUid(authorUid);
+	public UgcMusicRecordOuterClass.UgcMusicRecord toProto() {
+		return UgcMusicRecordOuterClass.UgcMusicRecord
+			.newBuilder()
+			.setMusicId(musicId)
+			.addAllMusicTrackList(beatmap.stream().map(this::musicBeatmapListToProto).toList())
+			.build();
+	}
 
-        return UgcMusicBriefInfoOuterClass.UgcMusicBriefInfo.newBuilder()
-                .setMusicId(musicId)
-                //            .setMusicNoteCount(musicNoteCount)
-                .setUgcGuid(musicShareId)
-                .setMaxScore(maxScore)
-                //            .setShareTime(createTime)
-                .setCreatorNickname(player.getNickname())
-                .setVersion(1);
-    }
+	public UgcMusicBriefInfoOuterClass.UgcMusicBriefInfo.Builder toBriefProto() {
+		var player = DatabaseHelper.getPlayerByUid(authorUid);
 
-    private UgcMusicTrackOuterClass.UgcMusicTrack musicBeatmapListToProto(
-            List<BeatmapNote> beatmapNoteList) {
-        return UgcMusicTrackOuterClass.UgcMusicTrack.newBuilder()
-                .addAllMusicNoteList(beatmapNoteList.stream().map(BeatmapNote::toProto).toList())
-                .build();
-    }
+		return UgcMusicBriefInfoOuterClass.UgcMusicBriefInfo
+			.newBuilder()
+			.setMusicId(musicId)
+			//            .setMusicNoteCount(musicNoteCount)
+			.setUgcGuid(musicShareId)
+			.setMaxScore(maxScore)
+			//            .setShareTime(createTime)
+			.setCreatorNickname(player.getNickname())
+			.setVersion(1);
+	}
 
-    @Data
-    @FieldDefaults(level = AccessLevel.PRIVATE)
-    @Builder(builderMethodName = "of")
-    @Entity
-    public static class BeatmapNote {
-        int startTime;
-        int endTime;
+	private UgcMusicTrackOuterClass.UgcMusicTrack musicBeatmapListToProto(List<BeatmapNote> beatmapNoteList) {
+		return UgcMusicTrackOuterClass.UgcMusicTrack
+			.newBuilder()
+			.addAllMusicNoteList(beatmapNoteList.stream().map(BeatmapNote::toProto).toList())
+			.build();
+	}
 
-        public static BeatmapNote parse(UgcMusicNoteOuterClass.UgcMusicNote note) {
-            return BeatmapNote.of().startTime(note.getStartTime()).endTime(note.getEndTime()).build();
-        }
+	@Data
+	@FieldDefaults(level = AccessLevel.PRIVATE)
+	@Builder(builderMethodName = "of")
+	@Entity
+	public static class BeatmapNote {
 
-        public UgcMusicNoteOuterClass.UgcMusicNote toProto() {
-            return UgcMusicNoteOuterClass.UgcMusicNote.newBuilder()
-                    .setStartTime(startTime)
-                    .setEndTime(endTime)
-                    .build();
-        }
-    }
+		int startTime;
+		int endTime;
+
+		public static BeatmapNote parse(UgcMusicNoteOuterClass.UgcMusicNote note) {
+			return BeatmapNote.of().startTime(note.getStartTime()).endTime(note.getEndTime()).build();
+		}
+
+		public UgcMusicNoteOuterClass.UgcMusicNote toProto() {
+			return UgcMusicNoteOuterClass.UgcMusicNote.newBuilder().setStartTime(startTime).setEndTime(endTime).build();
+		}
+	}
 }

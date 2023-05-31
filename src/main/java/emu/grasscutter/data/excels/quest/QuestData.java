@@ -20,147 +20,166 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @ToString
 public class QuestData extends GameResource {
-    @Getter private int subId;
-    @Getter private int mainId;
-    @Getter private int order;
-    @Getter private long descTextMapHash;
 
-    @Getter private boolean finishParent;
-    @Getter private boolean isRewind;
+	@Getter
+	private int subId;
 
-    @Getter private LogicType acceptCondComb;
-    @Getter private LogicType finishCondComb;
-    @Getter private LogicType failCondComb;
+	@Getter
+	private int mainId;
 
-    @Getter private List<QuestAcceptCondition> acceptCond;
-    @Getter private List<QuestContentCondition> finishCond;
-    @Getter private List<QuestContentCondition> failCond;
-    @Getter private List<QuestExecParam> beginExec;
-    @Getter private List<QuestExecParam> finishExec;
-    @Getter private List<QuestExecParam> failExec;
-    @Getter private Guide guide;
+	@Getter
+	private int order;
 
-    @Getter private List<Integer> trialAvatarList;
-    @Getter private List<ItemParamData> gainItems;
+	@Getter
+	private long descTextMapHash;
 
-    public static String questConditionKey(
-            @Nonnull Enum<?> type, int firstParam, @Nullable String paramsStr) {
-        return type.name() + firstParam + (paramsStr != null ? paramsStr : "");
-    }
+	@Getter
+	private boolean finishParent;
 
-    // ResourceLoader not happy if you remove getId() ~~
-    public int getId() {
-        return subId;
-    }
+	@Getter
+	private boolean isRewind;
 
-    public void onLoad() {
-        this.acceptCond = acceptCond.stream().filter(p -> p.getType() != null).toList();
-        this.finishCond = finishCond.stream().filter(p -> p.getType() != null).toList();
-        this.failCond = failCond.stream().filter(p -> p.getType() != null).toList();
+	@Getter
+	private LogicType acceptCondComb;
 
-        this.beginExec = beginExec.stream().filter(p -> p.type != null).toList();
-        this.finishExec = finishExec.stream().filter(p -> p.type != null).toList();
-        this.failExec = failExec.stream().filter(p -> p.type != null).toList();
+	@Getter
+	private LogicType finishCondComb;
 
-        if (this.acceptCondComb == null) this.acceptCondComb = LogicType.LOGIC_NONE;
+	@Getter
+	private LogicType failCondComb;
 
-        if (this.finishCondComb == null) this.finishCondComb = LogicType.LOGIC_NONE;
+	@Getter
+	private List<QuestAcceptCondition> acceptCond;
 
-        if (this.failCondComb == null) this.failCondComb = LogicType.LOGIC_NONE;
+	@Getter
+	private List<QuestContentCondition> finishCond;
 
-        if (this.gainItems == null) this.gainItems = Collections.emptyList();
+	@Getter
+	private List<QuestContentCondition> failCond;
 
-        this.addToCache();
-    }
+	@Getter
+	private List<QuestExecParam> beginExec;
 
-    public void applyFrom(MainQuestData.SubQuestData additionalData) {
-        this.isRewind = additionalData.isRewind();
-        this.finishParent = additionalData.isFinishParent();
-    }
+	@Getter
+	private List<QuestExecParam> finishExec;
 
-    private void addToCache() {
-        if (this.acceptCond == null) {
-            Grasscutter.getLogger().warn("missing AcceptConditions for quest {}", getSubId());
-            return;
-        }
+	@Getter
+	private List<QuestExecParam> failExec;
 
-        var cacheMap = GameData.getBeginCondQuestMap();
-        if (getAcceptCond().isEmpty()) {
-            var list =
-                    cacheMap.computeIfAbsent(
-                            QuestData.questConditionKey(QuestCond.QUEST_COND_NONE, 0, null),
-                            e -> new ArrayList<>());
-            list.add(this);
-        } else {
-            this.getAcceptCond()
-                    .forEach(
-                            questCondition -> {
-                                if (questCondition.getType() == null) {
-                                    Grasscutter.getLogger().warn("null accept type for quest {}", getSubId());
-                                    return;
-                                }
+	@Getter
+	private Guide guide;
 
-                                var key = questCondition.asKey();
-                                var list = cacheMap.computeIfAbsent(key, e -> new ArrayList<>());
-                                list.add(this);
-                            });
-        }
-    }
+	@Getter
+	private List<Integer> trialAvatarList;
 
-    @Data
-    @FieldDefaults(level = AccessLevel.PRIVATE)
-    public static class QuestExecParam {
-        @SerializedName(
-                value = "_type",
-                alternate = {"type"})
-        QuestExec type;
+	@Getter
+	private List<ItemParamData> gainItems;
 
-        @SerializedName(
-                value = "_param",
-                alternate = {"param"})
-        String[] param;
+	public static String questConditionKey(@Nonnull Enum<?> type, int firstParam, @Nullable String paramsStr) {
+		return type.name() + firstParam + (paramsStr != null ? paramsStr : "");
+	}
 
-        @SerializedName(
-                value = "_count",
-                alternate = {"count"})
-        String count;
-    }
+	// ResourceLoader not happy if you remove getId() ~~
+	public int getId() {
+		return subId;
+	}
 
-    public static class QuestAcceptCondition extends QuestCondition<QuestCond> {}
+	public void onLoad() {
+		this.acceptCond = acceptCond.stream().filter(p -> p.getType() != null).toList();
+		this.finishCond = finishCond.stream().filter(p -> p.getType() != null).toList();
+		this.failCond = failCond.stream().filter(p -> p.getType() != null).toList();
 
-    public static class QuestContentCondition extends QuestCondition<QuestContent> {}
+		this.beginExec = beginExec.stream().filter(p -> p.type != null).toList();
+		this.finishExec = finishExec.stream().filter(p -> p.type != null).toList();
+		this.failExec = failExec.stream().filter(p -> p.type != null).toList();
 
-    @Data
-    public static class QuestCondition<TYPE extends Enum<?> & QuestTrigger> {
-        @SerializedName(
-                value = "_type",
-                alternate = {"type"})
-        private TYPE type;
+		if (this.acceptCondComb == null) this.acceptCondComb = LogicType.LOGIC_NONE;
 
-        @SerializedName(
-                value = "_param",
-                alternate = {"param"})
-        private int[] param;
+		if (this.finishCondComb == null) this.finishCondComb = LogicType.LOGIC_NONE;
 
-        @SerializedName(
-                value = "_param_str",
-                alternate = {"param_str"})
-        private String paramStr = "";
+		if (this.failCondComb == null) this.failCondComb = LogicType.LOGIC_NONE;
 
-        @SerializedName(
-                value = "_count",
-                alternate = {"count"})
-        private int count;
+		if (this.gainItems == null) this.gainItems = Collections.emptyList();
 
-        public String asKey() {
-            return questConditionKey(getType(), getParam()[0], getParamStr());
-        }
-    }
+		this.addToCache();
+	}
 
-    @Data
-    public static class Guide {
-        private String type;
-        private List<String> param;
-        private int guideScene;
-    }
+	public void applyFrom(MainQuestData.SubQuestData additionalData) {
+		this.isRewind = additionalData.isRewind();
+		this.finishParent = additionalData.isFinishParent();
+	}
+
+	private void addToCache() {
+		if (this.acceptCond == null) {
+			Grasscutter.getLogger().warn("missing AcceptConditions for quest {}", getSubId());
+			return;
+		}
+
+		var cacheMap = GameData.getBeginCondQuestMap();
+		if (getAcceptCond().isEmpty()) {
+			var list = cacheMap.computeIfAbsent(
+				QuestData.questConditionKey(QuestCond.QUEST_COND_NONE, 0, null),
+				e -> new ArrayList<>()
+			);
+			list.add(this);
+		} else {
+			this.getAcceptCond()
+				.forEach(questCondition -> {
+					if (questCondition.getType() == null) {
+						Grasscutter.getLogger().warn("null accept type for quest {}", getSubId());
+						return;
+					}
+
+					var key = questCondition.asKey();
+					var list = cacheMap.computeIfAbsent(key, e -> new ArrayList<>());
+					list.add(this);
+				});
+		}
+	}
+
+	@Data
+	@FieldDefaults(level = AccessLevel.PRIVATE)
+	public static class QuestExecParam {
+
+		@SerializedName(value = "_type", alternate = { "type" })
+		QuestExec type;
+
+		@SerializedName(value = "_param", alternate = { "param" })
+		String[] param;
+
+		@SerializedName(value = "_count", alternate = { "count" })
+		String count;
+	}
+
+	public static class QuestAcceptCondition extends QuestCondition<QuestCond> {}
+
+	public static class QuestContentCondition extends QuestCondition<QuestContent> {}
+
+	@Data
+	public static class QuestCondition<TYPE extends Enum<?> & QuestTrigger> {
+
+		@SerializedName(value = "_type", alternate = { "type" })
+		private TYPE type;
+
+		@SerializedName(value = "_param", alternate = { "param" })
+		private int[] param;
+
+		@SerializedName(value = "_param_str", alternate = { "param_str" })
+		private String paramStr = "";
+
+		@SerializedName(value = "_count", alternate = { "count" })
+		private int count;
+
+		public String asKey() {
+			return questConditionKey(getType(), getParam()[0], getParamStr());
+		}
+	}
+
+	@Data
+	public static class Guide {
+
+		private String type;
+		private List<String> param;
+		private int guideScene;
+	}
 }

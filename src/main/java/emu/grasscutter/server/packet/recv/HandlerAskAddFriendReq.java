@@ -9,10 +9,10 @@ import emu.grasscutter.server.game.GameSession;
 @Opcodes(PacketOpcodes.AskAddFriendReq)
 public class HandlerAskAddFriendReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        AskAddFriendReq req = AskAddFriendReq.parseFrom(payload);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		AskAddFriendReq req = AskAddFriendReq.parseFrom(payload);
 
-        session.getPlayer().getFriendsList().sendFriendRequest(req.getTargetUid());
-    }
+		session.getPlayer().getFriendsList().sendFriendRequest(req.getTargetUid());
+	}
 }

@@ -6,12 +6,10 @@ import emu.grasscutter.net.proto.PlayerGetForceQuitBanInfoRspOuterClass.PlayerGe
 
 public class PacketPlayerGetForceQuitBanInfoRsp extends BasePacket {
 
-    public PacketPlayerGetForceQuitBanInfoRsp(int retcode) {
-        super(PacketOpcodes.PlayerGetForceQuitBanInfoRsp);
+	public PacketPlayerGetForceQuitBanInfoRsp(int retcode) {
+		super(PacketOpcodes.PlayerGetForceQuitBanInfoRsp);
+		PlayerGetForceQuitBanInfoRsp proto = PlayerGetForceQuitBanInfoRsp.newBuilder().setRetcode(retcode).build();
 
-        PlayerGetForceQuitBanInfoRsp proto =
-                PlayerGetForceQuitBanInfoRsp.newBuilder().setRetcode(retcode).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

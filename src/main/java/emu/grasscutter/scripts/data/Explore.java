@@ -6,6 +6,7 @@ import lombok.ToString;
 @ToString
 @Setter
 public class Explore {
-    public String name;
-    public int exp;
+
+	public String name;
+	public int exp;
 }

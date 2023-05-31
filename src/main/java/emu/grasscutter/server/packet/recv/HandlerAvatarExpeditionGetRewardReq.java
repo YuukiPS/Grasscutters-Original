@@ -16,32 +16,33 @@ import java.util.List;
 
 @Opcodes(PacketOpcodes.AvatarExpeditionGetRewardReq)
 public class HandlerAvatarExpeditionGetRewardReq extends PacketHandler {
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        AvatarExpeditionGetRewardReq req = AvatarExpeditionGetRewardReq.parseFrom(payload);
-        var player = session.getPlayer();
 
-        ExpeditionInfo expInfo = player.getExpeditionInfo(req.getAvatarGuid());
-        List<GameItem> items = new ArrayList<>();
-        List<ExpeditionRewardDataList> expeditionRewardDataLists =
-                session
-                        .getServer()
-                        .getExpeditionSystem()
-                        .getExpeditionRewardDataList()
-                        .get(expInfo.getExpId());
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		AvatarExpeditionGetRewardReq req = AvatarExpeditionGetRewardReq.parseFrom(payload);
+		var player = session.getPlayer();
 
-        if (expeditionRewardDataLists != null) {
-            expeditionRewardDataLists.stream()
-                    .filter(r -> r.getHourTime() == expInfo.getHourTime())
-                    .map(ExpeditionRewardDataList::getRewards)
-                    .forEach(items::addAll);
-        }
+		ExpeditionInfo expInfo = player.getExpeditionInfo(req.getAvatarGuid());
+		List<GameItem> items = new ArrayList<>();
+		List<ExpeditionRewardDataList> expeditionRewardDataLists = session
+			.getServer()
+			.getExpeditionSystem()
+			.getExpeditionRewardDataList()
+			.get(expInfo.getExpId());
 
-        player.getInventory().addItems(items);
-        player.sendPacket(new PacketItemAddHintNotify(items, ActionReason.ExpeditionReward));
+		if (expeditionRewardDataLists != null) {
+			expeditionRewardDataLists
+				.stream()
+				.filter(r -> r.getHourTime() == expInfo.getHourTime())
+				.map(ExpeditionRewardDataList::getRewards)
+				.forEach(items::addAll);
+		}
 
-        player.removeExpeditionInfo(req.getAvatarGuid());
-        player.save();
-        session.send(new PacketAvatarExpeditionGetRewardRsp(player.getExpeditionInfo(), items));
-    }
+		player.getInventory().addItems(items);
+		player.sendPacket(new PacketItemAddHintNotify(items, ActionReason.ExpeditionReward));
+
+		player.removeExpeditionInfo(req.getAvatarGuid());
+		player.save();
+		session.send(new PacketAvatarExpeditionGetRewardRsp(player.getExpeditionInfo(), items));
+	}
 }

@@ -6,12 +6,10 @@ import emu.grasscutter.net.proto.CombineDataNotifyOuterClass.CombineDataNotify;
 
 public class PacketCombineDataNotify extends BasePacket {
 
-    public PacketCombineDataNotify(Iterable<Integer> unlockedCombines) {
-        super(PacketOpcodes.CombineDataNotify);
+	public PacketCombineDataNotify(Iterable<Integer> unlockedCombines) {
+		super(PacketOpcodes.CombineDataNotify);
+		CombineDataNotify proto = CombineDataNotify.newBuilder().addAllCombineIdList(unlockedCombines).build();
 
-        CombineDataNotify proto =
-                CombineDataNotify.newBuilder().addAllCombineIdList(unlockedCombines).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

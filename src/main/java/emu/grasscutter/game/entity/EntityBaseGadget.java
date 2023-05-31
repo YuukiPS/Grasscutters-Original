@@ -12,90 +12,88 @@ import emu.grasscutter.server.event.entity.EntityDamageEvent;
 import lombok.Getter;
 
 public abstract class EntityBaseGadget extends GameEntity {
-    @Getter(onMethod_ = @Override)
-    protected final Position position;
 
-    @Getter(onMethod_ = @Override)
-    protected final Position rotation;
+	@Getter(onMethod_ = @Override)
+	protected final Position position;
 
-    @Getter private final int campId;
-    @Getter private final int campType;
+	@Getter(onMethod_ = @Override)
+	protected final Position rotation;
 
-    public EntityBaseGadget(Scene scene) {
-        this(scene, null, null);
-    }
+	@Getter
+	private final int campId;
 
-    public EntityBaseGadget(Scene scene, Position position, Position rotation) {
-        this(scene, position, rotation, 0, 0);
-    }
+	@Getter
+	private final int campType;
 
-    public EntityBaseGadget(
-            Scene scene, Position position, Position rotation, int campId, int campType) {
-        super(scene);
-        this.position = position != null ? position.clone() : new Position();
-        this.rotation = rotation != null ? rotation.clone() : new Position();
-        this.campId = campId;
-        this.campType = campType;
-    }
+	public EntityBaseGadget(Scene scene) {
+		this(scene, null, null);
+	}
 
-    public abstract int getGadgetId();
+	public EntityBaseGadget(Scene scene, Position position, Position rotation) {
+		this(scene, position, rotation, 0, 0);
+	}
 
-    @Override
-    public int getEntityTypeId() {
-        return this.getGadgetId();
-    }
+	public EntityBaseGadget(Scene scene, Position position, Position rotation, int campId, int campType) {
+		super(scene);
+		this.position = position != null ? position.clone() : new Position();
+		this.rotation = rotation != null ? rotation.clone() : new Position();
+		this.campId = campId;
+		this.campType = campType;
+	}
 
-    @Override
-    public void onDeath(int killerId) {
-        super.onDeath(killerId); // Invoke super class's onDeath() method.
+	public abstract int getGadgetId();
 
-        getScene()
-                .getPlayers()
-                .forEach(
-                        p ->
-                                p.getQuestManager()
-                                        .queueEvent(QuestContent.QUEST_CONTENT_DESTROY_GADGET, this.getGadgetId()));
-    }
+	@Override
+	public int getEntityTypeId() {
+		return this.getGadgetId();
+	}
 
-    @Override
-    public void runLuaCallbacks(EntityDamageEvent event) {
-        super.runLuaCallbacks(event);
-        getScene()
-                .getScriptManager()
-                .callEvent(
-                        new ScriptArgs(
-                                        this.getGroupId(),
-                                        EVENT_SPECIFIC_GADGET_HP_CHANGE,
-                                        getConfigId(),
-                                        getGadgetId())
-                                .setSourceEntityId(getId())
-                                .setParam3((int) this.getFightProperty(FightProperty.FIGHT_PROP_CUR_HP))
-                                .setEventSource(Integer.toString(getConfigId())));
-    }
+	@Override
+	public void onDeath(int killerId) {
+		super.onDeath(killerId); // Invoke super class's onDeath() method.
 
-    protected void fillFightProps(ConfigEntityGadget configGadget) {
-        if (configGadget == null || configGadget.getCombat() == null) {
-            return;
-        }
-        var combatData = configGadget.getCombat();
-        var combatProperties = combatData.getProperty();
+		getScene()
+			.getPlayers()
+			.forEach(p -> p.getQuestManager().queueEvent(QuestContent.QUEST_CONTENT_DESTROY_GADGET, this.getGadgetId())
+			);
+	}
 
-        var targetHp = combatProperties.getHP();
-        setFightProperty(FightProperty.FIGHT_PROP_MAX_HP, targetHp);
-        setFightProperty(FightProperty.FIGHT_PROP_BASE_HP, targetHp);
-        if (combatProperties.isInvincible()) {
-            targetHp = Float.POSITIVE_INFINITY;
-        }
-        setFightProperty(FightProperty.FIGHT_PROP_CUR_HP, targetHp);
+	@Override
+	public void runLuaCallbacks(EntityDamageEvent event) {
+		super.runLuaCallbacks(event);
+		getScene()
+			.getScriptManager()
+			.callEvent(
+				new ScriptArgs(this.getGroupId(), EVENT_SPECIFIC_GADGET_HP_CHANGE, getConfigId(), getGadgetId())
+					.setSourceEntityId(getId())
+					.setParam3((int) this.getFightProperty(FightProperty.FIGHT_PROP_CUR_HP))
+					.setEventSource(Integer.toString(getConfigId()))
+			);
+	}
 
-        var atk = combatProperties.getAttack();
-        setFightProperty(FightProperty.FIGHT_PROP_BASE_ATTACK, atk);
-        setFightProperty(FightProperty.FIGHT_PROP_CUR_ATTACK, atk);
+	protected void fillFightProps(ConfigEntityGadget configGadget) {
+		if (configGadget == null || configGadget.getCombat() == null) {
+			return;
+		}
+		var combatData = configGadget.getCombat();
+		var combatProperties = combatData.getProperty();
 
-        var def = combatProperties.getDefence();
-        setFightProperty(FightProperty.FIGHT_PROP_BASE_DEFENSE, def);
-        setFightProperty(FightProperty.FIGHT_PROP_CUR_DEFENSE, def);
+		var targetHp = combatProperties.getHP();
+		setFightProperty(FightProperty.FIGHT_PROP_MAX_HP, targetHp);
+		setFightProperty(FightProperty.FIGHT_PROP_BASE_HP, targetHp);
+		if (combatProperties.isInvincible()) {
+			targetHp = Float.POSITIVE_INFINITY;
+		}
+		setFightProperty(FightProperty.FIGHT_PROP_CUR_HP, targetHp);
 
-        setLockHP(combatProperties.isLockHP());
-    }
+		var atk = combatProperties.getAttack();
+		setFightProperty(FightProperty.FIGHT_PROP_BASE_ATTACK, atk);
+		setFightProperty(FightProperty.FIGHT_PROP_CUR_ATTACK, atk);
+
+		var def = combatProperties.getDefence();
+		setFightProperty(FightProperty.FIGHT_PROP_BASE_DEFENSE, def);
+		setFightProperty(FightProperty.FIGHT_PROP_CUR_DEFENSE, def);
+
+		setLockHP(combatProperties.isLockHP());
+	}
 }

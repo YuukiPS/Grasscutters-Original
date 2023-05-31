@@ -10,12 +10,13 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Data
 public class MonsterSpecialNameData extends GameResource {
-    private int specialNameId;
-    private int specialNameLabId;
-    private long specialNameTextMapHash;
 
-    @Override
-    public int getId() {
-        return specialNameId;
-    }
+	private int specialNameId;
+	private int specialNameLabId;
+	private long specialNameTextMapHash;
+
+	@Override
+	public int getId() {
+		return specialNameId;
+	}
 }

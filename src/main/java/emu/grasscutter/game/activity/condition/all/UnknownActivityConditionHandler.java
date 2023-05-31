@@ -10,12 +10,12 @@ import lombok.AllArgsConstructor;
 /** This class is used when condition was not found */
 @AllArgsConstructor
 public class UnknownActivityConditionHandler extends ActivityConditionBaseHandler {
-    private final ActivityConditions conditions;
 
-    @Override
-    public boolean execute(
-            PlayerActivityData activityData, ActivityConfigItem activityConfig, int... params) {
-        Grasscutter.getLogger().error("Called unknown condition handler {}.", conditions.name());
-        return false;
-    }
+	private final ActivityConditions conditions;
+
+	@Override
+	public boolean execute(PlayerActivityData activityData, ActivityConfigItem activityConfig, int... params) {
+		Grasscutter.getLogger().error("Called unknown condition handler {}.", conditions.name());
+		return false;
+	}
 }

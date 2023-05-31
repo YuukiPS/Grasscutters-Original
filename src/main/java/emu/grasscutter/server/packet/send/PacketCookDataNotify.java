@@ -8,11 +8,10 @@ import java.util.List;
 
 public class PacketCookDataNotify extends BasePacket {
 
-    public PacketCookDataNotify(List<CookRecipeData> recipes) {
-        super(PacketOpcodes.CookDataNotify);
+	public PacketCookDataNotify(List<CookRecipeData> recipes) {
+		super(PacketOpcodes.CookDataNotify);
+		CookDataNotify proto = CookDataNotify.newBuilder().addAllRecipeDataList(recipes).build();
 
-        CookDataNotify proto = CookDataNotify.newBuilder().addAllRecipeDataList(recipes).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

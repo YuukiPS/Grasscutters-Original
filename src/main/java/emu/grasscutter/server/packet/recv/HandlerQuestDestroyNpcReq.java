@@ -10,10 +10,11 @@ import lombok.val;
 
 @Opcodes(PacketOpcodes.QuestDestroyNpcReq)
 public class HandlerQuestDestroyNpcReq extends PacketHandler {
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        val req = QuestDestroyNpcReq.parseFrom(payload);
 
-        session.send(new PacketQuestDestroyNpcRsp(req.getNpcId(), req.getParentQuestId(), 0));
-    }
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		val req = QuestDestroyNpcReq.parseFrom(payload);
+
+		session.send(new PacketQuestDestroyNpcRsp(req.getNpcId(), req.getParentQuestId(), 0));
+	}
 }

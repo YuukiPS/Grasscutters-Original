@@ -13,11 +13,12 @@ import lombok.experimental.FieldDefaults;
 @Setter // TODO: remove setters next API break
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PersonalLineData extends GameResource {
-    @Getter(onMethod_ = @Override)
-    int id;
 
-    int avatarID;
-    List<Integer> preQuestId;
-    int startQuestId;
-    int chapterId;
+	@Getter(onMethod_ = @Override)
+	int id;
+
+	int avatarID;
+	List<Integer> preQuestId;
+	int startQuestId;
+	int chapterId;
 }

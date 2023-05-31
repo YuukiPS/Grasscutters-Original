@@ -4,8 +4,7 @@ import emu.grasscutter.game.entity.gadget.GadgetChest;
 import emu.grasscutter.game.player.Player;
 
 public interface ChestInteractHandler {
+	boolean isTwoStep();
 
-    boolean isTwoStep();
-
-    boolean onInteract(GadgetChest chest, Player player);
+	boolean onInteract(GadgetChest chest, Player player);
 }

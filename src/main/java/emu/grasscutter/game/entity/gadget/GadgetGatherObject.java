@@ -18,81 +18,80 @@ import emu.grasscutter.server.packet.send.PacketGadgetInteractRsp;
 import emu.grasscutter.utils.Utils;
 
 public final class GadgetGatherObject extends GadgetContent {
-    private int itemId;
-    private boolean isForbidGuest;
 
-    public GadgetGatherObject(EntityGadget gadget) {
-        super(gadget);
+	private int itemId;
+	private boolean isForbidGuest;
 
-        // overwrites the default spawn handling
-        if (gadget.getSpawnEntry() != null) {
-            this.itemId = gadget.getSpawnEntry().getGatherItemId();
-            return;
-        }
+	public GadgetGatherObject(EntityGadget gadget) {
+		super(gadget);
+		// overwrites the default spawn handling
+		if (gadget.getSpawnEntry() != null) {
+			this.itemId = gadget.getSpawnEntry().getGatherItemId();
+			return;
+		}
 
-        GatherData gatherData = GameData.getGatherDataMap().get(gadget.getPointType());
-        if (gatherData != null) {
-            this.itemId = gatherData.getItemId();
-            this.isForbidGuest = gatherData.isForbidGuest();
-        } else {
-            Grasscutter.getLogger().trace("invalid gather object: {}", gadget.getConfigId());
-        }
-    }
+		GatherData gatherData = GameData.getGatherDataMap().get(gadget.getPointType());
+		if (gatherData != null) {
+			this.itemId = gatherData.getItemId();
+			this.isForbidGuest = gatherData.isForbidGuest();
+		} else {
+			Grasscutter.getLogger().trace("invalid gather object: {}", gadget.getConfigId());
+		}
+	}
 
-    public int getItemId() {
-        return this.itemId;
-    }
+	public int getItemId() {
+		return this.itemId;
+	}
 
-    public boolean isForbidGuest() {
-        return isForbidGuest;
-    }
+	public boolean isForbidGuest() {
+		return isForbidGuest;
+	}
 
-    public boolean onInteract(Player player, GadgetInteractReq req) {
-        // Sanity check
-        ItemData itemData = GameData.getItemDataMap().get(getItemId());
-        if (itemData == null) {
-            return false;
-        }
+	public boolean onInteract(Player player, GadgetInteractReq req) {
+		// Sanity check
+		ItemData itemData = GameData.getItemDataMap().get(getItemId());
+		if (itemData == null) {
+			return false;
+		}
 
-        GameItem item = new GameItem(itemData, 1);
-        player.getInventory().addItem(item, ActionReason.Gather);
+		GameItem item = new GameItem(itemData, 1);
+		player.getInventory().addItem(item, ActionReason.Gather);
 
-        getGadget()
-                .getScene()
-                .broadcastPacket(
-                        new PacketGadgetInteractRsp(getGadget(), InteractType.INTERACT_TYPE_GATHER));
+		getGadget()
+			.getScene()
+			.broadcastPacket(new PacketGadgetInteractRsp(getGadget(), InteractType.INTERACT_TYPE_GATHER));
 
-        return true;
-    }
+		return true;
+	}
 
-    public void onBuildProto(SceneGadgetInfo.Builder gadgetInfo) {
-        GatherGadgetInfo gatherGadgetInfo =
-                GatherGadgetInfo.newBuilder()
-                        .setItemId(this.getItemId())
-                        .setIsForbidGuest(this.isForbidGuest())
-                        .build();
+	public void onBuildProto(SceneGadgetInfo.Builder gadgetInfo) {
+		GatherGadgetInfo gatherGadgetInfo = GatherGadgetInfo
+			.newBuilder()
+			.setItemId(this.getItemId())
+			.setIsForbidGuest(this.isForbidGuest())
+			.build();
 
-        gadgetInfo.setGatherGadget(gatherGadgetInfo);
-    }
+		gadgetInfo.setGatherGadget(gatherGadgetInfo);
+	}
 
-    public void dropItems(Player player) {
-        Scene scene = getGadget().getScene();
-        int times = Utils.randomRange(1, 2);
+	public void dropItems(Player player) {
+		Scene scene = getGadget().getScene();
+		int times = Utils.randomRange(1, 2);
 
-        for (int i = 0; i < times; i++) {
-            EntityItem item =
-                    new EntityItem(
-                            scene,
-                            player,
-                            GameData.getItemDataMap().get(itemId),
-                            getGadget().getPosition().nearby2d(1f).addY(2f),
-                            1,
-                            true);
+		for (int i = 0; i < times; i++) {
+			EntityItem item = new EntityItem(
+				scene,
+				player,
+				GameData.getItemDataMap().get(itemId),
+				getGadget().getPosition().nearby2d(1f).addY(2f),
+				1,
+				true
+			);
 
-            scene.addEntity(item);
-        }
+			scene.addEntity(item);
+		}
 
-        scene.killEntity(this.getGadget(), player.getTeamManager().getCurrentAvatarEntity().getId());
-        // Todo: add record
-    }
+		scene.killEntity(this.getGadget(), player.getTeamManager().getCurrentAvatarEntity().getId());
+		// Todo: add record
+	}
 }

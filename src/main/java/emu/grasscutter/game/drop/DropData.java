@@ -2,51 +2,52 @@ package emu.grasscutter.game.drop;
 
 @Deprecated
 public class DropData {
-    private int minWeight;
-    private int maxWeight;
-    private int itemId;
-    private int minCount;
-    private int maxCount;
-    private boolean share = false;
-    private boolean give = false;
 
-    public boolean isGive() {
-        return give;
-    }
+	private int minWeight;
+	private int maxWeight;
+	private int itemId;
+	private int minCount;
+	private int maxCount;
+	private boolean share = false;
+	private boolean give = false;
 
-    public void setGive(boolean give) {
-        this.give = give;
-    }
+	public boolean isGive() {
+		return give;
+	}
 
-    public int getItemId() {
-        return itemId;
-    }
+	public void setGive(boolean give) {
+		this.give = give;
+	}
 
-    public void setItemId(int itemId) {
-        this.itemId = itemId;
-    }
+	public int getItemId() {
+		return itemId;
+	}
 
-    public int getMinCount() {
-        return minCount;
-    }
+	public void setItemId(int itemId) {
+		this.itemId = itemId;
+	}
 
-    public int getMaxCount() {
-        return maxCount;
-    }
+	public int getMinCount() {
+		return minCount;
+	}
 
-    public int getMinWeight() {
-        return minWeight;
-    }
+	public int getMaxCount() {
+		return maxCount;
+	}
 
-    public int getMaxWeight() {
-        return maxWeight;
-    }
+	public int getMinWeight() {
+		return minWeight;
+	}
 
-    public boolean isShare() {
-        return share;
-    }
+	public int getMaxWeight() {
+		return maxWeight;
+	}
 
-    public void setIsShare(boolean share) {
-        this.share = share;
-    }
+	public boolean isShare() {
+		return share;
+	}
+
+	public void setIsShare(boolean share) {
+		this.share = share;
+	}
 }

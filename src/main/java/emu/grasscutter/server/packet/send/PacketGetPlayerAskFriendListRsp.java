@@ -8,18 +8,17 @@ import emu.grasscutter.net.proto.GetPlayerAskFriendListRspOuterClass.GetPlayerAs
 
 public class PacketGetPlayerAskFriendListRsp extends BasePacket {
 
-    public PacketGetPlayerAskFriendListRsp(Player player) {
-        super(PacketOpcodes.GetPlayerAskFriendListRsp);
+	public PacketGetPlayerAskFriendListRsp(Player player) {
+		super(PacketOpcodes.GetPlayerAskFriendListRsp);
+		GetPlayerAskFriendListRsp.Builder proto = GetPlayerAskFriendListRsp.newBuilder();
 
-        GetPlayerAskFriendListRsp.Builder proto = GetPlayerAskFriendListRsp.newBuilder();
+		for (Friendship friendship : player.getFriendsList().getPendingFriends().values()) {
+			if (friendship.getAskerId() == player.getUid()) {
+				continue;
+			}
+			proto.addAskFriendList(friendship.toProto());
+		}
 
-        for (Friendship friendship : player.getFriendsList().getPendingFriends().values()) {
-            if (friendship.getAskerId() == player.getUid()) {
-                continue;
-            }
-            proto.addAskFriendList(friendship.toProto());
-        }
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

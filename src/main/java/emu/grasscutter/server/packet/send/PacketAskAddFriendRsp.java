@@ -6,11 +6,10 @@ import emu.grasscutter.net.proto.AskAddFriendRspOuterClass.AskAddFriendRsp;
 
 public class PacketAskAddFriendRsp extends BasePacket {
 
-    public PacketAskAddFriendRsp(int targetUid) {
-        super(PacketOpcodes.AskAddFriendRsp);
+	public PacketAskAddFriendRsp(int targetUid) {
+		super(PacketOpcodes.AskAddFriendRsp);
+		AskAddFriendRsp proto = AskAddFriendRsp.newBuilder().setTargetUid(targetUid).build();
 
-        AskAddFriendRsp proto = AskAddFriendRsp.newBuilder().setTargetUid(targetUid).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

@@ -9,10 +9,10 @@ import emu.grasscutter.server.game.GameSession;
 @Opcodes(PacketOpcodes.AvatarDieAnimationEndReq)
 public class HandlerAvatarDieAnimationEndReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        AvatarDieAnimationEndReq req = AvatarDieAnimationEndReq.parseFrom(payload);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		AvatarDieAnimationEndReq req = AvatarDieAnimationEndReq.parseFrom(payload);
 
-        session.getPlayer().getTeamManager().onAvatarDie(req.getDieGuid());
-    }
+		session.getPlayer().getTeamManager().onAvatarDie(req.getDieGuid());
+	}
 }

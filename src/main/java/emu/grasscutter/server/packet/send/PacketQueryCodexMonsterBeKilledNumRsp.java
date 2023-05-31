@@ -8,20 +8,19 @@ import java.util.List;
 
 public class PacketQueryCodexMonsterBeKilledNumRsp extends BasePacket {
 
-    public PacketQueryCodexMonsterBeKilledNumRsp(Player player, List<Integer> codexList) {
-        super(PacketOpcodes.QueryCodexMonsterBeKilledNumRsp);
-        QueryCodexMonsterBeKilledNumRsp.Builder proto = QueryCodexMonsterBeKilledNumRsp.newBuilder();
+	public PacketQueryCodexMonsterBeKilledNumRsp(Player player, List<Integer> codexList) {
+		super(PacketOpcodes.QueryCodexMonsterBeKilledNumRsp);
+		QueryCodexMonsterBeKilledNumRsp.Builder proto = QueryCodexMonsterBeKilledNumRsp.newBuilder();
 
-        codexList.forEach(
-                animal -> {
-                    if (player.getCodex().getUnlockedAnimal().containsKey(animal)) {
-                        proto
-                                .addCodexIdList(animal)
-                                .addBeKilledNumList(player.getCodex().getUnlockedAnimal().get(animal))
-                                .addBeCapturedNumList(0);
-                    }
-                });
+		codexList.forEach(animal -> {
+			if (player.getCodex().getUnlockedAnimal().containsKey(animal)) {
+				proto
+					.addCodexIdList(animal)
+					.addBeKilledNumList(player.getCodex().getUnlockedAnimal().get(animal))
+					.addBeCapturedNumList(0);
+			}
+		});
 
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

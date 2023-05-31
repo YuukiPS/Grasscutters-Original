@@ -9,19 +9,16 @@ import emu.grasscutter.net.proto.WorldPlayerRTTNotifyOuterClass.WorldPlayerRTTNo
 
 public class PacketWorldPlayerRTTNotify extends BasePacket {
 
-    public PacketWorldPlayerRTTNotify(World world) {
-        super(PacketOpcodes.WorldPlayerRTTNotify);
+	public PacketWorldPlayerRTTNotify(World world) {
+		super(PacketOpcodes.WorldPlayerRTTNotify);
+		WorldPlayerRTTNotify.Builder proto = WorldPlayerRTTNotify.newBuilder();
 
-        WorldPlayerRTTNotify.Builder proto = WorldPlayerRTTNotify.newBuilder();
+		for (Player player : world.getPlayers()) {
+			proto.addPlayerRttList(
+				PlayerRTTInfo.newBuilder().setUid(player.getUid()).setRtt(10) // TODO - put player ping here
+			);
+		}
 
-        for (Player player : world.getPlayers()) {
-            proto.addPlayerRttList(
-                    PlayerRTTInfo.newBuilder()
-                            .setUid(player.getUid())
-                            .setRtt(10) // TODO - put player ping here
-                    );
-        }
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

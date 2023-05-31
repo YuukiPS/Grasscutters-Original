@@ -18,57 +18,54 @@ import lombok.ToString;
 @Setter
 public class SceneMeta {
 
-    public SceneConfig config;
-    public Map<Integer, SceneBlock> blocks;
+	public SceneConfig config;
+	public Map<Integer, SceneBlock> blocks;
 
-    public Bindings context;
+	public Bindings context;
 
-    public RTree<SceneBlock, Geometry> sceneBlockIndex;
+	public RTree<SceneBlock, Geometry> sceneBlockIndex;
 
-    public static SceneMeta of(int sceneId) {
-        return new SceneMeta().load(sceneId);
-    }
+	public static SceneMeta of(int sceneId) {
+		return new SceneMeta().load(sceneId);
+	}
 
-    public SceneMeta load(int sceneId) {
-        // Get compiled script if cached
-        CompiledScript cs = ScriptLoader.getScript("Scene/" + sceneId + "/scene" + sceneId + ".lua");
+	public SceneMeta load(int sceneId) {
+		// Get compiled script if cached
+		CompiledScript cs = ScriptLoader.getScript("Scene/" + sceneId + "/scene" + sceneId + ".lua");
 
-        if (cs == null) {
-            Grasscutter.getLogger().warn("No script found for scene " + sceneId);
-            return null;
-        }
+		if (cs == null) {
+			Grasscutter.getLogger().warn("No script found for scene " + sceneId);
+			return null;
+		}
 
-        // Create bindings
-        this.context = ScriptLoader.getEngine().createBindings();
+		// Create bindings
+		this.context = ScriptLoader.getEngine().createBindings();
 
-        // Eval script
-        try {
-            cs.eval(this.context);
+		// Eval script
+		try {
+			cs.eval(this.context);
 
-            this.config =
-                    ScriptLoader.getSerializer()
-                            .toObject(SceneConfig.class, this.context.get("scene_config"));
+			this.config = ScriptLoader.getSerializer().toObject(SceneConfig.class, this.context.get("scene_config"));
 
-            // TODO optimize later
-            // Create blocks
-            List<Integer> blockIds =
-                    ScriptLoader.getSerializer().toList(Integer.class, this.context.get("blocks"));
-            List<SceneBlock> blocks =
-                    ScriptLoader.getSerializer().toList(SceneBlock.class, this.context.get("block_rects"));
+			// TODO optimize later
+			// Create blocks
+			List<Integer> blockIds = ScriptLoader.getSerializer().toList(Integer.class, this.context.get("blocks"));
+			List<SceneBlock> blocks = ScriptLoader
+				.getSerializer()
+				.toList(SceneBlock.class, this.context.get("block_rects"));
 
-            for (int i = 0; i < blocks.size(); i++) {
-                SceneBlock block = blocks.get(i);
-                block.id = blockIds.get(i);
-            }
+			for (int i = 0; i < blocks.size(); i++) {
+				SceneBlock block = blocks.get(i);
+				block.id = blockIds.get(i);
+			}
 
-            this.blocks = blocks.stream().collect(Collectors.toMap(b -> b.id, b -> b, (a, b) -> a));
-            this.sceneBlockIndex = SceneIndexManager.buildIndex(2, blocks, SceneBlock::toRectangle);
-
-        } catch (ScriptException exception) {
-            Grasscutter.getLogger().error("An error occurred while running a script.", exception);
-            return null;
-        }
-        Grasscutter.getLogger().debug("Successfully loaded metadata in scene {}.", sceneId);
-        return this;
-    }
+			this.blocks = blocks.stream().collect(Collectors.toMap(b -> b.id, b -> b, (a, b) -> a));
+			this.sceneBlockIndex = SceneIndexManager.buildIndex(2, blocks, SceneBlock::toRectangle);
+		} catch (ScriptException exception) {
+			Grasscutter.getLogger().error("An error occurred while running a script.", exception);
+			return null;
+		}
+		Grasscutter.getLogger().debug("Successfully loaded metadata in scene {}.", sceneId);
+		return this;
+	}
 }

@@ -23,13 +23,13 @@ For the rest of the wildcard characters, please Google them yourself
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Task {
-    String taskName() default "NO_NAME";
+	String taskName() default "NO_NAME";
 
-    String taskCronExpression() default "0 0 0 0 0 ?";
+	String taskCronExpression() default "0 0 0 0 0 ?";
 
-    String triggerName() default "NO_NAME";
+	String triggerName() default "NO_NAME";
 
-    boolean executeImmediatelyAfterReset() default false;
+	boolean executeImmediatelyAfterReset() default false;
 
-    boolean executeImmediately() default false;
+	boolean executeImmediately() default false;
 }

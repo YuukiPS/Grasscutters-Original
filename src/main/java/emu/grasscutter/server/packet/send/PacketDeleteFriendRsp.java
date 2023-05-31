@@ -6,11 +6,10 @@ import emu.grasscutter.net.proto.DeleteFriendRspOuterClass.DeleteFriendRsp;
 
 public class PacketDeleteFriendRsp extends BasePacket {
 
-    public PacketDeleteFriendRsp(int targetUid) {
-        super(PacketOpcodes.DeleteFriendRsp);
+	public PacketDeleteFriendRsp(int targetUid) {
+		super(PacketOpcodes.DeleteFriendRsp);
+		DeleteFriendRsp proto = DeleteFriendRsp.newBuilder().setTargetUid(targetUid).build();
 
-        DeleteFriendRsp proto = DeleteFriendRsp.newBuilder().setTargetUid(targetUid).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

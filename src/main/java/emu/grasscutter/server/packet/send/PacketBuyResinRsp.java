@@ -7,13 +7,15 @@ import emu.grasscutter.net.packet.PacketOpcodes;
 import emu.grasscutter.net.proto.BuyResinRspOuterClass;
 
 public class PacketBuyResinRsp extends BasePacket {
-    public PacketBuyResinRsp(Player player, int ret) {
-        super(PacketOpcodes.BuyResinRsp);
 
-        this.setData(
-                BuyResinRspOuterClass.BuyResinRsp.newBuilder()
-                        .setCurValue(player.getProperty(PlayerProperty.PROP_PLAYER_RESIN))
-                        .setRetcode(ret)
-                        .build());
-    }
+	public PacketBuyResinRsp(Player player, int ret) {
+		super(PacketOpcodes.BuyResinRsp);
+		this.setData(
+				BuyResinRspOuterClass.BuyResinRsp
+					.newBuilder()
+					.setCurValue(player.getProperty(PlayerProperty.PROP_PLAYER_RESIN))
+					.setRetcode(ret)
+					.build()
+			);
+	}
 }

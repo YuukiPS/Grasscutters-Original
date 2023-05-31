@@ -7,12 +7,10 @@ import emu.grasscutter.net.proto.RetcodeOuterClass.Retcode;
 
 public class PacketDungeonPlayerDieRsp extends BasePacket {
 
-    public PacketDungeonPlayerDieRsp(Retcode retcode) {
-        super(PacketOpcodes.DungeonPlayerDieRsp);
+	public PacketDungeonPlayerDieRsp(Retcode retcode) {
+		super(PacketOpcodes.DungeonPlayerDieRsp);
+		DungeonPlayerDieRsp proto = DungeonPlayerDieRsp.newBuilder().setRetcode(retcode.getNumber()).build();
 
-        DungeonPlayerDieRsp proto =
-                DungeonPlayerDieRsp.newBuilder().setRetcode(retcode.getNumber()).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

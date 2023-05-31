@@ -8,17 +8,16 @@ import emu.grasscutter.net.proto.ChangeMpTeamAvatarRspOuterClass.ChangeMpTeamAva
 
 public class PacketChangeMpTeamAvatarRsp extends BasePacket {
 
-    public PacketChangeMpTeamAvatarRsp(Player player, TeamInfo teamInfo) {
-        super(PacketOpcodes.ChangeMpTeamAvatarRsp);
+	public PacketChangeMpTeamAvatarRsp(Player player, TeamInfo teamInfo) {
+		super(PacketOpcodes.ChangeMpTeamAvatarRsp);
+		ChangeMpTeamAvatarRsp.Builder proto = ChangeMpTeamAvatarRsp
+			.newBuilder()
+			.setCurAvatarGuid(player.getTeamManager().getCurrentCharacterGuid());
 
-        ChangeMpTeamAvatarRsp.Builder proto =
-                ChangeMpTeamAvatarRsp.newBuilder()
-                        .setCurAvatarGuid(player.getTeamManager().getCurrentCharacterGuid());
+		for (int avatarId : teamInfo.getAvatars()) {
+			proto.addAvatarGuidList(player.getAvatars().getAvatarById(avatarId).getGuid());
+		}
 
-        for (int avatarId : teamInfo.getAvatars()) {
-            proto.addAvatarGuidList(player.getAvatars().getAvatarById(avatarId).getGuid());
-        }
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

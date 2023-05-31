@@ -13,98 +13,100 @@ import emu.grasscutter.utils.Utils;
 
 public class PacketPlayerEnterSceneNotify extends BasePacket {
 
-    // Login
-    public PacketPlayerEnterSceneNotify(Player player) {
-        super(PacketOpcodes.PlayerEnterSceneNotify);
+	// Login
+	public PacketPlayerEnterSceneNotify(Player player) {
+		super(PacketOpcodes.PlayerEnterSceneNotify);
+		player.setSceneLoadState(SceneLoadState.LOADING);
+		player.setEnterSceneToken(Utils.randomRange(1000, 99999));
 
-        player.setSceneLoadState(SceneLoadState.LOADING);
-        player.setEnterSceneToken(Utils.randomRange(1000, 99999));
+		var proto = PlayerEnterSceneNotify
+			.newBuilder()
+			.setSceneId(player.getSceneId())
+			.setPos(player.getPosition().toProto())
+			.setSceneBeginTime(System.currentTimeMillis())
+			.setType(EnterType.ENTER_TYPE_SELF)
+			.setTargetUid(player.getUid())
+			.setEnterSceneToken(player.getEnterSceneToken())
+			.setWorldLevel(player.getWorldLevel())
+			.setEnterReason(EnterReason.Login.getValue())
+			.setIsFirstLoginEnterScene(player.isFirstLoginEnterScene())
+			.setWorldType(1)
+			.setSceneTransaction(
+				"3-" + player.getUid() + "-" + (int) (System.currentTimeMillis() / 1000) + "-" + 18402
+			);
 
-        var proto =
-                PlayerEnterSceneNotify.newBuilder()
-                        .setSceneId(player.getSceneId())
-                        .setPos(player.getPosition().toProto())
-                        .setSceneBeginTime(System.currentTimeMillis())
-                        .setType(EnterType.ENTER_TYPE_SELF)
-                        .setTargetUid(player.getUid())
-                        .setEnterSceneToken(player.getEnterSceneToken())
-                        .setWorldLevel(player.getWorldLevel())
-                        .setEnterReason(EnterReason.Login.getValue())
-                        .setIsFirstLoginEnterScene(player.isFirstLoginEnterScene())
-                        .setWorldType(1)
-                        .setSceneTransaction(
-                                "3-"
-                                        + player.getUid()
-                                        + "-"
-                                        + (int) (System.currentTimeMillis() / 1000)
-                                        + "-"
-                                        + 18402);
+		this.setData(proto);
+	}
 
-        this.setData(proto);
-    }
+	public PacketPlayerEnterSceneNotify(
+		Player player,
+		EnterType type,
+		EnterReason reason,
+		int newScene,
+		Position newPos
+	) {
+		this(player, player, type, reason, newScene, newPos);
+	}
 
-    public PacketPlayerEnterSceneNotify(
-            Player player, EnterType type, EnterReason reason, int newScene, Position newPos) {
-        this(player, player, type, reason, newScene, newPos);
-    }
+	public PacketPlayerEnterSceneNotify(Player player, TeleportProperties teleportProperties) {
+		this(player, player, teleportProperties);
+	}
 
-    public PacketPlayerEnterSceneNotify(Player player, TeleportProperties teleportProperties) {
-        this(player, player, teleportProperties);
-    }
+	public PacketPlayerEnterSceneNotify(
+		Player player,
+		Player target,
+		EnterType type,
+		EnterReason reason,
+		int newScene,
+		Position newPos
+	) {
+		this(
+			player,
+			target,
+			TeleportProperties
+				.builder()
+				.enterType(type)
+				.enterReason(reason)
+				.sceneId(newScene)
+				.teleportTo(newPos)
+				.build()
+		);
+	}
 
-    public PacketPlayerEnterSceneNotify(
-            Player player,
-            Player target,
-            EnterType type,
-            EnterReason reason,
-            int newScene,
-            Position newPos) {
-        this(
-                player,
-                target,
-                TeleportProperties.builder()
-                        .enterType(type)
-                        .enterReason(reason)
-                        .sceneId(newScene)
-                        .teleportTo(newPos)
-                        .build());
-    }
+	// Teleport or go somewhere
+	public PacketPlayerEnterSceneNotify(Player player, Player target, TeleportProperties teleportProperties) {
+		super(PacketOpcodes.PlayerEnterSceneNotify);
+		player.setSceneLoadState(SceneLoadState.LOADING);
+		player.setEnterSceneToken(Utils.randomRange(1000, 99999));
 
-    // Teleport or go somewhere
-    public PacketPlayerEnterSceneNotify(
-            Player player, Player target, TeleportProperties teleportProperties) {
-        super(PacketOpcodes.PlayerEnterSceneNotify);
+		var proto = PlayerEnterSceneNotify
+			.newBuilder()
+			.setPrevSceneId(player.getSceneId())
+			.setPrevPos(player.getPosition().toProto())
+			.setSceneId(teleportProperties.getSceneId())
+			.setPos(teleportProperties.getTeleportTo().toProto())
+			.setSceneBeginTime(System.currentTimeMillis())
+			.setType(teleportProperties.getEnterType())
+			.setTargetUid(target.getUid())
+			.setEnterSceneToken(player.getEnterSceneToken())
+			.setWorldLevel(target.getWorld().getWorldLevel())
+			.setEnterReason(teleportProperties.getEnterReason().getValue())
+			.setWorldType(1)
+			.setSceneTransaction(
+				teleportProperties.getSceneId() +
+				"-" +
+				target.getUid() +
+				"-" +
+				(int) (System.currentTimeMillis() / 1000) +
+				"-" +
+				18402
+			);
 
-        player.setSceneLoadState(SceneLoadState.LOADING);
-        player.setEnterSceneToken(Utils.randomRange(1000, 99999));
+		// Apply the dungeon ID to the packet if it's a dungeon.
+		if (teleportProperties.getDungeonId() != 0) {
+			proto.setDungeonId(teleportProperties.getDungeonId());
+		}
 
-        var proto =
-                PlayerEnterSceneNotify.newBuilder()
-                        .setPrevSceneId(player.getSceneId())
-                        .setPrevPos(player.getPosition().toProto())
-                        .setSceneId(teleportProperties.getSceneId())
-                        .setPos(teleportProperties.getTeleportTo().toProto())
-                        .setSceneBeginTime(System.currentTimeMillis())
-                        .setType(teleportProperties.getEnterType())
-                        .setTargetUid(target.getUid())
-                        .setEnterSceneToken(player.getEnterSceneToken())
-                        .setWorldLevel(target.getWorld().getWorldLevel())
-                        .setEnterReason(teleportProperties.getEnterReason().getValue())
-                        .setWorldType(1)
-                        .setSceneTransaction(
-                                teleportProperties.getSceneId()
-                                        + "-"
-                                        + target.getUid()
-                                        + "-"
-                                        + (int) (System.currentTimeMillis() / 1000)
-                                        + "-"
-                                        + 18402);
-
-        // Apply the dungeon ID to the packet if it's a dungeon.
-        if (teleportProperties.getDungeonId() != 0) {
-            proto.setDungeonId(teleportProperties.getDungeonId());
-        }
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

@@ -6,16 +6,16 @@ import emu.grasscutter.net.proto.GetFriendShowNameCardInfoRspOuterClass;
 import java.util.List;
 
 public class PacketGetFriendShowNameCardInfoRsp extends BasePacket {
-    public PacketGetFriendShowNameCardInfoRsp(int uid, List<Integer> cardIds) {
-        super(PacketOpcodes.GetFriendShowNameCardInfoRsp);
 
-        var rsp =
-                GetFriendShowNameCardInfoRspOuterClass.GetFriendShowNameCardInfoRsp.newBuilder()
-                        .setUid(uid)
-                        .addAllShowNameCardIdList(cardIds)
-                        .setRetcode(0)
-                        .build();
+	public PacketGetFriendShowNameCardInfoRsp(int uid, List<Integer> cardIds) {
+		super(PacketOpcodes.GetFriendShowNameCardInfoRsp);
+		var rsp = GetFriendShowNameCardInfoRspOuterClass.GetFriendShowNameCardInfoRsp
+			.newBuilder()
+			.setUid(uid)
+			.addAllShowNameCardIdList(cardIds)
+			.setRetcode(0)
+			.build();
 
-        this.setData(rsp);
-    }
+		this.setData(rsp);
+	}
 }

@@ -7,137 +7,141 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class BasePacket {
-    private static final int const1 = 17767; // 0x4567
-    private static final int const2 = -30293; // 0x89ab
-    public boolean shouldEncrypt = true;
-    private int opcode;
-    private boolean shouldBuildHeader = false;
-    private byte[] header;
-    private byte[] data;
-    // Encryption
-    private boolean useDispatchKey;
 
-    public BasePacket(int opcode) {
-        this.opcode = opcode;
-    }
+	private static final int const1 = 17767; // 0x4567
+	private static final int const2 = -30293; // 0x89ab
+	public boolean shouldEncrypt = true;
+	private int opcode;
+	private boolean shouldBuildHeader = false;
+	private byte[] header;
+	private byte[] data;
+	// Encryption
+	private boolean useDispatchKey;
 
-    public BasePacket(int opcode, int clientSequence) {
-        this.opcode = opcode;
-        this.buildHeader(clientSequence);
-    }
+	public BasePacket(int opcode) {
+		this.opcode = opcode;
+	}
 
-    public BasePacket(int opcode, boolean buildHeader) {
-        this.opcode = opcode;
-        this.shouldBuildHeader = buildHeader;
-    }
+	public BasePacket(int opcode, int clientSequence) {
+		this.opcode = opcode;
+		this.buildHeader(clientSequence);
+	}
 
-    public int getOpcode() {
-        return opcode;
-    }
+	public BasePacket(int opcode, boolean buildHeader) {
+		this.opcode = opcode;
+		this.shouldBuildHeader = buildHeader;
+	}
 
-    public void setOpcode(int opcode) {
-        this.opcode = opcode;
-    }
+	public int getOpcode() {
+		return opcode;
+	}
 
-    public boolean useDispatchKey() {
-        return useDispatchKey;
-    }
+	public void setOpcode(int opcode) {
+		this.opcode = opcode;
+	}
 
-    public void setUseDispatchKey(boolean useDispatchKey) {
-        this.useDispatchKey = useDispatchKey;
-    }
+	public boolean useDispatchKey() {
+		return useDispatchKey;
+	}
 
-    public byte[] getHeader() {
-        return header;
-    }
+	public void setUseDispatchKey(boolean useDispatchKey) {
+		this.useDispatchKey = useDispatchKey;
+	}
 
-    public void setHeader(byte[] header) {
-        this.header = header;
-    }
+	public byte[] getHeader() {
+		return header;
+	}
 
-    public boolean shouldBuildHeader() {
-        return shouldBuildHeader;
-    }
+	public void setHeader(byte[] header) {
+		this.header = header;
+	}
 
-    public byte[] getData() {
-        return data;
-    }
+	public boolean shouldBuildHeader() {
+		return shouldBuildHeader;
+	}
 
-    public void setData(byte[] data) {
-        this.data = data;
-    }
+	public byte[] getData() {
+		return data;
+	}
 
-    public void setData(GeneratedMessageV3 proto) {
-        this.data = proto.toByteArray();
-    }
+	public void setData(byte[] data) {
+		this.data = data;
+	}
 
-    @SuppressWarnings("rawtypes")
-    public void setData(GeneratedMessageV3.Builder proto) {
-        this.data = proto.build().toByteArray();
-    }
+	public void setData(GeneratedMessageV3 proto) {
+		this.data = proto.toByteArray();
+	}
 
-    public BasePacket buildHeader(int clientSequence) {
-        if (this.getHeader() != null && clientSequence == 0) {
-            return this;
-        }
-        setHeader(
-                PacketHead.newBuilder()
-                        .setClientSequenceId(clientSequence)
-                        .setSentMs(System.currentTimeMillis())
-                        .build()
-                        .toByteArray());
-        return this;
-    }
+	@SuppressWarnings("rawtypes")
+	public void setData(GeneratedMessageV3.Builder proto) {
+		this.data = proto.build().toByteArray();
+	}
 
-    public byte[] build() {
-        if (getHeader() == null) {
-            this.header = new byte[0];
-        }
+	public BasePacket buildHeader(int clientSequence) {
+		if (this.getHeader() != null && clientSequence == 0) {
+			return this;
+		}
+		setHeader(
+			PacketHead
+				.newBuilder()
+				.setClientSequenceId(clientSequence)
+				.setSentMs(System.currentTimeMillis())
+				.build()
+				.toByteArray()
+		);
+		return this;
+	}
 
-        if (getData() == null) {
-            this.data = new byte[0];
-        }
+	public byte[] build() {
+		if (getHeader() == null) {
+			this.header = new byte[0];
+		}
 
-        ByteArrayOutputStream baos =
-                new ByteArrayOutputStream(2 + 2 + 2 + 4 + getHeader().length + getData().length + 2);
+		if (getData() == null) {
+			this.data = new byte[0];
+		}
 
-        this.writeUint16(baos, const1);
-        this.writeUint16(baos, opcode);
-        this.writeUint16(baos, header.length);
-        this.writeUint32(baos, data.length);
-        this.writeBytes(baos, header);
-        this.writeBytes(baos, data);
-        this.writeUint16(baos, const2);
+		ByteArrayOutputStream baos = new ByteArrayOutputStream(
+			2 + 2 + 2 + 4 + getHeader().length + getData().length + 2
+		);
 
-        byte[] packet = baos.toByteArray();
+		this.writeUint16(baos, const1);
+		this.writeUint16(baos, opcode);
+		this.writeUint16(baos, header.length);
+		this.writeUint32(baos, data.length);
+		this.writeBytes(baos, header);
+		this.writeBytes(baos, data);
+		this.writeUint16(baos, const2);
 
-        if (this.shouldEncrypt) {
-            Crypto.xor(packet, this.useDispatchKey() ? Crypto.DISPATCH_KEY : Crypto.ENCRYPT_KEY);
-        }
+		byte[] packet = baos.toByteArray();
 
-        return packet;
-    }
+		if (this.shouldEncrypt) {
+			Crypto.xor(packet, this.useDispatchKey() ? Crypto.DISPATCH_KEY : Crypto.ENCRYPT_KEY);
+		}
 
-    public void writeUint16(ByteArrayOutputStream baos, int i) {
-        // Unsigned short
-        baos.write((byte) ((i >>> 8) & 0xFF));
-        baos.write((byte) (i & 0xFF));
-    }
+		return packet;
+	}
 
-    public void writeUint32(ByteArrayOutputStream baos, int i) {
-        // Unsigned int (long)
-        baos.write((byte) ((i >>> 24) & 0xFF));
-        baos.write((byte) ((i >>> 16) & 0xFF));
-        baos.write((byte) ((i >>> 8) & 0xFF));
-        baos.write((byte) (i & 0xFF));
-    }
+	public void writeUint16(ByteArrayOutputStream baos, int i) {
+		// Unsigned short
+		baos.write((byte) ((i >>> 8) & 0xFF));
+		baos.write((byte) (i & 0xFF));
+	}
 
-    public void writeBytes(ByteArrayOutputStream baos, byte[] bytes) {
-        try {
-            baos.write(bytes);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
+	public void writeUint32(ByteArrayOutputStream baos, int i) {
+		// Unsigned int (long)
+		baos.write((byte) ((i >>> 24) & 0xFF));
+		baos.write((byte) ((i >>> 16) & 0xFF));
+		baos.write((byte) ((i >>> 8) & 0xFF));
+		baos.write((byte) (i & 0xFF));
+	}
+
+	public void writeBytes(ByteArrayOutputStream baos, byte[] bytes) {
+		try {
+			baos.write(bytes);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

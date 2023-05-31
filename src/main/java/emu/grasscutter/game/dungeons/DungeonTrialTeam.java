@@ -8,6 +8,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class DungeonTrialTeam {
-    List<Integer> trialAvatarIds;
-    TrialAvatarGrantRecord.GrantReason grantReason;
+
+	List<Integer> trialAvatarIds;
+	TrialAvatarGrantRecord.GrantReason grantReason;
 }

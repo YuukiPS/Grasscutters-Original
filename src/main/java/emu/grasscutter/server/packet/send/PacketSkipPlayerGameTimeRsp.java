@@ -6,15 +6,15 @@ import emu.grasscutter.net.proto.SkipPlayerGameTimeReqOuterClass;
 import emu.grasscutter.net.proto.SkipPlayerGameTimeRspOuterClass;
 
 public class PacketSkipPlayerGameTimeRsp extends BasePacket {
-    public PacketSkipPlayerGameTimeRsp(SkipPlayerGameTimeReqOuterClass.SkipPlayerGameTimeReq req) {
-        super(PacketOpcodes.SkipPlayerGameTimeRsp);
 
-        var proto =
-                SkipPlayerGameTimeRspOuterClass.SkipPlayerGameTimeRsp.newBuilder()
-                        .setClientGameTime(req.getClientGameTime())
-                        .setGameTime(req.getGameTime())
-                        .build();
+	public PacketSkipPlayerGameTimeRsp(SkipPlayerGameTimeReqOuterClass.SkipPlayerGameTimeReq req) {
+		super(PacketOpcodes.SkipPlayerGameTimeRsp);
+		var proto = SkipPlayerGameTimeRspOuterClass.SkipPlayerGameTimeRsp
+			.newBuilder()
+			.setClientGameTime(req.getClientGameTime())
+			.setGameTime(req.getGameTime())
+			.build();
 
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

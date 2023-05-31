@@ -8,68 +8,73 @@ import org.bson.types.ObjectId;
 
 @Entity(value = "gachas", useDiscriminator = false)
 public class GachaRecord {
-    @Id private ObjectId id;
 
-    @Indexed private int ownerId;
+	@Id
+	private ObjectId id;
 
-    private Date transactionDate;
-    private int itemID;
-    @Indexed private int gachaType;
+	@Indexed
+	private int ownerId;
 
-    public GachaRecord() {}
+	private Date transactionDate;
+	private int itemID;
 
-    public GachaRecord(int itemId, int ownerId, int gachaType) {
-        this.transactionDate = new Date();
-        this.itemID = itemId;
-        this.ownerId = ownerId;
-        this.gachaType = gachaType;
-    }
+	@Indexed
+	private int gachaType;
 
-    public int getOwnerId() {
-        return ownerId;
-    }
+	public GachaRecord() {}
 
-    public void setOwnerId(int ownerId) {
-        this.ownerId = ownerId;
-    }
+	public GachaRecord(int itemId, int ownerId, int gachaType) {
+		this.transactionDate = new Date();
+		this.itemID = itemId;
+		this.ownerId = ownerId;
+		this.gachaType = gachaType;
+	}
 
-    public int getGachaType() {
-        return gachaType;
-    }
+	public int getOwnerId() {
+		return ownerId;
+	}
 
-    public void setGachaType(int type) {
-        this.gachaType = type;
-    }
+	public void setOwnerId(int ownerId) {
+		this.ownerId = ownerId;
+	}
 
-    public Date getTransactionDate() {
-        return transactionDate;
-    }
+	public int getGachaType() {
+		return gachaType;
+	}
 
-    public void setTransactionDate(Date transactionDate) {
-        this.transactionDate = transactionDate;
-    }
+	public void setGachaType(int type) {
+		this.gachaType = type;
+	}
 
-    public int getItemID() {
-        return itemID;
-    }
+	public Date getTransactionDate() {
+		return transactionDate;
+	}
 
-    public void setItemID(int itemID) {
-        this.itemID = itemID;
-    }
+	public void setTransactionDate(Date transactionDate) {
+		this.transactionDate = transactionDate;
+	}
 
-    public ObjectId getId() {
-        return id;
-    }
+	public int getItemID() {
+		return itemID;
+	}
 
-    public void setId(ObjectId id) {
-        this.id = id;
-    }
+	public void setItemID(int itemID) {
+		this.itemID = itemID;
+	}
 
-    public String toString() {
-        return toJsonString();
-    }
+	public ObjectId getId() {
+		return id;
+	}
 
-    public String toJsonString() {
-        return "{\"time\": " + this.transactionDate.getTime() + ",\"item\":" + this.itemID + "}";
-    }
+	public void setId(ObjectId id) {
+		this.id = id;
+	}
+
+	public String toString() {
+		return toJsonString();
+	}
+
+	public String toJsonString() {
+		return "{\"time\": " + this.transactionDate.getTime() + ",\"item\":" + this.itemID + "}";
+	}
 }

@@ -9,23 +9,23 @@ import lombok.experimental.FieldDefaults;
 
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@ResourceType(name = {"HomeworldLevelExcelConfigData.json"})
+@ResourceType(name = { "HomeworldLevelExcelConfigData.json" })
 public class HomeWorldLevelData extends GameResource {
 
-    int level;
-    int exp;
-    int homeCoinStoreLimit;
-    int homeFetterExpStoreLimit;
-    int rewardId;
-    int furnitureMakeSlotCount;
-    int outdoorUnlockBlockCount;
-    int freeUnlockModuleCount;
-    int deployNpcCount;
-    int limitShopGoodsCount;
-    List<String> levelFuncs;
+	int level;
+	int exp;
+	int homeCoinStoreLimit;
+	int homeFetterExpStoreLimit;
+	int rewardId;
+	int furnitureMakeSlotCount;
+	int outdoorUnlockBlockCount;
+	int freeUnlockModuleCount;
+	int deployNpcCount;
+	int limitShopGoodsCount;
+	List<String> levelFuncs;
 
-    @Override
-    public int getId() {
-        return level;
-    }
+	@Override
+	public int getId() {
+		return level;
+	}
 }

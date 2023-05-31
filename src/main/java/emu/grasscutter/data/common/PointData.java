@@ -11,62 +11,67 @@ import lombok.Getter;
 import lombok.Setter;
 
 public final class PointData {
-    @Getter @Setter private int id;
-    @Getter private int areaId;
 
-    private String $type;
-    @Getter private Position tranPos;
-    @Getter private Position pos;
-    @Getter private Position rot;
-    @Getter private Position size;
+	@Getter
+	@Setter
+	private int id;
 
-    @SerializedName(
-            value = "dungeonIds",
-            alternate = {"JHHFPGJNMIN"})
-    @Getter
-    private int[] dungeonIds;
+	@Getter
+	private int areaId;
 
-    @SerializedName(
-            value = "dungeonRandomList",
-            alternate = {"OIBKFJNBLHO"})
-    @Getter
-    private int[] dungeonRandomList;
+	private String $type;
 
-    @SerializedName(
-            value = "groupIDs",
-            alternate = {"HFOBOOHKBGF"})
-    @Getter
-    private int[] groupIDs;
+	@Getter
+	private Position tranPos;
 
-    @SerializedName(
-            value = "tranSceneId",
-            alternate = {"JHBICGBAPIH"})
-    @Getter
-    @Setter
-    private int tranSceneId;
+	@Getter
+	private Position pos;
 
-    public String getType() {
-        return $type;
-    }
+	@Getter
+	private Position rot;
 
-    public void updateDailyDungeon() {
-        if (this.dungeonRandomList == null || this.dungeonRandomList.length == 0) {
-            return;
-        }
+	@Getter
+	private Position size;
 
-        IntList newDungeons = new IntArrayList();
-        int day = Grasscutter.getCurrentDayOfWeek();
+	@SerializedName(value = "dungeonIds", alternate = { "JHHFPGJNMIN" })
+	@Getter
+	private int[] dungeonIds;
 
-        for (int randomId : this.dungeonRandomList) {
-            DailyDungeonData data = GameData.getDailyDungeonDataMap().get(randomId);
+	@SerializedName(value = "dungeonRandomList", alternate = { "OIBKFJNBLHO" })
+	@Getter
+	private int[] dungeonRandomList;
 
-            if (data != null) {
-                for (int d : data.getDungeonsByDay(day)) {
-                    newDungeons.add(d);
-                }
-            }
-        }
+	@SerializedName(value = "groupIDs", alternate = { "HFOBOOHKBGF" })
+	@Getter
+	private int[] groupIDs;
 
-        this.dungeonIds = newDungeons.toIntArray();
-    }
+	@SerializedName(value = "tranSceneId", alternate = { "JHBICGBAPIH" })
+	@Getter
+	@Setter
+	private int tranSceneId;
+
+	public String getType() {
+		return $type;
+	}
+
+	public void updateDailyDungeon() {
+		if (this.dungeonRandomList == null || this.dungeonRandomList.length == 0) {
+			return;
+		}
+
+		IntList newDungeons = new IntArrayList();
+		int day = Grasscutter.getCurrentDayOfWeek();
+
+		for (int randomId : this.dungeonRandomList) {
+			DailyDungeonData data = GameData.getDailyDungeonDataMap().get(randomId);
+
+			if (data != null) {
+				for (int d : data.getDungeonsByDay(day)) {
+					newDungeons.add(d);
+				}
+			}
+		}
+
+		this.dungeonIds = newDungeons.toIntArray();
+	}
 }

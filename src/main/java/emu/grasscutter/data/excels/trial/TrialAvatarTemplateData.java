@@ -9,12 +9,13 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = false)
 @Data
 public class TrialAvatarTemplateData extends GameResource {
-    private int TrialAvatarLevel;
-    private List<Integer> TrialReliquaryList;
-    private int TrialAvatarSkillLevel;
 
-    @Override
-    public int getId() {
-        return TrialAvatarLevel;
-    }
+	private int TrialAvatarLevel;
+	private List<Integer> TrialReliquaryList;
+	private int TrialAvatarSkillLevel;
+
+	@Override
+	public int getId() {
+		return TrialAvatarLevel;
+	}
 }

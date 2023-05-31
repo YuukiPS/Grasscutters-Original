@@ -11,57 +11,52 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BossChestInteractHandler implements ChestInteractHandler {
-    @Override
-    public boolean isTwoStep() {
-        return true;
-    }
 
-    @Override
-    public boolean onInteract(GadgetChest chest, Player player) {
-        return this.onInteract(chest, player, false);
-    }
+	@Override
+	public boolean isTwoStep() {
+		return true;
+	}
 
-    public boolean onInteract(GadgetChest chest, Player player, boolean useCondensedResin) {
-        var blossomRewards =
-                player
-                        .getScene()
-                        .getBlossomManager()
-                        .onReward(player, chest.getGadget(), useCondensedResin);
-        if (blossomRewards != null) {
-            player.getInventory().addItems(blossomRewards, ActionReason.OpenWorldBossChest);
-            player.sendPacket(new PacketGadgetAutoPickDropInfoNotify(blossomRewards));
-            return true;
-        }
+	@Override
+	public boolean onInteract(GadgetChest chest, Player player) {
+		return this.onInteract(chest, player, false);
+	}
 
-        var worldDataManager = chest.getGadget().getScene().getWorld().getServer().getWorldDataSystem();
-        var monster =
-                chest
-                        .getGadget()
-                        .getMetaGadget()
-                        .group
-                        .monsters
-                        .get(chest.getGadget().getMetaGadget().boss_chest.monster_config_id);
-        var reward = worldDataManager.getRewardByBossId(monster.monster_id);
+	public boolean onInteract(GadgetChest chest, Player player, boolean useCondensedResin) {
+		var blossomRewards = player
+			.getScene()
+			.getBlossomManager()
+			.onReward(player, chest.getGadget(), useCondensedResin);
+		if (blossomRewards != null) {
+			player.getInventory().addItems(blossomRewards, ActionReason.OpenWorldBossChest);
+			player.sendPacket(new PacketGadgetAutoPickDropInfoNotify(blossomRewards));
+			return true;
+		}
 
-        if (reward == null) {
-            var dungeonManager = player.getScene().getDungeonManager();
+		var worldDataManager = chest.getGadget().getScene().getWorld().getServer().getWorldDataSystem();
+		var monster = chest
+			.getGadget()
+			.getMetaGadget()
+			.group.monsters.get(chest.getGadget().getMetaGadget().boss_chest.monster_config_id);
+		var reward = worldDataManager.getRewardByBossId(monster.monster_id);
 
-            if (dungeonManager != null) {
-                return dungeonManager.getStatueDrops(
-                        player, useCondensedResin, chest.getGadget().getGroupId());
-            }
-            Grasscutter.getLogger()
-                    .warn("Could not found the reward of boss monster {}", monster.monster_id);
-            return false;
-        }
-        List<GameItem> rewards = new ArrayList<>();
-        for (ItemParamData param : reward.getPreviewItems()) {
-            rewards.add(new GameItem(param.getId(), Math.max(param.getCount(), 1)));
-        }
+		if (reward == null) {
+			var dungeonManager = player.getScene().getDungeonManager();
 
-        player.getInventory().addItems(rewards, ActionReason.OpenWorldBossChest);
-        player.sendPacket(new PacketGadgetAutoPickDropInfoNotify(rewards));
+			if (dungeonManager != null) {
+				return dungeonManager.getStatueDrops(player, useCondensedResin, chest.getGadget().getGroupId());
+			}
+			Grasscutter.getLogger().warn("Could not found the reward of boss monster {}", monster.monster_id);
+			return false;
+		}
+		List<GameItem> rewards = new ArrayList<>();
+		for (ItemParamData param : reward.getPreviewItems()) {
+			rewards.add(new GameItem(param.getId(), Math.max(param.getCount(), 1)));
+		}
 
-        return true;
-    }
+		player.getInventory().addItems(rewards, ActionReason.OpenWorldBossChest);
+		player.sendPacket(new PacketGadgetAutoPickDropInfoNotify(rewards));
+
+		return true;
+	}
 }

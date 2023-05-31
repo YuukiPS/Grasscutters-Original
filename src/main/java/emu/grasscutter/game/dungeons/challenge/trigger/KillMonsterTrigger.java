@@ -7,19 +7,18 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class KillMonsterTrigger extends ChallengeTrigger {
-    private int monsterCfgId;
 
-    @Override
-    public void onBegin(WorldChallenge challenge) {
-        challenge
-                .getScene()
-                .broadcastPacket(new PacketChallengeDataNotify(challenge, 1, challenge.getScore().get()));
-    }
+	private int monsterCfgId;
 
-    @Override
-    public void onMonsterDeath(WorldChallenge challenge, EntityMonster monster) {
-        if (monster.getConfigId() == monsterCfgId) {
-            challenge.done();
-        }
-    }
+	@Override
+	public void onBegin(WorldChallenge challenge) {
+		challenge.getScene().broadcastPacket(new PacketChallengeDataNotify(challenge, 1, challenge.getScore().get()));
+	}
+
+	@Override
+	public void onMonsterDeath(WorldChallenge challenge, EntityMonster monster) {
+		if (monster.getConfigId() == monsterCfgId) {
+			challenge.done();
+		}
+	}
 }

@@ -6,14 +6,18 @@ import java.util.Map;
 
 @Entity
 public class TowerData {
-    /** the floor players chose */
-    int currentFloorId;
 
-    int currentLevel;
-    @Transient int currentLevelId;
+	/** the floor players chose */
+	int currentFloorId;
 
-    /** floorId - Record */
-    Map<Integer, TowerLevelRecord> recordMap;
+	int currentLevel;
 
-    @Transient int entryScene;
+	@Transient
+	int currentLevelId;
+
+	/** floorId - Record */
+	Map<Integer, TowerLevelRecord> recordMap;
+
+	@Transient
+	int entryScene;
 }

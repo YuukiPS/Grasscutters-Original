@@ -10,14 +10,13 @@ import java.util.List;
 @Opcodes(PacketOpcodes.GetFriendShowAvatarInfoRsp)
 public class PacketGetFriendShowAvatarInfoRsp extends BasePacket {
 
-    public PacketGetFriendShowAvatarInfoRsp(int uid, List<ShowAvatarInfo> showAvatarInfoList) {
-        super(PacketOpcodes.GetFriendShowAvatarInfoRsp);
+	public PacketGetFriendShowAvatarInfoRsp(int uid, List<ShowAvatarInfo> showAvatarInfoList) {
+		super(PacketOpcodes.GetFriendShowAvatarInfoRsp);
+		GetFriendShowAvatarInfoRsp.Builder p = GetFriendShowAvatarInfoRsp
+			.newBuilder()
+			.setUid(uid)
+			.addAllShowAvatarInfoList(showAvatarInfoList);
 
-        GetFriendShowAvatarInfoRsp.Builder p =
-                GetFriendShowAvatarInfoRsp.newBuilder()
-                        .setUid(uid)
-                        .addAllShowAvatarInfoList(showAvatarInfoList);
-
-        this.setData(p.build());
-    }
+		this.setData(p.build());
+	}
 }

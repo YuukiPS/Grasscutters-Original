@@ -6,12 +6,10 @@ import emu.grasscutter.net.proto.AvatarGainCostumeNotifyOuterClass.AvatarGainCos
 
 public class PacketAvatarGainCostumeNotify extends BasePacket {
 
-    public PacketAvatarGainCostumeNotify(int costumeId) {
-        super(PacketOpcodes.AvatarGainCostumeNotify);
+	public PacketAvatarGainCostumeNotify(int costumeId) {
+		super(PacketOpcodes.AvatarGainCostumeNotify);
+		AvatarGainCostumeNotify proto = AvatarGainCostumeNotify.newBuilder().setCostumeId(costumeId).build();
 
-        AvatarGainCostumeNotify proto =
-                AvatarGainCostumeNotify.newBuilder().setCostumeId(costumeId).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

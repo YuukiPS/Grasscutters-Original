@@ -14,103 +14,110 @@ import org.bson.types.ObjectId;
 
 @Entity(value = "friendships", useDiscriminator = false)
 public class Friendship {
-    @Id private ObjectId id;
 
-    @Transient private Player owner;
+	@Id
+	private ObjectId id;
 
-    @Indexed private int ownerId;
-    @Indexed private int friendId;
-    private boolean isFriend;
-    private int askerId;
+	@Transient
+	private Player owner;
 
-    private PlayerProfile profile;
+	@Indexed
+	private int ownerId;
 
-    @Deprecated // Morphia use only
-    public Friendship() {}
+	@Indexed
+	private int friendId;
 
-    public Friendship(Player owner, Player friend, Player asker) {
-        this.setOwner(owner);
-        this.ownerId = owner.getUid();
-        this.friendId = friend.getUid();
-        this.profile = friend.getProfile();
-        this.askerId = asker.getUid();
-    }
+	private boolean isFriend;
+	private int askerId;
 
-    public Player getOwner() {
-        return owner;
-    }
+	private PlayerProfile profile;
 
-    public void setOwner(Player owner) {
-        this.owner = owner;
-    }
+	@Deprecated // Morphia use only
+	public Friendship() {}
 
-    public boolean isFriend() {
-        return isFriend;
-    }
+	public Friendship(Player owner, Player friend, Player asker) {
+		this.setOwner(owner);
+		this.ownerId = owner.getUid();
+		this.friendId = friend.getUid();
+		this.profile = friend.getProfile();
+		this.askerId = asker.getUid();
+	}
 
-    public void setIsFriend(boolean b) {
-        this.isFriend = b;
-    }
+	public Player getOwner() {
+		return owner;
+	}
 
-    public int getOwnerId() {
-        return ownerId;
-    }
+	public void setOwner(Player owner) {
+		this.owner = owner;
+	}
 
-    public int getFriendId() {
-        return friendId;
-    }
+	public boolean isFriend() {
+		return isFriend;
+	}
 
-    public int getAskerId() {
-        return askerId;
-    }
+	public void setIsFriend(boolean b) {
+		this.isFriend = b;
+	}
 
-    public void setAskerId(int askerId) {
-        this.askerId = askerId;
-    }
+	public int getOwnerId() {
+		return ownerId;
+	}
 
-    public PlayerProfile getFriendProfile() {
-        return profile;
-    }
+	public int getFriendId() {
+		return friendId;
+	}
 
-    public void setFriendProfile(Player character) {
-        if (character == null || this.friendId != character.getUid()) return;
-        this.profile = character.getProfile();
-    }
+	public int getAskerId() {
+		return askerId;
+	}
 
-    public boolean isOnline() {
-        return getFriendProfile().getPlayer() != null;
-    }
+	public void setAskerId(int askerId) {
+		this.askerId = askerId;
+	}
 
-    public void save() {
-        DatabaseHelper.saveFriendship(this);
-    }
+	public PlayerProfile getFriendProfile() {
+		return profile;
+	}
 
-    public void delete() {
-        DatabaseHelper.deleteFriendship(this);
-    }
+	public void setFriendProfile(Player character) {
+		if (character == null || this.friendId != character.getUid()) return;
+		this.profile = character.getProfile();
+	}
 
-    public FriendBrief toProto() {
-        FriendBrief proto =
-                FriendBrief.newBuilder()
-                        .setUid(getFriendProfile().getUid())
-                        .setNickname(getFriendProfile().getName())
-                        .setLevel(getFriendProfile().getPlayerLevel())
-                        .setProfilePicture(
-                                ProfilePicture.newBuilder().setAvatarId(getFriendProfile().getAvatarId()))
-                        .setWorldLevel(getFriendProfile().getWorldLevel())
-                        .setSignature(getFriendProfile().getSignature())
-                        .setOnlineState(
-                                getFriendProfile().isOnline()
-                                        ? FriendOnlineState.FRIEND_ONLINE_STATE_ONLINE
-                                        : FriendOnlineState.FRIEND_ONLINE_STATE_DISCONNECT)
-                        .setIsMpModeAvailable(true)
-                        .setLastActiveTime(getFriendProfile().getLastActiveTime())
-                        .setNameCardId(getFriendProfile().getNameCard())
-                        .setParam(getFriendProfile().getDaysSinceLogin())
-                        .setIsGameSource(true)
-                        .setPlatformType(PlatformTypeOuterClass.PlatformType.PLATFORM_TYPE_PC)
-                        .build();
+	public boolean isOnline() {
+		return getFriendProfile().getPlayer() != null;
+	}
 
-        return proto;
-    }
+	public void save() {
+		DatabaseHelper.saveFriendship(this);
+	}
+
+	public void delete() {
+		DatabaseHelper.deleteFriendship(this);
+	}
+
+	public FriendBrief toProto() {
+		FriendBrief proto = FriendBrief
+			.newBuilder()
+			.setUid(getFriendProfile().getUid())
+			.setNickname(getFriendProfile().getName())
+			.setLevel(getFriendProfile().getPlayerLevel())
+			.setProfilePicture(ProfilePicture.newBuilder().setAvatarId(getFriendProfile().getAvatarId()))
+			.setWorldLevel(getFriendProfile().getWorldLevel())
+			.setSignature(getFriendProfile().getSignature())
+			.setOnlineState(
+				getFriendProfile().isOnline()
+					? FriendOnlineState.FRIEND_ONLINE_STATE_ONLINE
+					: FriendOnlineState.FRIEND_ONLINE_STATE_DISCONNECT
+			)
+			.setIsMpModeAvailable(true)
+			.setLastActiveTime(getFriendProfile().getLastActiveTime())
+			.setNameCardId(getFriendProfile().getNameCard())
+			.setParam(getFriendProfile().getDaysSinceLogin())
+			.setIsGameSource(true)
+			.setPlatformType(PlatformTypeOuterClass.PlatformType.PLATFORM_TYPE_PC)
+			.build();
+
+		return proto;
+	}
 }

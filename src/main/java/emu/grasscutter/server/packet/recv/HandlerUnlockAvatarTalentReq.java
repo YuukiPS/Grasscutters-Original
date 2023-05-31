@@ -9,13 +9,13 @@ import emu.grasscutter.server.game.GameSession;
 @Opcodes(PacketOpcodes.UnlockAvatarTalentReq)
 public class HandlerUnlockAvatarTalentReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        UnlockAvatarTalentReq req = UnlockAvatarTalentReq.parseFrom(payload);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		UnlockAvatarTalentReq req = UnlockAvatarTalentReq.parseFrom(payload);
 
-        // Unlock avatar const
-        var avatar = session.getPlayer().getAvatars().getAvatarByGuid(req.getAvatarGuid());
-        if (avatar == null) return;
-        avatar.unlockConstellation(req.getTalentId());
-    }
+		// Unlock avatar const
+		var avatar = session.getPlayer().getAvatars().getAvatarByGuid(req.getAvatarGuid());
+		if (avatar == null) return;
+		avatar.unlockConstellation(req.getTalentId());
+	}
 }

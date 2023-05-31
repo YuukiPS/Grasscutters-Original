@@ -9,21 +9,20 @@ import emu.grasscutter.game.quest.handlers.QuestExecHandler;
 
 @QuestValueExec(QuestExec.QUEST_EXEC_REMOVE_TRIAL_AVATAR)
 public class ExecRemoveTrialAvatar extends QuestExecHandler {
-    @Override
-    public boolean execute(GameQuest quest, QuestData.QuestExecParam condition, String... paramStr) {
-        try {
-            quest.getOwner().getTeamManager().removeTrialAvatar(Integer.parseInt(paramStr[0]));
-            Grasscutter.getLogger()
-                    .debug("Removed trial avatar from team for quest {}", quest.getSubQuestId());
-            return true;
-        } catch (IllegalStateException ignored) {
-            // The player does not have any trial avatars equipped.
-            Grasscutter.getLogger()
-                    .warn("Attempted to remove trial avatars from player with none equipped.");
-            return true;
-        } catch (RuntimeException exception) {
-            exception.printStackTrace();
-            return false;
-        }
-    }
+
+	@Override
+	public boolean execute(GameQuest quest, QuestData.QuestExecParam condition, String... paramStr) {
+		try {
+			quest.getOwner().getTeamManager().removeTrialAvatar(Integer.parseInt(paramStr[0]));
+			Grasscutter.getLogger().debug("Removed trial avatar from team for quest {}", quest.getSubQuestId());
+			return true;
+		} catch (IllegalStateException ignored) {
+			// The player does not have any trial avatars equipped.
+			Grasscutter.getLogger().warn("Attempted to remove trial avatars from player with none equipped.");
+			return true;
+		} catch (RuntimeException exception) {
+			exception.printStackTrace();
+			return false;
+		}
+	}
 }

@@ -6,9 +6,8 @@ import emu.grasscutter.net.proto.CutSceneBeginNotifyOuterClass.CutSceneBeginNoti
 
 public class PacketCutsceneBeginNotify extends BasePacket {
 
-    public PacketCutsceneBeginNotify(int cutsceneId) {
-        super(PacketOpcodes.CutSceneBeginNotify);
-
-        setData(CutSceneBeginNotify.newBuilder().setCutsceneId(cutsceneId));
-    }
+	public PacketCutsceneBeginNotify(int cutsceneId) {
+		super(PacketOpcodes.CutSceneBeginNotify);
+		setData(CutSceneBeginNotify.newBuilder().setCutsceneId(cutsceneId));
+	}
 }

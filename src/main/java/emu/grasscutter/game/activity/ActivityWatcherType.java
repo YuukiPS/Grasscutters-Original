@@ -9,5 +9,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface ActivityWatcherType {
-    WatcherTriggerType value();
+	WatcherTriggerType value();
 }

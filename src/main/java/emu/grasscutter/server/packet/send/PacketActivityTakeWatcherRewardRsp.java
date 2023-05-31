@@ -6,13 +6,12 @@ import emu.grasscutter.net.proto.ActivityTakeWatcherRewardRspOuterClass;
 
 public class PacketActivityTakeWatcherRewardRsp extends BasePacket {
 
-    public PacketActivityTakeWatcherRewardRsp(int activityId, int watcherId) {
-        super(PacketOpcodes.ActivityTakeWatcherRewardRsp);
+	public PacketActivityTakeWatcherRewardRsp(int activityId, int watcherId) {
+		super(PacketOpcodes.ActivityTakeWatcherRewardRsp);
+		var proto = ActivityTakeWatcherRewardRspOuterClass.ActivityTakeWatcherRewardRsp.newBuilder();
 
-        var proto = ActivityTakeWatcherRewardRspOuterClass.ActivityTakeWatcherRewardRsp.newBuilder();
+		proto.setActivityId(activityId).setWatcherId(watcherId);
 
-        proto.setActivityId(activityId).setWatcherId(watcherId);
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

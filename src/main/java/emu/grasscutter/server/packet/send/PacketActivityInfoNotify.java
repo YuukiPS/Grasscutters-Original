@@ -7,13 +7,12 @@ import emu.grasscutter.net.proto.ActivityInfoOuterClass;
 
 public class PacketActivityInfoNotify extends BasePacket {
 
-    public PacketActivityInfoNotify(ActivityInfoOuterClass.ActivityInfo activityInfo) {
-        super(PacketOpcodes.ActivityInfoNotify);
+	public PacketActivityInfoNotify(ActivityInfoOuterClass.ActivityInfo activityInfo) {
+		super(PacketOpcodes.ActivityInfoNotify);
+		var proto = ActivityInfoNotifyOuterClass.ActivityInfoNotify.newBuilder();
 
-        var proto = ActivityInfoNotifyOuterClass.ActivityInfoNotify.newBuilder();
+		proto.setActivityInfo(activityInfo);
 
-        proto.setActivityInfo(activityInfo);
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

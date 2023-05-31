@@ -12,100 +12,96 @@ import java.util.Collections;
 import java.util.List;
 
 public class MailHandler extends BasePlayerManager {
-    private final List<Mail> mail;
 
-    public MailHandler(Player player) {
-        super(player);
+	private final List<Mail> mail;
 
-        this.mail = new ArrayList<>();
-    }
+	public MailHandler(Player player) {
+		super(player);
+		this.mail = new ArrayList<>();
+	}
 
-    public List<Mail> getMail() {
-        return mail;
-    }
+	public List<Mail> getMail() {
+		return mail;
+	}
 
-    // ---------------------MAIL------------------------
+	// ---------------------MAIL------------------------
 
-    public void sendMail(Mail message) {
-        // Call mail receive event.
-        PlayerReceiveMailEvent event = new PlayerReceiveMailEvent(this.getPlayer(), message);
-        event.call();
-        if (event.isCanceled()) return;
-        message = event.getMessage();
+	public void sendMail(Mail message) {
+		// Call mail receive event.
+		PlayerReceiveMailEvent event = new PlayerReceiveMailEvent(this.getPlayer(), message);
+		event.call();
+		if (event.isCanceled()) return;
+		message = event.getMessage();
 
-        message.setOwnerUid(this.getPlayer().getUid());
-        message.save();
+		message.setOwnerUid(this.getPlayer().getUid());
+		message.save();
 
-        this.mail.add(message);
+		this.mail.add(message);
 
-        Grasscutter.getLogger()
-                .debug(
-                        "Mail sent to user ["
-                                + this.getPlayer().getUid()
-                                + ":"
-                                + this.getPlayer().getNickname()
-                                + "]!");
+		Grasscutter
+			.getLogger()
+			.debug("Mail sent to user [" + this.getPlayer().getUid() + ":" + this.getPlayer().getNickname() + "]!");
 
-        if (this.getPlayer().isOnline()) {
-            this.getPlayer().sendPacket(new PacketMailChangeNotify(this.getPlayer(), message));
-        } // TODO: setup a way for the mail notification to show up when someone receives mail when they
-        // were offline
-    }
+		if (this.getPlayer().isOnline()) {
+			this.getPlayer().sendPacket(new PacketMailChangeNotify(this.getPlayer(), message));
+		} // TODO: setup a way for the mail notification to show up when someone receives mail when they
+		// were offline
+	}
 
-    public boolean deleteMail(int mailId) {
-        Mail message = getMailById(mailId);
+	public boolean deleteMail(int mailId) {
+		Mail message = getMailById(mailId);
 
-        if (message != null) {
-            this.getMail().remove(mailId);
-            message.expireTime = 0;
-            message.save();
+		if (message != null) {
+			this.getMail().remove(mailId);
+			message.expireTime = 0;
+			message.save();
 
-            return true;
-        }
+			return true;
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    public void deleteMail(List<Integer> mailList) {
-        List<Integer> sortedMailList = new ArrayList<>();
-        sortedMailList.addAll(mailList);
-        Collections.sort(sortedMailList, Collections.reverseOrder());
+	public void deleteMail(List<Integer> mailList) {
+		List<Integer> sortedMailList = new ArrayList<>();
+		sortedMailList.addAll(mailList);
+		Collections.sort(sortedMailList, Collections.reverseOrder());
 
-        List<Integer> deleted = new ArrayList<>();
+		List<Integer> deleted = new ArrayList<>();
 
-        for (int id : sortedMailList) {
-            if (this.deleteMail(id)) {
-                deleted.add(id);
-            }
-        }
+		for (int id : sortedMailList) {
+			if (this.deleteMail(id)) {
+				deleted.add(id);
+			}
+		}
 
-        player.getSession().send(new PacketDelMailRsp(player, deleted));
-        player.getSession().send(new PacketMailChangeNotify(player, null, deleted));
-    }
+		player.getSession().send(new PacketDelMailRsp(player, deleted));
+		player.getSession().send(new PacketMailChangeNotify(player, null, deleted));
+	}
 
-    public Mail getMailById(int index) {
-        return this.mail.get(index);
-    }
+	public Mail getMailById(int index) {
+		return this.mail.get(index);
+	}
 
-    public int getMailIndex(Mail message) {
-        return this.mail.indexOf(message);
-    }
+	public int getMailIndex(Mail message) {
+		return this.mail.indexOf(message);
+	}
 
-    public boolean replaceMailByIndex(int index, Mail message) {
-        if (getMailById(index) != null) {
-            this.mail.set(index, message);
-            message.save();
-            return true;
-        } else {
-            return false;
-        }
-    }
+	public boolean replaceMailByIndex(int index, Mail message) {
+		if (getMailById(index) != null) {
+			this.mail.set(index, message);
+			message.save();
+			return true;
+		} else {
+			return false;
+		}
+	}
 
-    public void loadFromDatabase() {
-        List<Mail> mailList = DatabaseHelper.getAllMail(this.getPlayer());
+	public void loadFromDatabase() {
+		List<Mail> mailList = DatabaseHelper.getAllMail(this.getPlayer());
 
-        for (Mail mail : mailList) {
-            this.getMail().add(mail);
-        }
-    }
+		for (Mail mail : mailList) {
+			this.getMail().add(mail);
+		}
+	}
 }

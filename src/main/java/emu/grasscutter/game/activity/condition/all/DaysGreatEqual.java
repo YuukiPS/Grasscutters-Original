@@ -10,12 +10,12 @@ import java.util.Date;
 
 @ActivityCondition(NEW_ACTIVITY_COND_DAYS_GREAT_EQUAL)
 public class DaysGreatEqual extends ActivityConditionBaseHandler {
-    @Override
-    public boolean execute(
-            PlayerActivityData activityData, ActivityConfigItem activityConfig, int... params) {
-        Date activityBeginTime = activityConfig.getBeginTime();
-        long timeDiff = System.currentTimeMillis() - activityBeginTime.getTime();
-        int days = (int) (timeDiff / (1000 * 60 * 60 * 24L));
-        return days + 1 >= params[0];
-    }
+
+	@Override
+	public boolean execute(PlayerActivityData activityData, ActivityConfigItem activityConfig, int... params) {
+		Date activityBeginTime = activityConfig.getBeginTime();
+		long timeDiff = System.currentTimeMillis() - activityBeginTime.getTime();
+		int days = (int) (timeDiff / (1000 * 60 * 60 * 24L));
+		return days + 1 >= params[0];
+	}
 }

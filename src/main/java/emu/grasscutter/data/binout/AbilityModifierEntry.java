@@ -5,31 +5,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AbilityModifierEntry {
-    public List<AbilityModifierAction> onModifierAdded;
-    public List<AbilityModifierAction> onThinkInterval;
-    public List<AbilityModifierAction> onRemoved;
-    private final String name; // Custom value
 
-    public AbilityModifierEntry(String name) {
-        this.name = name;
-        this.onModifierAdded = new ArrayList<>();
-        this.onThinkInterval = new ArrayList<>();
-        this.onRemoved = new ArrayList<>();
-    }
+	public List<AbilityModifierAction> onModifierAdded;
+	public List<AbilityModifierAction> onThinkInterval;
+	public List<AbilityModifierAction> onRemoved;
+	private final String name; // Custom value
 
-    public String getName() {
-        return name;
-    }
+	public AbilityModifierEntry(String name) {
+		this.name = name;
+		this.onModifierAdded = new ArrayList<>();
+		this.onThinkInterval = new ArrayList<>();
+		this.onRemoved = new ArrayList<>();
+	}
 
-    public List<AbilityModifierAction> getOnAdded() {
-        return onModifierAdded;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public List<AbilityModifierAction> getOnThinkInterval() {
-        return onThinkInterval;
-    }
+	public List<AbilityModifierAction> getOnAdded() {
+		return onModifierAdded;
+	}
 
-    public List<AbilityModifierAction> getOnRemoved() {
-        return onRemoved;
-    }
+	public List<AbilityModifierAction> getOnThinkInterval() {
+		return onThinkInterval;
+	}
+
+	public List<AbilityModifierAction> getOnRemoved() {
+		return onRemoved;
+	}
 }

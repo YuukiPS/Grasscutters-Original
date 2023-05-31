@@ -14,25 +14,23 @@ import lombok.val;
 @Opcodes(PacketOpcodes.AvatarChangeElementTypeReq)
 public class HandlerAvatarChangeElementTypeReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        var req = AvatarChangeElementTypeReq.parseFrom(payload);
-        var area = GameData.getWorldAreaDataMap().get(req.getAreaId());
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		var req = AvatarChangeElementTypeReq.parseFrom(payload);
+		var area = GameData.getWorldAreaDataMap().get(req.getAreaId());
 
-        if (area == null
-                || area.getElementType() == null
-                || area.getElementType().getDepotIndex() <= 0) {
-            session.send(new PacketAvatarChangeElementTypeRsp(Retcode.RET_SVR_ERROR_VALUE));
-            return;
-        }
+		if (area == null || area.getElementType() == null || area.getElementType().getDepotIndex() <= 0) {
+			session.send(new PacketAvatarChangeElementTypeRsp(Retcode.RET_SVR_ERROR_VALUE));
+			return;
+		}
 
-        val avatar = session.getPlayer().getTeamManager().getCurrentAvatarEntity().getAvatar();
-        if (!avatar.changeElement(area.getElementType())) {
-            session.send(new PacketAvatarChangeElementTypeRsp(Retcode.RET_SVR_ERROR_VALUE));
-            return;
-        }
+		val avatar = session.getPlayer().getTeamManager().getCurrentAvatarEntity().getAvatar();
+		if (!avatar.changeElement(area.getElementType())) {
+			session.send(new PacketAvatarChangeElementTypeRsp(Retcode.RET_SVR_ERROR_VALUE));
+			return;
+		}
 
-        // Success
-        session.send(new PacketAvatarChangeElementTypeRsp());
-    }
+		// Success
+		session.send(new PacketAvatarChangeElementTypeRsp());
+	}
 }

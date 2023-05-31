@@ -6,14 +6,13 @@ import emu.grasscutter.net.proto.SetPlayerPropRspOuterClass.SetPlayerPropRsp;
 
 public class PacketSetPlayerPropRsp extends BasePacket {
 
-    public PacketSetPlayerPropRsp(int retCode) {
-        super(PacketOpcodes.SetPlayerPropRsp);
+	public PacketSetPlayerPropRsp(int retCode) {
+		super(PacketOpcodes.SetPlayerPropRsp);
+		var proto = SetPlayerPropRsp.newBuilder();
+		if (retCode != 0) {
+			proto.setRetcode(retCode);
+		}
 
-        var proto = SetPlayerPropRsp.newBuilder();
-        if (retCode != 0) {
-            proto.setRetcode(retCode);
-        }
-
-        this.setData(proto.build());
-    }
+		this.setData(proto.build());
+	}
 }

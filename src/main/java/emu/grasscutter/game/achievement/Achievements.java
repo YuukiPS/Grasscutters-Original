@@ -32,292 +32,312 @@ import org.bson.types.ObjectId;
 @Data
 @Builder(builderMethodName = "of")
 public class Achievements {
-    private static final IntSupplier currentTimeSecs =
-            () -> (int) (System.currentTimeMillis() / 1000L);
-    private static final Achievement INVALID =
-            new Achievement(StatusOuterClass.Status.STATUS_INVALID, -1, 0, 0, 0);
-    @Id private ObjectId id;
-    private int uid;
-    @Transient private Player player;
-    private Map<Integer, Achievement> achievementList;
-    @Getter private int finishedAchievementNum;
-    private List<Integer> takenGoalRewardIdList;
 
-    public static Achievements getByPlayer(Player player) {
-        var achievements =
-                player.getAchievements() == null
-                        ? DatabaseHelper.getAchievementData(player.getUid())
-                        : player.getAchievements();
-        if (achievements == null) {
-            achievements = create(player.getUid());
-        }
-        return achievements;
-    }
+	private static final IntSupplier currentTimeSecs = () -> (int) (System.currentTimeMillis() / 1000L);
+	private static final Achievement INVALID = new Achievement(StatusOuterClass.Status.STATUS_INVALID, -1, 0, 0, 0);
 
-    public static Achievements create(int uid) {
-        var newAchievement =
-                Achievements.of()
-                        .uid(uid)
-                        .achievementList(init())
-                        .finishedAchievementNum(0)
-                        .takenGoalRewardIdList(Lists.newArrayList())
-                        .build();
-        newAchievement.save();
-        return newAchievement;
-    }
+	@Id
+	private ObjectId id;
 
-    private static Map<Integer, Achievement> init() {
-        Map<Integer, Achievement> map = new HashMap<>();
-        GameData.getAchievementDataMap().values().stream()
-                .filter(AchievementData::isUsed)
-                .forEach(
-                        a -> {
-                            map.put(
-                                    a.getId(),
-                                    new Achievement(
-                                            StatusOuterClass.Status.STATUS_UNFINISHED, a.getId(), a.getProgress(), 0, 0));
-                        });
-        return map;
-    }
+	private int uid;
 
-    public AchievementControlReturns grant(int achievementId) {
-        var a = this.getAchievement(achievementId);
+	@Transient
+	private Player player;
 
-        if (a == null || this.isFinished(achievementId)) {
-            return a == null
-                    ? AchievementControlReturns.achievementNotFound()
-                    : AchievementControlReturns.alreadyAchieved();
-        }
+	private Map<Integer, Achievement> achievementList;
 
-        return this.progress(achievementId, a.getTotalProgress());
-    }
+	@Getter
+	private int finishedAchievementNum;
 
-    public AchievementControlReturns revoke(int achievementId) {
-        var a = this.getAchievement(achievementId);
+	private List<Integer> takenGoalRewardIdList;
 
-        if (a == null || !this.isFinished(achievementId)) {
-            return a == null
-                    ? AchievementControlReturns.achievementNotFound()
-                    : AchievementControlReturns.notYetAchieved();
-        }
+	public static Achievements getByPlayer(Player player) {
+		var achievements = player.getAchievements() == null
+			? DatabaseHelper.getAchievementData(player.getUid())
+			: player.getAchievements();
+		if (achievements == null) {
+			achievements = create(player.getUid());
+		}
+		return achievements;
+	}
 
-        return this.progress(achievementId, 0);
-    }
+	public static Achievements create(int uid) {
+		var newAchievement = Achievements
+			.of()
+			.uid(uid)
+			.achievementList(init())
+			.finishedAchievementNum(0)
+			.takenGoalRewardIdList(Lists.newArrayList())
+			.build();
+		newAchievement.save();
+		return newAchievement;
+	}
 
-    public AchievementControlReturns progress(int achievementId, int progress) {
-        var a = this.getAchievement(achievementId);
-        if (a == null) {
-            return AchievementControlReturns.achievementNotFound();
-        }
+	private static Map<Integer, Achievement> init() {
+		Map<Integer, Achievement> map = new HashMap<>();
+		GameData
+			.getAchievementDataMap()
+			.values()
+			.stream()
+			.filter(AchievementData::isUsed)
+			.forEach(a -> {
+				map.put(
+					a.getId(),
+					new Achievement(StatusOuterClass.Status.STATUS_UNFINISHED, a.getId(), a.getProgress(), 0, 0)
+				);
+			});
+		return map;
+	}
 
-        a.setCurProgress(progress);
-        return AchievementControlReturns.success(this.notifyOtherAchievements(a));
-    }
+	public AchievementControlReturns grant(int achievementId) {
+		var a = this.getAchievement(achievementId);
 
-    private int notifyOtherAchievements(Achievement a) {
-        var changedNum = new AtomicInteger();
+		if (a == null || this.isFinished(achievementId)) {
+			return a == null
+				? AchievementControlReturns.achievementNotFound()
+				: AchievementControlReturns.alreadyAchieved();
+		}
 
-        changedNum.addAndGet(this.update(a) ? 1 : 0);
+		return this.progress(achievementId, a.getTotalProgress());
+	}
 
-        GameData.getAchievementDataMap().get(a.getId()).getExcludedGroupAchievementIdList().stream()
-                .map(this::getAchievement)
-                .filter(Objects::nonNull)
-                .forEach(
-                        other -> {
-                            other.setCurProgress(a.getCurProgress());
-                            changedNum.addAndGet(this.update(other) ? 1 : 0);
-                        });
+	public AchievementControlReturns revoke(int achievementId) {
+		var a = this.getAchievement(achievementId);
 
-        this.computeFinishedAchievementNum();
-        this.save();
-        this.sendUpdatePacket(a);
-        return changedNum.intValue();
-    }
+		if (a == null || !this.isFinished(achievementId)) {
+			return a == null
+				? AchievementControlReturns.achievementNotFound()
+				: AchievementControlReturns.notYetAchieved();
+		}
 
-    private boolean update(Achievement a) {
-        if (a.getStatus() == StatusOuterClass.Status.STATUS_UNFINISHED
-                && a.getCurProgress() >= a.getTotalProgress()) {
-            a.setStatus(StatusOuterClass.Status.STATUS_FINISHED);
-            a.setFinishTimestampSec(currentTimeSecs.getAsInt());
-            return true;
-        } else if (this.isFinished(a.getId()) && a.getCurProgress() < a.getTotalProgress()) {
-            a.setStatus(StatusOuterClass.Status.STATUS_UNFINISHED);
-            a.setFinishTimestampSec(0);
-            return true;
-        }
+		return this.progress(achievementId, 0);
+	}
 
-        return false;
-    }
+	public AchievementControlReturns progress(int achievementId, int progress) {
+		var a = this.getAchievement(achievementId);
+		if (a == null) {
+			return AchievementControlReturns.achievementNotFound();
+		}
 
-    private void computeFinishedAchievementNum() {
-        this.finishedAchievementNum =
-                GameData.getAchievementDataMap().values().stream()
-                        .filter(a -> this.isFinished(a.getId()))
-                        .mapToInt(value -> 1)
-                        .sum();
-    }
+		a.setCurProgress(progress);
+		return AchievementControlReturns.success(this.notifyOtherAchievements(a));
+	}
 
-    private void sendUpdatePacket(Achievement achievement) {
-        List<Achievement> achievements = Lists.newArrayList(achievement);
-        achievements.addAll(
-                GameData.getAchievementDataMap()
-                        .get(achievement.getId())
-                        .getExcludedGroupAchievementIdList()
-                        .stream()
-                        .map(this::getAchievement)
-                        .filter(Objects::nonNull)
-                        .toList());
+	private int notifyOtherAchievements(Achievement a) {
+		var changedNum = new AtomicInteger();
 
-        this.sendUpdatePacket(achievements);
-    }
+		changedNum.addAndGet(this.update(a) ? 1 : 0);
 
-    private void sendUpdatePacket(List<Achievement> achievement) {
-        if (this.isPacketSendable()) {
-            this.player.sendPacket(new PacketAchievementUpdateNotify(achievement));
-        }
-    }
+		GameData
+			.getAchievementDataMap()
+			.get(a.getId())
+			.getExcludedGroupAchievementIdList()
+			.stream()
+			.map(this::getAchievement)
+			.filter(Objects::nonNull)
+			.forEach(other -> {
+				other.setCurProgress(a.getCurProgress());
+				changedNum.addAndGet(this.update(other) ? 1 : 0);
+			});
 
-    @Nullable public Achievement getAchievement(int achievementId) {
-        if (this.isInvalid(achievementId)) {
-            return null;
-        }
+		this.computeFinishedAchievementNum();
+		this.save();
+		this.sendUpdatePacket(a);
+		return changedNum.intValue();
+	}
 
-        return this.getAchievementList()
-                .computeIfAbsent(
-                        achievementId,
-                        id -> {
-                            return new Achievement(
-                                    StatusOuterClass.Status.STATUS_UNFINISHED,
-                                    id,
-                                    GameData.getAchievementDataMap().get(id.intValue()).getProgress(),
-                                    0,
-                                    0);
-                        });
-    }
+	private boolean update(Achievement a) {
+		if (a.getStatus() == StatusOuterClass.Status.STATUS_UNFINISHED && a.getCurProgress() >= a.getTotalProgress()) {
+			a.setStatus(StatusOuterClass.Status.STATUS_FINISHED);
+			a.setFinishTimestampSec(currentTimeSecs.getAsInt());
+			return true;
+		} else if (this.isFinished(a.getId()) && a.getCurProgress() < a.getTotalProgress()) {
+			a.setStatus(StatusOuterClass.Status.STATUS_UNFINISHED);
+			a.setFinishTimestampSec(0);
+			return true;
+		}
 
-    public boolean isInvalid(int achievementId) {
-        var data = GameData.getAchievementDataMap().get(achievementId);
-        return data == null || data.isDisuse();
-    }
+		return false;
+	}
 
-    public StatusOuterClass.Status getStatus(int achievementId) {
-        return this.getAchievementList().getOrDefault(achievementId, INVALID).getStatus();
-    }
+	private void computeFinishedAchievementNum() {
+		this.finishedAchievementNum =
+			GameData
+				.getAchievementDataMap()
+				.values()
+				.stream()
+				.filter(a -> this.isFinished(a.getId()))
+				.mapToInt(value -> 1)
+				.sum();
+	}
 
-    public boolean isFinished(int achievementId) {
-        var status = this.getStatus(achievementId);
-        return status == StatusOuterClass.Status.STATUS_FINISHED
-                || status == StatusOuterClass.Status.STATUS_REWARD_TAKEN;
-    }
+	private void sendUpdatePacket(Achievement achievement) {
+		List<Achievement> achievements = Lists.newArrayList(achievement);
+		achievements.addAll(
+			GameData
+				.getAchievementDataMap()
+				.get(achievement.getId())
+				.getExcludedGroupAchievementIdList()
+				.stream()
+				.map(this::getAchievement)
+				.filter(Objects::nonNull)
+				.toList()
+		);
 
-    public void takeReward(List<Integer> ids) {
-        List<GameItem> rewards = Lists.newArrayList();
+		this.sendUpdatePacket(achievements);
+	}
 
-        for (int i : ids) {
-            var target = GameData.getAchievementDataMap().get(i);
-            if (target == null) {
-                Grasscutter.getLogger().warn("null returned while taking reward!");
-                return;
-            }
+	private void sendUpdatePacket(List<Achievement> achievement) {
+		if (this.isPacketSendable()) {
+			this.player.sendPacket(new PacketAchievementUpdateNotify(achievement));
+		}
+	}
 
-            if (this.isRewardTaken(i)) {
-                this.player.sendPacket(new PacketTakeAchievementRewardRsp());
-                return;
-            }
+	@Nullable
+	public Achievement getAchievement(int achievementId) {
+		if (this.isInvalid(achievementId)) {
+			return null;
+		}
 
-            var data = GameData.getRewardDataMap().get(target.getFinishRewardId());
-            if (data == null) {
-                Grasscutter.getLogger().warn("null returned while getting reward data!");
-                continue;
-            }
+		return this.getAchievementList()
+			.computeIfAbsent(
+				achievementId,
+				id -> {
+					return new Achievement(
+						StatusOuterClass.Status.STATUS_UNFINISHED,
+						id,
+						GameData.getAchievementDataMap().get(id.intValue()).getProgress(),
+						0,
+						0
+					);
+				}
+			);
+	}
 
-            data.getRewardItemList()
-                    .forEach(
-                            itemParamData -> {
-                                var itemData = GameData.getItemDataMap().get(itemParamData.getId());
-                                if (itemData == null) {
-                                    Grasscutter.getLogger().warn("itemData == null!");
-                                    return;
-                                }
+	public boolean isInvalid(int achievementId) {
+		var data = GameData.getAchievementDataMap().get(achievementId);
+		return data == null || data.isDisuse();
+	}
 
-                                rewards.add(new GameItem(itemData, itemParamData.getCount()));
-                            });
+	public StatusOuterClass.Status getStatus(int achievementId) {
+		return this.getAchievementList().getOrDefault(achievementId, INVALID).getStatus();
+	}
 
-            var a = this.getAchievement(i);
-            a.setStatus(StatusOuterClass.Status.STATUS_REWARD_TAKEN);
-            this.save();
-            this.sendUpdatePacket(a);
-        }
+	public boolean isFinished(int achievementId) {
+		var status = this.getStatus(achievementId);
+		return (
+			status == StatusOuterClass.Status.STATUS_FINISHED || status == StatusOuterClass.Status.STATUS_REWARD_TAKEN
+		);
+	}
 
-        this.player.getInventory().addItems(rewards, ActionReason.AchievementReward);
-        this.player.sendPacket(
-                new PacketTakeAchievementRewardRsp(
-                        ids, rewards.stream().map(GameItem::toItemParam).toList()));
-    }
+	public void takeReward(List<Integer> ids) {
+		List<GameItem> rewards = Lists.newArrayList();
 
-    public void takeGoalReward(List<Integer> ids) {
-        List<GameItem> rewards = Lists.newArrayList();
+		for (int i : ids) {
+			var target = GameData.getAchievementDataMap().get(i);
+			if (target == null) {
+				Grasscutter.getLogger().warn("null returned while taking reward!");
+				return;
+			}
 
-        for (int i : ids) {
-            if (this.takenGoalRewardIdList.contains(i)) {
-                this.player.sendPacket(new PacketTakeAchievementGoalRewardRsp());
-            }
+			if (this.isRewardTaken(i)) {
+				this.player.sendPacket(new PacketTakeAchievementRewardRsp());
+				return;
+			}
 
-            var goalData = GameData.getAchievementGoalDataMap().get(i);
-            if (goalData == null) {
-                Grasscutter.getLogger().warn("null returned while getting goal reward data!");
-                continue;
-            }
+			var data = GameData.getRewardDataMap().get(target.getFinishRewardId());
+			if (data == null) {
+				Grasscutter.getLogger().warn("null returned while getting reward data!");
+				continue;
+			}
 
-            var data = GameData.getRewardDataMap().get(goalData.getFinishRewardId());
-            if (data == null) {
-                Grasscutter.getLogger().warn("null returned while getting reward data!");
-                continue;
-            }
+			data
+				.getRewardItemList()
+				.forEach(itemParamData -> {
+					var itemData = GameData.getItemDataMap().get(itemParamData.getId());
+					if (itemData == null) {
+						Grasscutter.getLogger().warn("itemData == null!");
+						return;
+					}
 
-            data.getRewardItemList()
-                    .forEach(
-                            itemParamData -> {
-                                var itemData = GameData.getItemDataMap().get(itemParamData.getId());
-                                if (itemData == null) {
-                                    Grasscutter.getLogger().warn("itemData == null!");
-                                    return;
-                                }
+					rewards.add(new GameItem(itemData, itemParamData.getCount()));
+				});
 
-                                rewards.add(new GameItem(itemData, itemParamData.getCount()));
-                            });
+			var a = this.getAchievement(i);
+			a.setStatus(StatusOuterClass.Status.STATUS_REWARD_TAKEN);
+			this.save();
+			this.sendUpdatePacket(a);
+		}
 
-            this.takenGoalRewardIdList.add(i);
-            this.save();
-        }
+		this.player.getInventory().addItems(rewards, ActionReason.AchievementReward);
+		this.player.sendPacket(
+				new PacketTakeAchievementRewardRsp(ids, rewards.stream().map(GameItem::toItemParam).toList())
+			);
+	}
 
-        this.player.getInventory().addItems(rewards, ActionReason.AchievementGoalReward);
-        this.player.sendPacket(
-                new PacketTakeAchievementGoalRewardRsp(
-                        ids, rewards.stream().map(GameItem::toItemParam).toList()));
-    }
+	public void takeGoalReward(List<Integer> ids) {
+		List<GameItem> rewards = Lists.newArrayList();
 
-    public boolean isRewardTaken(int achievementId) {
-        return this.getStatus(achievementId) == StatusOuterClass.Status.STATUS_REWARD_TAKEN;
-    }
+		for (int i : ids) {
+			if (this.takenGoalRewardIdList.contains(i)) {
+				this.player.sendPacket(new PacketTakeAchievementGoalRewardRsp());
+			}
 
-    public boolean isRewardLeft(int achievementId) {
-        return this.getStatus(achievementId) == StatusOuterClass.Status.STATUS_FINISHED;
-    }
+			var goalData = GameData.getAchievementGoalDataMap().get(i);
+			if (goalData == null) {
+				Grasscutter.getLogger().warn("null returned while getting goal reward data!");
+				continue;
+			}
 
-    private boolean isPacketSendable() {
-        return this.player != null;
-    }
+			var data = GameData.getRewardDataMap().get(goalData.getFinishRewardId());
+			if (data == null) {
+				Grasscutter.getLogger().warn("null returned while getting reward data!");
+				continue;
+			}
 
-    public void save() {
-        DatabaseHelper.saveAchievementData(this);
-    }
+			data
+				.getRewardItemList()
+				.forEach(itemParamData -> {
+					var itemData = GameData.getItemDataMap().get(itemParamData.getId());
+					if (itemData == null) {
+						Grasscutter.getLogger().warn("itemData == null!");
+						return;
+					}
 
-    public void onLogin(Player player) {
-        if (this.player == null) {
-            this.player = player;
-        }
+					rewards.add(new GameItem(itemData, itemParamData.getCount()));
+				});
 
-        this.player.sendPacket(new PacketAchievementAllDataNotify(this.player));
-    }
+			this.takenGoalRewardIdList.add(i);
+			this.save();
+		}
+
+		this.player.getInventory().addItems(rewards, ActionReason.AchievementGoalReward);
+		this.player.sendPacket(
+				new PacketTakeAchievementGoalRewardRsp(ids, rewards.stream().map(GameItem::toItemParam).toList())
+			);
+	}
+
+	public boolean isRewardTaken(int achievementId) {
+		return this.getStatus(achievementId) == StatusOuterClass.Status.STATUS_REWARD_TAKEN;
+	}
+
+	public boolean isRewardLeft(int achievementId) {
+		return this.getStatus(achievementId) == StatusOuterClass.Status.STATUS_FINISHED;
+	}
+
+	private boolean isPacketSendable() {
+		return this.player != null;
+	}
+
+	public void save() {
+		DatabaseHelper.saveAchievementData(this);
+	}
+
+	public void onLogin(Player player) {
+		if (this.player == null) {
+			this.player = player;
+		}
+
+		this.player.sendPacket(new PacketAchievementAllDataNotify(this.player));
+	}
 }

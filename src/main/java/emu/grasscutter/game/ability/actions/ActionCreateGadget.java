@@ -14,43 +14,43 @@ import emu.grasscutter.net.proto.AbilityActionCreateGadgetOuterClass.AbilityActi
 @AbilityAction(AbilityModifierAction.Type.CreateGadget)
 public class ActionCreateGadget extends AbilityActionHandler {
 
-    @Override
-    public boolean execute(
-            Ability ability, AbilityModifierAction action, ByteString abilityData, GameEntity target) {
-        if (!action.byServer) {
-            Grasscutter.getLogger().debug("Action not executed by server");
+	@Override
+	public boolean execute(Ability ability, AbilityModifierAction action, ByteString abilityData, GameEntity target) {
+		if (!action.byServer) {
+			Grasscutter.getLogger().debug("Action not executed by server");
 
-            return true;
-        }
+			return true;
+		}
 
-        var entity = ability.getOwner();
-        AbilityActionCreateGadget createGadget;
-        try {
-            createGadget = AbilityActionCreateGadget.parseFrom(abilityData);
-        } catch (InvalidProtocolBufferException e) {
-            return false;
-        }
+		var entity = ability.getOwner();
+		AbilityActionCreateGadget createGadget;
+		try {
+			createGadget = AbilityActionCreateGadget.parseFrom(abilityData);
+		} catch (InvalidProtocolBufferException e) {
+			return false;
+		}
 
-        var entityCreated =
-                new EntityGadget(
-                        entity.getScene(),
-                        action.gadgetID,
-                        new Position(createGadget.getPos()),
-                        new Position(createGadget.getRot()),
-                        action.campID,
-                        CampTargetType.getTypeByName(action.campTargetType).getValue());
-        if (action.ownerIsTarget) entityCreated.setOwner(target);
-        else entityCreated.setOwner(entity);
+		var entityCreated = new EntityGadget(
+			entity.getScene(),
+			action.gadgetID,
+			new Position(createGadget.getPos()),
+			new Position(createGadget.getRot()),
+			action.campID,
+			CampTargetType.getTypeByName(action.campTargetType).getValue()
+		);
+		if (action.ownerIsTarget) entityCreated.setOwner(target); else entityCreated.setOwner(entity);
 
-        entity.getScene().addEntity(entityCreated);
+		entity.getScene().addEntity(entityCreated);
 
-        Grasscutter.getLogger()
-                .info(
-                        "Gadget {} created at pos {} rot {}",
-                        action.gadgetID,
-                        entityCreated.getPosition(),
-                        entityCreated.getRotation());
+		Grasscutter
+			.getLogger()
+			.info(
+				"Gadget {} created at pos {} rot {}",
+				action.gadgetID,
+				entityCreated.getPosition(),
+				entityCreated.getRotation()
+			);
 
-        return true;
-    }
+		return true;
+	}
 }

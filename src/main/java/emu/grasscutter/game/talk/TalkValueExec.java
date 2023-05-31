@@ -5,5 +5,5 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TalkValueExec {
-    TalkExec value();
+	TalkExec value();
 }

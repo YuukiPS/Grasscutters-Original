@@ -9,10 +9,10 @@ import emu.grasscutter.server.game.GameSession;
 @Opcodes(PacketOpcodes.ChangeAvatarReq)
 public class HandlerChangeAvatarReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        ChangeAvatarReq req = ChangeAvatarReq.parseFrom(payload);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		ChangeAvatarReq req = ChangeAvatarReq.parseFrom(payload);
 
-        session.getPlayer().getTeamManager().changeAvatar(req.getGuid());
-    }
+		session.getPlayer().getTeamManager().changeAvatar(req.getGuid());
+	}
 }

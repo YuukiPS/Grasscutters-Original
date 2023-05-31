@@ -10,13 +10,14 @@ import lombok.Getter;
 @ResourceType(name = "SceneExcelConfigData.json")
 @Getter
 public class SceneData extends GameResource {
-    @Getter(onMethod_ = @Override)
-    private int id;
 
-    @SerializedName("type")
-    private SceneType sceneType;
+	@Getter(onMethod_ = @Override)
+	private int id;
 
-    private String scriptData;
-    private String levelEntityConfig;
-    private List<Integer> specifiedAvatarList;
+	@SerializedName("type")
+	private SceneType sceneType;
+
+	private String scriptData;
+	private String levelEntityConfig;
+	private List<Integer> specifiedAvatarList;
 }

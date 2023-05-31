@@ -5,31 +5,31 @@ import emu.grasscutter.server.event.types.ServerEvent;
 import emu.grasscutter.server.game.GameSession;
 
 public final class ReceivePacketEvent extends ServerEvent implements Cancellable {
-    private final GameSession gameSession;
-    private final int packetId;
-    private byte[] packetData;
 
-    public ReceivePacketEvent(GameSession gameSession, int packetId, byte[] packetData) {
-        super(Type.GAME);
+	private final GameSession gameSession;
+	private final int packetId;
+	private byte[] packetData;
 
-        this.gameSession = gameSession;
-        this.packetId = packetId;
-        this.packetData = packetData;
-    }
+	public ReceivePacketEvent(GameSession gameSession, int packetId, byte[] packetData) {
+		super(Type.GAME);
+		this.gameSession = gameSession;
+		this.packetId = packetId;
+		this.packetData = packetData;
+	}
 
-    public GameSession getGameSession() {
-        return this.gameSession;
-    }
+	public GameSession getGameSession() {
+		return this.gameSession;
+	}
 
-    public int getPacketId() {
-        return this.packetId;
-    }
+	public int getPacketId() {
+		return this.packetId;
+	}
 
-    public byte[] getPacketData() {
-        return this.packetData;
-    }
+	public byte[] getPacketData() {
+		return this.packetData;
+	}
 
-    public void setPacketData(byte[] packetData) {
-        this.packetData = packetData;
-    }
+	public void setPacketData(byte[] packetData) {
+		this.packetData = packetData;
+	}
 }

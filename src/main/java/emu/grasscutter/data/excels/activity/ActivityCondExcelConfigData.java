@@ -13,26 +13,31 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ActivityCondExcelConfigData extends GameResource {
-    int condId;
-    LogicType condComb;
-    List<ActivityConfigCondition> cond;
 
-    public static class ActivityConfigCondition {
-        @Getter private ActivityConditions type;
-        @Getter private List<Integer> param;
+	int condId;
+	LogicType condComb;
+	List<ActivityConfigCondition> cond;
 
-        public int[] paramArray() {
-            return param.stream().mapToInt(Integer::intValue).toArray();
-        }
-    }
+	public static class ActivityConfigCondition {
 
-    @Override
-    public int getId() {
-        return condId;
-    }
+		@Getter
+		private ActivityConditions type;
 
-    @Override
-    public void onLoad() {
-        cond.removeIf(c -> c.type == null);
-    }
+		@Getter
+		private List<Integer> param;
+
+		public int[] paramArray() {
+			return param.stream().mapToInt(Integer::intValue).toArray();
+		}
+	}
+
+	@Override
+	public int getId() {
+		return condId;
+	}
+
+	@Override
+	public void onLoad() {
+		cond.removeIf(c -> c.type == null);
+	}
 }

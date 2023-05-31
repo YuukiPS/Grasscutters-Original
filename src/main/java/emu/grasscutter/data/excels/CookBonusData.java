@@ -4,40 +4,39 @@ import emu.grasscutter.data.GameResource;
 import emu.grasscutter.data.ResourceType;
 import emu.grasscutter.data.ResourceType.LoadPriority;
 
-@ResourceType(
-        name = {"CookBonusExcelConfigData.json"},
-        loadPriority = LoadPriority.LOW)
+@ResourceType(name = { "CookBonusExcelConfigData.json" }, loadPriority = LoadPriority.LOW)
 public class CookBonusData extends GameResource {
-    private int avatarId;
-    private int recipeId;
-    private int[] paramVec;
-    private int[] complexParamVec;
 
-    @Override
-    public int getId() {
-        return this.avatarId;
-    }
+	private int avatarId;
+	private int recipeId;
+	private int[] paramVec;
+	private int[] complexParamVec;
 
-    public int getAvatarId() {
-        return avatarId;
-    }
+	@Override
+	public int getId() {
+		return this.avatarId;
+	}
 
-    public int getRecipeId() {
-        return recipeId;
-    }
+	public int getAvatarId() {
+		return avatarId;
+	}
 
-    public int[] getParamVec() {
-        return paramVec;
-    }
+	public int getRecipeId() {
+		return recipeId;
+	}
 
-    public int[] getComplexParamVec() {
-        return complexParamVec;
-    }
+	public int[] getParamVec() {
+		return paramVec;
+	}
 
-    public int getReplacementItemId() {
-        return this.paramVec[0];
-    }
+	public int[] getComplexParamVec() {
+		return complexParamVec;
+	}
 
-    @Override
-    public void onLoad() {}
+	public int getReplacementItemId() {
+		return this.paramVec[0];
+	}
+
+	@Override
+	public void onLoad() {}
 }

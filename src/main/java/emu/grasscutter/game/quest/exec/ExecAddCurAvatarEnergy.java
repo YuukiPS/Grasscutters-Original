@@ -9,9 +9,10 @@ import emu.grasscutter.game.quest.handlers.QuestExecHandler;
 
 @QuestValueExec(QuestExec.QUEST_EXEC_ADD_CUR_AVATAR_ENERGY)
 public class ExecAddCurAvatarEnergy extends QuestExecHandler {
-    @Override
-    public boolean execute(GameQuest quest, QuestData.QuestExecParam condition, String... paramStr) {
-        Grasscutter.getLogger().debug("Energy refilled");
-        return quest.getOwner().getEnergyManager().refillActiveEnergy();
-    }
+
+	@Override
+	public boolean execute(GameQuest quest, QuestData.QuestExecParam condition, String... paramStr) {
+		Grasscutter.getLogger().debug("Energy refilled");
+		return quest.getOwner().getEnergyManager().refillActiveEnergy();
+	}
 }

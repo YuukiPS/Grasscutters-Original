@@ -11,13 +11,11 @@ import java.util.stream.Stream;
 @QuestValueContent(QUEST_CONTENT_COMPLETE_ANY_TALK)
 public class ContentCompleteAnyTalk extends BaseContent {
 
-    @Override
-    public boolean execute(
-            GameQuest quest, QuestData.QuestContentCondition condition, String paramStr, int... params) {
-        return Stream.of(condition.getParamStr().split(","))
-                .mapToInt(Integer::parseInt)
-                .anyMatch(
-                        talkId ->
-                                GameData.getTalkConfigDataMap().get(params[0]) != null && talkId == params[0]);
-    }
+	@Override
+	public boolean execute(GameQuest quest, QuestData.QuestContentCondition condition, String paramStr, int... params) {
+		return Stream
+			.of(condition.getParamStr().split(","))
+			.mapToInt(Integer::parseInt)
+			.anyMatch(talkId -> GameData.getTalkConfigDataMap().get(params[0]) != null && talkId == params[0]);
+	}
 }

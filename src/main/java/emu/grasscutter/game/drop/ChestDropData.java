@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class ChestDropData extends BaseDropData {
-    private int sourceType;
-    private String type;
+
+	private int sourceType;
+	private String type;
 }

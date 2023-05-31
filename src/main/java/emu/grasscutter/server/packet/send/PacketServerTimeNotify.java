@@ -6,12 +6,10 @@ import emu.grasscutter.net.proto.ServerTimeNotifyOuterClass.ServerTimeNotify;
 
 public class PacketServerTimeNotify extends BasePacket {
 
-    public PacketServerTimeNotify() {
-        super(PacketOpcodes.ServerTimeNotify);
+	public PacketServerTimeNotify() {
+		super(PacketOpcodes.ServerTimeNotify);
+		ServerTimeNotify proto = ServerTimeNotify.newBuilder().setServerTime(System.currentTimeMillis()).build();
 
-        ServerTimeNotify proto =
-                ServerTimeNotify.newBuilder().setServerTime(System.currentTimeMillis()).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

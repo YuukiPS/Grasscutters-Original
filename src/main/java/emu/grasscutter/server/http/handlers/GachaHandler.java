@@ -23,146 +23,137 @@ import lombok.Getter;
 
 /** Handles all gacha-related HTTP requests. */
 public final class GachaHandler implements Router {
-    @Getter
-    private static final Path gachaMappingsPath = FileUtils.getDataUserPath("gacha/mappings.js");
 
-    @Deprecated(forRemoval = true)
-    public static final String gachaMappings = gachaMappingsPath.toString();
+	@Getter
+	private static final Path gachaMappingsPath = FileUtils.getDataUserPath("gacha/mappings.js");
 
-    private static void gachaRecords(Context ctx) {
-        var sessionKey = ctx.queryParam("s");
-        var account = DatabaseHelper.getAccountBySessionKey(sessionKey);
-        if (account == null) {
-            ctx.status(403).result("Requested account was not found.");
-            return;
-        }
+	@Deprecated(forRemoval = true)
+	public static final String gachaMappings = gachaMappingsPath.toString();
 
-        // Get page and gacha type.
-        int page = 0, gachaType = 0;
+	private static void gachaRecords(Context ctx) {
+		var sessionKey = ctx.queryParam("s");
+		var account = DatabaseHelper.getAccountBySessionKey(sessionKey);
+		if (account == null) {
+			ctx.status(403).result("Requested account was not found.");
+			return;
+		}
 
-        var pageStr = ctx.queryParam("p");
-        if (pageStr != null) page = Integer.parseInt(pageStr);
+		// Get page and gacha type.
+		int page = 0, gachaType = 0;
 
-        var gachaTypeStr = ctx.queryParam("gachaType");
-        if (gachaTypeStr != null) gachaType = Integer.parseInt(gachaTypeStr);
+		var pageStr = ctx.queryParam("p");
+		if (pageStr != null) page = Integer.parseInt(pageStr);
 
-        // Make request to dispatch server.
-        var data = DispatchUtils.fetchGachaRecords(account.getId(), page, gachaType);
-        var records = data.get("records").getAsJsonArray();
-        var maxPage = data.get("maxPage").getAsLong();
+		var gachaTypeStr = ctx.queryParam("gachaType");
+		if (gachaTypeStr != null) gachaType = Integer.parseInt(gachaTypeStr);
 
-        var locale = account.getLocale();
-        var template =
-                new String(
-                                FileUtils.read(FileUtils.getDataPath("gacha/records.html")), StandardCharsets.UTF_8)
-                        .replace("'{{REPLACE_RECORDS}}'", records.toString())
-                        .replace("'{{REPLACE_MAXPAGE}}'", String.valueOf(maxPage))
-                        .replace("{{TITLE}}", translate(locale, "gacha.records.title"))
-                        .replace("{{DATE}}", translate(locale, "gacha.records.date"))
-                        .replace("{{ITEM}}", translate(locale, "gacha.records.item"))
-                        .replace("{{LANGUAGE}}", Utils.getLanguageCode(account.getLocale()));
-        ctx.contentType(ContentType.TEXT_HTML);
-        ctx.result(template);
-    }
+		// Make request to dispatch server.
+		var data = DispatchUtils.fetchGachaRecords(account.getId(), page, gachaType);
+		var records = data.get("records").getAsJsonArray();
+		var maxPage = data.get("maxPage").getAsLong();
 
-    private static void gachaDetails(Context ctx) {
-        var detailsTemplate = FileUtils.getDataPath("gacha/details.html");
-        var sessionKey = ctx.queryParam("s");
-        var account = DatabaseHelper.getAccountBySessionKey(sessionKey);
-        if (account == null) {
-            ctx.status(403).result("Requested account was not found");
-            return;
-        }
+		var locale = account.getLocale();
+		var template = new String(FileUtils.read(FileUtils.getDataPath("gacha/records.html")), StandardCharsets.UTF_8)
+			.replace("'{{REPLACE_RECORDS}}'", records.toString())
+			.replace("'{{REPLACE_MAXPAGE}}'", String.valueOf(maxPage))
+			.replace("{{TITLE}}", translate(locale, "gacha.records.title"))
+			.replace("{{DATE}}", translate(locale, "gacha.records.date"))
+			.replace("{{ITEM}}", translate(locale, "gacha.records.item"))
+			.replace("{{LANGUAGE}}", Utils.getLanguageCode(account.getLocale()));
+		ctx.contentType(ContentType.TEXT_HTML);
+		ctx.result(template);
+	}
 
-        String template;
-        try {
-            template = Files.readString(detailsTemplate);
-        } catch (IOException e) {
-            Grasscutter.getLogger().warn("Failed to read data/gacha/details.html");
-            ctx.status(500);
-            return;
-        }
+	private static void gachaDetails(Context ctx) {
+		var detailsTemplate = FileUtils.getDataPath("gacha/details.html");
+		var sessionKey = ctx.queryParam("s");
+		var account = DatabaseHelper.getAccountBySessionKey(sessionKey);
+		if (account == null) {
+			ctx.status(403).result("Requested account was not found");
+			return;
+		}
 
-        // Add translated title etc. to the page.
-        var locale = account.getLocale();
-        template =
-                template
-                        .replace("{{TITLE}}", translate(locale, "gacha.details.title"))
-                        .replace(
-                                "{{AVAILABLE_FIVE_STARS}}", translate(locale, "gacha.details.available_five_stars"))
-                        .replace(
-                                "{{AVAILABLE_FOUR_STARS}}", translate(locale, "gacha.details.available_four_stars"))
-                        .replace(
-                                "{{AVAILABLE_THREE_STARS}}",
-                                translate(locale, "gacha.details.available_three_stars"))
-                        .replace("{{LANGUAGE}}", Utils.getLanguageCode(account.getLocale()));
+		String template;
+		try {
+			template = Files.readString(detailsTemplate);
+		} catch (IOException e) {
+			Grasscutter.getLogger().warn("Failed to read data/gacha/details.html");
+			ctx.status(500);
+			return;
+		}
 
-        // Get the banner info for the banner we want.
-        var scheduleIdStr = ctx.queryParam("scheduleId");
-        if (scheduleIdStr == null) {
-            ctx.status(400).result("Missing scheduleId parameter");
-            return;
-        }
+		// Add translated title etc. to the page.
+		var locale = account.getLocale();
+		template =
+			template
+				.replace("{{TITLE}}", translate(locale, "gacha.details.title"))
+				.replace("{{AVAILABLE_FIVE_STARS}}", translate(locale, "gacha.details.available_five_stars"))
+				.replace("{{AVAILABLE_FOUR_STARS}}", translate(locale, "gacha.details.available_four_stars"))
+				.replace("{{AVAILABLE_THREE_STARS}}", translate(locale, "gacha.details.available_three_stars"))
+				.replace("{{LANGUAGE}}", Utils.getLanguageCode(account.getLocale()));
 
-        var scheduleId = Integer.parseInt(scheduleIdStr);
-        var manager = Grasscutter.getGameServer().getGachaSystem();
-        var banner = manager.getGachaBanners().get(scheduleId);
+		// Get the banner info for the banner we want.
+		var scheduleIdStr = ctx.queryParam("scheduleId");
+		if (scheduleIdStr == null) {
+			ctx.status(400).result("Missing scheduleId parameter");
+			return;
+		}
 
-        // Add 5-star items.
-        var fiveStarItems = new LinkedHashSet<String>();
+		var scheduleId = Integer.parseInt(scheduleIdStr);
+		var manager = Grasscutter.getGameServer().getGachaSystem();
+		var banner = manager.getGachaBanners().get(scheduleId);
 
-        Arrays.stream(banner.getRateUpItems5()).forEach(i -> fiveStarItems.add(Integer.toString(i)));
-        Arrays.stream(banner.getFallbackItems5Pool1())
-                .forEach(i -> fiveStarItems.add(Integer.toString(i)));
-        Arrays.stream(banner.getFallbackItems5Pool2())
-                .forEach(i -> fiveStarItems.add(Integer.toString(i)));
+		// Add 5-star items.
+		var fiveStarItems = new LinkedHashSet<String>();
 
-        template = template.replace("{{FIVE_STARS}}", "[" + String.join(",", fiveStarItems) + "]");
+		Arrays.stream(banner.getRateUpItems5()).forEach(i -> fiveStarItems.add(Integer.toString(i)));
+		Arrays.stream(banner.getFallbackItems5Pool1()).forEach(i -> fiveStarItems.add(Integer.toString(i)));
+		Arrays.stream(banner.getFallbackItems5Pool2()).forEach(i -> fiveStarItems.add(Integer.toString(i)));
 
-        // Add 4-star items.
-        var fourStarItems = new LinkedHashSet<String>();
+		template = template.replace("{{FIVE_STARS}}", "[" + String.join(",", fiveStarItems) + "]");
 
-        Arrays.stream(banner.getRateUpItems4()).forEach(i -> fourStarItems.add(Integer.toString(i)));
-        Arrays.stream(banner.getFallbackItems4Pool1())
-                .forEach(i -> fourStarItems.add(Integer.toString(i)));
-        Arrays.stream(banner.getFallbackItems4Pool2())
-                .forEach(i -> fourStarItems.add(Integer.toString(i)));
+		// Add 4-star items.
+		var fourStarItems = new LinkedHashSet<String>();
 
-        template = template.replace("{{FOUR_STARS}}", "[" + String.join(",", fourStarItems) + "]");
+		Arrays.stream(banner.getRateUpItems4()).forEach(i -> fourStarItems.add(Integer.toString(i)));
+		Arrays.stream(banner.getFallbackItems4Pool1()).forEach(i -> fourStarItems.add(Integer.toString(i)));
+		Arrays.stream(banner.getFallbackItems4Pool2()).forEach(i -> fourStarItems.add(Integer.toString(i)));
 
-        // Add 3-star items.
-        var threeStarItems = new LinkedHashSet<String>();
-        Arrays.stream(banner.getFallbackItems3()).forEach(i -> threeStarItems.add(Integer.toString(i)));
-        template = template.replace("{{THREE_STARS}}", "[" + String.join(",", threeStarItems) + "]");
+		template = template.replace("{{FOUR_STARS}}", "[" + String.join(",", fourStarItems) + "]");
 
-        // Done.
-        ctx.contentType(ContentType.TEXT_HTML);
-        ctx.result(template);
-    }
+		// Add 3-star items.
+		var threeStarItems = new LinkedHashSet<String>();
+		Arrays.stream(banner.getFallbackItems3()).forEach(i -> threeStarItems.add(Integer.toString(i)));
+		template = template.replace("{{THREE_STARS}}", "[" + String.join(",", threeStarItems) + "]");
 
-    /**
-     * Fetches the gacha records for the specified player.
-     *
-     * @param player The player to fetch the records for.
-     * @param response The response to write to.
-     * @param page The page to fetch.
-     * @param type The gacha type to fetch.
-     */
-    public static void fetchGachaRecords(Player player, JsonObject response, int page, int type) {
-        var playerId = player.getUid();
-        var records = DatabaseHelper.getGachaRecords(playerId, page, type).toString();
-        var maxPage = DatabaseHelper.getGachaRecordsMaxPage(playerId, page, type);
+		// Done.
+		ctx.contentType(ContentType.TEXT_HTML);
+		ctx.result(template);
+	}
 
-        // Finish the response.
-        response.addProperty("retcode", 0);
-        response.addProperty("records", records);
-        response.addProperty("maxPage", maxPage);
-    }
+	/**
+	 * Fetches the gacha records for the specified player.
+	 *
+	 * @param player The player to fetch the records for.
+	 * @param response The response to write to.
+	 * @param page The page to fetch.
+	 * @param type The gacha type to fetch.
+	 */
+	public static void fetchGachaRecords(Player player, JsonObject response, int page, int type) {
+		var playerId = player.getUid();
+		var records = DatabaseHelper.getGachaRecords(playerId, page, type).toString();
+		var maxPage = DatabaseHelper.getGachaRecordsMaxPage(playerId, page, type);
 
-    @Override
-    public void applyRoutes(Javalin javalin) {
-        javalin.get("/gacha", GachaHandler::gachaRecords);
-        javalin.get("/gacha/details", GachaHandler::gachaDetails);
-        javalin.get("/gacha/mappings", ctx -> ctx.result(FileUtils.read(gachaMappingsPath.toString())));
-    }
+		// Finish the response.
+		response.addProperty("retcode", 0);
+		response.addProperty("records", records);
+		response.addProperty("maxPage", maxPage);
+	}
+
+	@Override
+	public void applyRoutes(Javalin javalin) {
+		javalin.get("/gacha", GachaHandler::gachaRecords);
+		javalin.get("/gacha/details", GachaHandler::gachaDetails);
+		javalin.get("/gacha/mappings", ctx -> ctx.result(FileUtils.read(gachaMappingsPath.toString())));
+	}
 }

@@ -13,25 +13,24 @@ import lombok.val;
 @Opcodes(PacketOpcodes.ReceivedTrialAvatarActivityRewardReq)
 public class HandlerReceivedTrialAvatarActivityRewardReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        val req = ReceivedTrialAvatarActivityRewardReq.parseFrom(payload);
-        val player = session.getPlayer();
-        val handler =
-                player
-                        .getActivityManager()
-                        .getActivityHandlerAs(
-                                ActivityType.NEW_ACTIVITY_TRIAL_AVATAR, TrialAvatarActivityHandler.class);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		val req = ReceivedTrialAvatarActivityRewardReq.parseFrom(payload);
+		val player = session.getPlayer();
+		val handler = player
+			.getActivityManager()
+			.getActivityHandlerAs(ActivityType.NEW_ACTIVITY_TRIAL_AVATAR, TrialAvatarActivityHandler.class);
 
-        boolean result =
-                handler.isPresent() && handler.get().getReward(player, req.getTrialAvatarIndexId());
+		boolean result = handler.isPresent() && handler.get().getReward(player, req.getTrialAvatarIndexId());
 
-        session
-                .getPlayer()
-                .sendPacket(
-                        new PacketReceivedTrialAvatarActivityRewardRsp(
-                                5002, // trial activity id
-                                req.getTrialAvatarIndexId(),
-                                result));
-    }
+		session
+			.getPlayer()
+			.sendPacket(
+				new PacketReceivedTrialAvatarActivityRewardRsp(
+					5002, // trial activity id
+					req.getTrialAvatarIndexId(),
+					result
+				)
+			);
+	}
 }

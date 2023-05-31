@@ -11,13 +11,13 @@ import emu.grasscutter.server.packet.send.PacketPingRsp;
 @Opcodes(PacketOpcodes.PingReq)
 public class HandlerPingReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        PacketHead head = PacketHead.parseFrom(header);
-        PingReq ping = PingReq.parseFrom(payload);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		PacketHead head = PacketHead.parseFrom(header);
+		PingReq ping = PingReq.parseFrom(payload);
 
-        session.updateLastPingTime(ping.getClientTime());
+		session.updateLastPingTime(ping.getClientTime());
 
-        session.send(new PacketPingRsp(head.getClientSequenceId(), ping.getClientTime()));
-    }
+		session.send(new PacketPingRsp(head.getClientSequenceId(), ping.getClientTime()));
+	}
 }

@@ -6,15 +6,14 @@ import emu.grasscutter.net.proto.PlayerApplyEnterMpResultRspOuterClass.PlayerApp
 
 public class PacketPlayerApplyEnterMpResultRsp extends BasePacket {
 
-    public PacketPlayerApplyEnterMpResultRsp(int applyUid, boolean isAgreed) {
-        super(PacketOpcodes.PlayerApplyEnterMpResultRsp);
+	public PacketPlayerApplyEnterMpResultRsp(int applyUid, boolean isAgreed) {
+		super(PacketOpcodes.PlayerApplyEnterMpResultRsp);
+		PlayerApplyEnterMpResultRsp proto = PlayerApplyEnterMpResultRsp
+			.newBuilder()
+			.setApplyUid(applyUid)
+			.setIsAgreed(isAgreed)
+			.build();
 
-        PlayerApplyEnterMpResultRsp proto =
-                PlayerApplyEnterMpResultRsp.newBuilder()
-                        .setApplyUid(applyUid)
-                        .setIsAgreed(isAgreed)
-                        .build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

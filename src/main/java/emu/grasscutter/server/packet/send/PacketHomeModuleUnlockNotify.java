@@ -6,12 +6,10 @@ import emu.grasscutter.net.proto.HomeModuleUnlockNotifyOuterClass.HomeModuleUnlo
 
 public class PacketHomeModuleUnlockNotify extends BasePacket {
 
-    public PacketHomeModuleUnlockNotify(int targetModuleId) {
-        super(PacketOpcodes.HomeModuleUnlockNotify);
+	public PacketHomeModuleUnlockNotify(int targetModuleId) {
+		super(PacketOpcodes.HomeModuleUnlockNotify);
+		HomeModuleUnlockNotify proto = HomeModuleUnlockNotify.newBuilder().setModuleId(targetModuleId).build();
 
-        HomeModuleUnlockNotify proto =
-                HomeModuleUnlockNotify.newBuilder().setModuleId(targetModuleId).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

@@ -5,67 +5,69 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OpenConfigEntry {
-    private final String name;
-    private String[] addAbilities;
-    private int extraTalentIndex;
-    private SkillPointModifier[] skillPointModifiers;
 
-    public OpenConfigEntry(String name, OpenConfigData[] data) {
-        this.name = name;
+	private final String name;
+	private String[] addAbilities;
+	private int extraTalentIndex;
+	private SkillPointModifier[] skillPointModifiers;
 
-        List<String> abilityList = new ArrayList<>();
-        List<SkillPointModifier> modList = new ArrayList<>();
+	public OpenConfigEntry(String name, OpenConfigData[] data) {
+		this.name = name;
 
-        for (OpenConfigData entry : data) {
-            if (entry.$type.contains("AddAbility")) {
-                abilityList.add(entry.abilityName);
-            } else if (entry.talentIndex > 0) {
-                this.extraTalentIndex = entry.talentIndex;
-            } else if (entry.$type.contains("ModifySkillPoint")) {
-                modList.add(new SkillPointModifier(entry.skillID, entry.pointDelta));
-            }
-        }
+		List<String> abilityList = new ArrayList<>();
+		List<SkillPointModifier> modList = new ArrayList<>();
 
-        if (abilityList.size() > 0) {
-            this.addAbilities = abilityList.toArray(new String[0]);
-        }
+		for (OpenConfigData entry : data) {
+			if (entry.$type.contains("AddAbility")) {
+				abilityList.add(entry.abilityName);
+			} else if (entry.talentIndex > 0) {
+				this.extraTalentIndex = entry.talentIndex;
+			} else if (entry.$type.contains("ModifySkillPoint")) {
+				modList.add(new SkillPointModifier(entry.skillID, entry.pointDelta));
+			}
+		}
 
-        if (modList.size() > 0) {
-            this.skillPointModifiers = modList.toArray(new SkillPointModifier[0]);
-        }
-    }
+		if (abilityList.size() > 0) {
+			this.addAbilities = abilityList.toArray(new String[0]);
+		}
 
-    public String getName() {
-        return name;
-    }
+		if (modList.size() > 0) {
+			this.skillPointModifiers = modList.toArray(new SkillPointModifier[0]);
+		}
+	}
 
-    public String[] getAddAbilities() {
-        return addAbilities;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public int getExtraTalentIndex() {
-        return extraTalentIndex;
-    }
+	public String[] getAddAbilities() {
+		return addAbilities;
+	}
 
-    public SkillPointModifier[] getSkillPointModifiers() {
-        return skillPointModifiers;
-    }
+	public int getExtraTalentIndex() {
+		return extraTalentIndex;
+	}
 
-    public static class SkillPointModifier {
-        private int skillId;
-        private int delta;
+	public SkillPointModifier[] getSkillPointModifiers() {
+		return skillPointModifiers;
+	}
 
-        public SkillPointModifier(int skillId, int delta) {
-            this.skillId = skillId;
-            this.delta = delta;
-        }
+	public static class SkillPointModifier {
 
-        public int getSkillId() {
-            return skillId;
-        }
+		private int skillId;
+		private int delta;
 
-        public int getDelta() {
-            return delta;
-        }
-    }
+		public SkillPointModifier(int skillId, int delta) {
+			this.skillId = skillId;
+			this.delta = delta;
+		}
+
+		public int getSkillId() {
+			return skillId;
+		}
+
+		public int getDelta() {
+			return delta;
+		}
+	}
 }

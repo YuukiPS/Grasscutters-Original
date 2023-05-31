@@ -9,18 +9,28 @@ import lombok.Getter;
 
 @ResourceType(name = "DungeonPassExcelConfigData.json")
 public class DungeonPassConfigData extends GameResource {
-    @Getter private int id;
-    @Getter private LogicType logicType;
-    @Getter private List<DungeonPassCondition> conds;
 
-    public static class DungeonPassCondition {
-        @Getter private DungeonPassConditionType condType;
-        @Getter int[] param;
-    }
+	@Getter
+	private int id;
 
-    @Override
-    public void onLoad() {
-        super.onLoad();
-        conds = conds.stream().filter(condition -> condition.getCondType() != null).toList();
-    }
+	@Getter
+	private LogicType logicType;
+
+	@Getter
+	private List<DungeonPassCondition> conds;
+
+	public static class DungeonPassCondition {
+
+		@Getter
+		private DungeonPassConditionType condType;
+
+		@Getter
+		int[] param;
+	}
+
+	@Override
+	public void onLoad() {
+		super.onLoad();
+		conds = conds.stream().filter(condition -> condition.getCondType() != null).toList();
+	}
 }

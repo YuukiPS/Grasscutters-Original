@@ -11,24 +11,22 @@ import emu.grasscutter.server.packet.send.PacketGadgetInteractRsp;
 
 public final class GadgetRewardStatue extends GadgetContent {
 
-    public GadgetRewardStatue(EntityGadget gadget) {
-        super(gadget);
-    }
+	public GadgetRewardStatue(EntityGadget gadget) {
+		super(gadget);
+	}
 
-    public boolean onInteract(Player player, GadgetInteractReq req) {
-        var dungeonManager = player.getScene().getDungeonManager();
+	public boolean onInteract(Player player, GadgetInteractReq req) {
+		var dungeonManager = player.getScene().getDungeonManager();
 
-        if (player.getScene().getChallenge() instanceof DungeonChallenge) {
-            var useCondensed =
-                    req.getResinCostType() == ResinCostTypeOuterClass.ResinCostType.RESIN_COST_TYPE_CONDENSE;
-            dungeonManager.getStatueDrops(player, useCondensed, getGadget().getGroupId());
-        }
+		if (player.getScene().getChallenge() instanceof DungeonChallenge) {
+			var useCondensed = req.getResinCostType() == ResinCostTypeOuterClass.ResinCostType.RESIN_COST_TYPE_CONDENSE;
+			dungeonManager.getStatueDrops(player, useCondensed, getGadget().getGroupId());
+		}
 
-        player.sendPacket(
-                new PacketGadgetInteractRsp(getGadget(), InteractType.INTERACT_TYPE_OPEN_STATUE));
+		player.sendPacket(new PacketGadgetInteractRsp(getGadget(), InteractType.INTERACT_TYPE_OPEN_STATUE));
 
-        return false;
-    }
+		return false;
+	}
 
-    public void onBuildProto(SceneGadgetInfo.Builder gadgetInfo) {}
+	public void onBuildProto(SceneGadgetInfo.Builder gadgetInfo) {}
 }

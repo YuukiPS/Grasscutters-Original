@@ -6,14 +6,13 @@ import emu.grasscutter.net.proto.CanUseSkillNotifyOuterClass;
 
 public class PacketCanUseSkillNotify extends BasePacket {
 
-    public PacketCanUseSkillNotify(boolean canUseSkill) {
-        super(PacketOpcodes.CanUseSkillNotify);
+	public PacketCanUseSkillNotify(boolean canUseSkill) {
+		super(PacketOpcodes.CanUseSkillNotify);
+		CanUseSkillNotifyOuterClass.CanUseSkillNotify proto = CanUseSkillNotifyOuterClass.CanUseSkillNotify
+			.newBuilder()
+			.setIsCanUseSkill(canUseSkill)
+			.build();
 
-        CanUseSkillNotifyOuterClass.CanUseSkillNotify proto =
-                CanUseSkillNotifyOuterClass.CanUseSkillNotify.newBuilder()
-                        .setIsCanUseSkill(canUseSkill)
-                        .build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

@@ -5,34 +5,35 @@ import emu.grasscutter.game.inventory.GameItem;
 import emu.grasscutter.game.props.ActionReason;
 
 public abstract class ItemUseSelectItems extends ItemUseAction {
-    protected static final int INVALID = -1;
-    protected int[] optionItemIds;
 
-    protected int getItemId(int index) {
-        if ((optionItemIds == null) || (index < 0) || (index > optionItemIds.length)) return INVALID;
-        return this.optionItemIds[index];
-    }
+	protected static final int INVALID = -1;
+	protected int[] optionItemIds;
 
-    protected int getItemCount(int index) {
-        return 1;
-    }
+	protected int getItemId(int index) {
+		if ((optionItemIds == null) || (index < 0) || (index > optionItemIds.length)) return INVALID;
+		return this.optionItemIds[index];
+	}
 
-    protected GameItem getItemStack(int index, int useCount) {
-        int id = this.getItemId(index);
-        int count = this.getItemCount(index);
-        if (id == INVALID || count == INVALID) return null;
+	protected int getItemCount(int index) {
+		return 1;
+	}
 
-        var item = GameData.getItemDataMap().get(id);
-        if (item == null) return null;
+	protected GameItem getItemStack(int index, int useCount) {
+		int id = this.getItemId(index);
+		int count = this.getItemCount(index);
+		if (id == INVALID || count == INVALID) return null;
 
-        return new GameItem(item, count * useCount);
-    }
+		var item = GameData.getItemDataMap().get(id);
+		if (item == null) return null;
 
-    @Override
-    public boolean useItem(UseItemParams params) {
-        var itemStack = this.getItemStack(params.optionId - 1, params.count);
-        if (itemStack == null) return false;
+		return new GameItem(item, count * useCount);
+	}
 
-        return params.player.getInventory().addItem(itemStack, ActionReason.Shop);
-    }
+	@Override
+	public boolean useItem(UseItemParams params) {
+		var itemStack = this.getItemStack(params.optionId - 1, params.count);
+		if (itemStack == null) return false;
+
+		return params.player.getInventory().addItem(itemStack, ActionReason.Shop);
+	}
 }

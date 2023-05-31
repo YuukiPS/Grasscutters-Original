@@ -4,7 +4,8 @@ import lombok.Data;
 
 @Data
 public class ConfigAbilityData {
-    public String abilityID;
-    public String abilityName;
-    public String abilityOverride;
+
+	public String abilityID;
+	public String abilityName;
+	public String abilityOverride;
 }

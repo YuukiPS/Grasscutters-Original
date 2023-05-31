@@ -5,5 +5,5 @@ import emu.grasscutter.game.quest.GameQuest;
 
 public abstract class QuestBaseHandler<T extends QuestCondition<?>> {
 
-    public abstract boolean execute(GameQuest quest, T condition, String paramStr, int... params);
+	public abstract boolean execute(GameQuest quest, T condition, String paramStr, int... params);
 }

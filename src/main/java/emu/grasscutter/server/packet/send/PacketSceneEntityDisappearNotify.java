@@ -9,27 +9,25 @@ import java.util.Collection;
 
 public class PacketSceneEntityDisappearNotify extends BasePacket {
 
-    public PacketSceneEntityDisappearNotify(GameEntity entity, VisionType disappearType) {
-        super(PacketOpcodes.SceneEntityDisappearNotify);
+	public PacketSceneEntityDisappearNotify(GameEntity entity, VisionType disappearType) {
+		super(PacketOpcodes.SceneEntityDisappearNotify);
+		SceneEntityDisappearNotify proto = SceneEntityDisappearNotify
+			.newBuilder()
+			.setDisappearType(disappearType)
+			.addEntityList(entity.getId())
+			.build();
 
-        SceneEntityDisappearNotify proto =
-                SceneEntityDisappearNotify.newBuilder()
-                        .setDisappearType(disappearType)
-                        .addEntityList(entity.getId())
-                        .build();
+		this.setData(proto);
+	}
 
-        this.setData(proto);
-    }
+	public PacketSceneEntityDisappearNotify(Collection<GameEntity> entities, VisionType disappearType) {
+		super(PacketOpcodes.SceneEntityDisappearNotify);
+		SceneEntityDisappearNotify.Builder proto = SceneEntityDisappearNotify
+			.newBuilder()
+			.setDisappearType(disappearType);
 
-    public PacketSceneEntityDisappearNotify(
-            Collection<GameEntity> entities, VisionType disappearType) {
-        super(PacketOpcodes.SceneEntityDisappearNotify);
+		entities.forEach(e -> proto.addEntityList(e.getId()));
 
-        SceneEntityDisappearNotify.Builder proto =
-                SceneEntityDisappearNotify.newBuilder().setDisappearType(disappearType);
-
-        entities.forEach(e -> proto.addEntityList(e.getId()));
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

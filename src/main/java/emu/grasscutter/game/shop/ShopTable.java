@@ -4,22 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShopTable {
-    private int shopId;
-    private List<ShopInfo> items = new ArrayList<>();
 
-    public int getShopId() {
-        return shopId;
-    }
+	private int shopId;
+	private List<ShopInfo> items = new ArrayList<>();
 
-    public void setShopId(int shopId) {
-        this.shopId = shopId;
-    }
+	public int getShopId() {
+		return shopId;
+	}
 
-    public List<ShopInfo> getItems() {
-        return items;
-    }
+	public void setShopId(int shopId) {
+		this.shopId = shopId;
+	}
 
-    public void setItems(List<ShopInfo> items) {
-        this.items = items;
-    }
+	public List<ShopInfo> getItems() {
+		return items;
+	}
+
+	public void setItems(List<ShopInfo> items) {
+		this.items = items;
+	}
 }

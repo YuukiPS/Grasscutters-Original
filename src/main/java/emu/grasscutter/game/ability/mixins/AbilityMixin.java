@@ -6,5 +6,5 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AbilityMixin {
-    AbilityMixinData.Type value();
+	AbilityMixinData.Type value();
 }

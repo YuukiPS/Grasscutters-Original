@@ -8,55 +8,56 @@ import emu.grasscutter.net.proto.MapMarkPointTypeOuterClass.MapMarkPointType;
 
 @Entity
 public class MapMark {
-    private int sceneId;
-    private String name;
-    private Position position;
-    private MapMarkPointType mapMarkPointType;
-    private int monsterId;
-    private MapMarkFromType mapMarkFromType;
-    private int questId;
 
-    @Deprecated // Morhpia
-    public MapMark() {
-        this.mapMarkPointType = MapMarkPointType.MAP_MARK_POINT_TYPE_MONSTER;
-        this.mapMarkFromType = MapMarkFromType.MAP_MARK_FROM_TYPE_MONSTER;
-    }
+	private int sceneId;
+	private String name;
+	private Position position;
+	private MapMarkPointType mapMarkPointType;
+	private int monsterId;
+	private MapMarkFromType mapMarkFromType;
+	private int questId;
 
-    public MapMark(MapMarkPoint mapMarkPoint) {
-        this.sceneId = mapMarkPoint.getSceneId();
-        this.name = mapMarkPoint.getName();
-        this.position = new Position(mapMarkPoint.getPos());
-        this.mapMarkPointType = mapMarkPoint.getPointType();
-        this.monsterId = mapMarkPoint.getMonsterId();
-        this.mapMarkFromType = mapMarkPoint.getFromType();
-        this.questId = mapMarkPoint.getQuestId();
-    }
+	@Deprecated // Morhpia
+	public MapMark() {
+		this.mapMarkPointType = MapMarkPointType.MAP_MARK_POINT_TYPE_MONSTER;
+		this.mapMarkFromType = MapMarkFromType.MAP_MARK_FROM_TYPE_MONSTER;
+	}
 
-    public int getSceneId() {
-        return this.sceneId;
-    }
+	public MapMark(MapMarkPoint mapMarkPoint) {
+		this.sceneId = mapMarkPoint.getSceneId();
+		this.name = mapMarkPoint.getName();
+		this.position = new Position(mapMarkPoint.getPos());
+		this.mapMarkPointType = mapMarkPoint.getPointType();
+		this.monsterId = mapMarkPoint.getMonsterId();
+		this.mapMarkFromType = mapMarkPoint.getFromType();
+		this.questId = mapMarkPoint.getQuestId();
+	}
 
-    public String getName() {
-        return this.name;
-    }
+	public int getSceneId() {
+		return this.sceneId;
+	}
 
-    public Position getPosition() {
-        return this.position;
-    }
+	public String getName() {
+		return this.name;
+	}
 
-    public MapMarkPointType getMapMarkPointType() {
-        return this.mapMarkPointType;
-    }
+	public Position getPosition() {
+		return this.position;
+	}
 
-    public int getMonsterId() {
-        return this.monsterId;
-    }
+	public MapMarkPointType getMapMarkPointType() {
+		return this.mapMarkPointType;
+	}
 
-    public MapMarkFromType getMapMarkFromType() {
-        return this.mapMarkFromType;
-    }
+	public int getMonsterId() {
+		return this.monsterId;
+	}
 
-    public int getQuestId() {
-        return this.questId;
-    }
+	public MapMarkFromType getMapMarkFromType() {
+		return this.mapMarkFromType;
+	}
+
+	public int getQuestId() {
+		return this.questId;
+	}
 }

@@ -8,98 +8,100 @@ import emu.grasscutter.utils.Utils;
 
 @Entity
 public class PlayerProfile {
-    @Transient private Player player;
 
-    @AlsoLoad("id")
-    private int uid;
+	@Transient
+	private Player player;
 
-    private int nameCard;
-    private int avatarId;
-    private String name;
-    private String signature;
-    private int achievements;
+	@AlsoLoad("id")
+	private int uid;
 
-    private int playerLevel;
-    private int worldLevel;
-    private int lastActiveTime;
+	private int nameCard;
+	private int avatarId;
+	private String name;
+	private String signature;
+	private int achievements;
 
-    @Deprecated // Morphia only
-    public PlayerProfile() {}
+	private int playerLevel;
+	private int worldLevel;
+	private int lastActiveTime;
 
-    public PlayerProfile(Player player) {
-        this.uid = player.getUid();
-        this.syncWithCharacter(player);
-    }
+	@Deprecated // Morphia only
+	public PlayerProfile() {}
 
-    public int getUid() {
-        return uid;
-    }
+	public PlayerProfile(Player player) {
+		this.uid = player.getUid();
+		this.syncWithCharacter(player);
+	}
 
-    public Player getPlayer() {
-        return player;
-    }
+	public int getUid() {
+		return uid;
+	}
 
-    public synchronized void setPlayer(Player player) {
-        this.player = player;
-    }
+	public Player getPlayer() {
+		return player;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public synchronized void setPlayer(Player player) {
+		this.player = player;
+	}
 
-    public int getNameCard() {
-        return nameCard;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public int getAvatarId() {
-        return avatarId;
-    }
+	public int getNameCard() {
+		return nameCard;
+	}
 
-    public String getSignature() {
-        return signature;
-    }
+	public int getAvatarId() {
+		return avatarId;
+	}
 
-    public int getAchievements() {
-        return achievements;
-    }
+	public String getSignature() {
+		return signature;
+	}
 
-    public int getPlayerLevel() {
-        return playerLevel;
-    }
+	public int getAchievements() {
+		return achievements;
+	}
 
-    public int getWorldLevel() {
-        return worldLevel;
-    }
+	public int getPlayerLevel() {
+		return playerLevel;
+	}
 
-    public int getLastActiveTime() {
-        return lastActiveTime;
-    }
+	public int getWorldLevel() {
+		return worldLevel;
+	}
 
-    public void updateLastActiveTime() {
-        this.lastActiveTime = Utils.getCurrentSeconds();
-    }
+	public int getLastActiveTime() {
+		return lastActiveTime;
+	}
 
-    public int getDaysSinceLogin() {
-        return (int) Math.floor((Utils.getCurrentSeconds() - getLastActiveTime()) / 86400.0);
-    }
+	public void updateLastActiveTime() {
+		this.lastActiveTime = Utils.getCurrentSeconds();
+	}
 
-    public boolean isOnline() {
-        return this.getPlayer() != null;
-    }
+	public int getDaysSinceLogin() {
+		return (int) Math.floor((Utils.getCurrentSeconds() - getLastActiveTime()) / 86400.0);
+	}
 
-    public void syncWithCharacter(Player player) {
-        if (player == null) {
-            return;
-        }
+	public boolean isOnline() {
+		return this.getPlayer() != null;
+	}
 
-        this.uid = player.getUid();
-        this.name = player.getNickname();
-        this.avatarId = player.getHeadImage();
-        this.signature = player.getSignature();
-        this.nameCard = player.getNameCardId();
-        this.playerLevel = player.getLevel();
-        this.worldLevel = player.getWorldLevel();
-        // this.achievements = 0;
-        this.updateLastActiveTime();
-    }
+	public void syncWithCharacter(Player player) {
+		if (player == null) {
+			return;
+		}
+
+		this.uid = player.getUid();
+		this.name = player.getNickname();
+		this.avatarId = player.getHeadImage();
+		this.signature = player.getSignature();
+		this.nameCard = player.getNameCardId();
+		this.playerLevel = player.getLevel();
+		this.worldLevel = player.getWorldLevel();
+		// this.achievements = 0;
+		this.updateLastActiveTime();
+	}
 }

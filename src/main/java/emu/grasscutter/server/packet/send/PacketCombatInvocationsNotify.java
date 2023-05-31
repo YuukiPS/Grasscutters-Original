@@ -8,21 +8,17 @@ import java.util.List;
 
 public class PacketCombatInvocationsNotify extends BasePacket {
 
-    public PacketCombatInvocationsNotify(CombatInvokeEntry entry) {
-        super(PacketOpcodes.CombatInvocationsNotify, true);
+	public PacketCombatInvocationsNotify(CombatInvokeEntry entry) {
+		super(PacketOpcodes.CombatInvocationsNotify, true);
+		CombatInvocationsNotify proto = CombatInvocationsNotify.newBuilder().addInvokeList(entry).build();
 
-        CombatInvocationsNotify proto =
-                CombatInvocationsNotify.newBuilder().addInvokeList(entry).build();
+		this.setData(proto);
+	}
 
-        this.setData(proto);
-    }
+	public PacketCombatInvocationsNotify(List<CombatInvokeEntry> entries) {
+		super(PacketOpcodes.CombatInvocationsNotify, true);
+		CombatInvocationsNotify proto = CombatInvocationsNotify.newBuilder().addAllInvokeList(entries).build();
 
-    public PacketCombatInvocationsNotify(List<CombatInvokeEntry> entries) {
-        super(PacketOpcodes.CombatInvocationsNotify, true);
-
-        CombatInvocationsNotify proto =
-                CombatInvocationsNotify.newBuilder().addAllInvokeList(entries).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

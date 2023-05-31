@@ -9,10 +9,10 @@ import emu.grasscutter.server.game.GameSession;
 @Opcodes(PacketOpcodes.FurnitureMakeStartReq)
 public class HandlerFurnitureMakeStartReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        var req = FurnitureMakeStartReqOuterClass.FurnitureMakeStartReq.parseFrom(payload);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		var req = FurnitureMakeStartReqOuterClass.FurnitureMakeStartReq.parseFrom(payload);
 
-        session.getPlayer().getFurnitureManager().startMake(req.getMakeId(), req.getAvatarId());
-    }
+		session.getPlayer().getFurnitureManager().startMake(req.getMakeId(), req.getAvatarId());
+	}
 }

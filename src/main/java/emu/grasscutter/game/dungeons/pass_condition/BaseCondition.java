@@ -8,9 +8,9 @@ import emu.grasscutter.game.dungeons.handlers.DungeonBaseHandler;
 @DungeonValue(DungeonPassConditionType.DUNGEON_COND_NONE)
 public class BaseCondition extends DungeonBaseHandler {
 
-    @Override
-    public boolean execute(DungeonPassConfigData.DungeonPassCondition condition, int... params) {
-        // TODO Auto-generated method stub
-        return false;
-    }
+	@Override
+	public boolean execute(DungeonPassConfigData.DungeonPassCondition condition, int... params) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

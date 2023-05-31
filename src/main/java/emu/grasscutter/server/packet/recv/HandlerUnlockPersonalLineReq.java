@@ -12,19 +12,19 @@ import emu.grasscutter.server.packet.send.PacketUnlockPersonalLineRsp;
 @Opcodes(PacketOpcodes.UnlockPersonalLineReq)
 public class HandlerUnlockPersonalLineReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        var req = UnlockPersonalLineReq.parseFrom(payload);
-        var data = GameData.getPersonalLineDataMap().get(req.getPersonalLineId());
-        if (data == null) {
-            session.send(new PacketUnlockPersonalLineRsp(req.getPersonalLineId(), Retcode.RET_FAIL));
-            return;
-        }
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		var req = UnlockPersonalLineReq.parseFrom(payload);
+		var data = GameData.getPersonalLineDataMap().get(req.getPersonalLineId());
+		if (data == null) {
+			session.send(new PacketUnlockPersonalLineRsp(req.getPersonalLineId(), Retcode.RET_FAIL));
+			return;
+		}
 
-        session.getPlayer().getQuestManager().addQuest(data.getStartQuestId());
-        session.getPlayer().addPersonalLine(data.getId());
-        session.getPlayer().useLegendaryKey(1);
+		session.getPlayer().getQuestManager().addQuest(data.getStartQuestId());
+		session.getPlayer().addPersonalLine(data.getId());
+		session.getPlayer().useLegendaryKey(1);
 
-        session.send(new PacketUnlockPersonalLineRsp(data.getId(), 1, data.getChapterId()));
-    }
+		session.send(new PacketUnlockPersonalLineRsp(data.getId(), 1, data.getChapterId()));
+	}
 }

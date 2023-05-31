@@ -9,14 +9,13 @@ import emu.grasscutter.server.packet.send.PacketUpdatePlayerShowNameCardListRsp;
 
 @Opcodes(PacketOpcodes.UpdatePlayerShowNameCardListReq)
 public class HandlerUpdatePlayerShowNameCardListReq extends PacketHandler {
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        var req =
-                UpdatePlayerShowNameCardListReqOuterClass.UpdatePlayerShowNameCardListReq.parseFrom(
-                        payload);
 
-        session.getPlayer().setShowNameCardList(req.getShowNameCardIdListList());
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		var req = UpdatePlayerShowNameCardListReqOuterClass.UpdatePlayerShowNameCardListReq.parseFrom(payload);
 
-        session.send(new PacketUpdatePlayerShowNameCardListRsp(req.getShowNameCardIdListList()));
-    }
+		session.getPlayer().setShowNameCardList(req.getShowNameCardIdListList());
+
+		session.send(new PacketUpdatePlayerShowNameCardListRsp(req.getShowNameCardIdListList()));
+	}
 }

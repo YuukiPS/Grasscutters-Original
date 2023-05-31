@@ -8,70 +8,77 @@ import emu.grasscutter.utils.Utils;
 import lombok.Getter;
 
 public class BaseDungeonResult {
-    @Getter DungeonData dungeonData;
-    @Getter DungeonEndStats dungeonStats;
 
-    public BaseDungeonResult(DungeonData dungeonData, DungeonEndStats dungeonStats) {
-        this.dungeonData = dungeonData;
-        this.dungeonStats = dungeonStats;
-    }
+	@Getter
+	DungeonData dungeonData;
 
-    protected void onProto(DungeonSettleNotify.Builder builder) {}
+	@Getter
+	DungeonEndStats dungeonStats;
 
-    public final DungeonSettleNotify.Builder getProto() {
-        var success = dungeonStats.getDungeonResult().isSuccess();
-        var builder =
-                DungeonSettleNotify.newBuilder()
-                        .setDungeonId(dungeonData.getId())
-                        .setIsSuccess(success)
-                        .setCloseTime(getCloseTime())
-                        .setResult(success ? 1 : 0);
+	public BaseDungeonResult(DungeonData dungeonData, DungeonEndStats dungeonStats) {
+		this.dungeonData = dungeonData;
+		this.dungeonStats = dungeonStats;
+	}
 
-        // TODO check
-        if (dungeonData.getSettleShows() != null) {
-            for (int i = 0; i < dungeonData.getSettleShows().size(); i++) {
-                var settle = dungeonData.getSettleShows().get(i);
-                builder.putSettleShow(
-                        i + 1,
-                        switch (settle) {
-                            case SETTLE_SHOW_TIME_COST -> ParamListOuterClass.ParamList.newBuilder()
-                                    .addParamList(settle.getId())
-                                    .addParamList(dungeonStats.getTimeTaken())
-                                    .build();
-                            case SETTLE_SHOW_KILL_MONSTER_COUNT -> ParamListOuterClass.ParamList.newBuilder()
-                                    .addParamList(settle.getId())
-                                    .addParamList(dungeonStats.getKilledMonsters())
-                                    .build();
-                            default -> ParamListOuterClass.ParamList.newBuilder()
-                                    .addParamList(settle.getId())
-                                    .build();
-                        });
-            }
-        }
+	protected void onProto(DungeonSettleNotify.Builder builder) {}
 
-        // TODO handle settle show
+	public final DungeonSettleNotify.Builder getProto() {
+		var success = dungeonStats.getDungeonResult().isSuccess();
+		var builder = DungeonSettleNotify
+			.newBuilder()
+			.setDungeonId(dungeonData.getId())
+			.setIsSuccess(success)
+			.setCloseTime(getCloseTime())
+			.setResult(success ? 1 : 0);
 
-        onProto(builder);
+		// TODO check
+		if (dungeonData.getSettleShows() != null) {
+			for (int i = 0; i < dungeonData.getSettleShows().size(); i++) {
+				var settle = dungeonData.getSettleShows().get(i);
+				builder.putSettleShow(
+					i + 1,
+					switch (settle) {
+						case SETTLE_SHOW_TIME_COST -> ParamListOuterClass.ParamList
+							.newBuilder()
+							.addParamList(settle.getId())
+							.addParamList(dungeonStats.getTimeTaken())
+							.build();
+						case SETTLE_SHOW_KILL_MONSTER_COUNT -> ParamListOuterClass.ParamList
+							.newBuilder()
+							.addParamList(settle.getId())
+							.addParamList(dungeonStats.getKilledMonsters())
+							.build();
+						default -> ParamListOuterClass.ParamList.newBuilder().addParamList(settle.getId()).build();
+					}
+				);
+			}
+		}
 
-        return builder;
-    }
+		// TODO handle settle show
 
-    public int getCloseTime() {
-        return Utils.getCurrentSeconds()
-                + switch (dungeonStats.getDungeonResult()) {
-                    case COMPLETED -> dungeonData.getSettleCountdownTime();
-                    case FAILED -> dungeonData.getFailSettleCountdownTime();
-                    case QUIT -> dungeonData.getQuitSettleCountdownTime();
-                };
-    }
+		onProto(builder);
 
-    public enum DungeonEndReason {
-        COMPLETED,
-        FAILED,
-        QUIT;
+		return builder;
+	}
 
-        public boolean isSuccess() {
-            return this == COMPLETED;
-        }
-    }
+	public int getCloseTime() {
+		return (
+			Utils.getCurrentSeconds() +
+			switch (dungeonStats.getDungeonResult()) {
+				case COMPLETED -> dungeonData.getSettleCountdownTime();
+				case FAILED -> dungeonData.getFailSettleCountdownTime();
+				case QUIT -> dungeonData.getQuitSettleCountdownTime();
+			}
+		);
+	}
+
+	public enum DungeonEndReason {
+		COMPLETED,
+		FAILED,
+		QUIT;
+
+		public boolean isSuccess() {
+			return this == COMPLETED;
+		}
+	}
 }

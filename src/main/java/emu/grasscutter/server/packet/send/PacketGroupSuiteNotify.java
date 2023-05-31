@@ -10,36 +10,34 @@ import java.util.List;
 
 public class PacketGroupSuiteNotify extends BasePacket {
 
-    /** Real control which npc suite is loaded EntityNPC is useless */
-    public PacketGroupSuiteNotify(List<SceneNpcBornEntry> npcBornEntries) {
-        super(PacketOpcodes.GroupSuiteNotify);
+	/** Real control which npc suite is loaded EntityNPC is useless */
+	public PacketGroupSuiteNotify(List<SceneNpcBornEntry> npcBornEntries) {
+		super(PacketOpcodes.GroupSuiteNotify);
+		var proto = GroupSuiteNotifyOuterClass.GroupSuiteNotify.newBuilder();
 
-        var proto = GroupSuiteNotifyOuterClass.GroupSuiteNotify.newBuilder();
+		npcBornEntries
+			.stream()
+			.filter(x -> x.getGroupId() > 0 && x.getSuiteIdList() != null)
+			.forEach(x -> x.getSuiteIdList().forEach(y -> proto.putGroupMap(x.getGroupId(), y)));
 
-        npcBornEntries.stream()
-                .filter(x -> x.getGroupId() > 0 && x.getSuiteIdList() != null)
-                .forEach(x -> x.getSuiteIdList().forEach(y -> proto.putGroupMap(x.getGroupId(), y)));
+		this.setData(proto);
+	}
 
-        this.setData(proto);
-    }
+	public PacketGroupSuiteNotify(int groupId, int suiteId) {
+		super(PacketOpcodes.GroupSuiteNotify);
+		var proto = GroupSuiteNotifyOuterClass.GroupSuiteNotify.newBuilder();
 
-    public PacketGroupSuiteNotify(int groupId, int suiteId) {
-        super(PacketOpcodes.GroupSuiteNotify);
+		proto.putGroupMap(groupId, suiteId);
 
-        var proto = GroupSuiteNotifyOuterClass.GroupSuiteNotify.newBuilder();
+		this.setData(proto);
+	}
 
-        proto.putGroupMap(groupId, suiteId);
+	public PacketGroupSuiteNotify(Collection<QuestGroupSuite> questGroupSuites) {
+		super(PacketOpcodes.GroupSuiteNotify);
+		var proto = GroupSuiteNotifyOuterClass.GroupSuiteNotify.newBuilder();
 
-        this.setData(proto);
-    }
+		questGroupSuites.forEach(i -> proto.putGroupMap(i.getGroup(), i.getSuite()));
 
-    public PacketGroupSuiteNotify(Collection<QuestGroupSuite> questGroupSuites) {
-        super(PacketOpcodes.GroupSuiteNotify);
-
-        var proto = GroupSuiteNotifyOuterClass.GroupSuiteNotify.newBuilder();
-
-        questGroupSuites.forEach(i -> proto.putGroupMap(i.getGroup(), i.getSuite()));
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

@@ -11,114 +11,120 @@ import lombok.SneakyThrows;
 
 @Entity
 public final class GridPosition implements Serializable {
-    private static final long serialVersionUID = -2001232300615923575L;
 
-    @Getter @Setter private int x;
+	private static final long serialVersionUID = -2001232300615923575L;
 
-    @Getter @Setter private int z;
+	@Getter
+	@Setter
+	private int x;
 
-    @Getter @Setter private int width;
+	@Getter
+	@Setter
+	private int z;
 
-    public GridPosition() {}
+	@Getter
+	@Setter
+	private int width;
 
-    public GridPosition(int x, int y, int width) {
-        set(x, y, width);
-    }
+	public GridPosition() {}
 
-    public GridPosition(GridPosition pos) {
-        this.set(pos);
-    }
+	public GridPosition(int x, int y, int width) {
+		set(x, y, width);
+	}
 
-    public GridPosition(Position pos, int width) {
-        this.set((int) (pos.getX() / width), (int) (pos.getZ() / width), width);
-    }
+	public GridPosition(GridPosition pos) {
+		this.set(pos);
+	}
 
-    public GridPosition(List<Integer> xzwidth) {
-        this.width = xzwidth.get(2);
-        this.z = xzwidth.get(1);
-        this.x = xzwidth.get(0);
-    }
+	public GridPosition(Position pos, int width) {
+		this.set((int) (pos.getX() / width), (int) (pos.getZ() / width), width);
+	}
 
-    @SneakyThrows
-    public GridPosition(String str) {
-        var listOfParams = str.replace(" ", "").replace("(", "").replace(")", "").split(",");
-        if (listOfParams.length != 3)
-            throw new IOException("invalid size on GridPosition definition - ");
-        try {
-            this.x = Integer.parseInt(listOfParams[0]);
-            this.z = Integer.parseInt(listOfParams[1]);
-            this.width = Integer.parseInt(listOfParams[2]);
-        } catch (NumberFormatException ignored) {
-            throw new IOException("invalid number on GridPosition definition - ");
-        }
-    }
+	public GridPosition(List<Integer> xzwidth) {
+		this.width = xzwidth.get(2);
+		this.z = xzwidth.get(1);
+		this.x = xzwidth.get(0);
+	}
 
-    public GridPosition set(int x, int z) {
-        this.x = x;
-        this.z = z;
-        return this;
-    }
+	@SneakyThrows
+	public GridPosition(String str) {
+		var listOfParams = str.replace(" ", "").replace("(", "").replace(")", "").split(",");
+		if (listOfParams.length != 3) throw new IOException("invalid size on GridPosition definition - ");
+		try {
+			this.x = Integer.parseInt(listOfParams[0]);
+			this.z = Integer.parseInt(listOfParams[1]);
+			this.width = Integer.parseInt(listOfParams[2]);
+		} catch (NumberFormatException ignored) {
+			throw new IOException("invalid number on GridPosition definition - ");
+		}
+	}
 
-    public GridPosition set(int x, int z, int width) {
-        this.x = x;
-        this.z = z;
-        this.width = width;
-        return this;
-    }
+	public GridPosition set(int x, int z) {
+		this.x = x;
+		this.z = z;
+		return this;
+	}
 
-    // Deep copy
-    public GridPosition set(GridPosition pos) {
-        return this.set(pos.getX(), pos.getZ(), pos.getWidth());
-    }
+	public GridPosition set(int x, int z, int width) {
+		this.x = x;
+		this.z = z;
+		this.width = width;
+		return this;
+	}
 
-    public GridPosition addClone(int x, int z) {
-        GridPosition pos = clone();
-        pos.x += x;
-        pos.z += z;
-        return pos;
-    }
+	// Deep copy
+	public GridPosition set(GridPosition pos) {
+		return this.set(pos.getX(), pos.getZ(), pos.getWidth());
+	}
 
-    @Override
-    public GridPosition clone() {
-        return new GridPosition(x, z, width);
-    }
+	public GridPosition addClone(int x, int z) {
+		GridPosition pos = clone();
+		pos.x += x;
+		pos.z += z;
+		return pos;
+	}
 
-    @Override
-    public String toString() {
-        return "(" + this.getX() + ", " + this.getZ() + ", " + this.getWidth() + ")";
-    }
+	@Override
+	public GridPosition clone() {
+		return new GridPosition(x, z, width);
+	}
 
-    public int[] toIntArray() {
-        return new int[] {x, z, width};
-    }
+	@Override
+	public String toString() {
+		return "(" + this.getX() + ", " + this.getZ() + ", " + this.getWidth() + ")";
+	}
 
-    public double[] toDoubleArray() {
-        return new double[] {x, z};
-    }
+	public int[] toIntArray() {
+		return new int[] { x, z, width };
+	}
 
-    public int[] toXZIntArray() {
-        return new int[] {x, z};
-    }
+	public double[] toDoubleArray() {
+		return new double[] { x, z };
+	}
 
-    public Point toPoint() {
-        return Point.create(x, z);
-    }
+	public int[] toXZIntArray() {
+		return new int[] { x, z };
+	}
 
-    @Override
-    public int hashCode() {
-        int result = x ^ (x >>> 32);
-        result = 31 * result + (z ^ (z >>> 32));
-        result = 31 * result + (width ^ (width >>> 32));
-        return result;
-    }
+	public Point toPoint() {
+		return Point.create(x, z);
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null) return false;
-        if (getClass() != o.getClass()) return false;
-        GridPosition pos = (GridPosition) o;
-        // field comparison
-        return pos.x == x && pos.z == z && pos.width == width;
-    }
+	@Override
+	public int hashCode() {
+		int result = x ^ (x >>> 32);
+		result = 31 * result + (z ^ (z >>> 32));
+		result = 31 * result + (width ^ (width >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null) return false;
+		if (getClass() != o.getClass()) return false;
+		GridPosition pos = (GridPosition) o;
+		// field comparison
+		return pos.x == x && pos.z == z && pos.width == width;
+	}
 }

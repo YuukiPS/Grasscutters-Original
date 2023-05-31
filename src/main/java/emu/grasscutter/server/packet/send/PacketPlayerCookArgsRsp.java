@@ -6,11 +6,10 @@ import emu.grasscutter.net.proto.PlayerCookArgsRspOuterClass.PlayerCookArgsRsp;
 
 public class PacketPlayerCookArgsRsp extends BasePacket {
 
-    public PacketPlayerCookArgsRsp() {
-        super(PacketOpcodes.PlayerCookArgsRsp);
+	public PacketPlayerCookArgsRsp() {
+		super(PacketOpcodes.PlayerCookArgsRsp);
+		PlayerCookArgsRsp proto = PlayerCookArgsRsp.newBuilder().build();
 
-        PlayerCookArgsRsp proto = PlayerCookArgsRsp.newBuilder().build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

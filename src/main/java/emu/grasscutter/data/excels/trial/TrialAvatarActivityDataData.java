@@ -12,20 +12,21 @@ import lombok.experimental.FieldDefaults;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TrialAvatarActivityDataData extends GameResource {
-    @Getter(onMethod_ = @Override)
-    private int id;
 
-    private int trialAvatarIndexId;
-    private int trialAvatarId;
-    private int dungeonId;
-    private String battleAvatarsList;
-    private int firstPassReward;
-    private ActivityWatcherData.WatcherTrigger triggerConfig;
-    private int progress;
+	@Getter(onMethod_ = @Override)
+	private int id;
 
-    @Override
-    public void onLoad() {
-        this.triggerConfig.onLoad();
-        GameData.getTrialAvatarIndexIdTrialActivityDataDataMap().put(trialAvatarIndexId, id);
-    }
+	private int trialAvatarIndexId;
+	private int trialAvatarId;
+	private int dungeonId;
+	private String battleAvatarsList;
+	private int firstPassReward;
+	private ActivityWatcherData.WatcherTrigger triggerConfig;
+	private int progress;
+
+	@Override
+	public void onLoad() {
+		this.triggerConfig.onLoad();
+		GameData.getTrialAvatarIndexIdTrialActivityDataDataMap().put(trialAvatarIndexId, id);
+	}
 }

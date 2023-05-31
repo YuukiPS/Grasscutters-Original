@@ -9,9 +9,10 @@ import emu.grasscutter.server.game.GameSession;
 /** Implement Deforestation Function */
 @Opcodes(PacketOpcodes.HitTreeNotify)
 public class HandlerHitTreeNotify extends PacketHandler {
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        HitTreeNotify hit = HitTreeNotify.parseFrom(payload);
-        session.getPlayer().getDeforestationManager().onDeforestationInvoke(hit);
-    }
+
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		HitTreeNotify hit = HitTreeNotify.parseFrom(payload);
+		session.getPlayer().getDeforestationManager().onDeforestationInvoke(hit);
+	}
 }

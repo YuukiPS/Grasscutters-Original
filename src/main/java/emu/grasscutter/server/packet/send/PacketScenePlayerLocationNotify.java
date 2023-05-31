@@ -8,16 +8,14 @@ import emu.grasscutter.net.proto.ScenePlayerLocationNotifyOuterClass.ScenePlayer
 
 public class PacketScenePlayerLocationNotify extends BasePacket {
 
-    public PacketScenePlayerLocationNotify(Scene scene) {
-        super(PacketOpcodes.ScenePlayerLocationNotify);
+	public PacketScenePlayerLocationNotify(Scene scene) {
+		super(PacketOpcodes.ScenePlayerLocationNotify);
+		ScenePlayerLocationNotify.Builder proto = ScenePlayerLocationNotify.newBuilder().setSceneId(scene.getId());
 
-        ScenePlayerLocationNotify.Builder proto =
-                ScenePlayerLocationNotify.newBuilder().setSceneId(scene.getId());
+		for (Player p : scene.getPlayers()) {
+			proto.addPlayerLocList(p.getPlayerLocationInfo());
+		}
 
-        for (Player p : scene.getPlayers()) {
-            proto.addPlayerLocList(p.getPlayerLocationInfo());
-        }
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

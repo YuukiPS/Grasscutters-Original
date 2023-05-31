@@ -9,9 +9,8 @@ import emu.grasscutter.game.quest.QuestValueContent;
 @QuestValueContent(QUEST_CONTENT_LEAVE_SCENE)
 public class ContentLeaveScene extends BaseContent {
 
-    @Override
-    public boolean execute(
-            GameQuest quest, QuestData.QuestContentCondition condition, String paramStr, int... params) {
-        return quest.getOwner().getScene().getPrevScene() == params[0];
-    }
+	@Override
+	public boolean execute(GameQuest quest, QuestData.QuestContentCondition condition, String paramStr, int... params) {
+		return quest.getOwner().getScene().getPrevScene() == params[0];
+	}
 }

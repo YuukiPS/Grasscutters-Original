@@ -10,16 +10,17 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public abstract class ActivityWatcher {
-    int watcherId;
-    ActivityWatcherData activityWatcherData;
-    ActivityHandler activityHandler;
 
-    protected abstract boolean isMeet(String... param);
+	int watcherId;
+	ActivityWatcherData activityWatcherData;
+	ActivityHandler activityHandler;
 
-    public void trigger(PlayerActivityData playerActivityData, String... param) {
-        if (isMeet(param)) {
-            playerActivityData.addWatcherProgress(watcherId);
-            playerActivityData.save();
-        }
-    }
+	protected abstract boolean isMeet(String... param);
+
+	public void trigger(PlayerActivityData playerActivityData, String... param) {
+		if (isMeet(param)) {
+			playerActivityData.addWatcherProgress(watcherId);
+			playerActivityData.save();
+		}
+	}
 }

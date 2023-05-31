@@ -7,19 +7,18 @@ import java.util.Collection;
 import lombok.val;
 
 public class PacketSceneForceUnlockNotify extends BasePacket {
-    public PacketSceneForceUnlockNotify(Collection<Integer> unlocked, boolean isAdd) {
-        super(PacketOpcodes.SceneForceUnlockNotify);
 
-        val builder = SceneForceUnlockNotify.newBuilder().addAllForceIdList(unlocked).setIsAdd(isAdd);
+	public PacketSceneForceUnlockNotify(Collection<Integer> unlocked, boolean isAdd) {
+		super(PacketOpcodes.SceneForceUnlockNotify);
+		val builder = SceneForceUnlockNotify.newBuilder().addAllForceIdList(unlocked).setIsAdd(isAdd);
 
-        this.setData(builder);
-    }
+		this.setData(builder);
+	}
 
-    public PacketSceneForceUnlockNotify(int unlocked, boolean isAdd) {
-        super(PacketOpcodes.SceneForceUnlockNotify);
+	public PacketSceneForceUnlockNotify(int unlocked, boolean isAdd) {
+		super(PacketOpcodes.SceneForceUnlockNotify);
+		val builder = SceneForceUnlockNotify.newBuilder().addForceIdList(unlocked).setIsAdd(isAdd);
 
-        val builder = SceneForceUnlockNotify.newBuilder().addForceIdList(unlocked).setIsAdd(isAdd);
-
-        this.setData(builder);
-    }
+		this.setData(builder);
+	}
 }

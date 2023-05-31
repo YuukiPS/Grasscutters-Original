@@ -7,20 +7,18 @@ import emu.grasscutter.net.proto.RetcodeOuterClass.Retcode;
 import java.util.List;
 
 public class PacketReliquaryDecomposeRsp extends BasePacket {
-    public PacketReliquaryDecomposeRsp(Retcode retcode) {
-        super(PacketOpcodes.ReliquaryDecomposeRsp);
 
-        ReliquaryDecomposeRsp proto =
-                ReliquaryDecomposeRsp.newBuilder().setRetcode(retcode.getNumber()).build();
+	public PacketReliquaryDecomposeRsp(Retcode retcode) {
+		super(PacketOpcodes.ReliquaryDecomposeRsp);
+		ReliquaryDecomposeRsp proto = ReliquaryDecomposeRsp.newBuilder().setRetcode(retcode.getNumber()).build();
 
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 
-    public PacketReliquaryDecomposeRsp(List<Long> output) {
-        super(PacketOpcodes.ReliquaryDecomposeRsp);
+	public PacketReliquaryDecomposeRsp(List<Long> output) {
+		super(PacketOpcodes.ReliquaryDecomposeRsp);
+		ReliquaryDecomposeRsp proto = ReliquaryDecomposeRsp.newBuilder().addAllGuidList(output).build();
 
-        ReliquaryDecomposeRsp proto = ReliquaryDecomposeRsp.newBuilder().addAllGuidList(output).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

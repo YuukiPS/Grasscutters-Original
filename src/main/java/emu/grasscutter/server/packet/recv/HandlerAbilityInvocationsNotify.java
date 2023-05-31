@@ -11,14 +11,14 @@ import emu.grasscutter.server.game.GameSession;
 @Opcodes(PacketOpcodes.AbilityInvocationsNotify)
 public class HandlerAbilityInvocationsNotify extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        AbilityInvocationsNotify notif = AbilityInvocationsNotify.parseFrom(payload);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		AbilityInvocationsNotify notif = AbilityInvocationsNotify.parseFrom(payload);
 
-        Player player = session.getPlayer();
-        for (AbilityInvokeEntry entry : notif.getInvokesList()) {
-            player.getAbilityManager().onAbilityInvoke(entry);
-            player.getAbilityInvokeHandler().addEntry(entry.getForwardType(), entry);
-        }
-    }
+		Player player = session.getPlayer();
+		for (AbilityInvokeEntry entry : notif.getInvokesList()) {
+			player.getAbilityManager().onAbilityInvoke(entry);
+			player.getAbilityInvokeHandler().addEntry(entry.getForwardType(), entry);
+		}
+	}
 }

@@ -13,45 +13,58 @@ import java.util.Map;
 import lombok.Getter;
 
 public class Ability {
-    @Getter private AbilityData data;
-    @Getter private GameEntity owner;
-    @Getter private Player playerOwner;
 
-    @Getter private AbilityManager manager;
+	@Getter
+	private AbilityData data;
 
-    @Getter private Map<String, AbilityModifierController> modifiers = new HashMap<>();
-    @Getter private Object2FloatMap<String> abilitySpecials = new Object2FloatOpenHashMap<>();
+	@Getter
+	private GameEntity owner;
 
-    @Getter
-    private static Map<String, Object2FloatMap<String>> abilitySpecialsModified = new HashMap<>();
+	@Getter
+	private Player playerOwner;
 
-    @Getter private int hash;
+	@Getter
+	private AbilityManager manager;
 
-    public Ability(AbilityData data, GameEntity owner, Player playerOwner) {
-        this.data = data;
-        this.owner = owner;
-        this.manager = owner.getWorld().getHost().getAbilityManager();
+	@Getter
+	private Map<String, AbilityModifierController> modifiers = new HashMap<>();
 
-        if (this.data.abilitySpecials != null) {
-            for (var entry : this.data.abilitySpecials.entrySet())
-                abilitySpecials.put(entry.getKey(), entry.getValue().floatValue());
-        }
+	@Getter
+	private Object2FloatMap<String> abilitySpecials = new Object2FloatOpenHashMap<>();
 
-        // if(abilitySpecialsModified.containsKey(this.data.abilityName)) {//Modify talent data
-        //    abilitySpecials.putAll(abilitySpecialsModified.get(this.data.abilityName));
-        // }
+	@Getter
+	private static Map<String, Object2FloatMap<String>> abilitySpecialsModified = new HashMap<>();
 
-        this.playerOwner = playerOwner;
+	@Getter
+	private int hash;
 
-        hash = Utils.abilityHash(data.abilityName);
+	public Ability(AbilityData data, GameEntity owner, Player playerOwner) {
+		this.data = data;
+		this.owner = owner;
+		this.manager = owner.getWorld().getHost().getAbilityManager();
 
-        data.initialize();
-    }
+		if (this.data.abilitySpecials != null) {
+			for (var entry : this.data.abilitySpecials.entrySet()) abilitySpecials.put(
+				entry.getKey(),
+				entry.getValue().floatValue()
+			);
+		}
 
-    public static String getAbilityName(AbilityString abString) {
-        if (abString.hasStr()) return abString.getStr();
-        if (abString.hasHash()) return GameData.getAbilityHashes().get(abString.getHash());
+		// if(abilitySpecialsModified.containsKey(this.data.abilityName)) {//Modify talent data
+		//    abilitySpecials.putAll(abilitySpecialsModified.get(this.data.abilityName));
+		// }
 
-        return null;
-    }
+		this.playerOwner = playerOwner;
+
+		hash = Utils.abilityHash(data.abilityName);
+
+		data.initialize();
+	}
+
+	public static String getAbilityName(AbilityString abString) {
+		if (abString.hasStr()) return abString.getStr();
+		if (abString.hasHash()) return GameData.getAbilityHashes().get(abString.getHash());
+
+		return null;
+	}
 }

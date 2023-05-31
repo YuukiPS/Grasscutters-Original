@@ -16,75 +16,84 @@ import lombok.val;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder(builderMethodName = "of")
 public class TrialAvatarPlayerData {
-    List<RewardInfoItem> rewardInfoList;
 
-    private static BaseTrialActivityData getActivityData(int scheduleId) {
-        // prefer custom data over official data
-        return GameData.getTrialAvatarActivityCustomData().isEmpty()
-                ? GameData.getTrialAvatarActivityDataMap().get(scheduleId)
-                : GameData.getTrialAvatarActivityCustomData().get(scheduleId);
-    }
+	List<RewardInfoItem> rewardInfoList;
 
-    public static List<Integer> getAvatarIdList(int scheduleId) {
-        val activityData = getActivityData(scheduleId);
-        return activityData != null ? activityData.getAvatarIndexIdList() : List.of();
-    }
+	private static BaseTrialActivityData getActivityData(int scheduleId) {
+		// prefer custom data over official data
+		return GameData.getTrialAvatarActivityCustomData().isEmpty()
+			? GameData.getTrialAvatarActivityDataMap().get(scheduleId)
+			: GameData.getTrialAvatarActivityCustomData().get(scheduleId);
+	}
 
-    public static List<Integer> getRewardIdList(int scheduleId) {
-        val activityData = getActivityData(scheduleId);
-        return activityData != null ? activityData.getRewardIdList() : List.of();
-    }
+	public static List<Integer> getAvatarIdList(int scheduleId) {
+		val activityData = getActivityData(scheduleId);
+		return activityData != null ? activityData.getAvatarIndexIdList() : List.of();
+	}
 
-    public static TrialAvatarPlayerData create(int scheduleId) {
-        List<Integer> avatarIds = getAvatarIdList(scheduleId);
-        List<Integer> rewardIds = getRewardIdList(scheduleId);
-        return TrialAvatarPlayerData.of()
-                .rewardInfoList(
-                        IntStream.range(0, avatarIds.size())
-                                .filter(i -> avatarIds.get(i) > 0 && rewardIds.get(i) > 0)
-                                .mapToObj(i -> RewardInfoItem.create(avatarIds.get(i), rewardIds.get(i)))
-                                .collect(Collectors.toList()))
-                .build();
-    }
+	public static List<Integer> getRewardIdList(int scheduleId) {
+		val activityData = getActivityData(scheduleId);
+		return activityData != null ? activityData.getRewardIdList() : List.of();
+	}
 
-    public TrialAvatarActivityDetailInfo toProto() {
-        return TrialAvatarActivityDetailInfo.newBuilder()
-                .addAllRewardInfoList(getRewardInfoList().stream().map(RewardInfoItem::toProto).toList())
-                .build();
-    }
+	public static TrialAvatarPlayerData create(int scheduleId) {
+		List<Integer> avatarIds = getAvatarIdList(scheduleId);
+		List<Integer> rewardIds = getRewardIdList(scheduleId);
+		return TrialAvatarPlayerData
+			.of()
+			.rewardInfoList(
+				IntStream
+					.range(0, avatarIds.size())
+					.filter(i -> avatarIds.get(i) > 0 && rewardIds.get(i) > 0)
+					.mapToObj(i -> RewardInfoItem.create(avatarIds.get(i), rewardIds.get(i)))
+					.collect(Collectors.toList())
+			)
+			.build();
+	}
 
-    public RewardInfoItem getRewardInfo(int trialAvatarIndexId) {
-        return getRewardInfoList().stream()
-                .filter(x -> x.getTrialAvatarIndexId() == trialAvatarIndexId)
-                .findFirst()
-                .orElse(null);
-    }
+	public TrialAvatarActivityDetailInfo toProto() {
+		return TrialAvatarActivityDetailInfo
+			.newBuilder()
+			.addAllRewardInfoList(getRewardInfoList().stream().map(RewardInfoItem::toProto).toList())
+			.build();
+	}
 
-    @Data
-    @FieldDefaults(level = AccessLevel.PRIVATE)
-    @Builder(builderMethodName = "of")
-    public static class RewardInfoItem {
-        int trialAvatarIndexId;
-        int rewardId;
-        boolean passedDungeon;
-        boolean receivedReward;
+	public RewardInfoItem getRewardInfo(int trialAvatarIndexId) {
+		return getRewardInfoList()
+			.stream()
+			.filter(x -> x.getTrialAvatarIndexId() == trialAvatarIndexId)
+			.findFirst()
+			.orElse(null);
+	}
 
-        public static RewardInfoItem create(int trialAvatarIndexId, int rewardId) {
-            return RewardInfoItem.of()
-                    .trialAvatarIndexId(trialAvatarIndexId)
-                    .rewardId(rewardId)
-                    .passedDungeon(false)
-                    .receivedReward(false)
-                    .build();
-        }
+	@Data
+	@FieldDefaults(level = AccessLevel.PRIVATE)
+	@Builder(builderMethodName = "of")
+	public static class RewardInfoItem {
 
-        public TrialAvatarActivityRewardDetailInfo toProto() {
-            return TrialAvatarActivityRewardDetailInfo.newBuilder()
-                    .setTrialAvatarIndexId(getTrialAvatarIndexId())
-                    .setRewardId(getRewardId())
-                    .setPassedDungeon(isPassedDungeon())
-                    .setReceivedReward(isReceivedReward())
-                    .build();
-        }
-    }
+		int trialAvatarIndexId;
+		int rewardId;
+		boolean passedDungeon;
+		boolean receivedReward;
+
+		public static RewardInfoItem create(int trialAvatarIndexId, int rewardId) {
+			return RewardInfoItem
+				.of()
+				.trialAvatarIndexId(trialAvatarIndexId)
+				.rewardId(rewardId)
+				.passedDungeon(false)
+				.receivedReward(false)
+				.build();
+		}
+
+		public TrialAvatarActivityRewardDetailInfo toProto() {
+			return TrialAvatarActivityRewardDetailInfo
+				.newBuilder()
+				.setTrialAvatarIndexId(getTrialAvatarIndexId())
+				.setRewardId(getRewardId())
+				.setPassedDungeon(isPassedDungeon())
+				.setReceivedReward(isReceivedReward())
+				.build();
+		}
+	}
 }

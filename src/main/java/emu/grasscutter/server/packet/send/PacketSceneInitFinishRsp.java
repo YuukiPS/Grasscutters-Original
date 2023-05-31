@@ -7,12 +7,10 @@ import emu.grasscutter.net.proto.SceneInitFinishRspOuterClass.SceneInitFinishRsp
 
 public class PacketSceneInitFinishRsp extends BasePacket {
 
-    public PacketSceneInitFinishRsp(Player player) {
-        super(PacketOpcodes.SceneInitFinishRsp, 11);
+	public PacketSceneInitFinishRsp(Player player) {
+		super(PacketOpcodes.SceneInitFinishRsp, 11);
+		SceneInitFinishRsp p = SceneInitFinishRsp.newBuilder().setEnterSceneToken(player.getEnterSceneToken()).build();
 
-        SceneInitFinishRsp p =
-                SceneInitFinishRsp.newBuilder().setEnterSceneToken(player.getEnterSceneToken()).build();
-
-        this.setData(p.toByteArray());
-    }
+		this.setData(p.toByteArray());
+	}
 }

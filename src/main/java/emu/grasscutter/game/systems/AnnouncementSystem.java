@@ -18,90 +18,91 @@ import lombok.experimental.FieldDefaults;
 
 @Getter
 public class AnnouncementSystem extends BaseGameSystem {
-    private final Map<Integer, AnnounceConfigItem> announceConfigItemMap;
 
-    public AnnouncementSystem(GameServer server) {
-        super(server);
-        this.announceConfigItemMap = new HashMap<>();
-        loadConfig();
-    }
+	private final Map<Integer, AnnounceConfigItem> announceConfigItemMap;
 
-    private int loadConfig() {
-        try {
-            List<AnnounceConfigItem> announceConfigItems =
-                    DataLoader.loadList("Announcement.json", AnnounceConfigItem.class);
+	public AnnouncementSystem(GameServer server) {
+		super(server);
+		this.announceConfigItemMap = new HashMap<>();
+		loadConfig();
+	}
 
-            announceConfigItemMap.clear();
-            announceConfigItems.forEach(i -> announceConfigItemMap.put(i.getTemplateId(), i));
-        } catch (Exception e) {
-            Grasscutter.getLogger().error("Unable to load server announce config.", e);
-        }
+	private int loadConfig() {
+		try {
+			List<AnnounceConfigItem> announceConfigItems = DataLoader.loadList(
+				"Announcement.json",
+				AnnounceConfigItem.class
+			);
 
-        return announceConfigItemMap.size();
-    }
+			announceConfigItemMap.clear();
+			announceConfigItems.forEach(i -> announceConfigItemMap.put(i.getTemplateId(), i));
+		} catch (Exception e) {
+			Grasscutter.getLogger().error("Unable to load server announce config.", e);
+		}
 
-    public List<Player> getOnlinePlayers() {
-        return getServer().getWorlds().stream()
-                .map(World::getPlayers)
-                .flatMap(Collection::stream)
-                .toList();
-    }
+		return announceConfigItemMap.size();
+	}
 
-    public void broadcast(List<AnnounceConfigItem> tpl) {
-        if (tpl == null || tpl.size() == 0) {
-            return;
-        }
+	public List<Player> getOnlinePlayers() {
+		return getServer().getWorlds().stream().map(World::getPlayers).flatMap(Collection::stream).toList();
+	}
 
-        var list =
-                tpl.stream()
-                        .map(AnnounceConfigItem::toProto)
-                        .map(AnnounceDataOuterClass.AnnounceData.Builder::build)
-                        .toList();
+	public void broadcast(List<AnnounceConfigItem> tpl) {
+		if (tpl == null || tpl.size() == 0) {
+			return;
+		}
 
-        getOnlinePlayers().forEach(i -> i.sendPacket(new PacketServerAnnounceNotify(list)));
-    }
+		var list = tpl
+			.stream()
+			.map(AnnounceConfigItem::toProto)
+			.map(AnnounceDataOuterClass.AnnounceData.Builder::build)
+			.toList();
 
-    public int refresh() {
-        return loadConfig();
-    }
+		getOnlinePlayers().forEach(i -> i.sendPacket(new PacketServerAnnounceNotify(list)));
+	}
 
-    public void revoke(int tplId) {
-        getOnlinePlayers().forEach(i -> i.sendPacket(new PacketServerAnnounceRevokeNotify(tplId)));
-    }
+	public int refresh() {
+		return loadConfig();
+	}
 
-    public enum AnnounceType {
-        CENTER,
-        COUNTDOWN
-    }
+	public void revoke(int tplId) {
+		getOnlinePlayers().forEach(i -> i.sendPacket(new PacketServerAnnounceRevokeNotify(tplId)));
+	}
 
-    @Data
-    @FieldDefaults(level = AccessLevel.PRIVATE)
-    public class AnnounceConfigItem {
-        int templateId;
-        AnnounceType type;
-        int frequency;
-        String content;
-        Date beginTime;
-        Date endTime;
-        boolean tick;
-        int interval;
+	public enum AnnounceType {
+		CENTER,
+		COUNTDOWN
+	}
 
-        public AnnounceDataOuterClass.AnnounceData.Builder toProto() {
-            var proto = AnnounceDataOuterClass.AnnounceData.newBuilder();
+	@Data
+	@FieldDefaults(level = AccessLevel.PRIVATE)
+	public class AnnounceConfigItem {
 
-            proto
-                    .setConfigId(templateId)
-                    // I found the time here is useless
-                    .setBeginTime(Utils.getCurrentSeconds() + 1)
-                    .setEndTime(Utils.getCurrentSeconds() + 10);
+		int templateId;
+		AnnounceType type;
+		int frequency;
+		String content;
+		Date beginTime;
+		Date endTime;
+		boolean tick;
+		int interval;
 
-            if (type == AnnounceType.CENTER) {
-                proto.setCenterSystemText(content).setCenterSystemFrequency(frequency);
-            } else {
-                proto.setCountDownText(content).setCountDownFrequency(frequency);
-            }
+		public AnnounceDataOuterClass.AnnounceData.Builder toProto() {
+			var proto = AnnounceDataOuterClass.AnnounceData.newBuilder();
 
-            return proto;
-        }
-    }
+			proto
+				.setConfigId(templateId)
+				// I found the time here is useless
+				.setBeginTime(Utils.getCurrentSeconds() + 1)
+				.setEndTime(Utils.getCurrentSeconds() + 10);
+
+			if (type == AnnounceType.CENTER) {
+				proto.setCenterSystemText(content).setCenterSystemFrequency(frequency);
+			} else {
+				proto.setCountDownText(content).setCountDownFrequency(frequency);
+			}
+
+			return proto;
+		}
+	}
 }

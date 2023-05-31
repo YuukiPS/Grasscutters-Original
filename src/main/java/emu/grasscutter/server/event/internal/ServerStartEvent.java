@@ -4,15 +4,15 @@ import emu.grasscutter.server.event.types.ServerEvent;
 import java.time.OffsetDateTime;
 
 public final class ServerStartEvent extends ServerEvent {
-    private final OffsetDateTime startTime;
 
-    public ServerStartEvent(Type type, OffsetDateTime startTime) {
-        super(type);
+	private final OffsetDateTime startTime;
 
-        this.startTime = startTime;
-    }
+	public ServerStartEvent(Type type, OffsetDateTime startTime) {
+		super(type);
+		this.startTime = startTime;
+	}
 
-    public OffsetDateTime getStartTime() {
-        return this.startTime;
-    }
+	public OffsetDateTime getStartTime() {
+		return this.startTime;
+	}
 }

@@ -16,71 +16,78 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder(builderMethodName = "of")
 public class MusicGamePlayerData {
-    Map<Integer, MusicGameRecord> musicGameRecord;
-    Map<Long, CustomBeatmapRecord> personalCustomBeatmapRecord;
-    Map<Long, CustomBeatmapRecord> othersCustomBeatmapRecord;
 
-    public static MusicGamePlayerData create() {
-        return MusicGamePlayerData.of()
-                .musicGameRecord(
-                        GameData.getMusicGameBasicDataMap().values().stream()
-                                .collect(
-                                        Collectors.toMap(
-                                                MusicGameBasicData::getId, MusicGamePlayerData.MusicGameRecord::create)))
-                .personalCustomBeatmapRecord(new HashMap<>())
-                .othersCustomBeatmapRecord(new HashMap<>())
-                .build();
-    }
+	Map<Integer, MusicGameRecord> musicGameRecord;
+	Map<Long, CustomBeatmapRecord> personalCustomBeatmapRecord;
+	Map<Long, CustomBeatmapRecord> othersCustomBeatmapRecord;
 
-    @Data
-    @FieldDefaults(level = AccessLevel.PRIVATE)
-    @Builder(builderMethodName = "of")
-    public static class MusicGameRecord {
-        int musicId;
-        int maxCombo;
-        int maxScore;
+	public static MusicGamePlayerData create() {
+		return MusicGamePlayerData
+			.of()
+			.musicGameRecord(
+				GameData
+					.getMusicGameBasicDataMap()
+					.values()
+					.stream()
+					.collect(Collectors.toMap(MusicGameBasicData::getId, MusicGamePlayerData.MusicGameRecord::create))
+			)
+			.personalCustomBeatmapRecord(new HashMap<>())
+			.othersCustomBeatmapRecord(new HashMap<>())
+			.build();
+	}
 
-        public static MusicGameRecord create(MusicGameBasicData musicGameBasicData) {
-            return MusicGameRecord.of().musicId(musicGameBasicData.getId()).build();
-        }
+	@Data
+	@FieldDefaults(level = AccessLevel.PRIVATE)
+	@Builder(builderMethodName = "of")
+	public static class MusicGameRecord {
 
-        public MusicGameRecordOuterClass.MusicGameRecord toProto() {
-            return MusicGameRecordOuterClass.MusicGameRecord.newBuilder()
-                    .setIsUnlock(true)
-                    .setMaxCombo(maxCombo)
-                    .setMaxScore(maxScore)
-                    .build();
-        }
-    }
+		int musicId;
+		int maxCombo;
+		int maxScore;
 
-    @Data
-    @FieldDefaults(level = AccessLevel.PRIVATE)
-    @Builder(builderMethodName = "of")
-    public static class CustomBeatmapRecord {
-        long musicShareId;
-        int score;
-        boolean settle;
+		public static MusicGameRecord create(MusicGameBasicData musicGameBasicData) {
+			return MusicGameRecord.of().musicId(musicGameBasicData.getId()).build();
+		}
 
-        public UgcMusicBriefInfoOuterClass.UgcMusicBriefInfo.Builder toPersonalBriefProto() {
-            var musicGameBeatmap = MusicGameBeatmap.getByShareId(musicShareId);
+		public MusicGameRecordOuterClass.MusicGameRecord toProto() {
+			return MusicGameRecordOuterClass.MusicGameRecord
+				.newBuilder()
+				.setIsUnlock(true)
+				.setMaxCombo(maxCombo)
+				.setMaxScore(maxScore)
+				.build();
+		}
+	}
 
-            return UgcMusicBriefInfoOuterClass.UgcMusicBriefInfo.newBuilder()
-                    //                .setCanShare(true)
-                    //                .setCreateTime(musicGameBeatmap.getCreateTime())
-                    .setMusicId(musicGameBeatmap.getMusicId())
-                    .setMaxScore(musicGameBeatmap.getMaxScore())
-                    //                .setPosition(musicGameBeatmap.getSavePosition())
-                    //                .setMusicNoteCount(musicGameBeatmap.getMusicNoteCount())
-                    .setUgcGuid(musicShareId);
-        }
+	@Data
+	@FieldDefaults(level = AccessLevel.PRIVATE)
+	@Builder(builderMethodName = "of")
+	public static class CustomBeatmapRecord {
 
-        public UgcMusicBriefInfoOuterClass.UgcMusicBriefInfo.Builder toOthersBriefProto() {
-            var musicGameBeatmap = MusicGameBeatmap.getByShareId(musicShareId);
+		long musicShareId;
+		int score;
+		boolean settle;
 
-            return musicGameBeatmap.toBriefProto()
-            //                .setScore(score)
-            //                .setSettle(settle)
-            ;
-        }
-    }
+		public UgcMusicBriefInfoOuterClass.UgcMusicBriefInfo.Builder toPersonalBriefProto() {
+			var musicGameBeatmap = MusicGameBeatmap.getByShareId(musicShareId);
+
+			return UgcMusicBriefInfoOuterClass.UgcMusicBriefInfo
+				.newBuilder()
+				//                .setCanShare(true)
+				//                .setCreateTime(musicGameBeatmap.getCreateTime())
+				.setMusicId(musicGameBeatmap.getMusicId())
+				.setMaxScore(musicGameBeatmap.getMaxScore())
+				//                .setPosition(musicGameBeatmap.getSavePosition())
+				//                .setMusicNoteCount(musicGameBeatmap.getMusicNoteCount())
+				.setUgcGuid(musicShareId);
+		}
+
+		public UgcMusicBriefInfoOuterClass.UgcMusicBriefInfo.Builder toOthersBriefProto() {
+			var musicGameBeatmap = MusicGameBeatmap.getByShareId(musicShareId);
+
+			return musicGameBeatmap.toBriefProto()//                .setScore(score)
+			//                .setSettle(settle)
+			;
+		}
+	}
 }

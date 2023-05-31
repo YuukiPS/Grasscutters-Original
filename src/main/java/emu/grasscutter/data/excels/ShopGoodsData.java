@@ -9,104 +9,102 @@ import java.util.List;
 
 @ResourceType(name = "ShopGoodsExcelConfigData.json")
 public class ShopGoodsData extends GameResource {
-    private int goodsId;
-    private int shopType;
-    private int itemId;
 
-    private int itemCount;
+	private int goodsId;
+	private int shopType;
+	private int itemId;
 
-    private int costScoin;
-    private int costHcoin;
-    private int costMcoin;
+	private int itemCount;
 
-    private List<ItemParamData> costItems;
-    private int minPlayerLevel;
-    private int maxPlayerLevel;
+	private int costScoin;
+	private int costHcoin;
+	private int costMcoin;
 
-    private int buyLimit;
+	private List<ItemParamData> costItems;
+	private int minPlayerLevel;
+	private int maxPlayerLevel;
 
-    @SerializedName(
-            value = "subTabId",
-            alternate = {"secondarySheetId"})
-    private int subTabId;
+	private int buyLimit;
 
-    private String refreshType;
-    private transient ShopInfo.ShopRefreshType refreshTypeEnum;
+	@SerializedName(value = "subTabId", alternate = { "secondarySheetId" })
+	private int subTabId;
 
-    private int refreshParam;
+	private String refreshType;
+	private transient ShopInfo.ShopRefreshType refreshTypeEnum;
 
-    @Override
-    public void onLoad() {
-        if (this.refreshType == null) this.refreshTypeEnum = ShopInfo.ShopRefreshType.NONE;
-        else {
-            this.refreshTypeEnum =
-                    switch (this.refreshType) {
-                        case "SHOP_REFRESH_DAILY" -> ShopInfo.ShopRefreshType.SHOP_REFRESH_DAILY;
-                        case "SHOP_REFRESH_WEEKLY" -> ShopInfo.ShopRefreshType.SHOP_REFRESH_WEEKLY;
-                        case "SHOP_REFRESH_MONTHLY" -> ShopInfo.ShopRefreshType.SHOP_REFRESH_MONTHLY;
-                        default -> ShopInfo.ShopRefreshType.NONE;
-                    };
-        }
-    }
+	private int refreshParam;
 
-    @Override
-    public int getId() {
-        return getGoodsId();
-    }
+	@Override
+	public void onLoad() {
+		if (this.refreshType == null) this.refreshTypeEnum = ShopInfo.ShopRefreshType.NONE; else {
+			this.refreshTypeEnum =
+				switch (this.refreshType) {
+					case "SHOP_REFRESH_DAILY" -> ShopInfo.ShopRefreshType.SHOP_REFRESH_DAILY;
+					case "SHOP_REFRESH_WEEKLY" -> ShopInfo.ShopRefreshType.SHOP_REFRESH_WEEKLY;
+					case "SHOP_REFRESH_MONTHLY" -> ShopInfo.ShopRefreshType.SHOP_REFRESH_MONTHLY;
+					default -> ShopInfo.ShopRefreshType.NONE;
+				};
+		}
+	}
 
-    public int getGoodsId() {
-        return goodsId;
-    }
+	@Override
+	public int getId() {
+		return getGoodsId();
+	}
 
-    public int getShopType() {
-        return shopType;
-    }
+	public int getGoodsId() {
+		return goodsId;
+	}
 
-    public int getItemId() {
-        return itemId;
-    }
+	public int getShopType() {
+		return shopType;
+	}
 
-    public int getItemCount() {
-        return itemCount;
-    }
+	public int getItemId() {
+		return itemId;
+	}
 
-    public int getCostScoin() {
-        return costScoin;
-    }
+	public int getItemCount() {
+		return itemCount;
+	}
 
-    public int getCostHcoin() {
-        return costHcoin;
-    }
+	public int getCostScoin() {
+		return costScoin;
+	}
 
-    public int getCostMcoin() {
-        return costMcoin;
-    }
+	public int getCostHcoin() {
+		return costHcoin;
+	}
 
-    public List<ItemParamData> getCostItems() {
-        return costItems;
-    }
+	public int getCostMcoin() {
+		return costMcoin;
+	}
 
-    public int getMinPlayerLevel() {
-        return minPlayerLevel;
-    }
+	public List<ItemParamData> getCostItems() {
+		return costItems;
+	}
 
-    public int getMaxPlayerLevel() {
-        return maxPlayerLevel;
-    }
+	public int getMinPlayerLevel() {
+		return minPlayerLevel;
+	}
 
-    public int getBuyLimit() {
-        return buyLimit;
-    }
+	public int getMaxPlayerLevel() {
+		return maxPlayerLevel;
+	}
 
-    public int getSubTabId() {
-        return subTabId;
-    }
+	public int getBuyLimit() {
+		return buyLimit;
+	}
 
-    public ShopInfo.ShopRefreshType getRefreshType() {
-        return refreshTypeEnum;
-    }
+	public int getSubTabId() {
+		return subTabId;
+	}
 
-    public int getRefreshParam() {
-        return refreshParam;
-    }
+	public ShopInfo.ShopRefreshType getRefreshType() {
+		return refreshTypeEnum;
+	}
+
+	public int getRefreshParam() {
+		return refreshParam;
+	}
 }

@@ -8,8 +8,8 @@ import emu.grasscutter.game.dungeons.handlers.DungeonBaseHandler;
 @DungeonValue(DungeonPassConditionType.DUNGEON_COND_IN_TIME)
 public class ConditionInTime extends DungeonBaseHandler {
 
-    @Override
-    public boolean execute(DungeonPassConfigData.DungeonPassCondition condition, int... params) {
-        return params[0] <= condition.getParam()[0];
-    }
+	@Override
+	public boolean execute(DungeonPassConfigData.DungeonPassCondition condition, int... params) {
+		return params[0] <= condition.getParam()[0];
+	}
 }

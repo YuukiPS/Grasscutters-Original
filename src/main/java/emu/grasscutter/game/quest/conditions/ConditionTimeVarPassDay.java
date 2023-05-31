@@ -8,28 +8,30 @@ import lombok.val;
 
 @QuestValueCond(QuestCond.QUEST_COND_TIME_VAR_PASS_DAY)
 public class ConditionTimeVarPassDay extends BaseCondition {
-    @Override
-    public boolean execute(
-            Player owner,
-            QuestData questData,
-            QuestData.QuestAcceptCondition condition,
-            String paramStr,
-            int... params) {
-        val mainQuestId = condition.getParam()[0];
-        val timeVarIndex = condition.getParam()[1];
-        val minDays = condition.getParam()[2];
 
-        val mainQuest = owner.getQuestManager().getMainQuestById(mainQuestId);
+	@Override
+	public boolean execute(
+		Player owner,
+		QuestData questData,
+		QuestData.QuestAcceptCondition condition,
+		String paramStr,
+		int... params
+	) {
+		val mainQuestId = condition.getParam()[0];
+		val timeVarIndex = condition.getParam()[1];
+		val minDays = condition.getParam()[2];
 
-        if (mainQuest == null) {
-            return false;
-        }
+		val mainQuest = owner.getQuestManager().getMainQuestById(mainQuestId);
 
-        val daysSinceTimeVar = mainQuest.getDaysSinceTimeVar(timeVarIndex);
-        if (daysSinceTimeVar == -1) {
-            return false;
-        }
+		if (mainQuest == null) {
+			return false;
+		}
 
-        return daysSinceTimeVar >= minDays;
-    }
+		val daysSinceTimeVar = mainQuest.getDaysSinceTimeVar(timeVarIndex);
+		if (daysSinceTimeVar == -1) {
+			return false;
+		}
+
+		return daysSinceTimeVar >= minDays;
+	}
 }

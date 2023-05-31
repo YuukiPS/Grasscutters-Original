@@ -6,11 +6,10 @@ import emu.grasscutter.net.proto.ExecuteGadgetLuaRspOuterClass.ExecuteGadgetLuaR
 
 public class PacketExecuteGadgetLuaRsp extends BasePacket {
 
-    public PacketExecuteGadgetLuaRsp(int result) {
-        super(PacketOpcodes.ExecuteGadgetLuaRsp, true);
+	public PacketExecuteGadgetLuaRsp(int result) {
+		super(PacketOpcodes.ExecuteGadgetLuaRsp, true);
+		ExecuteGadgetLuaRsp proto = ExecuteGadgetLuaRsp.newBuilder().setRetcode(result).build();
 
-        ExecuteGadgetLuaRsp proto = ExecuteGadgetLuaRsp.newBuilder().setRetcode(result).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

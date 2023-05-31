@@ -6,18 +6,16 @@ import emu.grasscutter.net.proto.AvatarChangeElementTypeRspOuterClass.AvatarChan
 
 public class PacketAvatarChangeElementTypeRsp extends BasePacket {
 
-    public PacketAvatarChangeElementTypeRsp() {
-        super(PacketOpcodes.AvatarChangeElementTypeRsp);
-    }
+	public PacketAvatarChangeElementTypeRsp() {
+		super(PacketOpcodes.AvatarChangeElementTypeRsp);
+	}
 
-    public PacketAvatarChangeElementTypeRsp(int retcode) {
-        super(PacketOpcodes.AvatarChangeElementTypeRsp);
+	public PacketAvatarChangeElementTypeRsp(int retcode) {
+		super(PacketOpcodes.AvatarChangeElementTypeRsp);
+		if (retcode > 0) {
+			AvatarChangeElementTypeRsp proto = AvatarChangeElementTypeRsp.newBuilder().setRetcode(retcode).build();
 
-        if (retcode > 0) {
-            AvatarChangeElementTypeRsp proto =
-                    AvatarChangeElementTypeRsp.newBuilder().setRetcode(retcode).build();
-
-            this.setData(proto);
-        }
-    }
+			this.setData(proto);
+		}
+	}
 }

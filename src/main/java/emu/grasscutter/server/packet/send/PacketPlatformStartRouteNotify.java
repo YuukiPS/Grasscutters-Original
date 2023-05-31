@@ -7,15 +7,15 @@ import emu.grasscutter.net.proto.PlatformStartRouteNotifyOuterClass.PlatformStar
 import lombok.val;
 
 public class PacketPlatformStartRouteNotify extends BasePacket {
-    public PacketPlatformStartRouteNotify(EntityGadget gadgetEntity) {
-        super(PacketOpcodes.PlatformStartRouteNotify);
 
-        val notify =
-                PlatformStartRouteNotify.newBuilder()
-                        .setEntityId(gadgetEntity.getId())
-                        .setSceneTime(gadgetEntity.getScene().getSceneTime())
-                        .setPlatform(gadgetEntity.getPlatformInfo());
+	public PacketPlatformStartRouteNotify(EntityGadget gadgetEntity) {
+		super(PacketOpcodes.PlatformStartRouteNotify);
+		val notify = PlatformStartRouteNotify
+			.newBuilder()
+			.setEntityId(gadgetEntity.getId())
+			.setSceneTime(gadgetEntity.getScene().getSceneTime())
+			.setPlatform(gadgetEntity.getPlatformInfo());
 
-        this.setData(notify);
-    }
+		this.setData(notify);
+	}
 }

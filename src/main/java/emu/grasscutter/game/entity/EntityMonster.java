@@ -1,5 +1,7 @@
 package emu.grasscutter.game.entity;
 
+import static emu.grasscutter.scripts.constants.EventType.EVENT_SPECIFIC_MONSTER_HP_CHANGE;
+
 import emu.grasscutter.data.GameData;
 import emu.grasscutter.data.binout.AbilityData;
 import emu.grasscutter.data.binout.config.ConfigEntityMonster;
@@ -33,335 +35,398 @@ import emu.grasscutter.scripts.data.ScriptArgs;
 import emu.grasscutter.server.event.entity.EntityDamageEvent;
 import emu.grasscutter.utils.helpers.ProtoHelper;
 import it.unimi.dsi.fastutil.ints.Int2FloatOpenHashMap;
-import lombok.Getter;
-import lombok.Setter;
-
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static emu.grasscutter.scripts.constants.EventType.EVENT_SPECIFIC_MONSTER_HP_CHANGE;
+import javax.annotation.Nullable;
+import lombok.Getter;
+import lombok.Setter;
 
 public class EntityMonster extends GameEntity {
-    @Getter(onMethod_ = @Override)
-    private final Int2FloatOpenHashMap fightProperties;
 
-    @Getter(onMethod_ = @Override)
-    private final Position position;
-    @Getter(onMethod_ = @Override)
-    private final Position rotation;
-    @Getter private final MonsterData monsterData;
-    @Getter private final ConfigEntityMonster configEntityMonster;
-    @Getter private final Position bornPos;
-    @Getter private final int level;
-    @Getter private int weaponEntityId;
-    @Getter @Setter private int poseId;
-    @Getter @Setter private int aiId = -1;
+	@Getter(onMethod_ = @Override)
+	private final Int2FloatOpenHashMap fightProperties;
 
-    @Getter private List<Player> playerOnBattle;
-    @Nullable @Getter @Setter private SceneMonster metaMonster;
+	@Getter(onMethod_ = @Override)
+	private final Position position;
 
-    public EntityMonster(Scene scene, MonsterData monsterData, Position pos, int level) {
-        super(scene);
-        this.id = getWorld().getNextEntityId(EntityIdType.MONSTER);
-        this.monsterData = monsterData;
-        this.fightProperties = new Int2FloatOpenHashMap();
-        this.position = new Position(pos);
-        this.rotation = new Position();
-        this.bornPos = getPosition().clone();
-        this.level = level;
-        this.playerOnBattle = new ArrayList<>();
+	@Getter(onMethod_ = @Override)
+	private final Position rotation;
 
-        if(GameData.getMonsterMappingMap().containsKey(getMonsterId())) {
-            this.configEntityMonster = GameData.getMonsterConfigData().get(GameData.getMonsterMappingMap().get(getMonsterId()).getMonsterJson());
-        } else {
-            this.configEntityMonster = null;
-        }
+	@Getter
+	private final MonsterData monsterData;
 
-        // Monster weapon
-        if (getMonsterWeaponId() > 0) {
-            this.weaponEntityId = getWorld().getNextEntityId(EntityIdType.WEAPON);
-        }
+	@Getter
+	private final ConfigEntityMonster configEntityMonster;
 
-        this.recalcStats();
+	@Getter
+	private final Position bornPos;
 
-        initAbilities();
-    }
+	@Getter
+	private final int level;
 
-    private void addConfigAbility(String name){
-        AbilityData data =  GameData.getAbilityData(name);
-        if(data != null)
-            getScene().getWorld().getHost().getAbilityManager().addAbilityToEntity(
-                this, data);
-    }
+	@Getter
+	private int weaponEntityId;
 
-    @Override
-    public void initAbilities() {
-        if(configEntityMonster != null) {
-            // Affix abilities
-            var optionalGroup = getScene().getLoadedGroups().stream()
-                .filter(g -> g.id == this.getGroupId())
-                .findAny();
-            List<Integer> affixes = null;
-            if (optionalGroup.isPresent()) {
-                var group = optionalGroup.get();
+	@Getter
+	@Setter
+	private int poseId;
 
-                SceneMonster monster = group.monsters.get(getConfigId());
-                if(monster != null) affixes = monster.affix;
-            }
+	@Getter
+	@Setter
+	private int aiId = -1;
 
-            if (affixes != null) {
-                for(var affixId : affixes) {
-                    var affix = GameData.getMonsterAffixDataMap().get(affixId.intValue());
-                    if (!affix.isPreAdd()) continue;
+	@Getter
+	private List<Player> playerOnBattle;
 
-                    //Add the ability
-                    for(var name : affix.getAbilityName()) {
-                        this.addConfigAbility(name);
-                    }
-                }
-            }
+	@Nullable
+	@Getter
+	@Setter
+	private SceneMonster metaMonster;
 
-            //TODO: Research if any monster is non humanoid
-            for(var ability : GameData.getConfigGlobalCombat().getDefaultAbilities().getNonHumanoidMoveAbilities()) {
-                this.addConfigAbility(ability);
-            }
+	public EntityMonster(Scene scene, MonsterData monsterData, Position pos, int level) {
+		super(scene);
+		this.id = getWorld().getNextEntityId(EntityIdType.MONSTER);
+		this.monsterData = monsterData;
+		this.fightProperties = new Int2FloatOpenHashMap();
+		this.position = new Position(pos);
+		this.rotation = new Position();
+		this.bornPos = getPosition().clone();
+		this.level = level;
+		this.playerOnBattle = new ArrayList<>();
 
-            if (configEntityMonster.getAbilities() != null)
-                for (var configAbilityData : configEntityMonster.getAbilities()) {
-                    this.addConfigAbility(configAbilityData.abilityName);
-                }
+		if (GameData.getMonsterMappingMap().containsKey(getMonsterId())) {
+			this.configEntityMonster =
+				GameData
+					.getMonsterConfigData()
+					.get(GameData.getMonsterMappingMap().get(getMonsterId()).getMonsterJson());
+		} else {
+			this.configEntityMonster = null;
+		}
 
-            if (optionalGroup.isPresent()) {
-                var group = optionalGroup.get();
-                SceneMonster monster = group.monsters.get(getConfigId());
-                if(monster != null && monster.isElite) {
-                    addConfigAbility(GameData.getConfigGlobalCombat().getDefaultAbilities().getMonterEliteAbilityName());
-                }
-            }
+		// Monster weapon
+		if (getMonsterWeaponId() > 0) {
+			this.weaponEntityId = getWorld().getNextEntityId(EntityIdType.WEAPON);
+		}
 
-            if (affixes != null) {
-                for (var affixId : affixes) {
-                    var affix = GameData.getMonsterAffixDataMap().get(affixId.intValue());
-                    if(affix.isPreAdd()) continue;
+		this.recalcStats();
 
-                    //Add the ability
-                    for(var name : affix.getAbilityName()) {
-                        this.addConfigAbility(name);
-                    }
-                }
-            }
+		initAbilities();
+	}
 
-            var levelEntityConfig = getScene().getSceneData().getLevelEntityConfig();
-            var config = GameData.getConfigLevelEntityDataMap().get(levelEntityConfig);
-            if (config == null){
-                return;
-            }
+	private void addConfigAbility(String name) {
+		AbilityData data = GameData.getAbilityData(name);
+		if (data != null) getScene().getWorld().getHost().getAbilityManager().addAbilityToEntity(this, data);
+	}
 
-            if (config.getMonsterAbilities() != null) {
-                for (var monsterAbility : config.getMonsterAbilities()) {
-                    addConfigAbility(monsterAbility.abilityName);
-                }
-            }
-        }
-    }
+	@Override
+	public void initAbilities() {
+		if (configEntityMonster != null) {
+			// Affix abilities
+			var optionalGroup = getScene().getLoadedGroups().stream().filter(g -> g.id == this.getGroupId()).findAny();
+			List<Integer> affixes = null;
+			if (optionalGroup.isPresent()) {
+				var group = optionalGroup.get();
 
-    @Override
-    public int getEntityTypeId() {
-        return getMonsterId();
-    }
+				SceneMonster monster = group.monsters.get(getConfigId());
+				if (monster != null) affixes = monster.affix;
+			}
 
-    public int getMonsterWeaponId() {
-        return this.getMonsterData().getWeaponId();
-    }
+			if (affixes != null) {
+				for (var affixId : affixes) {
+					var affix = GameData.getMonsterAffixDataMap().get(affixId.intValue());
+					if (!affix.isPreAdd()) continue;
 
-    private int getMonsterId() {
-        return this.getMonsterData().getId();
-    }
+					//Add the ability
+					for (var name : affix.getAbilityName()) {
+						this.addConfigAbility(name);
+					}
+				}
+			}
 
-    @Override
-    public boolean isAlive() {
-        return this.getFightProperty(FightProperty.FIGHT_PROP_CUR_HP) > 0f;
-    }
+			//TODO: Research if any monster is non humanoid
+			for (var ability : GameData.getConfigGlobalCombat().getDefaultAbilities().getNonHumanoidMoveAbilities()) {
+				this.addConfigAbility(ability);
+			}
 
-    @Override
-    public void onInteract(Player player, GadgetInteractReq interactReq) {
-        EnvAnimalGatherConfigData gatherData = GameData.getEnvAnimalGatherConfigDataMap().get(this.getMonsterData().getId());
+			if (
+				configEntityMonster.getAbilities() != null
+			) for (var configAbilityData : configEntityMonster.getAbilities()) {
+				this.addConfigAbility(configAbilityData.abilityName);
+			}
 
-        if (gatherData == null) {
-            return;
-        }
+			if (optionalGroup.isPresent()) {
+				var group = optionalGroup.get();
+				SceneMonster monster = group.monsters.get(getConfigId());
+				if (monster != null && monster.isElite) {
+					addConfigAbility(
+						GameData.getConfigGlobalCombat().getDefaultAbilities().getMonterEliteAbilityName()
+					);
+				}
+			}
 
-        player.getInventory().addItem(gatherData.getGatherItem(), ActionReason.SubfieldDrop);
+			if (affixes != null) {
+				for (var affixId : affixes) {
+					var affix = GameData.getMonsterAffixDataMap().get(affixId.intValue());
+					if (affix.isPreAdd()) continue;
 
-        this.getScene().killEntity(this);
-    }
+					//Add the ability
+					for (var name : affix.getAbilityName()) {
+						this.addConfigAbility(name);
+					}
+				}
+			}
 
-    @Override
-    public void onCreate() {
-        // Lua event
-        getScene().getScriptManager().callEvent(new ScriptArgs(this.getGroupId(), EventType.EVENT_ANY_MONSTER_LIVE, this.getConfigId()));
-    }
+			var levelEntityConfig = getScene().getSceneData().getLevelEntityConfig();
+			var config = GameData.getConfigLevelEntityDataMap().get(levelEntityConfig);
+			if (config == null) {
+				return;
+			}
 
-    @Override
-    public void damage(float amount, int killerId, ElementType attackType) {
-        // Get HP before damage.
-        float hpBeforeDamage = this.getFightProperty(FightProperty.FIGHT_PROP_CUR_HP);
+			if (config.getMonsterAbilities() != null) {
+				for (var monsterAbility : config.getMonsterAbilities()) {
+					addConfigAbility(monsterAbility.abilityName);
+				}
+			}
+		}
+	}
 
-        // Apply damage.
-        super.damage(amount, killerId, attackType);
+	@Override
+	public int getEntityTypeId() {
+		return getMonsterId();
+	}
 
-        // Get HP after damage.
-        float hpAfterDamage = this.getFightProperty(FightProperty.FIGHT_PROP_CUR_HP);
+	public int getMonsterWeaponId() {
+		return this.getMonsterData().getWeaponId();
+	}
 
-        // Invoke energy drop logic.
-        for (Player player : this.getScene().getPlayers()) {
-            player.getEnergyManager().handleMonsterEnergyDrop(this, hpBeforeDamage, hpAfterDamage);
-        }
-    }
+	private int getMonsterId() {
+		return this.getMonsterData().getId();
+	}
 
-    @Override
-    public void runLuaCallbacks(EntityDamageEvent event) {
-        super.runLuaCallbacks(event);
-        getScene().getScriptManager().callEvent(new ScriptArgs(this.getGroupId(), EVENT_SPECIFIC_MONSTER_HP_CHANGE, getConfigId(), monsterData.getId())
-            .setSourceEntityId(getId())
-            .setParam3((int) this.getFightProperty(FightProperty.FIGHT_PROP_CUR_HP))
-            .setEventSource(Integer.toString(getConfigId())));
-    }
+	@Override
+	public boolean isAlive() {
+		return this.getFightProperty(FightProperty.FIGHT_PROP_CUR_HP) > 0f;
+	}
 
-    @Override
-    public void onDeath(int killerId) {
-        super.onDeath(killerId); // Invoke super class's onDeath() method.
-        var scene = this.getScene();
-        var challenge = Optional.ofNullable(scene.getChallenge());
-        var scriptManager = scene.getScriptManager();
+	@Override
+	public void onInteract(Player player, GadgetInteractReq interactReq) {
+		EnvAnimalGatherConfigData gatherData = GameData
+			.getEnvAnimalGatherConfigDataMap()
+			.get(this.getMonsterData().getId());
 
-        Optional.ofNullable(this.getSpawnEntry()).ifPresent(scene.getDeadSpawnedEntities()::add);
+		if (gatherData == null) {
+			return;
+		}
 
-        // first set the challenge data
-        challenge.ifPresent(c -> c.onMonsterDeath(this));
+		player.getInventory().addItem(gatherData.getGatherItem(), ActionReason.SubfieldDrop);
 
-        if (scriptManager.isInit() && this.getGroupId() > 0) {
-            Optional.ofNullable(scriptManager.getScriptMonsterSpawnService()).ifPresent(s -> s.onMonsterDead(this));
+		this.getScene().killEntity(this);
+	}
 
-            // prevent spawn monster after success
-            /*if (challenge.map(c -> c.inProgress()).orElse(true)) {
+	@Override
+	public void onCreate() {
+		// Lua event
+		getScene()
+			.getScriptManager()
+			.callEvent(new ScriptArgs(this.getGroupId(), EventType.EVENT_ANY_MONSTER_LIVE, this.getConfigId()));
+	}
+
+	@Override
+	public void damage(float amount, int killerId, ElementType attackType) {
+		// Get HP before damage.
+		float hpBeforeDamage = this.getFightProperty(FightProperty.FIGHT_PROP_CUR_HP);
+
+		// Apply damage.
+		super.damage(amount, killerId, attackType);
+
+		// Get HP after damage.
+		float hpAfterDamage = this.getFightProperty(FightProperty.FIGHT_PROP_CUR_HP);
+
+		// Invoke energy drop logic.
+		for (Player player : this.getScene().getPlayers()) {
+			player.getEnergyManager().handleMonsterEnergyDrop(this, hpBeforeDamage, hpAfterDamage);
+		}
+	}
+
+	@Override
+	public void runLuaCallbacks(EntityDamageEvent event) {
+		super.runLuaCallbacks(event);
+		getScene()
+			.getScriptManager()
+			.callEvent(
+				new ScriptArgs(this.getGroupId(), EVENT_SPECIFIC_MONSTER_HP_CHANGE, getConfigId(), monsterData.getId())
+					.setSourceEntityId(getId())
+					.setParam3((int) this.getFightProperty(FightProperty.FIGHT_PROP_CUR_HP))
+					.setEventSource(Integer.toString(getConfigId()))
+			);
+	}
+
+	@Override
+	public void onDeath(int killerId) {
+		super.onDeath(killerId); // Invoke super class's onDeath() method.
+		var scene = this.getScene();
+		var challenge = Optional.ofNullable(scene.getChallenge());
+		var scriptManager = scene.getScriptManager();
+
+		Optional.ofNullable(this.getSpawnEntry()).ifPresent(scene.getDeadSpawnedEntities()::add);
+
+		// first set the challenge data
+		challenge.ifPresent(c -> c.onMonsterDeath(this));
+
+		if (scriptManager.isInit() && this.getGroupId() > 0) {
+			Optional.ofNullable(scriptManager.getScriptMonsterSpawnService()).ifPresent(s -> s.onMonsterDead(this));
+
+			// prevent spawn monster after success
+			/*if (challenge.map(c -> c.inProgress()).orElse(true)) {
                 scriptManager.callEvent(new ScriptArgs(EventType.EVENT_ANY_MONSTER_DIE, this.getConfigId()).setGroupId(this.getGroupId()));
             } else if (getScene().getChallenge() == null) {
             }*/
-            scriptManager.callEvent(new ScriptArgs(this.getGroupId(), EventType.EVENT_ANY_MONSTER_DIE, this.getConfigId()));
-        }
-        // Battle Pass trigger
-        scene.getPlayers().forEach(p -> p.getBattlePassManager().triggerMission(WatcherTriggerType.TRIGGER_MONSTER_DIE, this.getMonsterId(), 1));
+			scriptManager.callEvent(
+				new ScriptArgs(this.getGroupId(), EventType.EVENT_ANY_MONSTER_DIE, this.getConfigId())
+			);
+		}
+		// Battle Pass trigger
+		scene
+			.getPlayers()
+			.forEach(p ->
+				p.getBattlePassManager().triggerMission(WatcherTriggerType.TRIGGER_MONSTER_DIE, this.getMonsterId(), 1)
+			);
 
-        scene.getPlayers().forEach(p -> p.getQuestManager().queueEvent(QuestContent.QUEST_CONTENT_MONSTER_DIE, this.getMonsterId()));
-        scene.getPlayers().forEach(p -> p.getQuestManager().queueEvent(QuestContent.QUEST_CONTENT_KILL_MONSTER, this.getMonsterId()));
-        scene.getPlayers().forEach(p -> p.getQuestManager().queueEvent(QuestContent.QUEST_CONTENT_CLEAR_GROUP_MONSTER, this.getGroupId()));
+		scene
+			.getPlayers()
+			.forEach(p -> p.getQuestManager().queueEvent(QuestContent.QUEST_CONTENT_MONSTER_DIE, this.getMonsterId()));
+		scene
+			.getPlayers()
+			.forEach(p -> p.getQuestManager().queueEvent(QuestContent.QUEST_CONTENT_KILL_MONSTER, this.getMonsterId()));
+		scene
+			.getPlayers()
+			.forEach(p ->
+				p.getQuestManager().queueEvent(QuestContent.QUEST_CONTENT_CLEAR_GROUP_MONSTER, this.getGroupId())
+			);
 
-        SceneGroupInstance groupInstance = scene.getScriptManager().getGroupInstanceById(this.getGroupId());
-        if(groupInstance != null && metaMonster != null)
-            groupInstance.getDeadEntities().add(metaMonster.config_id);
+		SceneGroupInstance groupInstance = scene.getScriptManager().getGroupInstanceById(this.getGroupId());
+		if (groupInstance != null && metaMonster != null) groupInstance.getDeadEntities().add(metaMonster.config_id);
 
-        scene.triggerDungeonEvent(DungeonPassConditionType.DUNGEON_COND_KILL_GROUP_MONSTER, this.getGroupId());
-        scene.triggerDungeonEvent(DungeonPassConditionType.DUNGEON_COND_KILL_TYPE_MONSTER, this.getMonsterData().getType().getValue());
-        scene.triggerDungeonEvent(DungeonPassConditionType.DUNGEON_COND_KILL_MONSTER, this.getMonsterId());
-    }
+		scene.triggerDungeonEvent(DungeonPassConditionType.DUNGEON_COND_KILL_GROUP_MONSTER, this.getGroupId());
+		scene.triggerDungeonEvent(
+			DungeonPassConditionType.DUNGEON_COND_KILL_TYPE_MONSTER,
+			this.getMonsterData().getType().getValue()
+		);
+		scene.triggerDungeonEvent(DungeonPassConditionType.DUNGEON_COND_KILL_MONSTER, this.getMonsterId());
+	}
 
-    public void recalcStats() {
-        // Monster data
-        MonsterData data = this.getMonsterData();
+	public void recalcStats() {
+		// Monster data
+		MonsterData data = this.getMonsterData();
 
-        // Get hp percent, set to 100% if none
-        float hpPercent = this.getFightProperty(FightProperty.FIGHT_PROP_MAX_HP) <= 0 ? 1f : this.getFightProperty(FightProperty.FIGHT_PROP_CUR_HP) / this.getFightProperty(FightProperty.FIGHT_PROP_MAX_HP);
+		// Get hp percent, set to 100% if none
+		float hpPercent = this.getFightProperty(FightProperty.FIGHT_PROP_MAX_HP) <= 0
+			? 1f
+			: this.getFightProperty(FightProperty.FIGHT_PROP_CUR_HP) /
+			this.getFightProperty(FightProperty.FIGHT_PROP_MAX_HP);
 
-        // Clear properties
-        this.getFightProperties().clear();
+		// Clear properties
+		this.getFightProperties().clear();
 
-        // Base stats
-        MonsterData.definedFightProperties.forEach(prop -> this.setFightProperty(prop, data.getFightProperty(prop)));
+		// Base stats
+		MonsterData.definedFightProperties.forEach(prop -> this.setFightProperty(prop, data.getFightProperty(prop)));
 
-        // Level curve
-        MonsterCurveData curve = GameData.getMonsterCurveDataMap().get(this.getLevel());
-        if (curve != null) {
-            for (PropGrowCurve growCurve : data.getPropGrowCurves()) {
-                FightProperty prop = FightProperty.getPropByName(growCurve.getType());
-                this.setFightProperty(prop, this.getFightProperty(prop) * curve.getMultByProp(growCurve.getGrowCurve()));
-            }
-        }
+		// Level curve
+		MonsterCurveData curve = GameData.getMonsterCurveDataMap().get(this.getLevel());
+		if (curve != null) {
+			for (PropGrowCurve growCurve : data.getPropGrowCurves()) {
+				FightProperty prop = FightProperty.getPropByName(growCurve.getType());
+				this.setFightProperty(
+						prop,
+						this.getFightProperty(prop) * curve.getMultByProp(growCurve.getGrowCurve())
+					);
+			}
+		}
 
-        // Set % stats
-        FightProperty.forEachCompoundProperty(c -> this.setFightProperty(c.getResult(),
-            this.getFightProperty(c.getFlat()) + (this.getFightProperty(c.getBase()) * (1f + this.getFightProperty(c.getPercent())))));
+		// Set % stats
+		FightProperty.forEachCompoundProperty(c ->
+			this.setFightProperty(
+					c.getResult(),
+					this.getFightProperty(c.getFlat()) +
+					(this.getFightProperty(c.getBase()) * (1f + this.getFightProperty(c.getPercent())))
+				)
+		);
 
-        // Set current hp
-        this.setFightProperty(FightProperty.FIGHT_PROP_CUR_HP, this.getFightProperty(FightProperty.FIGHT_PROP_MAX_HP) * hpPercent);
-    }
+		// Set current hp
+		this.setFightProperty(
+				FightProperty.FIGHT_PROP_CUR_HP,
+				this.getFightProperty(FightProperty.FIGHT_PROP_MAX_HP) * hpPercent
+			);
+	}
 
-    @Override
-    public SceneEntityInfo toProto() {
-        var data = this.getMonsterData();
+	@Override
+	public SceneEntityInfo toProto() {
+		var data = this.getMonsterData();
 
-        var authority = EntityAuthorityInfo.newBuilder()
-            .setAbilityInfo(AbilitySyncStateInfo.newBuilder())
-            .setRendererChangedInfo(EntityRendererChangedInfo.newBuilder())
-            .setAiInfo(SceneEntityAiInfo.newBuilder()
-                .setIsAiOpen(true)
-                .setBornPos(this.getBornPos().toProto()))
-            .setBornPos(this.getBornPos().toProto())
-            .build();
+		var authority = EntityAuthorityInfo
+			.newBuilder()
+			.setAbilityInfo(AbilitySyncStateInfo.newBuilder())
+			.setRendererChangedInfo(EntityRendererChangedInfo.newBuilder())
+			.setAiInfo(SceneEntityAiInfo.newBuilder().setIsAiOpen(true).setBornPos(this.getBornPos().toProto()))
+			.setBornPos(this.getBornPos().toProto())
+			.build();
 
-        var entityInfo = SceneEntityInfo.newBuilder()
-            .setEntityId(this.getId())
-            .setEntityType(ProtEntityType.PROT_ENTITY_TYPE_MONSTER)
-            .setMotionInfo(this.getMotionInfo())
-            .addAnimatorParaList(AnimatorParameterValueInfoPair.newBuilder())
-            .setEntityClientData(EntityClientData.newBuilder())
-            .setEntityAuthorityInfo(authority)
-            .setLifeState(this.getLifeState().getValue());
+		var entityInfo = SceneEntityInfo
+			.newBuilder()
+			.setEntityId(this.getId())
+			.setEntityType(ProtEntityType.PROT_ENTITY_TYPE_MONSTER)
+			.setMotionInfo(this.getMotionInfo())
+			.addAnimatorParaList(AnimatorParameterValueInfoPair.newBuilder())
+			.setEntityClientData(EntityClientData.newBuilder())
+			.setEntityAuthorityInfo(authority)
+			.setLifeState(this.getLifeState().getValue());
 
-        this.addAllFightPropsToEntityInfo(entityInfo);
+		this.addAllFightPropsToEntityInfo(entityInfo);
 
-        entityInfo.addPropList(PropPair.newBuilder()
-            .setType(PlayerProperty.PROP_LEVEL.getId())
-            .setPropValue(ProtoHelper.newPropValue(PlayerProperty.PROP_LEVEL, this.getLevel()))
-            .build());
+		entityInfo.addPropList(
+			PropPair
+				.newBuilder()
+				.setType(PlayerProperty.PROP_LEVEL.getId())
+				.setPropValue(ProtoHelper.newPropValue(PlayerProperty.PROP_LEVEL, this.getLevel()))
+				.build()
+		);
 
-        var monsterInfo = SceneMonsterInfo.newBuilder()
-            .setMonsterId(getMonsterId())
-            .setGroupId(this.getGroupId())
-            .setConfigId(this.getConfigId())
-            .addAllAffixList(data.getAffix())
-            .setAuthorityPeerId(this.getWorld().getHostPeerId())
-            .setPoseId(this.getPoseId())
-            .setBlockId(this.getScene().getId())
-            .setBornType(MonsterBornType.MONSTER_BORN_TYPE_DEFAULT);
+		var monsterInfo = SceneMonsterInfo
+			.newBuilder()
+			.setMonsterId(getMonsterId())
+			.setGroupId(this.getGroupId())
+			.setConfigId(this.getConfigId())
+			.addAllAffixList(data.getAffix())
+			.setAuthorityPeerId(this.getWorld().getHostPeerId())
+			.setPoseId(this.getPoseId())
+			.setBlockId(this.getScene().getId())
+			.setBornType(MonsterBornType.MONSTER_BORN_TYPE_DEFAULT);
 
-        if (this.metaMonster != null) {
-            if (this.metaMonster.special_name_id != 0) {
-                monsterInfo.setTitleId(this.metaMonster.title_id)
-                    .setSpecialNameId(this.metaMonster.special_name_id);
-            } else if (data.getDescribeData() != null) {
-                monsterInfo.setTitleId(data.getDescribeData().getTitleId())
-                    .setSpecialNameId(data.getSpecialNameId());
-            }
-        }
+		if (this.metaMonster != null) {
+			if (this.metaMonster.special_name_id != 0) {
+				monsterInfo.setTitleId(this.metaMonster.title_id).setSpecialNameId(this.metaMonster.special_name_id);
+			} else if (data.getDescribeData() != null) {
+				monsterInfo.setTitleId(data.getDescribeData().getTitleId()).setSpecialNameId(data.getSpecialNameId());
+			}
+		}
 
-        if (this.getMonsterWeaponId() > 0) {
-            SceneWeaponInfo weaponInfo = SceneWeaponInfo.newBuilder()
-                .setEntityId(this.weaponEntityId)
-                .setGadgetId(this.getMonsterWeaponId())
-                .setAbilityInfo(AbilitySyncStateInfo.newBuilder())
-                .build();
+		if (this.getMonsterWeaponId() > 0) {
+			SceneWeaponInfo weaponInfo = SceneWeaponInfo
+				.newBuilder()
+				.setEntityId(this.weaponEntityId)
+				.setGadgetId(this.getMonsterWeaponId())
+				.setAbilityInfo(AbilitySyncStateInfo.newBuilder())
+				.build();
 
-            monsterInfo.addWeaponList(weaponInfo);
-        }
-        if (this.aiId != -1) {
-            monsterInfo.setAiConfigId(aiId);
-        }
+			monsterInfo.addWeaponList(weaponInfo);
+		}
+		if (this.aiId != -1) {
+			monsterInfo.setAiConfigId(aiId);
+		}
 
-        entityInfo.setMonster(monsterInfo);
+		entityInfo.setMonster(monsterInfo);
 
-        return entityInfo.build();
-    }
+		return entityInfo.build();
+	}
 }

@@ -12,27 +12,20 @@ import java.util.ArrayList;
 
 @Opcodes(PacketOpcodes.QuestTransmitReq)
 public class HandlerQuestTransmitReq extends PacketHandler {
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        var req = QuestTransmitReq.parseFrom(payload);
-        var mainQuest = session.getPlayer().getQuestManager().getMainQuestById(req.getQuestId() / 100);
 
-        var posAndRot = new ArrayList<Position>();
-        boolean result = false;
-        if (mainQuest.hasTeleportPosition(req.getQuestId(), posAndRot)) {
-            var sceneId =
-                    GameData.getTeleportDataMap()
-                            .get(req.getQuestId())
-                            .getTransmit_points()
-                            .get(0)
-                            .getScene_id();
-            result =
-                    session
-                            .getPlayer()
-                            .getWorld()
-                            .transferPlayerToScene(session.getPlayer(), sceneId, posAndRot.get(0));
-        }
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		var req = QuestTransmitReq.parseFrom(payload);
+		var mainQuest = session.getPlayer().getQuestManager().getMainQuestById(req.getQuestId() / 100);
 
-        session.send(new PacketQuestTransmitRsp(result, req));
-    }
+		var posAndRot = new ArrayList<Position>();
+		boolean result = false;
+		if (mainQuest.hasTeleportPosition(req.getQuestId(), posAndRot)) {
+			var sceneId = GameData.getTeleportDataMap().get(req.getQuestId()).getTransmit_points().get(0).getScene_id();
+			result =
+				session.getPlayer().getWorld().transferPlayerToScene(session.getPlayer(), sceneId, posAndRot.get(0));
+		}
+
+		session.send(new PacketQuestTransmitRsp(result, req));
+	}
 }

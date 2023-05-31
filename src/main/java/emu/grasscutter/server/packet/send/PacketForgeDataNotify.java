@@ -8,18 +8,22 @@ import java.util.Map;
 
 public class PacketForgeDataNotify extends BasePacket {
 
-    public PacketForgeDataNotify(
-            Iterable<Integer> unlockedItem, int numQueues, Map<Integer, ForgeQueueData> queueData) {
-        super(PacketOpcodes.ForgeDataNotify);
+	public PacketForgeDataNotify(
+		Iterable<Integer> unlockedItem,
+		int numQueues,
+		Map<Integer, ForgeQueueData> queueData
+	) {
+		super(PacketOpcodes.ForgeDataNotify);
+		ForgeDataNotify.Builder builder = ForgeDataNotify
+			.newBuilder()
+			.addAllForgeIdList(unlockedItem)
+			.setMaxQueueNum(numQueues);
 
-        ForgeDataNotify.Builder builder =
-                ForgeDataNotify.newBuilder().addAllForgeIdList(unlockedItem).setMaxQueueNum(numQueues);
+		for (int queueId : queueData.keySet()) {
+			var data = queueData.get(queueId);
+			builder.putForgeQueueMap(queueId, data);
+		}
 
-        for (int queueId : queueData.keySet()) {
-            var data = queueData.get(queueId);
-            builder.putForgeQueueMap(queueId, data);
-        }
-
-        this.setData(builder.build());
-    }
+		this.setData(builder.build());
+	}
 }

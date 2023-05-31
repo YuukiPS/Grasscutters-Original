@@ -9,13 +9,15 @@ import emu.grasscutter.game.activity.condition.ActivityConditionBaseHandler;
 
 @ActivityCondition(NEW_ACTIVITY_COND_NOT_FINISH_TALK)
 public class NotFinishTalk extends ActivityConditionBaseHandler {
-    @Override
-    public boolean execute(
-            PlayerActivityData activityData, ActivityConfigItem activityConfig, int... params) {
-        return activityData.getPlayer().getQuestManager().getMainQuests().int2ObjectEntrySet().stream()
-                .noneMatch(
-                        q ->
-                                q.getValue().getTalks().get(params[0])
-                                        != null); // FIXME taken from ContentCompleteTalk
-    }
+
+	@Override
+	public boolean execute(PlayerActivityData activityData, ActivityConfigItem activityConfig, int... params) {
+		return activityData
+			.getPlayer()
+			.getQuestManager()
+			.getMainQuests()
+			.int2ObjectEntrySet()
+			.stream()
+			.noneMatch(q -> q.getValue().getTalks().get(params[0]) != null); // FIXME taken from ContentCompleteTalk
+	}
 }

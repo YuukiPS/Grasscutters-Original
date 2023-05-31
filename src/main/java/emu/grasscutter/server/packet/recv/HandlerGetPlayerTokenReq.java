@@ -23,126 +23,129 @@ import javax.crypto.Cipher;
 
 @Opcodes(PacketOpcodes.GetPlayerTokenReq)
 public class HandlerGetPlayerTokenReq extends PacketHandler {
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        var req = GetPlayerTokenReq.parseFrom(payload);
 
-        // Fetch the account from the ID and token.
-        var accountId = req.getAccountUid();
-        var account = DispatchUtils.authenticate(accountId, req.getAccountToken());
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		var req = GetPlayerTokenReq.parseFrom(payload);
 
-        // Check the account.
-        if (account == null) {
-            session.close();
-            return;
-        }
+		// Fetch the account from the ID and token.
+		var accountId = req.getAccountUid();
+		var account = DispatchUtils.authenticate(accountId, req.getAccountToken());
 
-        // Set account
-        session.setAccount(account);
+		// Check the account.
+		if (account == null) {
+			session.close();
+			return;
+		}
 
-        // Check if player object exists in server
-        // NOTE: CHECKING MUST SITUATED HERE (BEFORE getPlayerByUid)! because to save firstly ,to load
-        // secondly !!!
-        // TODO - optimize
-        boolean kicked = false;
-        var exists = Grasscutter.getGameServer().getPlayerByAccountId(accountId);
-        if (exists != null) {
-            var existsSession = exists.getSession();
-            if (existsSession != session) { // No self-kicking
-                exists.onLogout(); // must save immediately , or the below will load old data
-                existsSession.close();
-                Grasscutter.getLogger()
-                        .warn("Player {} was kicked due to duplicated login", account.getUsername());
-                kicked = true;
-            }
-        }
+		// Set account
+		session.setAccount(account);
 
-        // NOTE: If there are 5 online players, max count of player is 5,
-        // a new client want to login by kicking one of them ,
-        // I think it should be allowed
-        if (!kicked) {
-            // Max players limit
-            if (ACCOUNT.maxPlayer > -1
-                    && Grasscutter.getGameServer().getPlayers().size() >= ACCOUNT.maxPlayer) {
-                session.close();
-                return;
-            }
-        }
+		// Check if player object exists in server
+		// NOTE: CHECKING MUST SITUATED HERE (BEFORE getPlayerByUid)! because to save firstly ,to load
+		// secondly !!!
+		// TODO - optimize
+		boolean kicked = false;
+		var exists = Grasscutter.getGameServer().getPlayerByAccountId(accountId);
+		if (exists != null) {
+			var existsSession = exists.getSession();
+			if (existsSession != session) { // No self-kicking
+				exists.onLogout(); // must save immediately , or the below will load old data
+				existsSession.close();
+				Grasscutter.getLogger().warn("Player {} was kicked due to duplicated login", account.getUsername());
+				kicked = true;
+			}
+		}
 
-        // Call creation event.
-        var event = new PlayerCreationEvent(session, Player.class);
-        event.call();
+		// NOTE: If there are 5 online players, max count of player is 5,
+		// a new client want to login by kicking one of them ,
+		// I think it should be allowed
+		if (!kicked) {
+			// Max players limit
+			if (ACCOUNT.maxPlayer > -1 && Grasscutter.getGameServer().getPlayers().size() >= ACCOUNT.maxPlayer) {
+				session.close();
+				return;
+			}
+		}
 
-        // Get player.
-        var player = DatabaseHelper.getPlayerByAccount(account, event.getPlayerClass());
+		// Call creation event.
+		var event = new PlayerCreationEvent(session, Player.class);
+		event.call();
 
-        if (player == null) {
-            var nextPlayerUid =
-                    DatabaseHelper.getNextPlayerId(session.getAccount().getReservedPlayerUid());
+		// Get player.
+		var player = DatabaseHelper.getPlayerByAccount(account, event.getPlayerClass());
 
-            // Create player instance from event.
-            player =
-                    event.getPlayerClass().getDeclaredConstructor(GameSession.class).newInstance(session);
+		if (player == null) {
+			var nextPlayerUid = DatabaseHelper.getNextPlayerId(session.getAccount().getReservedPlayerUid());
 
-            // Save to db
-            DatabaseHelper.generatePlayerUid(player, nextPlayerUid);
-        }
+			// Create player instance from event.
+			player = event.getPlayerClass().getDeclaredConstructor(GameSession.class).newInstance(session);
 
-        // Set player object for session
-        session.setPlayer(player);
+			// Save to db
+			DatabaseHelper.generatePlayerUid(player, nextPlayerUid);
+		}
 
-        // Checks if the player is banned
-        if (session.getAccount().isBanned()) {
-            session.setState(SessionState.ACCOUNT_BANNED);
-            session.send(
-                    new PacketGetPlayerTokenRsp(
-                            session, 21, "FORBID_CHEATING_PLUGINS", session.getAccount().getBanEndTime()));
-            return;
-        }
+		// Set player object for session
+		session.setPlayer(player);
 
-        // Load player from database
-        player.loadFromDatabase();
+		// Checks if the player is banned
+		if (session.getAccount().isBanned()) {
+			session.setState(SessionState.ACCOUNT_BANNED);
+			session.send(
+				new PacketGetPlayerTokenRsp(
+					session,
+					21,
+					"FORBID_CHEATING_PLUGINS",
+					session.getAccount().getBanEndTime()
+				)
+			);
+			return;
+		}
 
-        // Set session state
-        session.setUseSecretKey(true);
-        session.setState(SessionState.WAITING_FOR_LOGIN);
+		// Load player from database
+		player.loadFromDatabase();
 
-        // Only >= 2.7.50 has this
-        if (req.getKeyId() > 0) {
-            try {
-                var cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-                cipher.init(Cipher.DECRYPT_MODE, Crypto.CUR_SIGNING_KEY);
+		// Set session state
+		session.setUseSecretKey(true);
+		session.setState(SessionState.WAITING_FOR_LOGIN);
 
-                var client_seed_encrypted = Utils.base64Decode(req.getClientRandKey());
-                var client_seed = ByteBuffer.wrap(cipher.doFinal(client_seed_encrypted)).getLong();
+		// Only >= 2.7.50 has this
+		if (req.getKeyId() > 0) {
+			try {
+				var cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+				cipher.init(Cipher.DECRYPT_MODE, Crypto.CUR_SIGNING_KEY);
 
-                var seed_bytes =
-                        ByteBuffer.wrap(new byte[8]).putLong(Crypto.ENCRYPT_SEED ^ client_seed).array();
+				var client_seed_encrypted = Utils.base64Decode(req.getClientRandKey());
+				var client_seed = ByteBuffer.wrap(cipher.doFinal(client_seed_encrypted)).getLong();
 
-                cipher.init(Cipher.ENCRYPT_MODE, Crypto.EncryptionKeys.get(req.getKeyId()));
-                var seed_encrypted = cipher.doFinal(seed_bytes);
+				var seed_bytes = ByteBuffer.wrap(new byte[8]).putLong(Crypto.ENCRYPT_SEED ^ client_seed).array();
 
-                var privateSignature = Signature.getInstance("SHA256withRSA");
-                privateSignature.initSign(Crypto.CUR_SIGNING_KEY);
-                privateSignature.update(seed_bytes);
+				cipher.init(Cipher.ENCRYPT_MODE, Crypto.EncryptionKeys.get(req.getKeyId()));
+				var seed_encrypted = cipher.doFinal(seed_bytes);
 
-                session.send(
-                        new PacketGetPlayerTokenRsp(
-                                session,
-                                Utils.base64Encode(seed_encrypted),
-                                Utils.base64Encode(privateSignature.sign())));
-            } catch (Exception ignored) {
-                // Only UA Patch users will have exception
-                var clientBytes = Utils.base64Decode(req.getClientRandKey());
-                var seed = ByteHelper.longToBytes(Crypto.ENCRYPT_SEED);
-                Crypto.xor(clientBytes, seed);
+				var privateSignature = Signature.getInstance("SHA256withRSA");
+				privateSignature.initSign(Crypto.CUR_SIGNING_KEY);
+				privateSignature.update(seed_bytes);
 
-                var base64str = Utils.base64Encode(clientBytes);
-                session.send(new PacketGetPlayerTokenRsp(session, base64str, "bm90aGluZyBoZXJl"));
-            }
-        } else {
-            // Send packet
-            session.send(new PacketGetPlayerTokenRsp(session));
-        }
-    }
+				session.send(
+					new PacketGetPlayerTokenRsp(
+						session,
+						Utils.base64Encode(seed_encrypted),
+						Utils.base64Encode(privateSignature.sign())
+					)
+				);
+			} catch (Exception ignored) {
+				// Only UA Patch users will have exception
+				var clientBytes = Utils.base64Decode(req.getClientRandKey());
+				var seed = ByteHelper.longToBytes(Crypto.ENCRYPT_SEED);
+				Crypto.xor(clientBytes, seed);
+
+				var base64str = Utils.base64Encode(clientBytes);
+				session.send(new PacketGetPlayerTokenRsp(session, base64str, "bm90aGluZyBoZXJl"));
+			}
+		} else {
+			// Send packet
+			session.send(new PacketGetPlayerTokenRsp(session));
+		}
+	}
 }

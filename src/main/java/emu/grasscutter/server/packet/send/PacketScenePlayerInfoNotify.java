@@ -9,26 +9,25 @@ import emu.grasscutter.net.proto.ScenePlayerInfoOuterClass.ScenePlayerInfo;
 
 public class PacketScenePlayerInfoNotify extends BasePacket {
 
-    public PacketScenePlayerInfoNotify(World world) {
-        super(PacketOpcodes.ScenePlayerInfoNotify);
+	public PacketScenePlayerInfoNotify(World world) {
+		super(PacketOpcodes.ScenePlayerInfoNotify);
+		ScenePlayerInfoNotify.Builder proto = ScenePlayerInfoNotify.newBuilder();
 
-        ScenePlayerInfoNotify.Builder proto = ScenePlayerInfoNotify.newBuilder();
+		for (int i = 0; i < world.getPlayers().size(); i++) {
+			Player p = world.getPlayers().get(i);
 
-        for (int i = 0; i < world.getPlayers().size(); i++) {
-            Player p = world.getPlayers().get(i);
+			ScenePlayerInfo pInfo = ScenePlayerInfo
+				.newBuilder()
+				.setUid(p.getUid())
+				.setPeerId(p.getPeerId())
+				.setName(p.getNickname())
+				.setSceneId(p.getSceneId())
+				.setOnlinePlayerInfo(p.getOnlinePlayerInfo())
+				.build();
 
-            ScenePlayerInfo pInfo =
-                    ScenePlayerInfo.newBuilder()
-                            .setUid(p.getUid())
-                            .setPeerId(p.getPeerId())
-                            .setName(p.getNickname())
-                            .setSceneId(p.getSceneId())
-                            .setOnlinePlayerInfo(p.getOnlinePlayerInfo())
-                            .build();
+			proto.addPlayerInfoList(pInfo);
+		}
 
-            proto.addPlayerInfoList(pInfo);
-        }
-
-        this.setData(proto.build());
-    }
+		this.setData(proto.build());
+	}
 }

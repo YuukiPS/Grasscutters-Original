@@ -9,24 +9,24 @@ import java.util.stream.Stream;
 
 @ResourceType(name = "MonsterCurveExcelConfigData.json")
 public class MonsterCurveData extends GameResource {
-    private int level;
-    private CurveInfo[] curveInfos;
 
-    private Map<String, Float> curveInfoMap;
+	private int level;
+	private CurveInfo[] curveInfos;
 
-    @Override
-    public int getId() {
-        return level;
-    }
+	private Map<String, Float> curveInfoMap;
 
-    public float getMultByProp(String fightProp) {
-        return curveInfoMap.getOrDefault(fightProp, 1f);
-    }
+	@Override
+	public int getId() {
+		return level;
+	}
 
-    @Override
-    public void onLoad() {
-        this.curveInfoMap = new HashMap<>();
-        Stream.of(this.curveInfos)
-                .forEach(info -> this.curveInfoMap.put(info.getType(), info.getValue()));
-    }
+	public float getMultByProp(String fightProp) {
+		return curveInfoMap.getOrDefault(fightProp, 1f);
+	}
+
+	@Override
+	public void onLoad() {
+		this.curveInfoMap = new HashMap<>();
+		Stream.of(this.curveInfos).forEach(info -> this.curveInfoMap.put(info.getType(), info.getValue()));
+	}
 }

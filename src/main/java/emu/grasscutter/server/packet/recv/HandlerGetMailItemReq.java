@@ -10,10 +10,9 @@ import emu.grasscutter.server.packet.send.PacketGetMailItemRsp;
 @Opcodes(PacketOpcodes.GetMailItemReq)
 public class HandlerGetMailItemReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        GetMailItemReqOuterClass.GetMailItemReq req =
-                GetMailItemReqOuterClass.GetMailItemReq.parseFrom(payload);
-        session.send(new PacketGetMailItemRsp(session.getPlayer(), req.getMailIdListList()));
-    }
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		GetMailItemReqOuterClass.GetMailItemReq req = GetMailItemReqOuterClass.GetMailItemReq.parseFrom(payload);
+		session.send(new PacketGetMailItemRsp(session.getPlayer(), req.getMailIdListList()));
+	}
 }

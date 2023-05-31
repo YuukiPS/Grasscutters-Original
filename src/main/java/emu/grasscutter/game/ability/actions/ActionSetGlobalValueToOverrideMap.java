@@ -9,29 +9,30 @@ import emu.grasscutter.game.entity.GameEntity;
 
 @AbilityAction(AbilityModifierAction.Type.SetGlobalValueToOverrideMap)
 public class ActionSetGlobalValueToOverrideMap extends AbilityActionHandler {
-    @Override
-    public boolean execute(
-            Ability ability, AbilityModifierAction action, ByteString abilityData, GameEntity target) {
-        // TODO:
-        var entity = target;
-        if (action.isFromOwner) {
-            if (target instanceof EntityClientGadget gadget)
-                entity = entity.getScene().getEntityById(gadget.getOwnerEntityId());
-            else if (target instanceof EntityGadget gadget) entity = gadget.getOwner();
-        }
 
-        var globalValueKey = action.globalValueKey;
-        var abilityFormula = action.abilityFormula;
+	@Override
+	public boolean execute(Ability ability, AbilityModifierAction action, ByteString abilityData, GameEntity target) {
+		// TODO:
+		var entity = target;
+		if (action.isFromOwner) {
+			if (target instanceof EntityClientGadget gadget) entity =
+				entity.getScene().getEntityById(gadget.getOwnerEntityId()); else if (
+				target instanceof EntityGadget gadget
+			) entity = gadget.getOwner();
+		}
 
-        if (!entity.getGlobalAbilityValues().containsKey(globalValueKey)) return false;
+		var globalValueKey = action.globalValueKey;
+		var abilityFormula = action.abilityFormula;
 
-        var globalValue = entity.getGlobalAbilityValues().getOrDefault(globalValueKey, 0.0f);
-        if (abilityFormula.compareTo("DummyThrowSpeed") == 0) {
-            globalValue = ((globalValue * 30.0f) / ((float) Math.sin(0.9424778) * 100.0f)) - 1.0f;
-        }
+		if (!entity.getGlobalAbilityValues().containsKey(globalValueKey)) return false;
 
-        entity.getGlobalAbilityValues().put(globalValueKey, globalValue);
+		var globalValue = entity.getGlobalAbilityValues().getOrDefault(globalValueKey, 0.0f);
+		if (abilityFormula.compareTo("DummyThrowSpeed") == 0) {
+			globalValue = ((globalValue * 30.0f) / ((float) Math.sin(0.9424778) * 100.0f)) - 1.0f;
+		}
 
-        return true;
-    }
+		entity.getGlobalAbilityValues().put(globalValueKey, globalValue);
+
+		return true;
+	}
 }

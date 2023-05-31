@@ -9,28 +9,28 @@ import java.util.stream.Stream;
 
 @ResourceType(name = "AvatarCurveExcelConfigData.json")
 public class AvatarCurveData extends GameResource {
-    private int level;
-    private CurveInfo[] curveInfos;
 
-    private Map<String, Float> curveInfoMap;
+	private int level;
+	private CurveInfo[] curveInfos;
 
-    @Override
-    public int getId() {
-        return this.level;
-    }
+	private Map<String, Float> curveInfoMap;
 
-    public int getLevel() {
-        return level;
-    }
+	@Override
+	public int getId() {
+		return this.level;
+	}
 
-    public Map<String, Float> getCurveInfos() {
-        return curveInfoMap;
-    }
+	public int getLevel() {
+		return level;
+	}
 
-    @Override
-    public void onLoad() {
-        this.curveInfoMap = new HashMap<>();
-        Stream.of(this.curveInfos)
-                .forEach(info -> this.curveInfoMap.put(info.getType(), info.getValue()));
-    }
+	public Map<String, Float> getCurveInfos() {
+		return curveInfoMap;
+	}
+
+	@Override
+	public void onLoad() {
+		this.curveInfoMap = new HashMap<>();
+		Stream.of(this.curveInfos).forEach(info -> this.curveInfoMap.put(info.getType(), info.getValue()));
+	}
 }

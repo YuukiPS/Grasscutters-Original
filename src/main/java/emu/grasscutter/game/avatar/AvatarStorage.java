@@ -19,158 +19,157 @@ import java.util.Iterator;
 import java.util.List;
 
 public class AvatarStorage extends BasePlayerManager implements Iterable<Avatar> {
-    private final Int2ObjectMap<Avatar> avatars;
-    private final Long2ObjectMap<Avatar> avatarsGuid;
 
-    public AvatarStorage(Player player) {
-        super(player);
-        this.avatars = new Int2ObjectOpenHashMap<>();
-        this.avatarsGuid = new Long2ObjectOpenHashMap<>();
-    }
+	private final Int2ObjectMap<Avatar> avatars;
+	private final Long2ObjectMap<Avatar> avatarsGuid;
 
-    public Int2ObjectMap<Avatar> getAvatars() {
-        return avatars;
-    }
+	public AvatarStorage(Player player) {
+		super(player);
+		this.avatars = new Int2ObjectOpenHashMap<>();
+		this.avatarsGuid = new Long2ObjectOpenHashMap<>();
+	}
 
-    public int getAvatarCount() {
-        return this.avatars.size();
-    }
+	public Int2ObjectMap<Avatar> getAvatars() {
+		return avatars;
+	}
 
-    public Avatar getAvatarById(int id) {
-        return getAvatars().get(id);
-    }
+	public int getAvatarCount() {
+		return this.avatars.size();
+	}
 
-    public Avatar getAvatarByGuid(long id) {
-        return avatarsGuid.get(id);
-    }
+	public Avatar getAvatarById(int id) {
+		return getAvatars().get(id);
+	}
 
-    public boolean hasAvatar(int id) {
-        return getAvatars().containsKey(id);
-    }
+	public Avatar getAvatarByGuid(long id) {
+		return avatarsGuid.get(id);
+	}
 
-    public boolean addAvatar(Avatar avatar) {
-        if (avatar.getAvatarData() == null || this.hasAvatar(avatar.getAvatarId())) {
-            return false;
-        }
+	public boolean hasAvatar(int id) {
+		return getAvatars().containsKey(id);
+	}
 
-        // Set owner first
-        avatar.setOwner(getPlayer());
+	public boolean addAvatar(Avatar avatar) {
+		if (avatar.getAvatarData() == null || this.hasAvatar(avatar.getAvatarId())) {
+			return false;
+		}
 
-        // Put into maps
-        this.avatars.put(avatar.getAvatarId(), avatar);
-        this.avatarsGuid.put(avatar.getGuid(), avatar);
+		// Set owner first
+		avatar.setOwner(getPlayer());
 
-        avatar.save();
+		// Put into maps
+		this.avatars.put(avatar.getAvatarId(), avatar);
+		this.avatarsGuid.put(avatar.getGuid(), avatar);
 
-        return true;
-    }
+		avatar.save();
 
-    public void addStartingWeapon(Avatar avatar) {
-        // Make sure avatar owner is this player
-        if (avatar.getPlayer() != this.getPlayer()) {
-            return;
-        }
+		return true;
+	}
 
-        // Create weapon
-        GameItem weapon = new GameItem(avatar.getAvatarData().getInitialWeapon());
+	public void addStartingWeapon(Avatar avatar) {
+		// Make sure avatar owner is this player
+		if (avatar.getPlayer() != this.getPlayer()) {
+			return;
+		}
 
-        if (weapon.getItemData() != null) {
-            this.getPlayer().getInventory().addItem(weapon);
+		// Create weapon
+		GameItem weapon = new GameItem(avatar.getAvatarData().getInitialWeapon());
 
-            avatar.equipItem(weapon, true);
-        }
-    }
+		if (weapon.getItemData() != null) {
+			this.getPlayer().getInventory().addItem(weapon);
 
-    public boolean wearFlycloak(long avatarGuid, int flycloakId) {
-        Avatar avatar = this.getAvatarByGuid(avatarGuid);
+			avatar.equipItem(weapon, true);
+		}
+	}
 
-        if (avatar == null || !getPlayer().getFlyCloakList().contains(flycloakId)) {
-            return false;
-        }
+	public boolean wearFlycloak(long avatarGuid, int flycloakId) {
+		Avatar avatar = this.getAvatarByGuid(avatarGuid);
 
-        avatar.setFlyCloak(flycloakId);
-        avatar.save();
+		if (avatar == null || !getPlayer().getFlyCloakList().contains(flycloakId)) {
+			return false;
+		}
 
-        // Update
-        getPlayer().sendPacket(new PacketAvatarFlycloakChangeNotify(avatar));
+		avatar.setFlyCloak(flycloakId);
+		avatar.save();
 
-        return true;
-    }
+		// Update
+		getPlayer().sendPacket(new PacketAvatarFlycloakChangeNotify(avatar));
 
-    public boolean changeCostume(long avatarGuid, int costumeId) {
-        Avatar avatar = this.getAvatarByGuid(avatarGuid);
+		return true;
+	}
 
-        if (avatar == null) {
-            return false;
-        }
+	public boolean changeCostume(long avatarGuid, int costumeId) {
+		Avatar avatar = this.getAvatarByGuid(avatarGuid);
 
-        if (costumeId != 0 && !getPlayer().getCostumeList().contains(costumeId)) {
-            return false;
-        }
+		if (avatar == null) {
+			return false;
+		}
 
-        // TODO make sure avatar can wear costume
+		if (costumeId != 0 && !getPlayer().getCostumeList().contains(costumeId)) {
+			return false;
+		}
 
-        avatar.setCostume(costumeId);
-        avatar.save();
+		// TODO make sure avatar can wear costume
 
-        // Update entity
-        EntityAvatar entity = avatar.getAsEntity();
-        if (entity == null) {
-            entity =
-                    EntityCreationEvent.call(
-                            EntityAvatar.class, new Class<?>[] {Avatar.class}, new Object[] {avatar});
-            getPlayer().sendPacket(new PacketAvatarChangeCostumeNotify(entity));
-        } else {
-            getPlayer().getScene().broadcastPacket(new PacketAvatarChangeCostumeNotify(entity));
-        }
+		avatar.setCostume(costumeId);
+		avatar.save();
 
-        // Done
-        return true;
-    }
+		// Update entity
+		EntityAvatar entity = avatar.getAsEntity();
+		if (entity == null) {
+			entity =
+				EntityCreationEvent.call(EntityAvatar.class, new Class<?>[] { Avatar.class }, new Object[] { avatar });
+			getPlayer().sendPacket(new PacketAvatarChangeCostumeNotify(entity));
+		} else {
+			getPlayer().getScene().broadcastPacket(new PacketAvatarChangeCostumeNotify(entity));
+		}
 
-    public void loadFromDatabase() {
-        List<Avatar> avatars = DatabaseHelper.getAvatars(getPlayer());
+		// Done
+		return true;
+	}
 
-        for (Avatar avatar : avatars) {
-            // Should never happen
-            if (avatar.getObjectId() == null) {
-                continue;
-            }
+	public void loadFromDatabase() {
+		List<Avatar> avatars = DatabaseHelper.getAvatars(getPlayer());
 
-            AvatarData avatarData = GameData.getAvatarDataMap().get(avatar.getAvatarId());
-            AvatarSkillDepotData skillDepot =
-                    GameData.getAvatarSkillDepotDataMap().get(avatar.getSkillDepotId());
-            if (avatarData == null || skillDepot == null) {
-                continue;
-            }
+		for (Avatar avatar : avatars) {
+			// Should never happen
+			if (avatar.getObjectId() == null) {
+				continue;
+			}
 
-            // Set ownerships
-            avatar.setAvatarData(avatarData);
-            avatar.setSkillDepot(skillDepot);
-            avatar.setOwner(getPlayer());
+			AvatarData avatarData = GameData.getAvatarDataMap().get(avatar.getAvatarId());
+			AvatarSkillDepotData skillDepot = GameData.getAvatarSkillDepotDataMap().get(avatar.getSkillDepotId());
+			if (avatarData == null || skillDepot == null) {
+				continue;
+			}
 
-            // Force recalc of const boosted skills
-            avatar.recalcConstellations();
+			// Set ownerships
+			avatar.setAvatarData(avatarData);
+			avatar.setSkillDepot(skillDepot);
+			avatar.setOwner(getPlayer());
 
-            // Add to avatar storage
-            this.avatars.put(avatar.getAvatarId(), avatar);
-            this.avatarsGuid.put(avatar.getGuid(), avatar);
-        }
-    }
+			// Force recalc of const boosted skills
+			avatar.recalcConstellations();
 
-    public void postLoad() {
-        for (Avatar avatar : this) {
-            // Weapon check
-            if (avatar.getWeapon() == null) {
-                this.addStartingWeapon(avatar);
-            }
-            // Recalc stats
-            avatar.recalcStats();
-        }
-    }
+			// Add to avatar storage
+			this.avatars.put(avatar.getAvatarId(), avatar);
+			this.avatarsGuid.put(avatar.getGuid(), avatar);
+		}
+	}
 
-    @Override
-    public Iterator<Avatar> iterator() {
-        return getAvatars().values().iterator();
-    }
+	public void postLoad() {
+		for (Avatar avatar : this) {
+			// Weapon check
+			if (avatar.getWeapon() == null) {
+				this.addStartingWeapon(avatar);
+			}
+			// Recalc stats
+			avatar.recalcStats();
+		}
+	}
+
+	@Override
+	public Iterator<Avatar> iterator() {
+		return getAvatars().values().iterator();
+	}
 }

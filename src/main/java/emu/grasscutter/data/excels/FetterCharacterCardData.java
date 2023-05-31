@@ -6,18 +6,19 @@ import emu.grasscutter.data.ResourceType.LoadPriority;
 
 @ResourceType(name = "FetterCharacterCardExcelConfigData.json", loadPriority = LoadPriority.HIGHEST)
 public class FetterCharacterCardData extends GameResource {
-    private int avatarId;
-    private int rewardId;
 
-    @Override
-    public int getId() {
-        return avatarId;
-    }
+	private int avatarId;
+	private int rewardId;
 
-    public int getRewardId() {
-        return rewardId;
-    }
+	@Override
+	public int getId() {
+		return avatarId;
+	}
 
-    @Override
-    public void onLoad() {}
+	public int getRewardId() {
+		return rewardId;
+	}
+
+	@Override
+	public void onLoad() {}
 }

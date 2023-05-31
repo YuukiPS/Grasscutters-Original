@@ -8,10 +8,11 @@ import emu.grasscutter.server.game.GameSession;
 
 @Opcodes(PacketOpcodes.TakeBattlePassRewardReq)
 public class HandlerTakeBattlePassRewardReq extends PacketHandler {
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        var req = TakeBattlePassRewardReq.parseFrom(payload);
 
-        session.getPlayer().getBattlePassManager().takeReward(req.getTakeOptionListList());
-    }
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		var req = TakeBattlePassRewardReq.parseFrom(payload);
+
+		session.getPlayer().getBattlePassManager().takeReward(req.getTakeOptionListList());
+	}
 }

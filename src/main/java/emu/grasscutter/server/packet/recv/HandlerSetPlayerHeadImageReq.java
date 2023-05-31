@@ -9,15 +9,16 @@ import emu.grasscutter.server.packet.send.PacketSetPlayerHeadImageRsp;
 
 @Opcodes(PacketOpcodes.SetPlayerHeadImageReq)
 public class HandlerSetPlayerHeadImageReq extends PacketHandler {
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        SetPlayerHeadImageReq req = SetPlayerHeadImageReq.parseFrom(payload);
 
-        int id = req.getAvatarId();
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		SetPlayerHeadImageReq req = SetPlayerHeadImageReq.parseFrom(payload);
 
-        if (session.getPlayer().getAvatars().hasAvatar(id)) {
-            session.getPlayer().setHeadImage(id);
-            session.send(new PacketSetPlayerHeadImageRsp(session.getPlayer()));
-        }
-    }
+		int id = req.getAvatarId();
+
+		if (session.getPlayer().getAvatars().hasAvatar(id)) {
+			session.getPlayer().setHeadImage(id);
+			session.send(new PacketSetPlayerHeadImageRsp(session.getPlayer()));
+		}
+	}
 }

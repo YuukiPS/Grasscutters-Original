@@ -10,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public final class QuestGlobalVarData extends GameResource {
-    int id;
-    int defaultValue;
+
+	int id;
+	int defaultValue;
 }

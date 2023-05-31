@@ -7,17 +7,16 @@ import emu.grasscutter.net.proto.SceneEntityMoveNotifyOuterClass.SceneEntityMove
 
 public class PacketSceneEntityMoveNotify extends BasePacket {
 
-    public PacketSceneEntityMoveNotify(EntityMoveInfo moveInfo) {
-        super(PacketOpcodes.SceneEntityMoveNotify, true);
+	public PacketSceneEntityMoveNotify(EntityMoveInfo moveInfo) {
+		super(PacketOpcodes.SceneEntityMoveNotify, true);
+		SceneEntityMoveNotify proto = SceneEntityMoveNotify
+			.newBuilder()
+			.setMotionInfo(moveInfo.getMotionInfo())
+			.setEntityId(moveInfo.getEntityId())
+			.setSceneTime(moveInfo.getSceneTime())
+			.setReliableSeq(moveInfo.getReliableSeq())
+			.build();
 
-        SceneEntityMoveNotify proto =
-                SceneEntityMoveNotify.newBuilder()
-                        .setMotionInfo(moveInfo.getMotionInfo())
-                        .setEntityId(moveInfo.getEntityId())
-                        .setSceneTime(moveInfo.getSceneTime())
-                        .setReliableSeq(moveInfo.getReliableSeq())
-                        .build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

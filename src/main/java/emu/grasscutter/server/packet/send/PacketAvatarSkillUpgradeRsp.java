@@ -7,17 +7,16 @@ import emu.grasscutter.net.proto.AvatarSkillUpgradeRspOuterClass.AvatarSkillUpgr
 
 public class PacketAvatarSkillUpgradeRsp extends BasePacket {
 
-    public PacketAvatarSkillUpgradeRsp(Avatar avatar, int skillId, int oldLevel, int newLevel) {
-        super(PacketOpcodes.AvatarSkillUpgradeRsp);
+	public PacketAvatarSkillUpgradeRsp(Avatar avatar, int skillId, int oldLevel, int newLevel) {
+		super(PacketOpcodes.AvatarSkillUpgradeRsp);
+		AvatarSkillUpgradeRsp proto = AvatarSkillUpgradeRsp
+			.newBuilder()
+			.setAvatarGuid(avatar.getGuid())
+			.setAvatarSkillId(skillId)
+			.setOldLevel(oldLevel)
+			.setCurLevel(newLevel)
+			.build();
 
-        AvatarSkillUpgradeRsp proto =
-                AvatarSkillUpgradeRsp.newBuilder()
-                        .setAvatarGuid(avatar.getGuid())
-                        .setAvatarSkillId(skillId)
-                        .setOldLevel(oldLevel)
-                        .setCurLevel(newLevel)
-                        .build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

@@ -8,20 +8,18 @@ import java.util.List;
 
 public class PacketReliquaryUpgradeRsp extends BasePacket {
 
-    public PacketReliquaryUpgradeRsp(
-            GameItem relic, int rate, int oldLevel, List<Integer> oldAppendPropIdList) {
-        super(PacketOpcodes.ReliquaryUpgradeRsp);
+	public PacketReliquaryUpgradeRsp(GameItem relic, int rate, int oldLevel, List<Integer> oldAppendPropIdList) {
+		super(PacketOpcodes.ReliquaryUpgradeRsp);
+		ReliquaryUpgradeRsp proto = ReliquaryUpgradeRsp
+			.newBuilder()
+			.setTargetReliquaryGuid(relic.getGuid())
+			.setOldLevel(oldLevel)
+			.setCurLevel(relic.getLevel())
+			.setPowerUpRate(rate)
+			.addAllOldAppendPropList(oldAppendPropIdList)
+			.addAllCurAppendPropList(relic.getAppendPropIdList())
+			.build();
 
-        ReliquaryUpgradeRsp proto =
-                ReliquaryUpgradeRsp.newBuilder()
-                        .setTargetReliquaryGuid(relic.getGuid())
-                        .setOldLevel(oldLevel)
-                        .setCurLevel(relic.getLevel())
-                        .setPowerUpRate(rate)
-                        .addAllOldAppendPropList(oldAppendPropIdList)
-                        .addAllCurAppendPropList(relic.getAppendPropIdList())
-                        .build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

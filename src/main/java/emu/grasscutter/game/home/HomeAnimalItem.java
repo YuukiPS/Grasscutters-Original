@@ -13,23 +13,26 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder(builderMethodName = "of")
 public class HomeAnimalItem {
-    int furnitureId;
-    Position spawnPos;
-    Position spawnRot;
 
-    public static HomeAnimalItem parseFrom(HomeAnimalDataOuterClass.HomeAnimalData homeAnimalData) {
-        return HomeAnimalItem.of()
-                .furnitureId(homeAnimalData.getFurnitureId())
-                .spawnPos(new Position(homeAnimalData.getSpawnPos()))
-                .spawnRot(new Position(homeAnimalData.getSpawnRot()))
-                .build();
-    }
+	int furnitureId;
+	Position spawnPos;
+	Position spawnRot;
 
-    public HomeAnimalDataOuterClass.HomeAnimalData toProto() {
-        return HomeAnimalDataOuterClass.HomeAnimalData.newBuilder()
-                .setFurnitureId(furnitureId)
-                .setSpawnPos(spawnPos.toProto())
-                .setSpawnRot(spawnRot.toProto())
-                .build();
-    }
+	public static HomeAnimalItem parseFrom(HomeAnimalDataOuterClass.HomeAnimalData homeAnimalData) {
+		return HomeAnimalItem
+			.of()
+			.furnitureId(homeAnimalData.getFurnitureId())
+			.spawnPos(new Position(homeAnimalData.getSpawnPos()))
+			.spawnRot(new Position(homeAnimalData.getSpawnRot()))
+			.build();
+	}
+
+	public HomeAnimalDataOuterClass.HomeAnimalData toProto() {
+		return HomeAnimalDataOuterClass.HomeAnimalData
+			.newBuilder()
+			.setFurnitureId(furnitureId)
+			.setSpawnPos(spawnPos.toProto())
+			.setSpawnRot(spawnRot.toProto())
+			.build();
+	}
 }

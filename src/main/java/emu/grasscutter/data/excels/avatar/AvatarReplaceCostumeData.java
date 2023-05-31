@@ -10,15 +10,14 @@ import lombok.EqualsAndHashCode;
 @ResourceType(name = "AvatarReplaceCostumeExcelConfigData.json")
 @EqualsAndHashCode(callSuper = false)
 public class AvatarReplaceCostumeData extends GameResource {
-    private int avatarId;
 
-    @SerializedName(
-            value = "costumeId",
-            alternate = {"MGLCOPOIJIC", "BDBMOBGKIAP"})
-    private int costumeId;
+	private int avatarId;
 
-    @Override
-    public int getId() {
-        return costumeId;
-    }
+	@SerializedName(value = "costumeId", alternate = { "MGLCOPOIJIC", "BDBMOBGKIAP" })
+	private int costumeId;
+
+	@Override
+	public int getId() {
+		return costumeId;
+	}
 }

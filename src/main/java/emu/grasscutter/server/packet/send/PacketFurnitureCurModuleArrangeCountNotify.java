@@ -6,15 +6,12 @@ import emu.grasscutter.net.proto.FurnitureCurModuleArrangeCountNotifyOuterClass;
 
 public class PacketFurnitureCurModuleArrangeCountNotify extends BasePacket {
 
-    public PacketFurnitureCurModuleArrangeCountNotify() {
-        super(PacketOpcodes.FurnitureCurModuleArrangeCountNotify);
+	public PacketFurnitureCurModuleArrangeCountNotify() {
+		super(PacketOpcodes.FurnitureCurModuleArrangeCountNotify);
+		var proto = FurnitureCurModuleArrangeCountNotifyOuterClass.FurnitureCurModuleArrangeCountNotify.newBuilder();
 
-        var proto =
-                FurnitureCurModuleArrangeCountNotifyOuterClass.FurnitureCurModuleArrangeCountNotify
-                        .newBuilder();
+		// TODO
 
-        // TODO
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

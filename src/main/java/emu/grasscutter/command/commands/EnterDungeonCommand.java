@@ -8,43 +8,40 @@ import emu.grasscutter.game.player.Player;
 import java.util.List;
 
 @Command(
-        label = "enter_dungeon",
-        aliases = {"enterdungeon", "dungeon"},
-        usage = {"<dungeonId>"},
-        permission = "player.enterdungeon",
-        permissionTargeted = "player.enterdungeon.others")
+	label = "enter_dungeon",
+	aliases = { "enterdungeon", "dungeon" },
+	usage = { "<dungeonId>" },
+	permission = "player.enterdungeon",
+	permissionTargeted = "player.enterdungeon.others"
+)
 public final class EnterDungeonCommand implements CommandHandler {
 
-    @Override
-    public void execute(Player sender, Player targetPlayer, List<String> args) {
-        if (args.size() < 1) {
-            sendUsageMessage(sender);
-            return;
-        }
+	@Override
+	public void execute(Player sender, Player targetPlayer, List<String> args) {
+		if (args.size() < 1) {
+			sendUsageMessage(sender);
+			return;
+		}
 
-        try {
-            int dungeonId = Integer.parseInt(args.get(0));
-            if (dungeonId == targetPlayer.getSceneId()) {
-                CommandHandler.sendMessage(
-                        sender, translate(sender, "commands.enter_dungeon.in_dungeon_error"));
-                return;
-            }
+		try {
+			int dungeonId = Integer.parseInt(args.get(0));
+			if (dungeonId == targetPlayer.getSceneId()) {
+				CommandHandler.sendMessage(sender, translate(sender, "commands.enter_dungeon.in_dungeon_error"));
+				return;
+			}
 
-            boolean result =
-                    targetPlayer
-                            .getServer()
-                            .getDungeonSystem()
-                            .enterDungeon(targetPlayer.getSession().getPlayer(), 0, dungeonId);
+			boolean result = targetPlayer
+				.getServer()
+				.getDungeonSystem()
+				.enterDungeon(targetPlayer.getSession().getPlayer(), 0, dungeonId);
 
-            if (!result) {
-                CommandHandler.sendMessage(
-                        sender, translate(sender, "commands.enter_dungeon.not_found_error"));
-            } else {
-                CommandHandler.sendMessage(
-                        sender, translate(sender, "commands.enter_dungeon.changed", dungeonId));
-            }
-        } catch (Exception e) {
-            sendUsageMessage(sender);
-        }
-    }
+			if (!result) {
+				CommandHandler.sendMessage(sender, translate(sender, "commands.enter_dungeon.not_found_error"));
+			} else {
+				CommandHandler.sendMessage(sender, translate(sender, "commands.enter_dungeon.changed", dungeonId));
+			}
+		} catch (Exception e) {
+			sendUsageMessage(sender);
+		}
+	}
 }

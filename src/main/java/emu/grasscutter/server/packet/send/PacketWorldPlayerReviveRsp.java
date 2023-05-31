@@ -6,11 +6,10 @@ import emu.grasscutter.net.proto.WorldPlayerReviveRspOuterClass.WorldPlayerReviv
 
 public class PacketWorldPlayerReviveRsp extends BasePacket {
 
-    public PacketWorldPlayerReviveRsp() {
-        super(PacketOpcodes.WorldPlayerReviveRsp);
+	public PacketWorldPlayerReviveRsp() {
+		super(PacketOpcodes.WorldPlayerReviveRsp);
+		WorldPlayerReviveRsp.Builder proto = WorldPlayerReviveRsp.newBuilder();
 
-        WorldPlayerReviveRsp.Builder proto = WorldPlayerReviveRsp.newBuilder();
-
-        this.setData(proto.build());
-    }
+		this.setData(proto.build());
+	}
 }

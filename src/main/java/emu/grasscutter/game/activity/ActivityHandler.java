@@ -21,120 +21,126 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public abstract class ActivityHandler {
-    /** Must set before initWatchers */
-    @Getter ActivityConfigItem activityConfigItem;
 
-    @Getter ActivityData activityData;
-    Map<WatcherTriggerType, List<ActivityWatcher>> watchersMap = new HashMap<>();
+	/** Must set before initWatchers */
+	@Getter
+	ActivityConfigItem activityConfigItem;
 
-    public abstract void onProtoBuild(
-            PlayerActivityData playerActivityData,
-            ActivityInfoOuterClass.ActivityInfo.Builder activityInfo);
+	@Getter
+	ActivityData activityData;
 
-    public abstract void onInitPlayerActivityData(PlayerActivityData playerActivityData);
+	Map<WatcherTriggerType, List<ActivityWatcher>> watchersMap = new HashMap<>();
 
-    public void initWatchers(Map<WatcherTriggerType, ConstructorAccess<?>> activityWatcherTypeMap) {
-        activityData = GameData.getActivityDataMap().get(activityConfigItem.getActivityId());
+	public abstract void onProtoBuild(
+		PlayerActivityData playerActivityData,
+		ActivityInfoOuterClass.ActivityInfo.Builder activityInfo
+	);
 
-        // add watcher to map by id
-        activityData
-                .getWatcherDataList()
-                .forEach(
-                        watcherData -> {
-                            var watcherType =
-                                    activityWatcherTypeMap.get(
-                                            watcherData.getTriggerConfig().getWatcherTriggerType());
-                            ActivityWatcher watcher;
-                            if (watcherType != null) {
-                                watcher = (ActivityWatcher) watcherType.newInstance();
-                            } else {
-                                watcher = new DefaultWatcher();
-                            }
+	public abstract void onInitPlayerActivityData(PlayerActivityData playerActivityData);
 
-                            watcher.setWatcherId(watcherData.getId());
-                            watcher.setActivityHandler(this);
-                            watcher.setActivityWatcherData(watcherData);
-                            watchersMap.computeIfAbsent(
-                                    watcherData.getTriggerConfig().getWatcherTriggerType(), k -> new ArrayList<>());
-                            watchersMap.get(watcherData.getTriggerConfig().getWatcherTriggerType()).add(watcher);
-                        });
-    }
+	public void initWatchers(Map<WatcherTriggerType, ConstructorAccess<?>> activityWatcherTypeMap) {
+		activityData = GameData.getActivityDataMap().get(activityConfigItem.getActivityId());
 
-    protected void triggerCondEvents(Player player) {
-        if (activityData == null) {
-            return;
-        }
+		// add watcher to map by id
+		activityData
+			.getWatcherDataList()
+			.forEach(watcherData -> {
+				var watcherType = activityWatcherTypeMap.get(watcherData.getTriggerConfig().getWatcherTriggerType());
+				ActivityWatcher watcher;
+				if (watcherType != null) {
+					watcher = (ActivityWatcher) watcherType.newInstance();
+				} else {
+					watcher = new DefaultWatcher();
+				}
 
-        var questManager = player.getQuestManager();
-        activityData
-                .getCondGroupId()
-                .forEach(
-                        condGroupId -> {
-                            var condGroup = GameData.getActivityCondGroupMap().get((int) condGroupId);
-                            if (condGroup != null)
-                                condGroup
-                                        .getCondIds()
-                                        .forEach(
-                                                condition ->
-                                                        questManager.queueEvent(QuestCond.QUEST_COND_ACTIVITY_COND, condition));
-                        });
-    }
+				watcher.setWatcherId(watcherData.getId());
+				watcher.setActivityHandler(this);
+				watcher.setActivityWatcherData(watcherData);
+				watchersMap.computeIfAbsent(
+					watcherData.getTriggerConfig().getWatcherTriggerType(),
+					k -> new ArrayList<>()
+				);
+				watchersMap.get(watcherData.getTriggerConfig().getWatcherTriggerType()).add(watcher);
+			});
+	}
 
-    private List<Integer> getActivityConditions() {
-        if (activityData == null) {
-            return new ArrayList<>();
-        }
+	protected void triggerCondEvents(Player player) {
+		if (activityData == null) {
+			return;
+		}
 
-        return activityData.getCondGroupId().stream()
-                .map(condGroupId -> GameData.getActivityCondGroupMap().get((int) condGroupId))
-                .filter(Objects::nonNull)
-                .map(ActivityCondGroup::getCondIds)
-                .flatMap(Collection::stream)
-                .toList();
-    }
+		var questManager = player.getQuestManager();
+		activityData
+			.getCondGroupId()
+			.forEach(condGroupId -> {
+				var condGroup = GameData.getActivityCondGroupMap().get((int) condGroupId);
+				if (condGroup != null) condGroup
+					.getCondIds()
+					.forEach(condition -> questManager.queueEvent(QuestCond.QUEST_COND_ACTIVITY_COND, condition));
+			});
+	}
 
-    // TODO handle possible overwrites
-    private List<Integer> getMeetConditions(ActivityConditionExecutor conditionExecutor) {
-        return conditionExecutor.getMeetActivitiesConditions(getActivityConditions());
-    }
+	private List<Integer> getActivityConditions() {
+		if (activityData == null) {
+			return new ArrayList<>();
+		}
 
-    private Map<Integer, PlayerActivityData.WatcherInfo> initWatchersDataForPlayer() {
-        return watchersMap.values().stream()
-                .flatMap(Collection::stream)
-                .map(PlayerActivityData.WatcherInfo::init)
-                .collect(Collectors.toMap(PlayerActivityData.WatcherInfo::getWatcherId, y -> y));
-    }
+		return activityData
+			.getCondGroupId()
+			.stream()
+			.map(condGroupId -> GameData.getActivityCondGroupMap().get((int) condGroupId))
+			.filter(Objects::nonNull)
+			.map(ActivityCondGroup::getCondIds)
+			.flatMap(Collection::stream)
+			.toList();
+	}
 
-    public PlayerActivityData initPlayerActivityData(Player player) {
-        PlayerActivityData playerActivityData =
-                PlayerActivityData.of()
-                        .activityId(activityConfigItem.getActivityId())
-                        .uid(player.getUid())
-                        .watcherInfoMap(initWatchersDataForPlayer())
-                        .build();
+	// TODO handle possible overwrites
+	private List<Integer> getMeetConditions(ActivityConditionExecutor conditionExecutor) {
+		return conditionExecutor.getMeetActivitiesConditions(getActivityConditions());
+	}
 
-        onInitPlayerActivityData(playerActivityData);
-        return playerActivityData;
-    }
+	private Map<Integer, PlayerActivityData.WatcherInfo> initWatchersDataForPlayer() {
+		return watchersMap
+			.values()
+			.stream()
+			.flatMap(Collection::stream)
+			.map(PlayerActivityData.WatcherInfo::init)
+			.collect(Collectors.toMap(PlayerActivityData.WatcherInfo::getWatcherId, y -> y));
+	}
 
-    public ActivityInfoOuterClass.ActivityInfo toProto(
-            PlayerActivityData playerActivityData, ActivityConditionExecutor conditionExecutor) {
-        var proto = ActivityInfoOuterClass.ActivityInfo.newBuilder();
-        proto
-                .setActivityId(activityConfigItem.getActivityId())
-                .setActivityType(activityConfigItem.getActivityType())
-                .setScheduleId(activityConfigItem.getScheduleId())
-                .setBeginTime(DateHelper.getUnixTime(activityConfigItem.getBeginTime()))
-                .setFirstDayStartTime(DateHelper.getUnixTime(activityConfigItem.getBeginTime()))
-                .setEndTime(DateHelper.getUnixTime(activityConfigItem.getEndTime()))
-                .addAllMeetCondList(getMeetConditions(conditionExecutor));
+	public PlayerActivityData initPlayerActivityData(Player player) {
+		PlayerActivityData playerActivityData = PlayerActivityData
+			.of()
+			.activityId(activityConfigItem.getActivityId())
+			.uid(player.getUid())
+			.watcherInfoMap(initWatchersDataForPlayer())
+			.build();
 
-        if (playerActivityData != null) {
-            proto.addAllWatcherInfoList(playerActivityData.getAllWatcherInfoList());
-        }
+		onInitPlayerActivityData(playerActivityData);
+		return playerActivityData;
+	}
 
-        onProtoBuild(playerActivityData, proto);
+	public ActivityInfoOuterClass.ActivityInfo toProto(
+		PlayerActivityData playerActivityData,
+		ActivityConditionExecutor conditionExecutor
+	) {
+		var proto = ActivityInfoOuterClass.ActivityInfo.newBuilder();
+		proto
+			.setActivityId(activityConfigItem.getActivityId())
+			.setActivityType(activityConfigItem.getActivityType())
+			.setScheduleId(activityConfigItem.getScheduleId())
+			.setBeginTime(DateHelper.getUnixTime(activityConfigItem.getBeginTime()))
+			.setFirstDayStartTime(DateHelper.getUnixTime(activityConfigItem.getBeginTime()))
+			.setEndTime(DateHelper.getUnixTime(activityConfigItem.getEndTime()))
+			.addAllMeetCondList(getMeetConditions(conditionExecutor));
 
-        return proto.build();
-    }
+		if (playerActivityData != null) {
+			proto.addAllWatcherInfoList(playerActivityData.getAllWatcherInfoList());
+		}
+
+		onProtoBuild(playerActivityData, proto);
+
+		return proto.build();
+	}
 }

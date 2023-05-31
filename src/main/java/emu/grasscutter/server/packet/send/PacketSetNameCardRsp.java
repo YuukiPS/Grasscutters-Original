@@ -6,11 +6,10 @@ import emu.grasscutter.net.proto.SetNameCardRspOuterClass.SetNameCardRsp;
 
 public class PacketSetNameCardRsp extends BasePacket {
 
-    public PacketSetNameCardRsp(int nameCardId) {
-        super(PacketOpcodes.SetNameCardRsp);
+	public PacketSetNameCardRsp(int nameCardId) {
+		super(PacketOpcodes.SetNameCardRsp);
+		SetNameCardRsp proto = SetNameCardRsp.newBuilder().setNameCardId(nameCardId).build();
 
-        SetNameCardRsp proto = SetNameCardRsp.newBuilder().setNameCardId(nameCardId).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

@@ -1,0 +1,12 @@
+.gradle/
+bin/
+build/
+logs/
+plugins/
+proto/
+GM Handbook.txt
+config.json
+*.md
+src/generated/
+src/main/resources/
+src/handbook

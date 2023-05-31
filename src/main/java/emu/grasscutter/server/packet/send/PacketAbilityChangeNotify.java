@@ -7,15 +7,14 @@ import emu.grasscutter.net.proto.AbilityChangeNotifyOuterClass.AbilityChangeNoti
 
 public class PacketAbilityChangeNotify extends BasePacket {
 
-    public PacketAbilityChangeNotify(EntityAvatar entity) {
-        super(PacketOpcodes.AbilityChangeNotify, true);
+	public PacketAbilityChangeNotify(EntityAvatar entity) {
+		super(PacketOpcodes.AbilityChangeNotify, true);
+		AbilityChangeNotify proto = AbilityChangeNotify
+			.newBuilder()
+			.setEntityId(entity.getId())
+			.setAbilityControlBlock(entity.getAbilityControlBlock())
+			.build();
 
-        AbilityChangeNotify proto =
-                AbilityChangeNotify.newBuilder()
-                        .setEntityId(entity.getId())
-                        .setAbilityControlBlock(entity.getAbilityControlBlock())
-                        .build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

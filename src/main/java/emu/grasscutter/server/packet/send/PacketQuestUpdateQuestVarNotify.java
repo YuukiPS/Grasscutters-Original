@@ -6,13 +6,15 @@ import emu.grasscutter.net.proto.QuestUpdateQuestVarNotifyOuterClass.QuestUpdate
 import java.util.stream.IntStream;
 
 public class PacketQuestUpdateQuestVarNotify extends BasePacket {
-    public PacketQuestUpdateQuestVarNotify(int mainQuestId, int... questVars) {
-        super(PacketOpcodes.QuestUpdateQuestVarNotify);
 
-        this.setData(
-                QuestUpdateQuestVarNotify.newBuilder()
-                        .setParentQuestId(mainQuestId)
-                        .addAllQuestVar(IntStream.of(questVars).boxed().toList())
-                        .build());
-    }
+	public PacketQuestUpdateQuestVarNotify(int mainQuestId, int... questVars) {
+		super(PacketOpcodes.QuestUpdateQuestVarNotify);
+		this.setData(
+				QuestUpdateQuestVarNotify
+					.newBuilder()
+					.setParentQuestId(mainQuestId)
+					.addAllQuestVar(IntStream.of(questVars).boxed().toList())
+					.build()
+			);
+	}
 }

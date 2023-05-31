@@ -5,19 +5,20 @@ import emu.grasscutter.data.ResourceType;
 
 @ResourceType(name = "WeaponLevelExcelConfigData.json")
 public class WeaponLevelData extends GameResource {
-    private int level;
-    private int[] requiredExps;
 
-    @Override
-    public int getId() {
-        return this.level;
-    }
+	private int level;
+	private int[] requiredExps;
 
-    public int getLevel() {
-        return level;
-    }
+	@Override
+	public int getId() {
+		return this.level;
+	}
 
-    public int[] getRequiredExps() {
-        return requiredExps;
-    }
+	public int getLevel() {
+		return level;
+	}
+
+	public int[] getRequiredExps() {
+		return requiredExps;
+	}
 }

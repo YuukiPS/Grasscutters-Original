@@ -9,20 +9,17 @@ import lombok.Getter;
 @ResourceType(name = "MonsterDescribeExcelConfigData.json", loadPriority = LoadPriority.HIGH)
 @Getter
 public class MonsterDescribeData extends GameResource {
-    @Getter(onMethod_ = @Override)
-    private int id;
 
-    private long nameTextMapHash;
+	@Getter(onMethod_ = @Override)
+	private int id;
 
-    @SerializedName(
-            value = "titleId",
-            alternate = {"titleID"})
-    private int titleId;
+	private long nameTextMapHash;
 
-    @SerializedName(
-            value = "specialNameLabId",
-            alternate = {"specialNameLabID"})
-    private int specialNameLabId;
+	@SerializedName(value = "titleId", alternate = { "titleID" })
+	private int titleId;
 
-    private MonsterSpecialNameData specialNameData;
+	@SerializedName(value = "specialNameLabId", alternate = { "specialNameLabID" })
+	private int specialNameLabId;
+
+	private MonsterSpecialNameData specialNameData;
 }

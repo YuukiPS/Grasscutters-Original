@@ -9,23 +9,25 @@ import lombok.Setter;
 
 public class ConfigRoute extends BaseRoute {
 
-    @Getter @Setter private int routeId;
+	@Getter
+	@Setter
+	private int routeId;
 
-    public ConfigRoute(SceneGadget gadget) {
-        super(gadget);
-        this.routeId = gadget.route_id;
-    }
+	public ConfigRoute(SceneGadget gadget) {
+		super(gadget);
+		this.routeId = gadget.route_id;
+	}
 
-    public ConfigRoute(Position startRot, boolean startRoute, boolean isActive, int routeId) {
-        super(startRot, startRoute, isActive);
-        this.routeId = routeId;
-    }
+	public ConfigRoute(Position startRot, boolean startRoute, boolean isActive, int routeId) {
+		super(startRot, startRoute, isActive);
+		this.routeId = routeId;
+	}
 
-    @Override
-    public PlatformInfoOuterClass.PlatformInfo.Builder toProto() {
-        return super.toProto()
-                .setRouteId(routeId)
-                .setMovingPlatformType(
-                        MovingPlatformTypeOuterClass.MovingPlatformType.MOVING_PLATFORM_TYPE_USE_CONFIG);
-    }
+	@Override
+	public PlatformInfoOuterClass.PlatformInfo.Builder toProto() {
+		return super
+			.toProto()
+			.setRouteId(routeId)
+			.setMovingPlatformType(MovingPlatformTypeOuterClass.MovingPlatformType.MOVING_PLATFORM_TYPE_USE_CONFIG);
+	}
 }

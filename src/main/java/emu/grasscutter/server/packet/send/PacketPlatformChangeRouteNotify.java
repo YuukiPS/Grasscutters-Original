@@ -8,16 +8,15 @@ import lombok.val;
 
 public class PacketPlatformChangeRouteNotify extends BasePacket {
 
-    public PacketPlatformChangeRouteNotify(EntityGadget gadgetEntity) {
-        super(PacketOpcodes.PlatformChangeRouteNotify);
+	public PacketPlatformChangeRouteNotify(EntityGadget gadgetEntity) {
+		super(PacketOpcodes.PlatformChangeRouteNotify);
+		val proto = PlatformChangeRouteNotify
+			.newBuilder()
+			.setEntityId(gadgetEntity.getId())
+			.setSceneTime(gadgetEntity.getScene().getSceneTime())
+			.setPlatform(gadgetEntity.getPlatformInfo())
+			.build();
 
-        val proto =
-                PlatformChangeRouteNotify.newBuilder()
-                        .setEntityId(gadgetEntity.getId())
-                        .setSceneTime(gadgetEntity.getScene().getSceneTime())
-                        .setPlatform(gadgetEntity.getPlatformInfo())
-                        .build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

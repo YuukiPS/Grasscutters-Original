@@ -15,59 +15,59 @@ import java.util.HashSet;
 import java.util.Set;
 
 public final class GadgetWorktop extends GadgetContent {
-    private Set<Integer> worktopOptions;
-    private WorktopWorktopOptionHandler handler;
 
-    public GadgetWorktop(EntityGadget gadget) {
-        super(gadget);
-    }
+	private Set<Integer> worktopOptions;
+	private WorktopWorktopOptionHandler handler;
 
-    public Set<Integer> getWorktopOptions() {
-        if (this.worktopOptions == null) {
-            this.worktopOptions = new HashSet<>();
-        }
+	public GadgetWorktop(EntityGadget gadget) {
+		super(gadget);
+	}
 
-        return worktopOptions;
-    }
+	public Set<Integer> getWorktopOptions() {
+		if (this.worktopOptions == null) {
+			this.worktopOptions = new HashSet<>();
+		}
 
-    public void addWorktopOptions(int[] options) {
-        if (this.worktopOptions == null) {
-            this.worktopOptions = new IntOpenHashSet();
-        }
-        Arrays.stream(options).forEach(this.worktopOptions::add);
-    }
+		return worktopOptions;
+	}
 
-    public void removeWorktopOption(int option) {
-        if (this.worktopOptions == null) {
-            return;
-        }
-        this.worktopOptions.remove(option);
-    }
+	public void addWorktopOptions(int[] options) {
+		if (this.worktopOptions == null) {
+			this.worktopOptions = new IntOpenHashSet();
+		}
+		Arrays.stream(options).forEach(this.worktopOptions::add);
+	}
 
-    public boolean onInteract(Player player, GadgetInteractReq req) {
-        return false;
-    }
+	public void removeWorktopOption(int option) {
+		if (this.worktopOptions == null) {
+			return;
+		}
+		this.worktopOptions.remove(option);
+	}
 
-    public void onBuildProto(SceneGadgetInfo.Builder gadgetInfo) {
-        var options = this.getWorktopOptions();
-        if (options == null) return;
+	public boolean onInteract(Player player, GadgetInteractReq req) {
+		return false;
+	}
 
-        try {
-            var worktop = WorktopInfo.newBuilder().addAllOptionList(options).build();
-            gadgetInfo.setWorktop(worktop);
-        } catch (NullPointerException ignored) {
-            // "this.wrapped" is null.
-            gadgetInfo.setWorktop(
-                    WorktopInfo.newBuilder().addAllOptionList(Collections.emptyList()).build());
-            Grasscutter.getLogger().warn("GadgetWorktop.onBuildProto: this.wrapped is null");
-        }
-    }
+	public void onBuildProto(SceneGadgetInfo.Builder gadgetInfo) {
+		var options = this.getWorktopOptions();
+		if (options == null) return;
 
-    public void setOnSelectWorktopOptionEvent(WorktopWorktopOptionHandler handler) {
-        this.handler = handler;
-    }
+		try {
+			var worktop = WorktopInfo.newBuilder().addAllOptionList(options).build();
+			gadgetInfo.setWorktop(worktop);
+		} catch (NullPointerException ignored) {
+			// "this.wrapped" is null.
+			gadgetInfo.setWorktop(WorktopInfo.newBuilder().addAllOptionList(Collections.emptyList()).build());
+			Grasscutter.getLogger().warn("GadgetWorktop.onBuildProto: this.wrapped is null");
+		}
+	}
 
-    public boolean onSelectWorktopOption(SelectWorktopOptionReq req) {
-        return this.handler != null && this.handler.onSelectWorktopOption(this, req.getOptionId());
-    }
+	public void setOnSelectWorktopOptionEvent(WorktopWorktopOptionHandler handler) {
+		this.handler = handler;
+	}
+
+	public boolean onSelectWorktopOption(SelectWorktopOptionReq req) {
+		return this.handler != null && this.handler.onSelectWorktopOption(this, req.getOptionId());
+	}
 }

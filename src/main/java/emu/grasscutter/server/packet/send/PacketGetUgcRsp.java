@@ -10,32 +10,30 @@ import emu.grasscutter.net.proto.UgcMusicRecordOuterClass.UgcMusicRecord;
 
 public class PacketGetUgcRsp extends BasePacket {
 
-    public PacketGetUgcRsp(UgcMusicBriefInfo briefInfo, UgcMusicRecord musicRecord, GetUgcReq req) {
-        super(PacketOpcodes.GetUgcRsp);
+	public PacketGetUgcRsp(UgcMusicBriefInfo briefInfo, UgcMusicRecord musicRecord, GetUgcReq req) {
+		super(PacketOpcodes.GetUgcRsp);
+		var proto = GetUgcRsp.newBuilder();
 
-        var proto = GetUgcRsp.newBuilder();
+		proto
+			.setUgcGuid(briefInfo.getUgcGuid())
+			.setUgcType(req.getUgcType())
+			.setUgcRecordUsageValue(req.getUgcRecordUsageValue())
+			.setMusicRecord(musicRecord)
+			.setMusicBriefInfo(briefInfo);
 
-        proto
-                .setUgcGuid(briefInfo.getUgcGuid())
-                .setUgcType(req.getUgcType())
-                .setUgcRecordUsageValue(req.getUgcRecordUsageValue())
-                .setMusicRecord(musicRecord)
-                .setMusicBriefInfo(briefInfo);
+		this.setData(proto);
+	}
 
-        this.setData(proto);
-    }
+	public PacketGetUgcRsp(Retcode errorCode, GetUgcReq req) {
+		super(PacketOpcodes.GetUgcRsp);
+		var proto = GetUgcRsp.newBuilder();
 
-    public PacketGetUgcRsp(Retcode errorCode, GetUgcReq req) {
-        super(PacketOpcodes.GetUgcRsp);
+		proto
+			.setUgcGuid(req.getUgcGuid())
+			.setUgcType(req.getUgcType())
+			.setUgcRecordUsageValue(req.getUgcRecordUsageValue())
+			.setRetcode(errorCode.getNumber());
 
-        var proto = GetUgcRsp.newBuilder();
-
-        proto
-                .setUgcGuid(req.getUgcGuid())
-                .setUgcType(req.getUgcType())
-                .setUgcRecordUsageValue(req.getUgcRecordUsageValue())
-                .setRetcode(errorCode.getNumber());
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

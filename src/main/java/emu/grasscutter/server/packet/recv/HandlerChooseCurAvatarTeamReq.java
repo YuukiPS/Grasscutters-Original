@@ -9,10 +9,10 @@ import emu.grasscutter.server.game.GameSession;
 @Opcodes(PacketOpcodes.ChooseCurAvatarTeamReq)
 public class HandlerChooseCurAvatarTeamReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        ChooseCurAvatarTeamReq req = ChooseCurAvatarTeamReq.parseFrom(payload);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		ChooseCurAvatarTeamReq req = ChooseCurAvatarTeamReq.parseFrom(payload);
 
-        session.getPlayer().getTeamManager().setCurrentTeam(req.getTeamId());
-    }
+		session.getPlayer().getTeamManager().setCurrentTeam(req.getTeamId());
+	}
 }

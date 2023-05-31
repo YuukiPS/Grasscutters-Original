@@ -24,149 +24,151 @@ import org.slf4j.Logger;
 
 /* Internal communications server. */
 public final class DispatchServer extends WebSocketServer implements IDispatcher {
-    @Getter private final Logger logger = Grasscutter.getLogger();
-    @Getter private final Map<Integer, BiConsumer<WebSocket, JsonElement>> handlers = new HashMap<>();
 
-    @Getter private final Map<Integer, List<Consumer<JsonElement>>> callbacks = new HashMap<>();
+	@Getter
+	private final Logger logger = Grasscutter.getLogger();
 
-    /**
-     * Constructs a new {@code DispatchServer} instance.
-     *
-     * @param address The address to bind to.
-     * @param port The port to bind to.
-     */
-    public DispatchServer(String address, int port) {
-        super(new InetSocketAddress(address, port));
+	@Getter
+	private final Map<Integer, BiConsumer<WebSocket, JsonElement>> handlers = new HashMap<>();
 
-        this.registerHandler(PacketIds.LoginNotify, this::handleLogin);
-        this.registerHandler(PacketIds.TokenValidateReq, this::validateToken);
-        this.registerHandler(PacketIds.GetAccountReq, this::fetchAccount);
-        this.registerHandler(PacketIds.ServerMessageNotify, ServerMessageEvent::invoke);
-    }
+	@Getter
+	private final Map<Integer, List<Consumer<JsonElement>>> callbacks = new HashMap<>();
 
-    /**
-     * Handles the login packet sent by the client.
-     *
-     * @param socket The socket the packet was received from.
-     * @param object The packet data.
-     */
-    private void handleLogin(WebSocket socket, JsonElement object) {
-        var dispatchKey = object.getAsString().replaceAll("\"", "");
+	/**
+	 * Constructs a new {@code DispatchServer} instance.
+	 *
+	 * @param address The address to bind to.
+	 * @param port The port to bind to.
+	 */
+	public DispatchServer(String address, int port) {
+		super(new InetSocketAddress(address, port));
+		this.registerHandler(PacketIds.LoginNotify, this::handleLogin);
+		this.registerHandler(PacketIds.TokenValidateReq, this::validateToken);
+		this.registerHandler(PacketIds.GetAccountReq, this::fetchAccount);
+		this.registerHandler(PacketIds.ServerMessageNotify, ServerMessageEvent::invoke);
+	}
 
-        // Check if the dispatch key is valid.
-        if (!dispatchKey.equals(DISPATCH_INFO.dispatchKey)) {
-            this.getLogger()
-                    .warn("Invalid dispatch key received from {}.", socket.getRemoteSocketAddress());
-            this.getLogger().debug("Expected: {}, Received: {}", DISPATCH_INFO.dispatchKey, dispatchKey);
-            socket.close();
-        } else {
-            socket.setAttachment(true);
-        }
-    }
+	/**
+	 * Handles the login packet sent by the client.
+	 *
+	 * @param socket The socket the packet was received from.
+	 * @param object The packet data.
+	 */
+	private void handleLogin(WebSocket socket, JsonElement object) {
+		var dispatchKey = object.getAsString().replaceAll("\"", "");
 
-    /**
-     * Handles the token validation packet sent by the client.
-     *
-     * @param socket The socket the packet was received from.
-     * @param object The packet data.
-     */
-    private void validateToken(WebSocket socket, JsonElement object) {
-        var message = IDispatcher.decode(object);
-        var accountId = message.get("uid").getAsString();
-        var token = message.get("token").getAsString();
+		// Check if the dispatch key is valid.
+		if (!dispatchKey.equals(DISPATCH_INFO.dispatchKey)) {
+			this.getLogger().warn("Invalid dispatch key received from {}.", socket.getRemoteSocketAddress());
+			this.getLogger().debug("Expected: {}, Received: {}", DISPATCH_INFO.dispatchKey, dispatchKey);
+			socket.close();
+		} else {
+			socket.setAttachment(true);
+		}
+	}
 
-        // Get the account from the database.
-        var account = DatabaseHelper.getAccountById(accountId);
-        var valid = account != null && account.getToken().equals(token);
-        // Create the response message.
-        var response = new JsonObject();
-        response.addProperty("valid", valid);
-        if (valid) response.add("account", JSON.toJsonTree(account));
+	/**
+	 * Handles the token validation packet sent by the client.
+	 *
+	 * @param socket The socket the packet was received from.
+	 * @param object The packet data.
+	 */
+	private void validateToken(WebSocket socket, JsonElement object) {
+		var message = IDispatcher.decode(object);
+		var accountId = message.get("uid").getAsString();
+		var token = message.get("token").getAsString();
 
-        // Send the response.
-        this.sendMessage(socket, PacketIds.TokenValidateRsp, response);
-    }
+		// Get the account from the database.
+		var account = DatabaseHelper.getAccountById(accountId);
+		var valid = account != null && account.getToken().equals(token);
+		// Create the response message.
+		var response = new JsonObject();
+		response.addProperty("valid", valid);
+		if (valid) response.add("account", JSON.toJsonTree(account));
 
-    /**
-     * Fetches an account by its ID.
-     *
-     * @param socket The socket the packet was received from.
-     * @param object The packet data.
-     */
-    private void fetchAccount(WebSocket socket, JsonElement object) {
-        var message = IDispatcher.decode(object);
-        var accountId = message.get("accountId").getAsString();
+		// Send the response.
+		this.sendMessage(socket, PacketIds.TokenValidateRsp, response);
+	}
 
-        // Get the account from the database.
-        var account = DatabaseHelper.getAccountById(accountId);
-        // Send the account.
-        this.sendMessage(socket, PacketIds.GetAccountRsp, JSON.toJsonTree(account));
-    }
+	/**
+	 * Fetches an account by its ID.
+	 *
+	 * @param socket The socket the packet was received from.
+	 * @param object The packet data.
+	 */
+	private void fetchAccount(WebSocket socket, JsonElement object) {
+		var message = IDispatcher.decode(object);
+		var accountId = message.get("accountId").getAsString();
 
-    /**
-     * Broadcasts an encrypted message to all connected clients.
-     *
-     * @param message The message to broadcast.
-     */
-    public void sendMessage(int packetId, Object message) {
-        var serverMessage = this.encodeMessage(packetId, message);
-        this.getConnections().forEach(socket -> this.sendMessage(socket, serverMessage));
-    }
+		// Get the account from the database.
+		var account = DatabaseHelper.getAccountById(accountId);
+		// Send the account.
+		this.sendMessage(socket, PacketIds.GetAccountRsp, JSON.toJsonTree(account));
+	}
 
-    /**
-     * Sends a serialized encrypted message to the client.
-     *
-     * @param socket The socket to send the message to.
-     * @param message The message to send.
-     */
-    public void sendMessage(WebSocket socket, Object message) {
-        // Serialize the message into JSON.
-        var serialized = JSON.toJson(message).getBytes(StandardCharsets.UTF_8);
-        // Encrypt the message.
-        Crypto.xor(serialized, DISPATCH_INFO.encryptionKey);
-        // Send the message.
-        socket.send(serialized);
-    }
+	/**
+	 * Broadcasts an encrypted message to all connected clients.
+	 *
+	 * @param message The message to broadcast.
+	 */
+	public void sendMessage(int packetId, Object message) {
+		var serverMessage = this.encodeMessage(packetId, message);
+		this.getConnections().forEach(socket -> this.sendMessage(socket, serverMessage));
+	}
 
-    /**
-     * Sends a serialized encrypted message to the client.
-     *
-     * @param socket The socket to send the message to.
-     * @param packetId The packet ID to send.
-     * @param message The message to send.
-     */
-    public void sendMessage(WebSocket socket, int packetId, Object message) {
-        this.sendMessage(socket, this.encodeMessage(packetId, message));
-    }
+	/**
+	 * Sends a serialized encrypted message to the client.
+	 *
+	 * @param socket The socket to send the message to.
+	 * @param message The message to send.
+	 */
+	public void sendMessage(WebSocket socket, Object message) {
+		// Serialize the message into JSON.
+		var serialized = JSON.toJson(message).getBytes(StandardCharsets.UTF_8);
+		// Encrypt the message.
+		Crypto.xor(serialized, DISPATCH_INFO.encryptionKey);
+		// Send the message.
+		socket.send(serialized);
+	}
 
-    @Override
-    public void onStart() {
-        this.getLogger().info("Dispatch server started on port {}.", this.getPort());
-    }
+	/**
+	 * Sends a serialized encrypted message to the client.
+	 *
+	 * @param socket The socket to send the message to.
+	 * @param packetId The packet ID to send.
+	 * @param message The message to send.
+	 */
+	public void sendMessage(WebSocket socket, int packetId, Object message) {
+		this.sendMessage(socket, this.encodeMessage(packetId, message));
+	}
 
-    @Override
-    public void onOpen(WebSocket conn, ClientHandshake handshake) {
-        this.getLogger().debug("Dispatch client connected from {}.", conn.getRemoteSocketAddress());
-    }
+	@Override
+	public void onStart() {
+		this.getLogger().info("Dispatch server started on port {}.", this.getPort());
+	}
 
-    @Override
-    public void onMessage(WebSocket conn, String message) {
-        this.getLogger()
-                .debug("Received dispatch message from {}:\n{}", conn.getRemoteSocketAddress(), message);
-    }
+	@Override
+	public void onOpen(WebSocket conn, ClientHandshake handshake) {
+		this.getLogger().debug("Dispatch client connected from {}.", conn.getRemoteSocketAddress());
+	}
 
-    @Override
-    public void onMessage(WebSocket conn, ByteBuffer message) {
-        this.handleMessage(conn, message.array());
-    }
+	@Override
+	public void onMessage(WebSocket conn, String message) {
+		this.getLogger().debug("Received dispatch message from {}:\n{}", conn.getRemoteSocketAddress(), message);
+	}
 
-    @Override
-    public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-        this.getLogger().debug("Dispatch client disconnected from {}.", conn.getRemoteSocketAddress());
-    }
+	@Override
+	public void onMessage(WebSocket conn, ByteBuffer message) {
+		this.handleMessage(conn, message.array());
+	}
 
-    @Override
-    public void onError(WebSocket conn, Exception ex) {
-        this.getLogger().warn("Dispatch server error.", ex);
-    }
+	@Override
+	public void onClose(WebSocket conn, int code, String reason, boolean remote) {
+		this.getLogger().debug("Dispatch client disconnected from {}.", conn.getRemoteSocketAddress());
+	}
+
+	@Override
+	public void onError(WebSocket conn, Exception ex) {
+		this.getLogger().warn("Dispatch server error.", ex);
+	}
 }

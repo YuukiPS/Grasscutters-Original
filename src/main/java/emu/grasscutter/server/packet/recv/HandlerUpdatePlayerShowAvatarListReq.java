@@ -9,16 +9,16 @@ import emu.grasscutter.server.packet.send.PacketUpdatePlayerShowAvatarListRsp;
 
 @Opcodes(PacketOpcodes.UpdatePlayerShowAvatarListReq)
 public class HandlerUpdatePlayerShowAvatarListReq extends PacketHandler {
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        UpdatePlayerShowAvatarListReqOuterClass.UpdatePlayerShowAvatarListReq req =
-                UpdatePlayerShowAvatarListReqOuterClass.UpdatePlayerShowAvatarListReq.parseFrom(payload);
 
-        session.getPlayer().setShowAvatars(req.getIsShowAvatar());
-        session.getPlayer().setShowAvatarList(req.getShowAvatarIdListList());
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		UpdatePlayerShowAvatarListReqOuterClass.UpdatePlayerShowAvatarListReq req = UpdatePlayerShowAvatarListReqOuterClass.UpdatePlayerShowAvatarListReq.parseFrom(
+			payload
+		);
 
-        session.send(
-                new PacketUpdatePlayerShowAvatarListRsp(
-                        req.getIsShowAvatar(), req.getShowAvatarIdListList()));
-    }
+		session.getPlayer().setShowAvatars(req.getIsShowAvatar());
+		session.getPlayer().setShowAvatarList(req.getShowAvatarIdListList());
+
+		session.send(new PacketUpdatePlayerShowAvatarListRsp(req.getIsShowAvatar(), req.getShowAvatarIdListList()));
+	}
 }

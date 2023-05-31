@@ -4,6 +4,10 @@ import java.util.List;
 import lombok.Getter;
 
 public class ExpeditionRewardInfo {
-    @Getter private int expId;
-    @Getter private List<ExpeditionRewardDataList> expeditionRewardDataList;
+
+	@Getter
+	private int expId;
+
+	@Getter
+	private List<ExpeditionRewardDataList> expeditionRewardDataList;
 }

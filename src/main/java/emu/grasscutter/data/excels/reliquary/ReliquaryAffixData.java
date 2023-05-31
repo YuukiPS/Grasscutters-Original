@@ -9,16 +9,17 @@ import lombok.Getter;
 @ResourceType(name = "ReliquaryAffixExcelConfigData.json")
 @Getter
 public class ReliquaryAffixData extends GameResource {
-    @Getter(onMethod_ = @Override)
-    private int id;
 
-    private int depotId;
-    private int groupId;
+	@Getter(onMethod_ = @Override)
+	private int id;
 
-    @SerializedName("propType")
-    private FightProperty fightProp;
+	private int depotId;
+	private int groupId;
 
-    private float propValue;
-    private int weight;
-    private int upgradeWeight;
+	@SerializedName("propType")
+	private FightProperty fightProp;
+
+	private float propValue;
+	private int weight;
+	private int upgradeWeight;
 }

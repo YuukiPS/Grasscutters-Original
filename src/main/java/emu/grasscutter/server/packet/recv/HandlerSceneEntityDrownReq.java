@@ -14,23 +14,20 @@ import emu.grasscutter.server.packet.send.PacketSceneEntityDrownRsp;
 @Opcodes(PacketOpcodes.SceneEntityDrownReq)
 public class HandlerSceneEntityDrownReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        SceneEntityDrownReq req = SceneEntityDrownReq.parseFrom(payload);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		SceneEntityDrownReq req = SceneEntityDrownReq.parseFrom(payload);
 
-        GameEntity entity = session.getPlayer().getScene().getEntityById(req.getEntityId());
+		GameEntity entity = session.getPlayer().getScene().getEntityById(req.getEntityId());
 
-        if (entity == null || !(entity instanceof EntityMonster || entity instanceof EntityAvatar)) {
-            return;
-        }
+		if (entity == null || !(entity instanceof EntityMonster || entity instanceof EntityAvatar)) {
+			return;
+		}
 
-        entity.setFightProperty(FightProperty.FIGHT_PROP_CUR_HP, 0);
+		entity.setFightProperty(FightProperty.FIGHT_PROP_CUR_HP, 0);
 
-        // TODO: make a list somewhere of all entities to remove per tick rather than one by one
-        session.getPlayer().getScene().killEntity(entity, 0);
-        session
-                .getPlayer()
-                .getScene()
-                .broadcastPacket(new PacketSceneEntityDrownRsp(req.getEntityId()));
-    }
+		// TODO: make a list somewhere of all entities to remove per tick rather than one by one
+		session.getPlayer().getScene().killEntity(entity, 0);
+		session.getPlayer().getScene().broadcastPacket(new PacketSceneEntityDrownRsp(req.getEntityId()));
+	}
 }

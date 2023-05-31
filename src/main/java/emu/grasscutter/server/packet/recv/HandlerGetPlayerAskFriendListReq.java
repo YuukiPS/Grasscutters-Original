@@ -8,8 +8,9 @@ import emu.grasscutter.server.packet.send.PacketGetPlayerAskFriendListRsp;
 
 @Opcodes(PacketOpcodes.GetPlayerAskFriendListReq)
 public class HandlerGetPlayerAskFriendListReq extends PacketHandler {
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        session.send(new PacketGetPlayerAskFriendListRsp(session.getPlayer()));
-    }
+
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		session.send(new PacketGetPlayerAskFriendListRsp(session.getPlayer()));
+	}
 }

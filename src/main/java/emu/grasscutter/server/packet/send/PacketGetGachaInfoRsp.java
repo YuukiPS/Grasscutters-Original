@@ -7,9 +7,8 @@ import emu.grasscutter.net.packet.PacketOpcodes;
 
 public class PacketGetGachaInfoRsp extends BasePacket {
 
-    public PacketGetGachaInfoRsp(GachaSystem manager, Player player) {
-        super(PacketOpcodes.GetGachaInfoRsp);
-
-        this.setData(manager.toProto(player));
-    }
+	public PacketGetGachaInfoRsp(GachaSystem manager, Player player) {
+		super(PacketOpcodes.GetGachaInfoRsp);
+		this.setData(manager.toProto(player));
+	}
 }

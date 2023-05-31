@@ -10,9 +10,9 @@ import emu.grasscutter.server.packet.send.PacketEnterSceneReadyRsp;
 @Opcodes(PacketOpcodes.EnterSceneReadyReq)
 public class HandlerEnterSceneReadyReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) {
-        session.send(new PacketEnterScenePeerNotify(session.getPlayer()));
-        session.send(new PacketEnterSceneReadyRsp(session.getPlayer()));
-    }
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) {
+		session.send(new PacketEnterScenePeerNotify(session.getPlayer()));
+		session.send(new PacketEnterSceneReadyRsp(session.getPlayer()));
+	}
 }

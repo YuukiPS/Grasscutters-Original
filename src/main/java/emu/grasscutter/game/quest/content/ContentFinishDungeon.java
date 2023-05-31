@@ -8,12 +8,12 @@ import emu.grasscutter.game.quest.QuestValueContent;
 
 @QuestValueContent(QUEST_CONTENT_FINISH_DUNGEON)
 public class ContentFinishDungeon extends BaseContent {
-    // params[0] dungeon ID, params[1] unknown
 
-    @Override
-    public boolean execute(
-            GameQuest quest, QuestData.QuestContentCondition condition, String paramStr, int... params) {
-        var dungeonId = condition.getParam()[0];
-        return quest.getOwner().getPlayerProgress().getCompletedDungeons().contains(dungeonId);
-    }
+	// params[0] dungeon ID, params[1] unknown
+
+	@Override
+	public boolean execute(GameQuest quest, QuestData.QuestContentCondition condition, String paramStr, int... params) {
+		var dungeonId = condition.getParam()[0];
+		return quest.getOwner().getPlayerProgress().getCompletedDungeons().contains(dungeonId);
+	}
 }

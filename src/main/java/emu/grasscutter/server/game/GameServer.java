@@ -56,306 +56,314 @@ import org.jetbrains.annotations.NotNull;
 
 @Getter
 public final class GameServer extends KcpServer implements Iterable<Player> {
-    // Game server base
-    private final InetSocketAddress address;
-    private final GameServerPacketHandler packetHandler;
-    private final Map<Integer, Player> players;
-    private final Set<World> worlds;
 
-    @Setter private DispatchClient dispatchClient;
+	// Game server base
+	private final InetSocketAddress address;
+	private final GameServerPacketHandler packetHandler;
+	private final Map<Integer, Player> players;
+	private final Set<World> worlds;
 
-    // Server systems
-    private final InventorySystem inventorySystem;
-    private final GachaSystem gachaSystem;
-    private final ShopSystem shopSystem;
-    private final MultiplayerSystem multiplayerSystem;
-    private final DungeonSystem dungeonSystem;
-    private final ExpeditionSystem expeditionSystem;
-    private final DropSystem dropSystem;
-    private final DropSystemLegacy dropSystemLegacy;
-    private final WorldDataSystem worldDataSystem;
-    private final BattlePassSystem battlePassSystem;
-    private final CombineManger combineSystem;
-    private final TowerSystem towerSystem;
-    private final AnnouncementSystem announcementSystem;
-    private final QuestSystem questSystem;
-    private final TalkSystem talkSystem;
+	@Setter
+	private DispatchClient dispatchClient;
 
-    // Extra
-    private final ServerTaskScheduler scheduler;
-    private final TaskMap taskMap;
+	// Server systems
+	private final InventorySystem inventorySystem;
+	private final GachaSystem gachaSystem;
+	private final ShopSystem shopSystem;
+	private final MultiplayerSystem multiplayerSystem;
+	private final DungeonSystem dungeonSystem;
+	private final ExpeditionSystem expeditionSystem;
+	private final DropSystem dropSystem;
+	private final DropSystemLegacy dropSystemLegacy;
+	private final WorldDataSystem worldDataSystem;
+	private final BattlePassSystem battlePassSystem;
+	private final CombineManger combineSystem;
+	private final TowerSystem towerSystem;
+	private final AnnouncementSystem announcementSystem;
+	private final QuestSystem questSystem;
+	private final TalkSystem talkSystem;
 
-    private ChatSystemHandler chatManager;
+	// Extra
+	private final ServerTaskScheduler scheduler;
+	private final TaskMap taskMap;
 
-    /**
-     * @return The URI for the dispatch server.
-     */
-    @SneakyThrows
-    public static URI getDispatchUrl() {
-        return new URI(DISPATCH_INFO.dispatchUrl);
-    }
+	private ChatSystemHandler chatManager;
 
-    public GameServer() {
-        this(getAdapterInetSocketAddress());
-    }
+	/**
+	 * @return The URI for the dispatch server.
+	 */
+	@SneakyThrows
+	public static URI getDispatchUrl() {
+		return new URI(DISPATCH_INFO.dispatchUrl);
+	}
 
-    public GameServer(InetSocketAddress address) {
-        // Check if we are in dispatch only mode.
-        if (Grasscutter.getRunMode() == ServerRunMode.DISPATCH_ONLY) {
-            // Set all the systems to null.
-            this.scheduler = null;
-            this.taskMap = null;
+	public GameServer() {
+		this(getAdapterInetSocketAddress());
+	}
 
-            this.address = null;
-            this.packetHandler = null;
-            this.dispatchClient = null;
-            this.players = null;
-            this.worlds = null;
+	public GameServer(InetSocketAddress address) {
+		// Check if we are in dispatch only mode.
+		if (Grasscutter.getRunMode() == ServerRunMode.DISPATCH_ONLY) {
+			// Set all the systems to null.
+			this.scheduler = null;
+			this.taskMap = null;
 
-            this.inventorySystem = null;
-            this.gachaSystem = null;
-            this.shopSystem = null;
-            this.multiplayerSystem = null;
-            this.dungeonSystem = null;
-            this.expeditionSystem = null;
-            this.dropSystem = null;
-            this.dropSystemLegacy = null;
-            this.worldDataSystem = null;
-            this.battlePassSystem = null;
-            this.combineSystem = null;
-            this.towerSystem = null;
-            this.announcementSystem = null;
-            this.questSystem = null;
-            this.talkSystem = null;
-            return;
-        }
+			this.address = null;
+			this.packetHandler = null;
+			this.dispatchClient = null;
+			this.players = null;
+			this.worlds = null;
 
-        var channelConfig = new ChannelConfig();
-        channelConfig.nodelay(true, GAME_INFO.kcpInterval, 2, true);
-        channelConfig.setMtu(1400);
-        channelConfig.setSndwnd(256);
-        channelConfig.setRcvwnd(256);
-        channelConfig.setTimeoutMillis(30 * 1000); // 30s
-        channelConfig.setUseConvChannel(true);
-        channelConfig.setAckNoDelay(false);
+			this.inventorySystem = null;
+			this.gachaSystem = null;
+			this.shopSystem = null;
+			this.multiplayerSystem = null;
+			this.dungeonSystem = null;
+			this.expeditionSystem = null;
+			this.dropSystem = null;
+			this.dropSystemLegacy = null;
+			this.worldDataSystem = null;
+			this.battlePassSystem = null;
+			this.combineSystem = null;
+			this.towerSystem = null;
+			this.announcementSystem = null;
+			this.questSystem = null;
+			this.talkSystem = null;
+			return;
+		}
 
-        this.init(GameSessionManager.getListener(), channelConfig, address);
+		var channelConfig = new ChannelConfig();
+		channelConfig.nodelay(true, GAME_INFO.kcpInterval, 2, true);
+		channelConfig.setMtu(1400);
+		channelConfig.setSndwnd(256);
+		channelConfig.setRcvwnd(256);
+		channelConfig.setTimeoutMillis(30 * 1000); // 30s
+		channelConfig.setUseConvChannel(true);
+		channelConfig.setAckNoDelay(false);
 
-        EnergyManager.initialize();
-        StaminaManager.initialize();
-        CookingManager.initialize();
-        CookingCompoundManager.initialize();
-        CombineManger.initialize();
+		this.init(GameSessionManager.getListener(), channelConfig, address);
 
-        // Game Server base
-        this.address = address;
-        this.packetHandler = new GameServerPacketHandler(PacketHandler.class);
-        this.dispatchClient = new DispatchClient(GameServer.getDispatchUrl());
-        this.players = new ConcurrentHashMap<>();
-        this.worlds = Collections.synchronizedSet(new HashSet<>());
+		EnergyManager.initialize();
+		StaminaManager.initialize();
+		CookingManager.initialize();
+		CookingCompoundManager.initialize();
+		CombineManger.initialize();
 
-        // Extra
-        this.scheduler = new ServerTaskScheduler();
-        this.taskMap = new TaskMap(true);
+		// Game Server base
+		this.address = address;
+		this.packetHandler = new GameServerPacketHandler(PacketHandler.class);
+		this.dispatchClient = new DispatchClient(GameServer.getDispatchUrl());
+		this.players = new ConcurrentHashMap<>();
+		this.worlds = Collections.synchronizedSet(new HashSet<>());
 
-        // Create game systems
-        this.inventorySystem = new InventorySystem(this);
-        this.gachaSystem = new GachaSystem(this);
-        this.shopSystem = new ShopSystem(this);
-        this.multiplayerSystem = new MultiplayerSystem(this);
-        this.dungeonSystem = new DungeonSystem(this);
-        this.dropSystem = new DropSystem(this);
-        this.dropSystemLegacy = new DropSystemLegacy(this);
-        this.expeditionSystem = new ExpeditionSystem(this);
-        this.combineSystem = new CombineManger(this);
-        this.towerSystem = new TowerSystem(this);
-        this.worldDataSystem = new WorldDataSystem(this);
-        this.battlePassSystem = new BattlePassSystem(this);
-        this.announcementSystem = new AnnouncementSystem(this);
-        this.questSystem = new QuestSystem(this);
-        this.talkSystem = new TalkSystem(this);
+		// Extra
+		this.scheduler = new ServerTaskScheduler();
+		this.taskMap = new TaskMap(true);
 
-        // Chata manager
-        this.chatManager = new ChatSystem(this);
+		// Create game systems
+		this.inventorySystem = new InventorySystem(this);
+		this.gachaSystem = new GachaSystem(this);
+		this.shopSystem = new ShopSystem(this);
+		this.multiplayerSystem = new MultiplayerSystem(this);
+		this.dungeonSystem = new DungeonSystem(this);
+		this.dropSystem = new DropSystem(this);
+		this.dropSystemLegacy = new DropSystemLegacy(this);
+		this.expeditionSystem = new ExpeditionSystem(this);
+		this.combineSystem = new CombineManger(this);
+		this.towerSystem = new TowerSystem(this);
+		this.worldDataSystem = new WorldDataSystem(this);
+		this.battlePassSystem = new BattlePassSystem(this);
+		this.announcementSystem = new AnnouncementSystem(this);
+		this.questSystem = new QuestSystem(this);
+		this.talkSystem = new TalkSystem(this);
 
-        // Hook into shutdown event.
-        Runtime.getRuntime().addShutdownHook(new Thread(this::onServerShutdown));
-    }
+		// Chata manager
+		this.chatManager = new ChatSystem(this);
 
-    private static InetSocketAddress getAdapterInetSocketAddress() {
-        InetSocketAddress inetSocketAddress;
-        if (GAME_INFO.bindAddress.equals("")) {
-            inetSocketAddress = new InetSocketAddress(GAME_INFO.bindPort);
-        } else {
-            inetSocketAddress = new InetSocketAddress(GAME_INFO.bindAddress, GAME_INFO.bindPort);
-        }
-        return inetSocketAddress;
-    }
+		// Hook into shutdown event.
+		Runtime.getRuntime().addShutdownHook(new Thread(this::onServerShutdown));
+	}
 
-    @Deprecated
-    public ChatSystemHandler getChatManager() {
-        return chatManager;
-    }
+	private static InetSocketAddress getAdapterInetSocketAddress() {
+		InetSocketAddress inetSocketAddress;
+		if (GAME_INFO.bindAddress.equals("")) {
+			inetSocketAddress = new InetSocketAddress(GAME_INFO.bindPort);
+		} else {
+			inetSocketAddress = new InetSocketAddress(GAME_INFO.bindAddress, GAME_INFO.bindPort);
+		}
+		return inetSocketAddress;
+	}
 
-    @Deprecated
-    public void setChatManager(ChatSystemHandler chatManager) {
-        this.chatManager = chatManager;
-    }
+	@Deprecated
+	public ChatSystemHandler getChatManager() {
+		return chatManager;
+	}
 
-    public ChatSystemHandler getChatSystem() {
-        return chatManager;
-    }
+	@Deprecated
+	public void setChatManager(ChatSystemHandler chatManager) {
+		this.chatManager = chatManager;
+	}
 
-    public void setChatSystem(ChatSystemHandler chatManager) {
-        this.chatManager = chatManager;
-    }
+	public ChatSystemHandler getChatSystem() {
+		return chatManager;
+	}
 
-    public void registerPlayer(Player player) {
-        getPlayers().put(player.getUid(), player);
-    }
+	public void setChatSystem(ChatSystemHandler chatManager) {
+		this.chatManager = chatManager;
+	}
 
-    public Player getPlayerByUid(int id) {
-        return this.getPlayerByUid(id, false);
-    }
+	public void registerPlayer(Player player) {
+		getPlayers().put(player.getUid(), player);
+	}
 
-    public Player getPlayerByUid(int id, boolean allowOfflinePlayers) {
-        // Console check
-        if (id == GameConstants.SERVER_CONSOLE_UID) {
-            return null;
-        }
+	public Player getPlayerByUid(int id) {
+		return this.getPlayerByUid(id, false);
+	}
 
-        // Get from online players
-        Player player = this.getPlayers().get(id);
+	public Player getPlayerByUid(int id, boolean allowOfflinePlayers) {
+		// Console check
+		if (id == GameConstants.SERVER_CONSOLE_UID) {
+			return null;
+		}
 
-        if (!allowOfflinePlayers) {
-            return player;
-        }
+		// Get from online players
+		Player player = this.getPlayers().get(id);
 
-        // Check database if character isnt here
-        if (player == null) {
-            player = DatabaseHelper.getPlayerByUid(id);
-        }
+		if (!allowOfflinePlayers) {
+			return player;
+		}
 
-        return player;
-    }
+		// Check database if character isnt here
+		if (player == null) {
+			player = DatabaseHelper.getPlayerByUid(id);
+		}
 
-    public Player getPlayerByAccountId(String accountId) {
-        Optional<Player> playerOpt =
-                getPlayers().values().stream()
-                        .filter(player -> player.getAccount().getId().equals(accountId))
-                        .findFirst();
-        return playerOpt.orElse(null);
-    }
+		return player;
+	}
 
-    /**
-     * Tries to find a player with the matching IP address.
-     *
-     * @param ipAddress The IP address. This should just be numbers without a port.
-     * @return The player, or null if one could not be found.
-     */
-    public Player getPlayerByIpAddress(String ipAddress) {
-        return this.getPlayers().values().stream()
-                .map(Player::getSession)
-                .filter(
-                        session -> session != null && session.getAddress().getHostString().equals(ipAddress))
-                .map(GameSession::getPlayer)
-                .findFirst()
-                .orElse(null);
-    }
+	public Player getPlayerByAccountId(String accountId) {
+		Optional<Player> playerOpt = getPlayers()
+			.values()
+			.stream()
+			.filter(player -> player.getAccount().getId().equals(accountId))
+			.findFirst();
+		return playerOpt.orElse(null);
+	}
 
-    public SocialDetail.Builder getSocialDetailByUid(int id) {
-        // Get from online players
-        Player player = this.getPlayerByUid(id, true);
+	/**
+	 * Tries to find a player with the matching IP address.
+	 *
+	 * @param ipAddress The IP address. This should just be numbers without a port.
+	 * @return The player, or null if one could not be found.
+	 */
+	public Player getPlayerByIpAddress(String ipAddress) {
+		return this.getPlayers()
+			.values()
+			.stream()
+			.map(Player::getSession)
+			.filter(session -> session != null && session.getAddress().getHostString().equals(ipAddress))
+			.map(GameSession::getPlayer)
+			.findFirst()
+			.orElse(null);
+	}
 
-        if (player == null) {
-            return null;
-        }
+	public SocialDetail.Builder getSocialDetailByUid(int id) {
+		// Get from online players
+		Player player = this.getPlayerByUid(id, true);
 
-        return player.getSocialDetail();
-    }
+		if (player == null) {
+			return null;
+		}
 
-    public Account getAccountByName(String username) {
-        Optional<Player> playerOpt =
-                getPlayers().values().stream()
-                        .filter(player -> player.getAccount().getUsername().equals(username))
-                        .findFirst();
-        if (playerOpt.isPresent()) {
-            return playerOpt.get().getAccount();
-        }
-        return DatabaseHelper.getAccountByName(username);
-    }
+		return player.getSocialDetail();
+	}
 
-    public synchronized void onTick() {
-        var tickStart = Instant.now();
+	public Account getAccountByName(String username) {
+		Optional<Player> playerOpt = getPlayers()
+			.values()
+			.stream()
+			.filter(player -> player.getAccount().getUsername().equals(username))
+			.findFirst();
+		if (playerOpt.isPresent()) {
+			return playerOpt.get().getAccount();
+		}
+		return DatabaseHelper.getAccountByName(username);
+	}
 
-        // Tick worlds.
-        this.worlds.removeIf(World::onTick);
+	public synchronized void onTick() {
+		var tickStart = Instant.now();
 
-        // Tick players.
-        this.players.values().forEach(Player::onTick);
+		// Tick worlds.
+		this.worlds.removeIf(World::onTick);
 
-        // Tick scheduler.
-        this.getScheduler().runTasks();
+		// Tick players.
+		this.players.values().forEach(Player::onTick);
 
-        // Call server tick event.
-        ServerTickEvent event = new ServerTickEvent(tickStart, Instant.now());
-        event.call();
-    }
+		// Tick scheduler.
+		this.getScheduler().runTasks();
 
-    public void registerWorld(World world) {
-        this.getWorlds().add(world);
-    }
+		// Call server tick event.
+		ServerTickEvent event = new ServerTickEvent(tickStart, Instant.now());
+		event.call();
+	}
 
-    public void deregisterWorld(World world) {
-        // TODO Auto-generated method stub
-        world.save(); // Save the player's world
-    }
+	public void registerWorld(World world) {
+		this.getWorlds().add(world);
+	}
 
-    public void start() {
-        if (Grasscutter.getRunMode() == ServerRunMode.GAME_ONLY) {
-            // Connect to dispatch server.
-            this.dispatchClient.connect();
-        }
+	public void deregisterWorld(World world) {
+		// TODO Auto-generated method stub
+		world.save(); // Save the player's world
+	}
 
-        // Schedule game loop.
-        Timer gameLoop = new Timer();
-        gameLoop.scheduleAtFixedRate(
-                new TimerTask() {
-                    @Override
-                    public void run() {
-                        try {
-                            onTick();
-                        } catch (Exception e) {
-                            Grasscutter.getLogger().error(translate("messages.game.game_update_error"), e);
-                        }
-                    }
-                },
-                new Date(),
-                1000L);
-        Grasscutter.getLogger().info(translate("messages.status.free_software"));
-        Grasscutter.getLogger()
-                .info(translate("messages.game.address_bind", GAME_INFO.accessAddress, address.getPort()));
-        ServerStartEvent event = new ServerStartEvent(ServerEvent.Type.GAME, OffsetDateTime.now());
-        event.call();
-    }
+	public void start() {
+		if (Grasscutter.getRunMode() == ServerRunMode.GAME_ONLY) {
+			// Connect to dispatch server.
+			this.dispatchClient.connect();
+		}
 
-    public void onServerShutdown() {
-        ServerStopEvent event = new ServerStopEvent(ServerEvent.Type.GAME, OffsetDateTime.now());
-        event.call();
+		// Schedule game loop.
+		Timer gameLoop = new Timer();
+		gameLoop.scheduleAtFixedRate(
+			new TimerTask() {
+				@Override
+				public void run() {
+					try {
+						onTick();
+					} catch (Exception e) {
+						Grasscutter.getLogger().error(translate("messages.game.game_update_error"), e);
+					}
+				}
+			},
+			new Date(),
+			1000L
+		);
+		Grasscutter.getLogger().info(translate("messages.status.free_software"));
+		Grasscutter
+			.getLogger()
+			.info(translate("messages.game.address_bind", GAME_INFO.accessAddress, address.getPort()));
+		ServerStartEvent event = new ServerStartEvent(ServerEvent.Type.GAME, OffsetDateTime.now());
+		event.call();
+	}
 
-        // Kick and save all players
-        List<Player> list = new ArrayList<>(this.getPlayers().size());
-        list.addAll(this.getPlayers().values());
+	public void onServerShutdown() {
+		ServerStopEvent event = new ServerStopEvent(ServerEvent.Type.GAME, OffsetDateTime.now());
+		event.call();
 
-        for (Player player : list) {
-            player.getSession().close();
-        }
+		// Kick and save all players
+		List<Player> list = new ArrayList<>(this.getPlayers().size());
+		list.addAll(this.getPlayers().values());
 
-        getWorlds().forEach(World::save);
-    }
+		for (Player player : list) {
+			player.getSession().close();
+		}
 
-    @NotNull @Override
-    public Iterator<Player> iterator() {
-        return this.getPlayers().values().iterator();
-    }
+		getWorlds().forEach(World::save);
+	}
+
+	@NotNull
+	@Override
+	public Iterator<Player> iterator() {
+		return this.getPlayers().values().iterator();
+	}
 }

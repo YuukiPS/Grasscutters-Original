@@ -7,12 +7,12 @@ import emu.grasscutter.net.proto.AvatarExpeditionCallBackRspOuterClass.AvatarExp
 import java.util.Map;
 
 public class PacketAvatarExpeditionCallBackRsp extends BasePacket {
-    public PacketAvatarExpeditionCallBackRsp(Map<Long, ExpeditionInfo> expeditionInfo) {
-        super(PacketOpcodes.AvatarExpeditionCallBackRsp);
 
-        AvatarExpeditionCallBackRsp.Builder proto = AvatarExpeditionCallBackRsp.newBuilder();
-        expeditionInfo.forEach((key, e) -> proto.putExpeditionInfoMap(key, e.toProto()));
+	public PacketAvatarExpeditionCallBackRsp(Map<Long, ExpeditionInfo> expeditionInfo) {
+		super(PacketOpcodes.AvatarExpeditionCallBackRsp);
+		AvatarExpeditionCallBackRsp.Builder proto = AvatarExpeditionCallBackRsp.newBuilder();
+		expeditionInfo.forEach((key, e) -> proto.putExpeditionInfoMap(key, e.toProto()));
 
-        this.setData(proto.build());
-    }
+		this.setData(proto.build());
+	}
 }

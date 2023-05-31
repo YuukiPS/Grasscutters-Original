@@ -19,213 +19,214 @@ import org.reflections.Reflections;
 
 @Getter
 public class ActivityManager extends BasePlayerManager {
-    private static final Map<Integer, ActivityConfigItem> activityConfigItemMap;
-    @Getter private static final Map<Integer, ActivityConfigItem> scheduleActivityConfigMap;
-    private final Map<Integer, PlayerActivityData> playerActivityDataMap;
-    private final ActivityConditionExecutor conditionExecutor;
 
-    static {
-        activityConfigItemMap = new HashMap<>();
-        scheduleActivityConfigMap = new HashMap<>();
-        loadActivityConfigData();
-    }
+	private static final Map<Integer, ActivityConfigItem> activityConfigItemMap;
 
-    private static void loadActivityConfigData() {
-        // scan activity type handler & watcher type
-        var activityHandlerTypeMap = new HashMap<ActivityType, ConstructorAccess<?>>();
-        var activityWatcherTypeMap = new HashMap<WatcherTriggerType, ConstructorAccess<?>>();
-        var reflections = new Reflections(ActivityManager.class.getPackage().getName());
+	@Getter
+	private static final Map<Integer, ActivityConfigItem> scheduleActivityConfigMap;
 
-        reflections
-                .getSubTypesOf(ActivityHandler.class)
-                .forEach(
-                        item -> {
-                            var typeName = item.getAnnotation(GameActivity.class);
-                            activityHandlerTypeMap.put(typeName.value(), ConstructorAccess.get(item));
-                        });
-        reflections
-                .getSubTypesOf(ActivityWatcher.class)
-                .forEach(
-                        item -> {
-                            var typeName = item.getAnnotation(ActivityWatcherType.class);
-                            activityWatcherTypeMap.put(typeName.value(), ConstructorAccess.get(item));
-                        });
+	private final Map<Integer, PlayerActivityData> playerActivityDataMap;
+	private final ActivityConditionExecutor conditionExecutor;
 
-        try {
-            DataLoader.loadList("ActivityConfig.json", ActivityConfigItem.class)
-                    .forEach(
-                            item -> {
-                                item.onLoad();
-                                var activityData = GameData.getActivityDataMap().get(item.getActivityId());
-                                if (activityData == null) {
-                                    Grasscutter.getLogger().warn("activity {} not exist.", item.getActivityId());
-                                    return;
-                                }
-                                var activityHandlerType =
-                                        activityHandlerTypeMap.get(
-                                                ActivityType.getTypeByName(activityData.getActivityType()));
-                                ActivityHandler activityHandler;
+	static {
+		activityConfigItemMap = new HashMap<>();
+		scheduleActivityConfigMap = new HashMap<>();
+		loadActivityConfigData();
+	}
 
-                                if (activityHandlerType != null) {
-                                    activityHandler = (ActivityHandler) activityHandlerType.newInstance();
-                                } else {
-                                    activityHandler = new DefaultActivityHandler();
-                                }
-                                activityHandler.setActivityConfigItem(item);
-                                activityHandler.initWatchers(activityWatcherTypeMap);
-                                item.setActivityHandler(activityHandler);
+	private static void loadActivityConfigData() {
+		// scan activity type handler & watcher type
+		var activityHandlerTypeMap = new HashMap<ActivityType, ConstructorAccess<?>>();
+		var activityWatcherTypeMap = new HashMap<WatcherTriggerType, ConstructorAccess<?>>();
+		var reflections = new Reflections(ActivityManager.class.getPackage().getName());
 
-                                activityConfigItemMap.putIfAbsent(item.getActivityId(), item);
-                                scheduleActivityConfigMap.putIfAbsent(item.getScheduleId(), item);
-                            });
+		reflections
+			.getSubTypesOf(ActivityHandler.class)
+			.forEach(item -> {
+				var typeName = item.getAnnotation(GameActivity.class);
+				activityHandlerTypeMap.put(typeName.value(), ConstructorAccess.get(item));
+			});
+		reflections
+			.getSubTypesOf(ActivityWatcher.class)
+			.forEach(item -> {
+				var typeName = item.getAnnotation(ActivityWatcherType.class);
+				activityWatcherTypeMap.put(typeName.value(), ConstructorAccess.get(item));
+			});
 
-            Grasscutter.getLogger().debug("Enable {} activities.", activityConfigItemMap.size());
-        } catch (Exception e) {
-            Grasscutter.getLogger().warn("Unable to load activities config.", e);
-        }
-    }
+		try {
+			DataLoader
+				.loadList("ActivityConfig.json", ActivityConfigItem.class)
+				.forEach(item -> {
+					item.onLoad();
+					var activityData = GameData.getActivityDataMap().get(item.getActivityId());
+					if (activityData == null) {
+						Grasscutter.getLogger().warn("activity {} not exist.", item.getActivityId());
+						return;
+					}
+					var activityHandlerType = activityHandlerTypeMap.get(
+						ActivityType.getTypeByName(activityData.getActivityType())
+					);
+					ActivityHandler activityHandler;
 
-    public ActivityManager(Player player) {
-        super(player);
+					if (activityHandlerType != null) {
+						activityHandler = (ActivityHandler) activityHandlerType.newInstance();
+					} else {
+						activityHandler = new DefaultActivityHandler();
+					}
+					activityHandler.setActivityConfigItem(item);
+					activityHandler.initWatchers(activityWatcherTypeMap);
+					item.setActivityHandler(activityHandler);
 
-        playerActivityDataMap = new ConcurrentHashMap<>();
-        // load data for player
-        activityConfigItemMap
-                .values()
-                .forEach(
-                        item -> {
-                            var data = PlayerActivityData.getByPlayer(player, item.getActivityId());
-                            if (data == null) {
-                                data = item.getActivityHandler().initPlayerActivityData(player);
-                                data.save();
-                            }
-                            data.setPlayer(player);
-                            data.setActivityHandler(item.getActivityHandler());
-                            playerActivityDataMap.put(item.getActivityId(), data);
-                        });
+					activityConfigItemMap.putIfAbsent(item.getActivityId(), item);
+					scheduleActivityConfigMap.putIfAbsent(item.getScheduleId(), item);
+				});
 
-        player.sendPacket(new PacketActivityScheduleInfoNotify(activityConfigItemMap.values()));
+			Grasscutter.getLogger().debug("Enable {} activities.", activityConfigItemMap.size());
+		} catch (Exception e) {
+			Grasscutter.getLogger().warn("Unable to load activities config.", e);
+		}
+	}
 
-        conditionExecutor =
-                new BasicActivityConditionExecutor(
-                        activityConfigItemMap,
-                        GameData.getActivityCondExcelConfigDataMap(),
-                        PlayerActivityDataMappingBuilder.buildPlayerActivityDataByActivityCondId(
-                                playerActivityDataMap),
-                        AllActivityConditionBuilder.buildActivityConditions());
-    }
+	public ActivityManager(Player player) {
+		super(player);
+		playerActivityDataMap = new ConcurrentHashMap<>();
+		// load data for player
+		activityConfigItemMap
+			.values()
+			.forEach(item -> {
+				var data = PlayerActivityData.getByPlayer(player, item.getActivityId());
+				if (data == null) {
+					data = item.getActivityHandler().initPlayerActivityData(player);
+					data.save();
+				}
+				data.setPlayer(player);
+				data.setActivityHandler(item.getActivityHandler());
+				playerActivityDataMap.put(item.getActivityId(), data);
+			});
 
-    /** trigger activity watcher */
-    public void triggerWatcher(WatcherTriggerType watcherTriggerType, String... params) {
-        var watchers =
-                activityConfigItemMap.values().stream()
-                        .map(ActivityConfigItem::getActivityHandler)
-                        .filter(Objects::nonNull)
-                        .map(ActivityHandler::getWatchersMap)
-                        .map(map -> map.get(watcherTriggerType))
-                        .filter(Objects::nonNull)
-                        .flatMap(Collection::stream)
-                        .toList();
+		player.sendPacket(new PacketActivityScheduleInfoNotify(activityConfigItemMap.values()));
 
-        watchers.forEach(
-                watcher ->
-                        watcher.trigger(
-                                playerActivityDataMap.get(
-                                        watcher.getActivityHandler().getActivityConfigItem().getActivityId()),
-                                params));
-    }
+		conditionExecutor =
+			new BasicActivityConditionExecutor(
+				activityConfigItemMap,
+				GameData.getActivityCondExcelConfigDataMap(),
+				PlayerActivityDataMappingBuilder.buildPlayerActivityDataByActivityCondId(playerActivityDataMap),
+				AllActivityConditionBuilder.buildActivityConditions()
+			);
+	}
 
-    public boolean isActivityActive(int activityId) {
-        var activityConfig = activityConfigItemMap.get(activityId);
-        if (activityConfig == null) {
-            return false;
-        }
+	/** trigger activity watcher */
+	public void triggerWatcher(WatcherTriggerType watcherTriggerType, String... params) {
+		var watchers = activityConfigItemMap
+			.values()
+			.stream()
+			.map(ActivityConfigItem::getActivityHandler)
+			.filter(Objects::nonNull)
+			.map(ActivityHandler::getWatchersMap)
+			.map(map -> map.get(watcherTriggerType))
+			.filter(Objects::nonNull)
+			.flatMap(Collection::stream)
+			.toList();
 
-        var now = new Date();
-        return now.after(activityConfig.getBeginTime()) && now.before(activityConfig.getEndTime());
-    }
+		watchers.forEach(watcher ->
+			watcher.trigger(
+				playerActivityDataMap.get(watcher.getActivityHandler().getActivityConfigItem().getActivityId()),
+				params
+			)
+		);
+	}
 
-    public boolean hasActivityEnded(int activityId) {
-        var activityConfig = activityConfigItemMap.get(activityId);
-        if (activityConfig == null) {
-            return true;
-        }
+	public boolean isActivityActive(int activityId) {
+		var activityConfig = activityConfigItemMap.get(activityId);
+		if (activityConfig == null) {
+			return false;
+		}
 
-        return new Date().after(activityConfig.getEndTime());
-    }
+		var now = new Date();
+		return now.after(activityConfig.getBeginTime()) && now.before(activityConfig.getEndTime());
+	}
 
-    public boolean isActivityOpen(int activityId) {
-        var activityConfig = activityConfigItemMap.get(activityId);
-        if (activityConfig == null) {
-            return false;
-        }
+	public boolean hasActivityEnded(int activityId) {
+		var activityConfig = activityConfigItemMap.get(activityId);
+		if (activityConfig == null) {
+			return true;
+		}
 
-        var now = new Date();
-        return now.after(activityConfig.getOpenTime()) && now.before(activityConfig.getCloseTime());
-    }
+		return new Date().after(activityConfig.getEndTime());
+	}
 
-    public int getOpenDay(int activityId) {
-        var activityConfig = activityConfigItemMap.get(activityId);
-        if (activityConfig == null) {
-            return 0;
-        }
+	public boolean isActivityOpen(int activityId) {
+		var activityConfig = activityConfigItemMap.get(activityId);
+		if (activityConfig == null) {
+			return false;
+		}
 
-        var now = new Date();
-        return (int)
-                        TimeUnit.DAYS.convert(
-                                now.getTime() - activityConfig.getOpenTime().getTime(), TimeUnit.MILLISECONDS)
-                + 1;
-    }
+		var now = new Date();
+		return now.after(activityConfig.getOpenTime()) && now.before(activityConfig.getCloseTime());
+	}
 
-    public boolean isActivityClosed(int activityId) {
-        var activityConfig = activityConfigItemMap.get(activityId);
-        if (activityConfig == null) {
-            return false;
-        }
+	public int getOpenDay(int activityId) {
+		var activityConfig = activityConfigItemMap.get(activityId);
+		if (activityConfig == null) {
+			return 0;
+		}
 
-        var now = new Date();
-        return now.after(activityConfig.getCloseTime());
-    }
+		var now = new Date();
+		return (
+			(int) TimeUnit.DAYS.convert(now.getTime() - activityConfig.getOpenTime().getTime(), TimeUnit.MILLISECONDS) +
+			1
+		);
+	}
 
-    public boolean meetsCondition(int activityCondId) {
-        return conditionExecutor.meetsCondition(activityCondId);
-    }
+	public boolean isActivityClosed(int activityId) {
+		var activityConfig = activityConfigItemMap.get(activityId);
+		if (activityConfig == null) {
+			return false;
+		}
 
-    public void triggerActivityConditions() {
-        activityConfigItemMap.forEach((k, v) -> v.getActivityHandler().triggerCondEvents(player));
-    }
+		var now = new Date();
+		return now.after(activityConfig.getCloseTime());
+	}
 
-    public ActivityInfoOuterClass.ActivityInfo getInfoProtoByActivityId(int activityId) {
-        var activityHandler = activityConfigItemMap.get(activityId).getActivityHandler();
-        var activityData = playerActivityDataMap.get(activityId);
+	public boolean meetsCondition(int activityCondId) {
+		return conditionExecutor.meetsCondition(activityCondId);
+	}
 
-        return activityHandler.toProto(activityData, conditionExecutor);
-    }
+	public void triggerActivityConditions() {
+		activityConfigItemMap.forEach((k, v) -> v.getActivityHandler().triggerCondEvents(player));
+	}
 
-    public Optional<ActivityHandler> getActivityHandler(ActivityType type) {
-        return activityConfigItemMap.values().stream()
-                .map(ActivityConfigItem::getActivityHandler)
-                .filter(x -> type == x.getClass().getAnnotation(GameActivity.class).value())
-                .findFirst();
-    }
+	public ActivityInfoOuterClass.ActivityInfo getInfoProtoByActivityId(int activityId) {
+		var activityHandler = activityConfigItemMap.get(activityId).getActivityHandler();
+		var activityData = playerActivityDataMap.get(activityId);
 
-    public <T extends ActivityHandler> Optional<T> getActivityHandlerAs(
-            ActivityType type, Class<T> clazz) {
-        return getActivityHandler(type).map(x -> (T) x);
-    }
+		return activityHandler.toProto(activityData, conditionExecutor);
+	}
 
-    public Optional<Integer> getActivityIdByActivityType(ActivityType type) {
-        return getActivityHandler(type)
-                .map(ActivityHandler::getActivityConfigItem)
-                .map(ActivityConfigItem::getActivityId);
-    }
+	public Optional<ActivityHandler> getActivityHandler(ActivityType type) {
+		return activityConfigItemMap
+			.values()
+			.stream()
+			.map(ActivityConfigItem::getActivityHandler)
+			.filter(x -> type == x.getClass().getAnnotation(GameActivity.class).value())
+			.findFirst();
+	}
 
-    public Optional<PlayerActivityData> getPlayerActivityDataByActivityType(ActivityType type) {
-        return getActivityIdByActivityType(type).map(playerActivityDataMap::get);
-    }
+	public <T extends ActivityHandler> Optional<T> getActivityHandlerAs(ActivityType type, Class<T> clazz) {
+		return getActivityHandler(type).map(x -> (T) x);
+	}
 
-    public Optional<ActivityInfoOuterClass.ActivityInfo> getInfoProtoByActivityType(
-            ActivityType type) {
-        return getActivityIdByActivityType(type).map(this::getInfoProtoByActivityId);
-    }
+	public Optional<Integer> getActivityIdByActivityType(ActivityType type) {
+		return getActivityHandler(type)
+			.map(ActivityHandler::getActivityConfigItem)
+			.map(ActivityConfigItem::getActivityId);
+	}
+
+	public Optional<PlayerActivityData> getPlayerActivityDataByActivityType(ActivityType type) {
+		return getActivityIdByActivityType(type).map(playerActivityDataMap::get);
+	}
+
+	public Optional<ActivityInfoOuterClass.ActivityInfo> getInfoProtoByActivityType(ActivityType type) {
+		return getActivityIdByActivityType(type).map(this::getInfoProtoByActivityId);
+	}
 }

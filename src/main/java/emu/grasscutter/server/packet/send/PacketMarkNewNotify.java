@@ -8,13 +8,12 @@ import java.util.ArrayList;
 
 public class PacketMarkNewNotify extends BasePacket {
 
-    public PacketMarkNewNotify(Player player, int markNewType, ArrayList<Integer> idList) {
-        super(PacketOpcodes.MarkNewNotify);
+	public PacketMarkNewNotify(Player player, int markNewType, ArrayList<Integer> idList) {
+		super(PacketOpcodes.MarkNewNotify);
+		var proto = MarkNewNotify.newBuilder();
+		proto.setMarkNewType(markNewType);
+		proto.addAllIdList(idList);
 
-        var proto = MarkNewNotify.newBuilder();
-        proto.setMarkNewType(markNewType);
-        proto.addAllIdList(idList);
-
-        this.setData(proto.build());
-    }
+		this.setData(proto.build());
+	}
 }

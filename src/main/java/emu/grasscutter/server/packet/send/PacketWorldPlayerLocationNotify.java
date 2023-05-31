@@ -8,15 +8,14 @@ import emu.grasscutter.net.proto.WorldPlayerLocationNotifyOuterClass.WorldPlayer
 
 public class PacketWorldPlayerLocationNotify extends BasePacket {
 
-    public PacketWorldPlayerLocationNotify(World world) {
-        super(PacketOpcodes.WorldPlayerLocationNotify);
+	public PacketWorldPlayerLocationNotify(World world) {
+		super(PacketOpcodes.WorldPlayerLocationNotify);
+		WorldPlayerLocationNotify.Builder proto = WorldPlayerLocationNotify.newBuilder();
 
-        WorldPlayerLocationNotify.Builder proto = WorldPlayerLocationNotify.newBuilder();
+		for (Player p : world.getPlayers()) {
+			proto.addPlayerWorldLocList(p.getWorldPlayerLocationInfo());
+		}
 
-        for (Player p : world.getPlayers()) {
-            proto.addPlayerWorldLocList(p.getWorldPlayerLocationInfo());
-        }
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

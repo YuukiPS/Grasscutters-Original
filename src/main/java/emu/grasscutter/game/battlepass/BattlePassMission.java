@@ -8,68 +8,68 @@ import emu.grasscutter.game.props.BattlePassMissionStatus;
 
 @Entity
 public class BattlePassMission {
-    private int id;
-    private int progress;
-    private BattlePassMissionStatus status;
 
-    @Transient private BattlePassMissionData data;
+	private int id;
+	private int progress;
+	private BattlePassMissionStatus status;
 
-    @Deprecated // Morphia only
-    public BattlePassMission() {}
+	@Transient
+	private BattlePassMissionData data;
 
-    public BattlePassMission(int id) {
-        this.id = id;
-    }
+	@Deprecated // Morphia only
+	public BattlePassMission() {}
 
-    public int getId() {
-        return id;
-    }
+	public BattlePassMission(int id) {
+		this.id = id;
+	}
 
-    public BattlePassMissionData getData() {
-        if (this.data == null) {
-            this.data = GameData.getBattlePassMissionDataMap().get(getId());
-        }
-        return this.data;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public int getProgress() {
-        return progress;
-    }
+	public BattlePassMissionData getData() {
+		if (this.data == null) {
+			this.data = GameData.getBattlePassMissionDataMap().get(getId());
+		}
+		return this.data;
+	}
 
-    public void setProgress(int value) {
-        this.progress = value;
-    }
+	public int getProgress() {
+		return progress;
+	}
 
-    public void addProgress(int addProgress, int maxProgress) {
-        this.progress = Math.min(addProgress + this.progress, maxProgress);
-    }
+	public void setProgress(int value) {
+		this.progress = value;
+	}
 
-    public BattlePassMissionStatus getStatus() {
-        if (status == null) status = BattlePassMissionStatus.MISSION_STATUS_UNFINISHED;
-        return status;
-    }
+	public void addProgress(int addProgress, int maxProgress) {
+		this.progress = Math.min(addProgress + this.progress, maxProgress);
+	}
 
-    public void setStatus(BattlePassMissionStatus status) {
-        this.status = status;
-    }
+	public BattlePassMissionStatus getStatus() {
+		if (status == null) status = BattlePassMissionStatus.MISSION_STATUS_UNFINISHED;
+		return status;
+	}
 
-    public boolean isFinshed() {
-        return getStatus().getValue() >= 2;
-    }
+	public void setStatus(BattlePassMissionStatus status) {
+		this.status = status;
+	}
 
-    public emu.grasscutter.net.proto.BattlePassMissionOuterClass.BattlePassMission toProto() {
-        var protoBuilder =
-                emu.grasscutter.net.proto.BattlePassMissionOuterClass.BattlePassMission.newBuilder();
+	public boolean isFinshed() {
+		return getStatus().getValue() >= 2;
+	}
 
-        protoBuilder
-                .setMissionId(getId())
-                .setCurProgress(getProgress())
-                .setTotalProgress(getData().getProgress())
-                .setRewardBattlePassPoint(getData().getAddPoint())
-                .setMissionStatus(getStatus().getMissionStatus())
-                .setMissionType(
-                        getData().getRefreshType() == null ? 0 : getData().getRefreshType().getValue());
+	public emu.grasscutter.net.proto.BattlePassMissionOuterClass.BattlePassMission toProto() {
+		var protoBuilder = emu.grasscutter.net.proto.BattlePassMissionOuterClass.BattlePassMission.newBuilder();
 
-        return protoBuilder.build();
-    }
+		protoBuilder
+			.setMissionId(getId())
+			.setCurProgress(getProgress())
+			.setTotalProgress(getData().getProgress())
+			.setRewardBattlePassPoint(getData().getAddPoint())
+			.setMissionStatus(getStatus().getMissionStatus())
+			.setMissionType(getData().getRefreshType() == null ? 0 : getData().getRefreshType().getValue());
+
+		return protoBuilder.build();
+	}
 }

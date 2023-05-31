@@ -7,16 +7,12 @@ import emu.grasscutter.net.proto.BattlePassCurScheduleUpdateNotifyOuterClass.Bat
 
 public class PacketBattlePassCurScheduleUpdateNotify extends BasePacket {
 
-    public PacketBattlePassCurScheduleUpdateNotify(Player player) {
-        super(PacketOpcodes.BattlePassCurScheduleUpdateNotify);
+	public PacketBattlePassCurScheduleUpdateNotify(Player player) {
+		super(PacketOpcodes.BattlePassCurScheduleUpdateNotify);
+		var proto = BattlePassCurScheduleUpdateNotify.newBuilder();
 
-        var proto = BattlePassCurScheduleUpdateNotify.newBuilder();
+		proto.setHaveCurSchedule(true).setCurSchedule(player.getBattlePassManager().getScheduleProto()).build();
 
-        proto
-                .setHaveCurSchedule(true)
-                .setCurSchedule(player.getBattlePassManager().getScheduleProto())
-                .build();
-
-        setData(proto.build());
-    }
+		setData(proto.build());
+	}
 }

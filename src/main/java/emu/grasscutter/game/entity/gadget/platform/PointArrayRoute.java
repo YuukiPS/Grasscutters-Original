@@ -10,23 +10,27 @@ import lombok.Setter;
 /** TODO implement point array routes, read from missing resources */
 public class PointArrayRoute extends BaseRoute {
 
-    @Getter @Setter int currentPoint;
-    @Getter @Setter int pointArrayId;
+	@Getter
+	@Setter
+	int currentPoint;
 
-    public PointArrayRoute(SceneGadget gadget) {
-        super(gadget);
-    }
+	@Getter
+	@Setter
+	int pointArrayId;
 
-    public PointArrayRoute(
-            Position startRot, boolean startRoute, boolean isActive, int pointArrayId) {
-        super(startRot, startRoute, isActive);
-        this.pointArrayId = pointArrayId;
-    }
+	public PointArrayRoute(SceneGadget gadget) {
+		super(gadget);
+	}
 
-    @Override
-    public PlatformInfoOuterClass.PlatformInfo.Builder toProto() {
-        return super.toProto()
-                .setMovingPlatformType(
-                        MovingPlatformTypeOuterClass.MovingPlatformType.MOVING_PLATFORM_TYPE_ROUTE);
-    }
+	public PointArrayRoute(Position startRot, boolean startRoute, boolean isActive, int pointArrayId) {
+		super(startRot, startRoute, isActive);
+		this.pointArrayId = pointArrayId;
+	}
+
+	@Override
+	public PlatformInfoOuterClass.PlatformInfo.Builder toProto() {
+		return super
+			.toProto()
+			.setMovingPlatformType(MovingPlatformTypeOuterClass.MovingPlatformType.MOVING_PLATFORM_TYPE_ROUTE);
+	}
 }

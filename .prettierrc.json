@@ -1,0 +1,10 @@
+{
+	"trailingComma": "none",
+	"semi": false,
+	"singleQuote": false,
+	"endOfLine": "lf",
+	"useTabs": true,
+	"insertPragma": true,
+	"printWidth": 120,
+	"tabWidth": 4
+}

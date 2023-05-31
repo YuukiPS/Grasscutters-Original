@@ -8,9 +8,10 @@ import emu.grasscutter.server.game.GameSession;
 
 @Opcodes(PacketOpcodes.ClientLockGameTimeNotify)
 public final class HandlerClientLockGameTimeNotify extends PacketHandler {
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        var packet = ClientLockGameTimeNotify.parseFrom(payload);
-        session.getPlayer().getWorld().lockTime(packet.getIsLock());
-    }
+
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		var packet = ClientLockGameTimeNotify.parseFrom(payload);
+		session.getPlayer().getWorld().lockTime(packet.getIsLock());
+	}
 }

@@ -12,14 +12,14 @@ import emu.grasscutter.server.packet.send.PacketDungeonPlayerDieRsp;
 @Opcodes(PacketOpcodes.DungeonPlayerDieReq)
 public class HandlerDungeonPlayerDieReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        DungeonPlayerDieReq req = DungeonPlayerDieReq.parseFrom(payload);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		DungeonPlayerDieReq req = DungeonPlayerDieReq.parseFrom(payload);
 
-        Player player = session.getPlayer();
+		Player player = session.getPlayer();
 
-        boolean result = player.getScene().respawnPlayer(player);
+		boolean result = player.getScene().respawnPlayer(player);
 
-        player.sendPacket(new PacketDungeonPlayerDieRsp(result ? Retcode.RET_SUCC : Retcode.RET_FAIL));
-    }
+		player.sendPacket(new PacketDungeonPlayerDieRsp(result ? Retcode.RET_SUCC : Retcode.RET_FAIL));
+	}
 }

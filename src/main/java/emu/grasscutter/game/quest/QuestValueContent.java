@@ -6,5 +6,5 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface QuestValueContent {
-    QuestContent value();
+	QuestContent value();
 }

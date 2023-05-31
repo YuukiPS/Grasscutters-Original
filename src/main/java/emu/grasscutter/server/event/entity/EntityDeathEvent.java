@@ -7,13 +7,17 @@ import javax.annotation.Nullable;
 import lombok.Getter;
 
 public final class EntityDeathEvent extends EntityEvent {
-    @Getter private final Location deathLocation;
-    @Getter @Nullable private final GameEntity killer;
 
-    public EntityDeathEvent(GameEntity entity, int killerId) {
-        super(entity);
+	@Getter
+	private final Location deathLocation;
 
-        this.deathLocation = new Location(entity.getScene(), entity.getPosition());
-        this.killer = entity.getScene().getEntityById(killerId);
-    }
+	@Getter
+	@Nullable
+	private final GameEntity killer;
+
+	public EntityDeathEvent(GameEntity entity, int killerId) {
+		super(entity);
+		this.deathLocation = new Location(entity.getScene(), entity.getPosition());
+		this.killer = entity.getScene().getEntityById(killerId);
+	}
 }

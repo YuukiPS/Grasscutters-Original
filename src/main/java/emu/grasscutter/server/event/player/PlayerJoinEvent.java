@@ -5,7 +5,8 @@ import emu.grasscutter.server.event.Cancellable;
 import emu.grasscutter.server.event.types.PlayerEvent;
 
 public final class PlayerJoinEvent extends PlayerEvent implements Cancellable {
-    public PlayerJoinEvent(Player player) {
-        super(player);
-    }
+
+	public PlayerJoinEvent(Player player) {
+		super(player);
+	}
 }

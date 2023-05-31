@@ -10,10 +10,10 @@ import emu.grasscutter.server.packet.send.PacketEvtAvatarStandUpNotify;
 @Opcodes(PacketOpcodes.EvtAvatarStandUpNotify)
 public class HandlerEvtAvatarStandUpNotify extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        EvtAvatarStandUpNotify notify = EvtAvatarStandUpNotify.parseFrom(payload);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		EvtAvatarStandUpNotify notify = EvtAvatarStandUpNotify.parseFrom(payload);
 
-        session.getPlayer().getScene().broadcastPacket(new PacketEvtAvatarStandUpNotify(notify));
-    }
+		session.getPlayer().getScene().broadcastPacket(new PacketEvtAvatarStandUpNotify(notify));
+	}
 }

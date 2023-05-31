@@ -5,18 +5,19 @@ import emu.grasscutter.data.ResourceType;
 
 @ResourceType(name = "AvatarFlycloakExcelConfigData.json")
 public class AvatarFlycloakData extends GameResource {
-    private int flycloakId;
-    private long nameTextMapHash;
 
-    @Override
-    public int getId() {
-        return this.flycloakId;
-    }
+	private int flycloakId;
+	private long nameTextMapHash;
 
-    public long getNameTextMapHash() {
-        return nameTextMapHash;
-    }
+	@Override
+	public int getId() {
+		return this.flycloakId;
+	}
 
-    @Override
-    public void onLoad() {}
+	public long getNameTextMapHash() {
+		return nameTextMapHash;
+	}
+
+	@Override
+	public void onLoad() {}
 }

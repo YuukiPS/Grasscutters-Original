@@ -56,309 +56,339 @@ import org.reflections.Reflections;
 import org.slf4j.LoggerFactory;
 
 public final class Grasscutter {
-    public static final File configFile = new File("./config.json");
-    public static final Reflections reflector = new Reflections("emu.grasscutter");
-    @Getter private static final Logger logger = (Logger) LoggerFactory.getLogger(Grasscutter.class);
 
-    @Getter public static ConfigContainer config;
+	public static final File configFile = new File("./config.json");
+	public static final Reflections reflector = new Reflections("emu.grasscutter");
 
-    @Getter @Setter private static Language language;
-    @Getter @Setter private static String preferredLanguage;
+	@Getter
+	private static final Logger logger = (Logger) LoggerFactory.getLogger(Grasscutter.class);
 
-    @Getter private static int currentDayOfWeek;
-    @Setter private static ServerRunMode runModeOverride = null; // Config override for run mode
-    @Setter private static boolean noConsole = false;
+	@Getter
+	public static ConfigContainer config;
 
-    @Getter private static HttpServer httpServer;
-    @Getter private static GameServer gameServer;
-    @Getter private static DispatchServer dispatchServer;
-    @Getter private static PluginManager pluginManager;
-    @Getter private static CommandMap commandMap;
+	@Getter
+	@Setter
+	private static Language language;
 
-    @Getter @Setter private static AuthenticationSystem authenticationSystem;
-    @Getter @Setter private static PermissionHandler permissionHandler;
+	@Getter
+	@Setter
+	private static String preferredLanguage;
 
-    private static LineReader consoleLineReader = null;
+	@Getter
+	private static int currentDayOfWeek;
 
-    @Getter
-    private static final ExecutorService threadPool =
-            new ThreadPoolExecutor(
-                    6,
-                    6,
-                    60,
-                    TimeUnit.SECONDS,
-                    new LinkedBlockingDeque<>(),
-                    FastThreadLocalThread::new,
-                    new ThreadPoolExecutor.AbortPolicy());
+	@Setter
+	private static ServerRunMode runModeOverride = null; // Config override for run mode
 
-    static {
-        // Declare logback configuration.
-        System.setProperty("logback.configurationFile", "src/main/resources/logback.xml");
+	@Setter
+	private static boolean noConsole = false;
 
-        // Disable the MongoDB logger.
-        var mongoLogger = (Logger) LoggerFactory.getLogger("org.mongodb.driver");
-        mongoLogger.setLevel(Level.OFF);
+	@Getter
+	private static HttpServer httpServer;
 
-        // Load server configuration.
-        Grasscutter.loadConfig();
-        // Attempt to update configuration.
-        ConfigContainer.updateConfig();
+	@Getter
+	private static GameServer gameServer;
 
-        Grasscutter.getLogger().info("Loading Grasscutter...");
+	@Getter
+	private static DispatchServer dispatchServer;
 
-        // Load translation files.
-        Grasscutter.loadLanguage();
+	@Getter
+	private static PluginManager pluginManager;
 
-        // Check server structure.
-        Utils.startupCheck();
-    }
+	@Getter
+	private static CommandMap commandMap;
 
-    public static void main(String[] args) throws Exception {
-        Crypto.loadKeys(); // Load keys from buffers.
+	@Getter
+	@Setter
+	private static AuthenticationSystem authenticationSystem;
 
-        // Parse start-up arguments.
-        if (StartupArguments.parse(args)) {
-            System.exit(0); // Exit early.
-        }
+	@Getter
+	@Setter
+	private static PermissionHandler permissionHandler;
 
-        // Get the server run mode.
-        var runMode = Grasscutter.getRunMode();
+	private static LineReader consoleLineReader = null;
 
-        // Create command map.
-        commandMap = new CommandMap(true);
+	@Getter
+	private static final ExecutorService threadPool = new ThreadPoolExecutor(
+		6,
+		6,
+		60,
+		TimeUnit.SECONDS,
+		new LinkedBlockingDeque<>(),
+		FastThreadLocalThread::new,
+		new ThreadPoolExecutor.AbortPolicy()
+	);
 
-        // Initialize server.
-        logger.info(translate("messages.status.starting"));
-        logger.info(translate("messages.status.game_version", GameConstants.VERSION));
-        logger.info(translate("messages.status.version", BuildConfig.VERSION, BuildConfig.GIT_HASH));
+	static {
+		// Declare logback configuration.
+		System.setProperty("logback.configurationFile", "src/main/resources/logback.xml");
 
-        if (runMode != ServerRunMode.DISPATCH_ONLY) {
-            // Load all resources.
-            Grasscutter.updateDayOfWeek();
-            ResourceLoader.loadAll();
+		// Disable the MongoDB logger.
+		var mongoLogger = (Logger) LoggerFactory.getLogger("org.mongodb.driver");
+		mongoLogger.setLevel(Level.OFF);
 
-            // Generate handbooks.
-            Tools.createGmHandbooks(false);
-        }
+		// Load server configuration.
+		Grasscutter.loadConfig();
+		// Attempt to update configuration.
+		ConfigContainer.updateConfig();
 
-        // Initialize database.
-        DatabaseManager.initialize();
+		Grasscutter.getLogger().info("Loading Grasscutter...");
 
-        // Initialize the default systems.
-        authenticationSystem = new DefaultAuthentication();
-        permissionHandler = new DefaultPermissionHandler();
+		// Load translation files.
+		Grasscutter.loadLanguage();
 
-        // Create server instances.
-        if (runMode == ServerRunMode.HYBRID || runMode == ServerRunMode.GAME_ONLY)
-            Grasscutter.gameServer = new GameServer();
-        if (runMode == ServerRunMode.HYBRID || runMode == ServerRunMode.DISPATCH_ONLY)
-            Grasscutter.httpServer = new HttpServer();
+		// Check server structure.
+		Utils.startupCheck();
+	}
 
-        // Create a server hook instance with both servers.
-        new ServerHelper(gameServer, httpServer);
-        // noinspection removal
-        new ServerHook(gameServer, httpServer);
+	public static void main(String[] args) throws Exception {
+		Crypto.loadKeys(); // Load keys from buffers.
 
-        // Create plugin manager instance.
-        pluginManager = new PluginManager();
+		// Parse start-up arguments.
+		if (StartupArguments.parse(args)) {
+			System.exit(0); // Exit early.
+		}
 
-        if (runMode != ServerRunMode.GAME_ONLY) {
-            // Add HTTP routes after loading plugins.
-            httpServer.addRouter(HttpServer.UnhandledRequestRouter.class);
-            httpServer.addRouter(HttpServer.DefaultRequestRouter.class);
-            httpServer.addRouter(RegionHandler.class);
-            httpServer.addRouter(LogHandler.class);
-            httpServer.addRouter(GenericHandler.class);
-            httpServer.addRouter(AnnouncementsHandler.class);
-            httpServer.addRouter(AuthenticationHandler.class);
-            httpServer.addRouter(GachaHandler.class);
-            httpServer.addRouter(DocumentationServerHandler.class);
-            httpServer.addRouter(HandbookHandler.class);
-        }
+		// Get the server run mode.
+		var runMode = Grasscutter.getRunMode();
 
-        // Start servers.
-        if (runMode == ServerRunMode.HYBRID) {
-            httpServer.start();
-            gameServer.start();
-        } else if (runMode == ServerRunMode.DISPATCH_ONLY) {
-            httpServer.start();
+		// Create command map.
+		commandMap = new CommandMap(true);
 
-            // Start dispatch server.
-            dispatchServer = new DispatchServer("0.0.0.0", 1111);
-            dispatchServer.start();
-        } else if (runMode == ServerRunMode.GAME_ONLY) {
-            gameServer.start();
-        } else {
-            logger.error(translate("messages.status.run_mode_error", runMode));
-            logger.error(translate("messages.status.run_mode_help"));
-            logger.error(translate("messages.status.shutdown"));
-            System.exit(1);
-        }
+		// Initialize server.
+		logger.info(translate("messages.status.starting"));
+		logger.info(translate("messages.status.game_version", GameConstants.VERSION));
+		logger.info(translate("messages.status.version", BuildConfig.VERSION, BuildConfig.GIT_HASH));
 
-        // Enable all plugins.
-        pluginManager.enablePlugins();
+		if (runMode != ServerRunMode.DISPATCH_ONLY) {
+			// Load all resources.
+			Grasscutter.updateDayOfWeek();
+			ResourceLoader.loadAll();
 
-        // Hook into shutdown event.
-        Runtime.getRuntime().addShutdownHook(new Thread(Grasscutter::onShutdown));
+			// Generate handbooks.
+			Tools.createGmHandbooks(false);
+		}
 
-        // Open console.
-        Grasscutter.startConsole();
-    }
+		// Initialize database.
+		DatabaseManager.initialize();
 
-    /** Server shutdown event. */
-    private static void onShutdown() {
-        // Disable all plugins.
-        if (pluginManager != null) pluginManager.disablePlugins();
-    }
+		// Initialize the default systems.
+		authenticationSystem = new DefaultAuthentication();
+		permissionHandler = new DefaultPermissionHandler();
 
-    /*
-     * Methods for the language system component.
-     */
+		// Create server instances.
+		if (runMode == ServerRunMode.HYBRID || runMode == ServerRunMode.GAME_ONLY) Grasscutter.gameServer =
+			new GameServer();
+		if (runMode == ServerRunMode.HYBRID || runMode == ServerRunMode.DISPATCH_ONLY) Grasscutter.httpServer =
+			new HttpServer();
 
-    public static void loadLanguage() {
-        var locale = config.language.language;
-        language = Language.getLanguage(Utils.getLanguageCode(locale));
-    }
+		// Create a server hook instance with both servers.
+		new ServerHelper(gameServer, httpServer);
+		// noinspection removal
+		new ServerHook(gameServer, httpServer);
 
-    /*
-     * Methods for the configuration system component.
-     */
+		// Create plugin manager instance.
+		pluginManager = new PluginManager();
 
-    /** Attempts to load the configuration from a file. */
-    public static void loadConfig() {
-        // Check if config.json exists. If not, we generate a new config.
-        if (!configFile.exists()) {
-            getLogger().info("config.json could not be found. Generating a default configuration ...");
-            config = new ConfigContainer();
-            Grasscutter.saveConfig(config);
-            return;
-        }
+		if (runMode != ServerRunMode.GAME_ONLY) {
+			// Add HTTP routes after loading plugins.
+			httpServer.addRouter(HttpServer.UnhandledRequestRouter.class);
+			httpServer.addRouter(HttpServer.DefaultRequestRouter.class);
+			httpServer.addRouter(RegionHandler.class);
+			httpServer.addRouter(LogHandler.class);
+			httpServer.addRouter(GenericHandler.class);
+			httpServer.addRouter(AnnouncementsHandler.class);
+			httpServer.addRouter(AuthenticationHandler.class);
+			httpServer.addRouter(GachaHandler.class);
+			httpServer.addRouter(DocumentationServerHandler.class);
+			httpServer.addRouter(HandbookHandler.class);
+		}
 
-        // If the file already exists, we attempt to load it.
-        try {
-            config = JsonUtils.loadToClass(configFile.toPath(), ConfigContainer.class);
-        } catch (Exception exception) {
-            getLogger()
-                    .error(
-                            "There was an error while trying to load the configuration from config.json. Please make sure that there are no syntax errors. If you want to start with a default configuration, delete your existing config.json.", exception);
-            System.exit(1);
-        }
-    }
+		// Start servers.
+		if (runMode == ServerRunMode.HYBRID) {
+			httpServer.start();
+			gameServer.start();
+		} else if (runMode == ServerRunMode.DISPATCH_ONLY) {
+			httpServer.start();
 
-    /**
-     * Saves the provided server configuration.
-     *
-     * @param config The configuration to save, or null for a new one.
-     */
-    public static void saveConfig(@Nullable ConfigContainer config) {
-        if (config == null) config = new ConfigContainer();
+			// Start dispatch server.
+			dispatchServer = new DispatchServer("0.0.0.0", 1111);
+			dispatchServer.start();
+		} else if (runMode == ServerRunMode.GAME_ONLY) {
+			gameServer.start();
+		} else {
+			logger.error(translate("messages.status.run_mode_error", runMode));
+			logger.error(translate("messages.status.run_mode_help"));
+			logger.error(translate("messages.status.shutdown"));
+			System.exit(1);
+		}
 
-        try (FileWriter file = new FileWriter(configFile)) {
-            file.write(JsonUtils.encode(config));
-        } catch (IOException ignored) {
-            logger.error("Unable to write to config file.");
-        } catch (Exception e) {
-            logger.error("Unable to save config file.", e);
-        }
-    }
+		// Enable all plugins.
+		pluginManager.enablePlugins();
 
-    /*
-     * Getters for the various server components.
-     */
+		// Hook into shutdown event.
+		Runtime.getRuntime().addShutdownHook(new Thread(Grasscutter::onShutdown));
 
-    public static Language getLanguage(String langCode) {
-        return Language.getLanguage(langCode);
-    }
+		// Open console.
+		Grasscutter.startConsole();
+	}
 
-    public static ServerRunMode getRunMode() {
-        return Grasscutter.runModeOverride != null ? Grasscutter.runModeOverride : SERVER.runMode;
-    }
+	/** Server shutdown event. */
+	private static void onShutdown() {
+		// Disable all plugins.
+		if (pluginManager != null) pluginManager.disablePlugins();
+	}
 
-    public static LineReader getConsole() {
-        if (consoleLineReader == null) {
-            Terminal terminal = null;
-            try {
-                terminal = TerminalBuilder.builder().jna(true).build();
-            } catch (Exception e) {
-                try {
-                    // Fallback to a dumb jline terminal.
-                    terminal = TerminalBuilder.builder().dumb(true).build();
-                } catch (Exception ignored) {
-                    // When dumb is true, build() never throws.
-                }
-            }
+	/*
+	 * Methods for the language system component.
+	 */
 
-            consoleLineReader = LineReaderBuilder.builder().terminal(terminal).build();
-        }
+	public static void loadLanguage() {
+		var locale = config.language.language;
+		language = Language.getLanguage(Utils.getLanguageCode(locale));
+	}
 
-        return consoleLineReader;
-    }
+	/*
+	 * Methods for the configuration system component.
+	 */
 
-    /*
-     * Utility methods.
-     */
+	/** Attempts to load the configuration from a file. */
+	public static void loadConfig() {
+		// Check if config.json exists. If not, we generate a new config.
+		if (!configFile.exists()) {
+			getLogger().info("config.json could not be found. Generating a default configuration ...");
+			config = new ConfigContainer();
+			Grasscutter.saveConfig(config);
+			return;
+		}
 
-    public static void updateDayOfWeek() {
-        Calendar calendar = Calendar.getInstance();
-        Grasscutter.currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        logger.debug("Set day of week to " + currentDayOfWeek);
-    }
+		// If the file already exists, we attempt to load it.
+		try {
+			config = JsonUtils.loadToClass(configFile.toPath(), ConfigContainer.class);
+		} catch (Exception exception) {
+			getLogger()
+				.error(
+					"There was an error while trying to load the configuration from config.json. Please make sure that there are no syntax errors. If you want to start with a default configuration, delete your existing config.json.",
+					exception
+				);
+			System.exit(1);
+		}
+	}
 
-    public static void startConsole() {
-        // Console should not start in dispatch only mode.
-        if (Grasscutter.getRunMode() == ServerRunMode.DISPATCH_ONLY && Grasscutter.noConsole) {
-            logger.info(translate("messages.dispatch.no_commands_error"));
-            return;
-        } else {
-            logger.info(translate("messages.status.done"));
-        }
+	/**
+	 * Saves the provided server configuration.
+	 *
+	 * @param config The configuration to save, or null for a new one.
+	 */
+	public static void saveConfig(@Nullable ConfigContainer config) {
+		if (config == null) config = new ConfigContainer();
 
-        String input = null;
-        var isLastInterrupted = false;
-        while (config.server.game.enableConsole) {
-            try {
-                input = consoleLineReader.readLine("> ");
-            } catch (UserInterruptException e) {
-                if (!isLastInterrupted) {
-                    isLastInterrupted = true;
-                    logger.info("Press Ctrl-C again to shutdown.");
-                    continue;
-                } else {
-                    Runtime.getRuntime().exit(0);
-                }
-            } catch (EndOfFileException e) {
-                logger.info("EOF detected.");
-                continue;
-            } catch (IOError e) {
-                logger.error("An IO error occurred while trying to read from console.", e);
-                return;
-            }
+		try (FileWriter file = new FileWriter(configFile)) {
+			file.write(JsonUtils.encode(config));
+		} catch (IOException ignored) {
+			logger.error("Unable to write to config file.");
+		} catch (Exception e) {
+			logger.error("Unable to save config file.", e);
+		}
+	}
 
-            isLastInterrupted = false;
+	/*
+	 * Getters for the various server components.
+	 */
 
-            try {
-                commandMap.invoke(null, null, input);
-            } catch (Exception e) {
-                logger.error(translate("messages.game.command_error"), e);
-            }
-        }
-    }
+	public static Language getLanguage(String langCode) {
+		return Language.getLanguage(langCode);
+	}
 
-    /*
-     * Enums for the configuration.
-     */
+	public static ServerRunMode getRunMode() {
+		return Grasscutter.runModeOverride != null ? Grasscutter.runModeOverride : SERVER.runMode;
+	}
 
-    public enum ServerRunMode {
-        HYBRID,
-        DISPATCH_ONLY,
-        GAME_ONLY
-    }
+	public static LineReader getConsole() {
+		if (consoleLineReader == null) {
+			Terminal terminal = null;
+			try {
+				terminal = TerminalBuilder.builder().jna(true).build();
+			} catch (Exception e) {
+				try {
+					// Fallback to a dumb jline terminal.
+					terminal = TerminalBuilder.builder().dumb(true).build();
+				} catch (Exception ignored) {
+					// When dumb is true, build() never throws.
+				}
+			}
 
-    public enum ServerDebugMode {
-        ALL,
-        MISSING,
-        WHITELIST,
-        BLACKLIST,
-        NONE
-    }
+			consoleLineReader = LineReaderBuilder.builder().terminal(terminal).build();
+		}
+
+		return consoleLineReader;
+	}
+
+	/*
+	 * Utility methods.
+	 */
+
+	public static void updateDayOfWeek() {
+		Calendar calendar = Calendar.getInstance();
+		Grasscutter.currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+		logger.debug("Set day of week to " + currentDayOfWeek);
+	}
+
+	public static void startConsole() {
+		// Console should not start in dispatch only mode.
+		if (Grasscutter.getRunMode() == ServerRunMode.DISPATCH_ONLY && Grasscutter.noConsole) {
+			logger.info(translate("messages.dispatch.no_commands_error"));
+			return;
+		} else {
+			logger.info(translate("messages.status.done"));
+		}
+
+		String input = null;
+		var isLastInterrupted = false;
+		while (config.server.game.enableConsole) {
+			try {
+				input = consoleLineReader.readLine("> ");
+			} catch (UserInterruptException e) {
+				if (!isLastInterrupted) {
+					isLastInterrupted = true;
+					logger.info("Press Ctrl-C again to shutdown.");
+					continue;
+				} else {
+					Runtime.getRuntime().exit(0);
+				}
+			} catch (EndOfFileException e) {
+				logger.info("EOF detected.");
+				continue;
+			} catch (IOError e) {
+				logger.error("An IO error occurred while trying to read from console.", e);
+				return;
+			}
+
+			isLastInterrupted = false;
+
+			try {
+				commandMap.invoke(null, null, input);
+			} catch (Exception e) {
+				logger.error(translate("messages.game.command_error"), e);
+			}
+		}
+	}
+
+	/*
+	 * Enums for the configuration.
+	 */
+
+	public enum ServerRunMode {
+		HYBRID,
+		DISPATCH_ONLY,
+		GAME_ONLY
+	}
+
+	public enum ServerDebugMode {
+		ALL,
+		MISSING,
+		WHITELIST,
+		BLACKLIST,
+		NONE
+	}
 }

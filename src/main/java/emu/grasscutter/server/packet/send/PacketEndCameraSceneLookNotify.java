@@ -6,9 +6,8 @@ import emu.grasscutter.net.proto.EndCameraSceneLookNotifyOuterClass.EndCameraSce
 
 public class PacketEndCameraSceneLookNotify extends BasePacket {
 
-    public PacketEndCameraSceneLookNotify() {
-        super(PacketOpcodes.EndCameraSceneLookNotify);
-
-        this.setData(EndCameraSceneLookNotify.newBuilder());
-    }
+	public PacketEndCameraSceneLookNotify() {
+		super(PacketOpcodes.EndCameraSceneLookNotify);
+		this.setData(EndCameraSceneLookNotify.newBuilder());
+	}
 }

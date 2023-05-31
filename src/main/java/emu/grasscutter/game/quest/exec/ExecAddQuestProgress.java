@@ -9,13 +9,13 @@ import java.util.Arrays;
 
 @QuestValueExec(QuestExec.QUEST_EXEC_ADD_QUEST_PROGRESS)
 public final class ExecAddQuestProgress extends QuestExecHandler {
-    @Override
-    public boolean execute(GameQuest quest, QuestData.QuestExecParam condition, String... paramStr) {
-        var param =
-                Arrays.stream(paramStr).filter(i -> !i.isBlank()).mapToInt(Integer::parseInt).toArray();
 
-        quest.getOwner().getProgressManager().addQuestProgress(param[0], param[1]);
+	@Override
+	public boolean execute(GameQuest quest, QuestData.QuestExecParam condition, String... paramStr) {
+		var param = Arrays.stream(paramStr).filter(i -> !i.isBlank()).mapToInt(Integer::parseInt).toArray();
 
-        return true;
-    }
+		quest.getOwner().getProgressManager().addQuestProgress(param[0], param[1]);
+
+		return true;
+	}
 }

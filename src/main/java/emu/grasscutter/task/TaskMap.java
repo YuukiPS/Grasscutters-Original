@@ -6,168 +6,167 @@ import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.reflections.Reflections;
 
-@SuppressWarnings({"UnusedReturnValue", "unused"})
+@SuppressWarnings({ "UnusedReturnValue", "unused" })
 public final class TaskMap {
-    private final Map<String, TaskHandler> tasks = new HashMap<>();
-    private final Map<String, Task> annotations = new HashMap<>();
-    private final Map<String, TaskHandler> afterReset = new HashMap<>();
-    private final SchedulerFactory schedulerFactory = new StdSchedulerFactory();
 
-    public TaskMap() {
-        this(false);
-    }
+	private final Map<String, TaskHandler> tasks = new HashMap<>();
+	private final Map<String, Task> annotations = new HashMap<>();
+	private final Map<String, TaskHandler> afterReset = new HashMap<>();
+	private final SchedulerFactory schedulerFactory = new StdSchedulerFactory();
 
-    public TaskMap(boolean scan) {
-        if (scan) this.scan();
-    }
+	public TaskMap() {
+		this(false);
+	}
 
-    public static TaskMap getInstance() {
-        return Grasscutter.getGameServer().getTaskMap();
-    }
+	public TaskMap(boolean scan) {
+		if (scan) this.scan();
+	}
 
-    public void resetNow() {
-        // Unregister all tasks
-        for (TaskHandler task : this.tasks.values()) {
-            unregisterTask(task);
-        }
+	public static TaskMap getInstance() {
+		return Grasscutter.getGameServer().getTaskMap();
+	}
 
-        // Run all afterReset tasks
-        for (TaskHandler task : this.afterReset.values()) {
-            try {
-                task.restartExecute();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+	public void resetNow() {
+		// Unregister all tasks
+		for (TaskHandler task : this.tasks.values()) {
+			unregisterTask(task);
+		}
 
-        // Remove all afterReset tasks
-        this.afterReset.clear();
+		// Run all afterReset tasks
+		for (TaskHandler task : this.afterReset.values()) {
+			try {
+				task.restartExecute();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 
-        // Register all tasks
-        for (TaskHandler task : this.tasks.values()) {
-            registerTask(task.getClass().getAnnotation(Task.class).taskName(), task);
-        }
-    }
+		// Remove all afterReset tasks
+		this.afterReset.clear();
 
-    public TaskMap unregisterTask(TaskHandler task) {
-        this.tasks.remove(task.getClass().getAnnotation(Task.class).taskName());
-        this.annotations.remove(task.getClass().getAnnotation(Task.class).taskName());
+		// Register all tasks
+		for (TaskHandler task : this.tasks.values()) {
+			registerTask(task.getClass().getAnnotation(Task.class).taskName(), task);
+		}
+	}
 
-        try {
-            Scheduler scheduler = schedulerFactory.getScheduler();
-            scheduler.deleteJob(new JobKey(task.getClass().getAnnotation(Task.class).taskName()));
-        } catch (SchedulerException e) {
-            e.printStackTrace();
-        }
+	public TaskMap unregisterTask(TaskHandler task) {
+		this.tasks.remove(task.getClass().getAnnotation(Task.class).taskName());
+		this.annotations.remove(task.getClass().getAnnotation(Task.class).taskName());
 
-        task.onDisable();
+		try {
+			Scheduler scheduler = schedulerFactory.getScheduler();
+			scheduler.deleteJob(new JobKey(task.getClass().getAnnotation(Task.class).taskName()));
+		} catch (SchedulerException e) {
+			e.printStackTrace();
+		}
 
-        return this;
-    }
+		task.onDisable();
 
-    public boolean pauseTask(String taskName) {
-        try {
-            Scheduler scheduler = schedulerFactory.getScheduler();
-            scheduler.pauseJob(new JobKey(taskName));
-        } catch (SchedulerException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
+		return this;
+	}
 
-    public boolean resumeTask(String taskName) {
-        try {
-            Scheduler scheduler = schedulerFactory.getScheduler();
-            scheduler.resumeJob(new JobKey(taskName));
-        } catch (SchedulerException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
+	public boolean pauseTask(String taskName) {
+		try {
+			Scheduler scheduler = schedulerFactory.getScheduler();
+			scheduler.pauseJob(new JobKey(taskName));
+		} catch (SchedulerException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
 
-    public boolean cancelTask(String taskName) {
-        Task task = this.annotations.get(taskName);
-        if (task == null) return false;
-        try {
-            this.unregisterTask(this.tasks.get(taskName));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
+	public boolean resumeTask(String taskName) {
+		try {
+			Scheduler scheduler = schedulerFactory.getScheduler();
+			scheduler.resumeJob(new JobKey(taskName));
+		} catch (SchedulerException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
 
-    public TaskMap registerTask(String taskName, TaskHandler task) {
-        Task annotation = task.getClass().getAnnotation(Task.class);
-        this.annotations.put(taskName, annotation);
-        this.tasks.put(taskName, task);
+	public boolean cancelTask(String taskName) {
+		Task task = this.annotations.get(taskName);
+		if (task == null) return false;
+		try {
+			this.unregisterTask(this.tasks.get(taskName));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
 
-        // register task
-        try {
-            Scheduler scheduler = schedulerFactory.getScheduler();
-            JobDetail job = JobBuilder.newJob(task.getClass()).withIdentity(taskName).build();
+	public TaskMap registerTask(String taskName, TaskHandler task) {
+		Task annotation = task.getClass().getAnnotation(Task.class);
+		this.annotations.put(taskName, annotation);
+		this.tasks.put(taskName, task);
 
-            Trigger convTrigger =
-                    TriggerBuilder.newTrigger()
-                            .withIdentity(annotation.triggerName())
-                            .withSchedule(CronScheduleBuilder.cronSchedule(annotation.taskCronExpression()))
-                            .build();
+		// register task
+		try {
+			Scheduler scheduler = schedulerFactory.getScheduler();
+			JobDetail job = JobBuilder.newJob(task.getClass()).withIdentity(taskName).build();
 
-            scheduler.scheduleJob(job, convTrigger);
+			Trigger convTrigger = TriggerBuilder
+				.newTrigger()
+				.withIdentity(annotation.triggerName())
+				.withSchedule(CronScheduleBuilder.cronSchedule(annotation.taskCronExpression()))
+				.build();
 
-            if (annotation.executeImmediately()) {
-                task.execute(null);
-            }
-            task.onEnable();
-        } catch (SchedulerException e) {
-            e.printStackTrace();
-        }
+			scheduler.scheduleJob(job, convTrigger);
 
-        return this;
-    }
+			if (annotation.executeImmediately()) {
+				task.execute(null);
+			}
+			task.onEnable();
+		} catch (SchedulerException e) {
+			e.printStackTrace();
+		}
 
-    public List<TaskHandler> getHandlersAsList() {
-        return new ArrayList<>(this.tasks.values());
-    }
+		return this;
+	}
 
-    public HashMap<String, TaskHandler> getHandlers() {
-        return new LinkedHashMap<>(this.tasks);
-    }
+	public List<TaskHandler> getHandlersAsList() {
+		return new ArrayList<>(this.tasks.values());
+	}
 
-    public TaskHandler getHandler(String taskName) {
-        return this.tasks.get(taskName);
-    }
+	public HashMap<String, TaskHandler> getHandlers() {
+		return new LinkedHashMap<>(this.tasks);
+	}
 
-    private void scan() {
-        Reflections reflector = Grasscutter.reflector;
-        Set<Class<?>> classes = reflector.getTypesAnnotatedWith(Task.class);
-        classes.forEach(
-                annotated -> {
-                    try {
-                        Task taskData = annotated.getAnnotation(Task.class);
-                        Object object = annotated.getDeclaredConstructor().newInstance();
-                        if (object instanceof TaskHandler) {
-                            this.registerTask(taskData.taskName(), (TaskHandler) object);
-                            if (taskData.executeImmediatelyAfterReset()) {
-                                this.afterReset.put(taskData.taskName(), (TaskHandler) object);
-                            }
-                        } else {
-                            Grasscutter.getLogger()
-                                    .error("Class " + annotated.getName() + " is not a TaskHandler!");
-                        }
-                    } catch (Exception exception) {
-                        Grasscutter.getLogger()
-                                .error(
-                                        "Failed to register task handler for " + annotated.getSimpleName(), exception);
-                    }
-                });
-        try {
-            Scheduler scheduler = schedulerFactory.getScheduler();
-            scheduler.start();
-        } catch (SchedulerException e) {
-            e.printStackTrace();
-        }
-    }
+	public TaskHandler getHandler(String taskName) {
+		return this.tasks.get(taskName);
+	}
+
+	private void scan() {
+		Reflections reflector = Grasscutter.reflector;
+		Set<Class<?>> classes = reflector.getTypesAnnotatedWith(Task.class);
+		classes.forEach(annotated -> {
+			try {
+				Task taskData = annotated.getAnnotation(Task.class);
+				Object object = annotated.getDeclaredConstructor().newInstance();
+				if (object instanceof TaskHandler) {
+					this.registerTask(taskData.taskName(), (TaskHandler) object);
+					if (taskData.executeImmediatelyAfterReset()) {
+						this.afterReset.put(taskData.taskName(), (TaskHandler) object);
+					}
+				} else {
+					Grasscutter.getLogger().error("Class " + annotated.getName() + " is not a TaskHandler!");
+				}
+			} catch (Exception exception) {
+				Grasscutter
+					.getLogger()
+					.error("Failed to register task handler for " + annotated.getSimpleName(), exception);
+			}
+		});
+		try {
+			Scheduler scheduler = schedulerFactory.getScheduler();
+			scheduler.start();
+		} catch (SchedulerException e) {
+			e.printStackTrace();
+		}
+	}
 }

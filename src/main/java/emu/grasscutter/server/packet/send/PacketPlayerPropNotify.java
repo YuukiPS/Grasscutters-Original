@@ -9,16 +9,15 @@ import emu.grasscutter.utils.helpers.ProtoHelper;
 
 public class PacketPlayerPropNotify extends BasePacket {
 
-    public PacketPlayerPropNotify(Player player, PlayerProperty prop) {
-        super(PacketOpcodes.PlayerPropNotify);
+	public PacketPlayerPropNotify(Player player, PlayerProperty prop) {
+		super(PacketOpcodes.PlayerPropNotify);
+		this.buildHeader(0);
 
-        this.buildHeader(0);
+		PlayerPropNotify proto = PlayerPropNotify
+			.newBuilder()
+			.putPropMap(prop.getId(), ProtoHelper.newPropValue(prop, player.getProperty(prop)))
+			.build();
 
-        PlayerPropNotify proto =
-                PlayerPropNotify.newBuilder()
-                        .putPropMap(prop.getId(), ProtoHelper.newPropValue(prop, player.getProperty(prop)))
-                        .build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

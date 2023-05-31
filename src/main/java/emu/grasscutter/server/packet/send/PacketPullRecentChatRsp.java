@@ -7,11 +7,11 @@ import emu.grasscutter.net.proto.PullRecentChatRspOuterClass.PullRecentChatRsp;
 import java.util.List;
 
 public class PacketPullRecentChatRsp extends BasePacket {
-    public PacketPullRecentChatRsp(List<ChatInfo> messages) {
-        super(PacketOpcodes.PullRecentChatRsp);
 
-        PullRecentChatRsp.Builder proto = PullRecentChatRsp.newBuilder().addAllChatInfo(messages);
+	public PacketPullRecentChatRsp(List<ChatInfo> messages) {
+		super(PacketOpcodes.PullRecentChatRsp);
+		PullRecentChatRsp.Builder proto = PullRecentChatRsp.newBuilder().addAllChatInfo(messages);
 
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

@@ -12,25 +12,24 @@ import emu.grasscutter.server.game.GameSession;
 @Opcodes(PacketOpcodes.ClientAbilitiesInitFinishCombineNotify)
 public class HandlerClientAbilitiesInitFinishCombineNotify extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        ClientAbilitiesInitFinishCombineNotify notif =
-                ClientAbilitiesInitFinishCombineNotify.parseFrom(payload);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		ClientAbilitiesInitFinishCombineNotify notif = ClientAbilitiesInitFinishCombineNotify.parseFrom(payload);
 
-        Player player = session.getPlayer();
+		Player player = session.getPlayer();
 
-        // Call skill end in the player's ability manager.
-        player.getAbilityManager().onSkillEnd(player);
+		// Call skill end in the player's ability manager.
+		player.getAbilityManager().onSkillEnd(player);
 
-        for (EntityAbilityInvokeEntry entry : notif.getEntityInvokeListList()) {
-            for (AbilityInvokeEntry ability : entry.getInvokesList()) {
-                player.getAbilityManager().onAbilityInvoke(ability);
-                player.getClientAbilityInitFinishHandler().addEntry(ability.getForwardType(), ability);
-            }
+		for (EntityAbilityInvokeEntry entry : notif.getEntityInvokeListList()) {
+			for (AbilityInvokeEntry ability : entry.getInvokesList()) {
+				player.getAbilityManager().onAbilityInvoke(ability);
+				player.getClientAbilityInitFinishHandler().addEntry(ability.getForwardType(), ability);
+			}
 
-            if (entry.getInvokesList().size() > 0) {
-                session.getPlayer().getClientAbilityInitFinishHandler().update(session.getPlayer());
-            }
-        }
-    }
+			if (entry.getInvokesList().size() > 0) {
+				session.getPlayer().getClientAbilityInitFinishHandler().update(session.getPlayer());
+			}
+		}
+	}
 }

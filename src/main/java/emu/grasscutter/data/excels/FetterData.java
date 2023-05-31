@@ -7,32 +7,34 @@ import emu.grasscutter.data.common.OpenCondData;
 import java.util.List;
 
 @ResourceType(
-        name = {
-            "FetterInfoExcelConfigData.json",
-            "FettersExcelConfigData.json",
-            "FetterStoryExcelConfigData.json",
-            "PhotographExpressionExcelConfigData.json",
-            "PhotographPosenameExcelConfigData.json"
-        },
-        loadPriority = LoadPriority.HIGHEST)
+	name = {
+		"FetterInfoExcelConfigData.json",
+		"FettersExcelConfigData.json",
+		"FetterStoryExcelConfigData.json",
+		"PhotographExpressionExcelConfigData.json",
+		"PhotographPosenameExcelConfigData.json"
+	},
+	loadPriority = LoadPriority.HIGHEST
+)
 public class FetterData extends GameResource {
-    private int avatarId;
-    private int fetterId;
-    private List<OpenCondData> openCond;
 
-    @Override
-    public int getId() {
-        return fetterId;
-    }
+	private int avatarId;
+	private int fetterId;
+	private List<OpenCondData> openCond;
 
-    public int getAvatarId() {
-        return avatarId;
-    }
+	@Override
+	public int getId() {
+		return fetterId;
+	}
 
-    public List<OpenCondData> getOpenConds() {
-        return openCond;
-    }
+	public int getAvatarId() {
+		return avatarId;
+	}
 
-    @Override
-    public void onLoad() {}
+	public List<OpenCondData> getOpenConds() {
+		return openCond;
+	}
+
+	@Override
+	public void onLoad() {}
 }

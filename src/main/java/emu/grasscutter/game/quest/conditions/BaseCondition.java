@@ -9,12 +9,13 @@ import emu.grasscutter.game.quest.QuestValueCond;
 @QuestValueCond(QUEST_COND_UNKNOWN)
 public class BaseCondition {
 
-    public boolean execute(
-            Player owner,
-            QuestData questData,
-            QuestData.QuestAcceptCondition condition,
-            String paramStr,
-            int... params) {
-        return false;
-    }
+	public boolean execute(
+		Player owner,
+		QuestData questData,
+		QuestData.QuestAcceptCondition condition,
+		String paramStr,
+		int... params
+	) {
+		return false;
+	}
 }

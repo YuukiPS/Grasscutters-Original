@@ -6,12 +6,10 @@ import emu.grasscutter.net.proto.PlayerApplyEnterMpRspOuterClass.PlayerApplyEnte
 
 public class PacketPlayerApplyEnterMpRsp extends BasePacket {
 
-    public PacketPlayerApplyEnterMpRsp(int targetUid) {
-        super(PacketOpcodes.PlayerApplyEnterMpRsp);
+	public PacketPlayerApplyEnterMpRsp(int targetUid) {
+		super(PacketOpcodes.PlayerApplyEnterMpRsp);
+		PlayerApplyEnterMpRsp proto = PlayerApplyEnterMpRsp.newBuilder().setTargetUid(targetUid).build();
 
-        PlayerApplyEnterMpRsp proto =
-                PlayerApplyEnterMpRsp.newBuilder().setTargetUid(targetUid).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

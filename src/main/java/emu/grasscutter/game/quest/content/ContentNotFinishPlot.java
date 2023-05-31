@@ -10,15 +10,14 @@ import lombok.val;
 @QuestValueContent(QUEST_CONTENT_NOT_FINISH_PLOT)
 public class ContentNotFinishPlot extends BaseContent {
 
-    @Override
-    public boolean execute(
-            GameQuest quest, QuestData.QuestContentCondition condition, String paramStr, int... params) {
-        val talkId = condition.getParam()[0];
-        val checkMainQuest = quest.getOwner().getQuestManager().getMainQuestByTalkId(talkId);
-        if (checkMainQuest == null) {
-            return true;
-        }
-        val talkData = checkMainQuest.getTalks().get(talkId);
-        return talkData == null;
-    }
+	@Override
+	public boolean execute(GameQuest quest, QuestData.QuestContentCondition condition, String paramStr, int... params) {
+		val talkId = condition.getParam()[0];
+		val checkMainQuest = quest.getOwner().getQuestManager().getMainQuestByTalkId(talkId);
+		if (checkMainQuest == null) {
+			return true;
+		}
+		val talkData = checkMainQuest.getTalks().get(talkId);
+		return talkData == null;
+	}
 }

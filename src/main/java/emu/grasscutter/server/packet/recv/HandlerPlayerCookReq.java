@@ -8,10 +8,10 @@ import emu.grasscutter.server.game.GameSession;
 
 @Opcodes(PacketOpcodes.PlayerCookReq)
 public class HandlerPlayerCookReq extends PacketHandler {
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        PlayerCookReqOuterClass.PlayerCookReq req =
-                PlayerCookReqOuterClass.PlayerCookReq.parseFrom(payload);
-        session.getPlayer().getCookingManager().handlePlayerCookReq(req);
-    }
+
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		PlayerCookReqOuterClass.PlayerCookReq req = PlayerCookReqOuterClass.PlayerCookReq.parseFrom(payload);
+		session.getPlayer().getCookingManager().handlePlayerCookReq(req);
+	}
 }

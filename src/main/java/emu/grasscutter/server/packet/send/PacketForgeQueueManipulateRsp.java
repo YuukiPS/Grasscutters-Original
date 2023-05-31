@@ -11,35 +11,33 @@ import java.util.List;
 
 public class PacketForgeQueueManipulateRsp extends BasePacket {
 
-    public PacketForgeQueueManipulateRsp(
-            Retcode retcode,
-            ForgeQueueManipulateType type,
-            List<GameItem> output,
-            List<GameItem> refund,
-            List<GameItem> extra) {
-        super(PacketOpcodes.ForgeQueueManipulateRsp);
+	public PacketForgeQueueManipulateRsp(
+		Retcode retcode,
+		ForgeQueueManipulateType type,
+		List<GameItem> output,
+		List<GameItem> refund,
+		List<GameItem> extra
+	) {
+		super(PacketOpcodes.ForgeQueueManipulateRsp);
+		ForgeQueueManipulateRsp.Builder builder = ForgeQueueManipulateRsp
+			.newBuilder()
+			.setRetcode(retcode.getNumber())
+			.setManipulateType(type);
 
-        ForgeQueueManipulateRsp.Builder builder =
-                ForgeQueueManipulateRsp.newBuilder()
-                        .setRetcode(retcode.getNumber())
-                        .setManipulateType(type);
+		for (GameItem item : output) {
+			ItemParam toAdd = ItemParam.newBuilder().setItemId(item.getItemId()).setCount(item.getCount()).build();
 
-        for (GameItem item : output) {
-            ItemParam toAdd =
-                    ItemParam.newBuilder().setItemId(item.getItemId()).setCount(item.getCount()).build();
+			builder.addExtraOutputItemList(toAdd);
+		}
 
-            builder.addExtraOutputItemList(toAdd);
-        }
+		for (GameItem item : refund) {
+			ItemParam toAdd = ItemParam.newBuilder().setItemId(item.getItemId()).setCount(item.getCount()).build();
 
-        for (GameItem item : refund) {
-            ItemParam toAdd =
-                    ItemParam.newBuilder().setItemId(item.getItemId()).setCount(item.getCount()).build();
+			builder.addReturnItemList(toAdd);
+		}
 
-            builder.addReturnItemList(toAdd);
-        }
+		// ToDo: Add extra items when once we have handling for it.
 
-        // ToDo: Add extra items when once we have handling for it.
-
-        this.setData(builder.build());
-    }
+		this.setData(builder.build());
+	}
 }

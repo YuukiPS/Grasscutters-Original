@@ -8,14 +8,15 @@ import emu.grasscutter.game.quest.enums.QuestCond;
 @QuestValueCond(QuestCond.QUEST_COND_PERSONAL_LINE_UNLOCK)
 public class ConditionPersonalLineUnlock extends BaseCondition {
 
-    @Override
-    public boolean execute(
-            Player owner,
-            QuestData questData,
-            QuestData.QuestAcceptCondition condition,
-            String paramStr,
-            int... params) {
-        var personalLineId = condition.getParam()[0];
-        return owner.getPersonalLineList().contains(personalLineId);
-    }
+	@Override
+	public boolean execute(
+		Player owner,
+		QuestData questData,
+		QuestData.QuestAcceptCondition condition,
+		String paramStr,
+		int... params
+	) {
+		var personalLineId = condition.getParam()[0];
+		return owner.getPersonalLineList().contains(personalLineId);
+	}
 }

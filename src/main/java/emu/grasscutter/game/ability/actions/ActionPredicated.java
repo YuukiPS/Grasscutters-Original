@@ -7,10 +7,10 @@ import emu.grasscutter.game.entity.GameEntity;
 
 @AbilityAction(AbilityModifierAction.Type.Predicated)
 public class ActionPredicated extends AbilityActionHandler {
-    @Override
-    public boolean execute(
-            Ability ability, AbilityModifierAction action, ByteString abilityData, GameEntity target) {
-        // This doesn't do nothing on server
-        return true;
-    }
+
+	@Override
+	public boolean execute(Ability ability, AbilityModifierAction action, ByteString abilityData, GameEntity target) {
+		// This doesn't do nothing on server
+		return true;
+	}
 }

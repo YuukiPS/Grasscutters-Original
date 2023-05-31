@@ -9,30 +9,30 @@ import java.util.List;
 
 public class PacketServerAnnounceNotify extends BasePacket {
 
-    public PacketServerAnnounceNotify(List<AnnounceDataOuterClass.AnnounceData> data) {
-        super(PacketOpcodes.ServerAnnounceNotify);
+	public PacketServerAnnounceNotify(List<AnnounceDataOuterClass.AnnounceData> data) {
+		super(PacketOpcodes.ServerAnnounceNotify);
+		var proto = ServerAnnounceNotifyOuterClass.ServerAnnounceNotify.newBuilder();
 
-        var proto = ServerAnnounceNotifyOuterClass.ServerAnnounceNotify.newBuilder();
+		proto.addAllAnnounceDataList(data);
 
-        proto.addAllAnnounceDataList(data);
+		this.setData(proto);
+	}
 
-        this.setData(proto);
-    }
+	public PacketServerAnnounceNotify(String msg, int configId) {
+		super(PacketOpcodes.ServerAnnounceNotify);
+		var proto = ServerAnnounceNotifyOuterClass.ServerAnnounceNotify.newBuilder();
 
-    public PacketServerAnnounceNotify(String msg, int configId) {
-        super(PacketOpcodes.ServerAnnounceNotify);
+		proto.addAnnounceDataList(
+			AnnounceDataOuterClass.AnnounceData
+				.newBuilder()
+				.setConfigId(configId)
+				.setBeginTime(Utils.getCurrentSeconds() + 1)
+				.setEndTime(Utils.getCurrentSeconds() + 2)
+				.setCenterSystemText(msg)
+				.setCenterSystemFrequency(1)
+				.build()
+		);
 
-        var proto = ServerAnnounceNotifyOuterClass.ServerAnnounceNotify.newBuilder();
-
-        proto.addAnnounceDataList(
-                AnnounceDataOuterClass.AnnounceData.newBuilder()
-                        .setConfigId(configId)
-                        .setBeginTime(Utils.getCurrentSeconds() + 1)
-                        .setEndTime(Utils.getCurrentSeconds() + 2)
-                        .setCenterSystemText(msg)
-                        .setCenterSystemFrequency(1)
-                        .build());
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

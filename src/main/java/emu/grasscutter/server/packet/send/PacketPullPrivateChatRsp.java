@@ -9,19 +9,18 @@ import java.util.List;
 
 public class PacketPullPrivateChatRsp extends BasePacket {
 
-    public PacketPullPrivateChatRsp(List<ChatInfo> history) {
-        super(PacketOpcodes.PullPrivateChatRsp);
+	public PacketPullPrivateChatRsp(List<ChatInfo> history) {
+		super(PacketOpcodes.PullPrivateChatRsp);
+		PullPrivateChatRsp.Builder builder = PullPrivateChatRsp.newBuilder();
 
-        PullPrivateChatRsp.Builder builder = PullPrivateChatRsp.newBuilder();
+		if (history == null) {
+			builder.setRetcode(Retcode.RET_FAIL_VALUE);
+		} else {
+			for (var info : history) {
+				builder.addChatInfo(info);
+			}
+		}
 
-        if (history == null) {
-            builder.setRetcode(Retcode.RET_FAIL_VALUE);
-        } else {
-            for (var info : history) {
-                builder.addChatInfo(info);
-            }
-        }
-
-        this.setData(builder.build());
-    }
+		this.setData(builder.build());
+	}
 }

@@ -5,12 +5,13 @@ import emu.grasscutter.server.event.types.PlayerEvent;
 import lombok.Getter;
 
 public final class PlayerEnterAreaEvent extends PlayerEvent {
-    @Getter private final int areaId, areaType;
 
-    public PlayerEnterAreaEvent(Player player) {
-        super(player);
+	@Getter
+	private final int areaId, areaType;
 
-        this.areaId = player.getAreaId();
-        this.areaType = player.getAreaType();
-    }
+	public PlayerEnterAreaEvent(Player player) {
+		super(player);
+		this.areaId = player.getAreaId();
+		this.areaType = player.getAreaType();
+	}
 }

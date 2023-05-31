@@ -11,10 +11,9 @@ import lombok.NoArgsConstructor;
 
 public final class PacketBeginCameraSceneLookNotify extends BasePacket {
 
-    public PacketBeginCameraSceneLookNotify(CameraSceneLookNotify parameters) {
-        super(PacketOpcodes.BeginCameraSceneLookNotify);
-
-        /* 
+	public PacketBeginCameraSceneLookNotify(CameraSceneLookNotify parameters) {
+		super(PacketOpcodes.BeginCameraSceneLookNotify);
+		/* 
         var packet =
                 BeginCameraSceneLookNotify.newBuilder()
                         .setLookPos(parameters.lookPos.toProto())
@@ -34,32 +33,33 @@ public final class PacketBeginCameraSceneLookNotify extends BasePacket {
 
         this.setData(packet);
         */
-    }
+	}
 
-    // TODO check default values
-    // todo find missing field usages:
-    //  enum Unk2700_HIAKNNCKHJB (Unk2700_LNCHDDOOECD)
-    //  Unk3000_MNLLCJMPMNH (uint32)
-    //  Unk2700_DHAHEKOGHBJ (float)
-    //  Unk3000_IEFIKMHCKDH (uint32)
-    //  Unk3000_OGCLMFFADBD (float)
+	// TODO check default values
+	// todo find missing field usages:
+	//  enum Unk2700_HIAKNNCKHJB (Unk2700_LNCHDDOOECD)
+	//  Unk3000_MNLLCJMPMNH (uint32)
+	//  Unk2700_DHAHEKOGHBJ (float)
+	//  Unk3000_IEFIKMHCKDH (uint32)
+	//  Unk3000_OGCLMFFADBD (float)
 
-    @Data
-    @NoArgsConstructor
-    public static class CameraSceneLookNotify {
-        Position lookPos = new Position();
-        Position followPos = new Position();
-        float duration = 0.0f;
-        boolean isAllowInput = true;
-        boolean setFollowPos = false;
-        boolean isScreenXY = false;
-        boolean recoverKeepCurrent = true;
-        boolean isForceWalk = false;
-        boolean isForce = false;
-        boolean isChangePlayMode = false;
-        float screenY = 0.0f;
-        float screenX = 0.0f;
-        int entityId = 0;
-        Collection<String> otherParams = new ArrayList<>(0);
-    }
+	@Data
+	@NoArgsConstructor
+	public static class CameraSceneLookNotify {
+
+		Position lookPos = new Position();
+		Position followPos = new Position();
+		float duration = 0.0f;
+		boolean isAllowInput = true;
+		boolean setFollowPos = false;
+		boolean isScreenXY = false;
+		boolean recoverKeepCurrent = true;
+		boolean isForceWalk = false;
+		boolean isForce = false;
+		boolean isChangePlayMode = false;
+		float screenY = 0.0f;
+		float screenX = 0.0f;
+		int entityId = 0;
+		Collection<String> otherParams = new ArrayList<>(0);
+	}
 }

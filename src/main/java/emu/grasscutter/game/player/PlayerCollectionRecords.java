@@ -6,63 +6,63 @@ import java.util.Map;
 
 @Entity(useDiscriminator = false)
 public class PlayerCollectionRecords {
-    private Map<Integer, CollectionRecord> records;
 
-    private Map<Integer, CollectionRecord> getRecords() {
-        if (records == null) {
-            records = new HashMap<>();
-        }
-        return records;
-    }
+	private Map<Integer, CollectionRecord> records;
 
-    public void addRecord(int configId, long expiredMillisecond) {
-        Map<Integer, CollectionRecord> records;
-        synchronized (records = getRecords()) {
-            records.put(
-                    configId,
-                    new CollectionRecord(configId, expiredMillisecond + System.currentTimeMillis()));
-        }
-    }
+	private Map<Integer, CollectionRecord> getRecords() {
+		if (records == null) {
+			records = new HashMap<>();
+		}
+		return records;
+	}
 
-    public boolean findRecord(int configId) {
-        Map<Integer, CollectionRecord> records;
-        synchronized (records = getRecords()) {
-            CollectionRecord record = records.get(configId);
+	public void addRecord(int configId, long expiredMillisecond) {
+		Map<Integer, CollectionRecord> records;
+		synchronized (records = getRecords()) {
+			records.put(configId, new CollectionRecord(configId, expiredMillisecond + System.currentTimeMillis()));
+		}
+	}
 
-            if (record == null) {
-                return false;
-            }
+	public boolean findRecord(int configId) {
+		Map<Integer, CollectionRecord> records;
+		synchronized (records = getRecords()) {
+			CollectionRecord record = records.get(configId);
 
-            boolean expired = record.getExpiredTime() < System.currentTimeMillis();
+			if (record == null) {
+				return false;
+			}
 
-            if (expired) {
-                records.remove(configId);
-                return false;
-            }
+			boolean expired = record.getExpiredTime() < System.currentTimeMillis();
 
-            return true;
-        }
-    }
+			if (expired) {
+				records.remove(configId);
+				return false;
+			}
 
-    @Entity
-    public static class CollectionRecord {
-        private int configId;
-        private long expiredTime;
+			return true;
+		}
+	}
 
-        @Deprecated // Morphia
-        public CollectionRecord() {}
+	@Entity
+	public static class CollectionRecord {
 
-        public CollectionRecord(int configId, long expiredTime) {
-            this.configId = configId;
-            this.expiredTime = expiredTime;
-        }
+		private int configId;
+		private long expiredTime;
 
-        public int getConfigId() {
-            return configId;
-        }
+		@Deprecated // Morphia
+		public CollectionRecord() {}
 
-        public long getExpiredTime() {
-            return expiredTime;
-        }
-    }
+		public CollectionRecord(int configId, long expiredTime) {
+			this.configId = configId;
+			this.expiredTime = expiredTime;
+		}
+
+		public int getConfigId() {
+			return configId;
+		}
+
+		public long getExpiredTime() {
+			return expiredTime;
+		}
+	}
 }

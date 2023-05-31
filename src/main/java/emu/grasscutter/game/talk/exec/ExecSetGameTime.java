@@ -9,10 +9,11 @@ import emu.grasscutter.game.talk.TalkValueExec;
 
 @TalkValueExec(TalkExec.TALK_EXEC_SET_GAME_TIME)
 public final class ExecSetGameTime extends TalkExecHandler {
-    @Override
-    public void execute(Player player, TalkConfigData talkData, TalkExecParam execParam) {
-        if (execParam.getParam().length < 1) return;
 
-        player.getWorld().changeTime(Integer.parseInt(execParam.getParam()[0]), 0);
-    }
+	@Override
+	public void execute(Player player, TalkConfigData talkData, TalkExecParam execParam) {
+		if (execParam.getParam().length < 1) return;
+
+		player.getWorld().changeTime(Integer.parseInt(execParam.getParam()[0]), 0);
+	}
 }

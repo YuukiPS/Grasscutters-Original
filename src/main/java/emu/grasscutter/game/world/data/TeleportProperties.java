@@ -10,11 +10,12 @@ import lombok.Data;
 @Data
 @Builder
 public final class TeleportProperties {
-    private final int sceneId;
-    private final int dungeonId;
-    private final PlayerTeleportEvent.TeleportType teleportType;
-    private final EnterReason enterReason;
-    private Position teleportTo;
-    private Position teleportRot;
-    private EnterTypeOuterClass.EnterType enterType;
+
+	private final int sceneId;
+	private final int dungeonId;
+	private final PlayerTeleportEvent.TeleportType teleportType;
+	private final EnterReason enterReason;
+	private Position teleportTo;
+	private Position teleportRot;
+	private EnterTypeOuterClass.EnterType enterType;
 }

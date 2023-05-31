@@ -9,26 +9,24 @@ import java.util.List;
 
 public class PacketCalcWeaponUpgradeReturnItemsRsp extends BasePacket {
 
-    public PacketCalcWeaponUpgradeReturnItemsRsp(long itemGuid, List<ItemParam> returnItems) {
-        super(PacketOpcodes.CalcWeaponUpgradeReturnItemsRsp);
+	public PacketCalcWeaponUpgradeReturnItemsRsp(long itemGuid, List<ItemParam> returnItems) {
+		super(PacketOpcodes.CalcWeaponUpgradeReturnItemsRsp);
+		CalcWeaponUpgradeReturnItemsRsp proto = CalcWeaponUpgradeReturnItemsRsp
+			.newBuilder()
+			.setTargetWeaponGuid(itemGuid)
+			.addAllItemParamList(returnItems)
+			.build();
 
-        CalcWeaponUpgradeReturnItemsRsp proto =
-                CalcWeaponUpgradeReturnItemsRsp.newBuilder()
-                        .setTargetWeaponGuid(itemGuid)
-                        .addAllItemParamList(returnItems)
-                        .build();
+		this.setData(proto);
+	}
 
-        this.setData(proto);
-    }
+	public PacketCalcWeaponUpgradeReturnItemsRsp() {
+		super(PacketOpcodes.CalcWeaponUpgradeReturnItemsRsp);
+		CalcWeaponUpgradeReturnItemsRsp proto = CalcWeaponUpgradeReturnItemsRsp
+			.newBuilder()
+			.setRetcode(RetcodeOuterClass.Retcode.RET_SVR_ERROR_VALUE)
+			.build();
 
-    public PacketCalcWeaponUpgradeReturnItemsRsp() {
-        super(PacketOpcodes.CalcWeaponUpgradeReturnItemsRsp);
-
-        CalcWeaponUpgradeReturnItemsRsp proto =
-                CalcWeaponUpgradeReturnItemsRsp.newBuilder()
-                        .setRetcode(RetcodeOuterClass.Retcode.RET_SVR_ERROR_VALUE)
-                        .build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

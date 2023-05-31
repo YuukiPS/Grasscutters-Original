@@ -7,38 +7,35 @@ import emu.grasscutter.net.proto.TryEnterHomeRspOuterClass;
 
 public class PacketTryEnterHomeRsp extends BasePacket {
 
-    public PacketTryEnterHomeRsp() {
-        super(PacketOpcodes.TryEnterHomeRsp);
+	public PacketTryEnterHomeRsp() {
+		super(PacketOpcodes.TryEnterHomeRsp);
+		TryEnterHomeRspOuterClass.TryEnterHomeRsp proto = TryEnterHomeRspOuterClass.TryEnterHomeRsp
+			.newBuilder()
+			.setRetcode(RetcodeOuterClass.Retcode.RET_SVR_ERROR_VALUE)
+			.build();
 
-        TryEnterHomeRspOuterClass.TryEnterHomeRsp proto =
-                TryEnterHomeRspOuterClass.TryEnterHomeRsp.newBuilder()
-                        .setRetcode(RetcodeOuterClass.Retcode.RET_SVR_ERROR_VALUE)
-                        .build();
+		this.setData(proto);
+	}
 
-        this.setData(proto);
-    }
+	public PacketTryEnterHomeRsp(int uid) {
+		super(PacketOpcodes.TryEnterHomeRsp);
+		TryEnterHomeRspOuterClass.TryEnterHomeRsp proto = TryEnterHomeRspOuterClass.TryEnterHomeRsp
+			.newBuilder()
+			.setRetcode(0)
+			.setTargetUid(uid)
+			.build();
 
-    public PacketTryEnterHomeRsp(int uid) {
-        super(PacketOpcodes.TryEnterHomeRsp);
+		this.setData(proto);
+	}
 
-        TryEnterHomeRspOuterClass.TryEnterHomeRsp proto =
-                TryEnterHomeRspOuterClass.TryEnterHomeRsp.newBuilder()
-                        .setRetcode(0)
-                        .setTargetUid(uid)
-                        .build();
+	public PacketTryEnterHomeRsp(int retCode, int uid) {
+		super(PacketOpcodes.TryEnterHomeRsp);
+		TryEnterHomeRspOuterClass.TryEnterHomeRsp proto = TryEnterHomeRspOuterClass.TryEnterHomeRsp
+			.newBuilder()
+			.setRetcode(retCode)
+			.setTargetUid(uid)
+			.build();
 
-        this.setData(proto);
-    }
-
-    public PacketTryEnterHomeRsp(int retCode, int uid) {
-        super(PacketOpcodes.TryEnterHomeRsp);
-
-        TryEnterHomeRspOuterClass.TryEnterHomeRsp proto =
-                TryEnterHomeRspOuterClass.TryEnterHomeRsp.newBuilder()
-                        .setRetcode(retCode)
-                        .setTargetUid(uid)
-                        .build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

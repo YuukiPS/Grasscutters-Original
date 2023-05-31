@@ -10,11 +10,12 @@ import lombok.Getter;
  * emu.grasscutter.server.event.entity.EntityDeathEvent}.
  */
 public final class PlayerTeamDeathEvent extends PlayerEvent {
-    @Getter private final EntityAvatar selectedAvatar;
 
-    public PlayerTeamDeathEvent(Player player, EntityAvatar selectedAvatar) {
-        super(player);
+	@Getter
+	private final EntityAvatar selectedAvatar;
 
-        this.selectedAvatar = selectedAvatar;
-    }
+	public PlayerTeamDeathEvent(Player player, EntityAvatar selectedAvatar) {
+		super(player);
+		this.selectedAvatar = selectedAvatar;
+	}
 }

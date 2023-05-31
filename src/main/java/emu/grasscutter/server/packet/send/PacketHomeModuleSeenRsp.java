@@ -7,11 +7,10 @@ import java.util.List;
 
 public class PacketHomeModuleSeenRsp extends BasePacket {
 
-    public PacketHomeModuleSeenRsp(List<Integer> seen) {
-        super(PacketOpcodes.HomeModuleSeenRsp);
+	public PacketHomeModuleSeenRsp(List<Integer> seen) {
+		super(PacketOpcodes.HomeModuleSeenRsp);
+		HomeModuleSeenRsp proto = HomeModuleSeenRsp.newBuilder().addAllSeenModuleIdList(seen).build();
 
-        HomeModuleSeenRsp proto = HomeModuleSeenRsp.newBuilder().addAllSeenModuleIdList(seen).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

@@ -8,27 +8,30 @@ import lombok.Getter;
 
 @ResourceType(name = "WorldAreaConfigData.json")
 public class WorldAreaData extends GameResource {
-    private int ID;
-    @Getter private ElementType elementType;
 
-    @Getter
-    @SerializedName("AreaNameTextMapHash")
-    private long textMapHash;
+	private int ID;
 
-    @Getter
-    @SerializedName("AreaID1")
-    private int parentArea;
+	@Getter
+	private ElementType elementType;
 
-    @Getter
-    @SerializedName("AreaID2")
-    private int childArea;
+	@Getter
+	@SerializedName("AreaNameTextMapHash")
+	private long textMapHash;
 
-    @Getter
-    @SerializedName("SceneID")
-    private int sceneId;
+	@Getter
+	@SerializedName("AreaID1")
+	private int parentArea;
 
-    @Override
-    public int getId() {
-        return (this.childArea << 16) + this.parentArea;
-    }
+	@Getter
+	@SerializedName("AreaID2")
+	private int childArea;
+
+	@Getter
+	@SerializedName("SceneID")
+	private int sceneId;
+
+	@Override
+	public int getId() {
+		return (this.childArea << 16) + this.parentArea;
+	}
 }

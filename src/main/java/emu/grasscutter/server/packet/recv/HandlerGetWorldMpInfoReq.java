@@ -9,8 +9,8 @@ import emu.grasscutter.server.packet.send.PacketGetWorldMpInfoRsp;
 @Opcodes(PacketOpcodes.GetWorldMpInfoReq)
 public class HandlerGetWorldMpInfoReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        session.send(new PacketGetWorldMpInfoRsp(session.getPlayer().getWorld()));
-    }
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		session.send(new PacketGetWorldMpInfoRsp(session.getPlayer().getWorld()));
+	}
 }

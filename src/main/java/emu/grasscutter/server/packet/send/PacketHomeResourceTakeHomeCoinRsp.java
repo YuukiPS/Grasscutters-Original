@@ -7,25 +7,25 @@ import emu.grasscutter.net.proto.HomeResourceOuterClass.HomeResource;
 import emu.grasscutter.net.proto.HomeResourceTakeHomeCoinRspOuterClass;
 
 public class PacketHomeResourceTakeHomeCoinRsp extends BasePacket {
-    public PacketHomeResourceTakeHomeCoinRsp(Player player) {
-        super(PacketOpcodes.HomeResourceTakeHomeCoinRsp);
 
-        var home = player.getHome();
+	public PacketHomeResourceTakeHomeCoinRsp(Player player) {
+		super(PacketOpcodes.HomeResourceTakeHomeCoinRsp);
+		var home = player.getHome();
 
-        home.takeHomeCoin(player);
+		home.takeHomeCoin(player);
 
-        var coin =
-                HomeResource.newBuilder()
-                        .setNextRefreshTime(home.getNextUpdateTime())
-                        .setStoreLimit(home.getMaxCoin(home.getLevel()))
-                        .setStoreValue(0)
-                        .build();
+		var coin = HomeResource
+			.newBuilder()
+			.setNextRefreshTime(home.getNextUpdateTime())
+			.setStoreLimit(home.getMaxCoin(home.getLevel()))
+			.setStoreValue(0)
+			.build();
 
-        var proto =
-                HomeResourceTakeHomeCoinRspOuterClass.HomeResourceTakeHomeCoinRsp.newBuilder()
-                        .setHomeCoin(coin)
-                        .build();
+		var proto = HomeResourceTakeHomeCoinRspOuterClass.HomeResourceTakeHomeCoinRsp
+			.newBuilder()
+			.setHomeCoin(coin)
+			.build();
 
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

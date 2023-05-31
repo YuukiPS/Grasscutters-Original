@@ -4,93 +4,94 @@ import dev.morphia.annotations.Entity;
 
 @Entity
 public class ActiveForgeData {
-    private int forgeId;
-    private int avatarId;
-    private int count;
 
-    private int startTime;
-    private int forgeTime;
+	private int forgeId;
+	private int avatarId;
+	private int count;
 
-    private int lastUnfinishedCount;
-    private boolean changed;
+	private int startTime;
+	private int forgeTime;
 
-    public int getFinishedCount(int currentTime) {
-        int timeDelta = currentTime - this.startTime;
-        int finishedCount = timeDelta / this.forgeTime;
+	private int lastUnfinishedCount;
+	private boolean changed;
 
-        return Math.min(finishedCount, this.count);
-    }
+	public int getFinishedCount(int currentTime) {
+		int timeDelta = currentTime - this.startTime;
+		int finishedCount = timeDelta / this.forgeTime;
 
-    public int getUnfinishedCount(int currentTime) {
-        return this.count - this.getFinishedCount(currentTime);
-    }
+		return Math.min(finishedCount, this.count);
+	}
 
-    public int getNextFinishTimestamp(int currentTime) {
-        return (currentTime >= this.getTotalFinishTimestamp())
-                ? this.getTotalFinishTimestamp()
-                : (this.getFinishedCount(currentTime) * this.forgeTime + this.forgeTime + this.startTime);
-    }
+	public int getUnfinishedCount(int currentTime) {
+		return this.count - this.getFinishedCount(currentTime);
+	}
 
-    public int getTotalFinishTimestamp() {
-        return this.startTime + this.forgeTime * this.count;
-    }
+	public int getNextFinishTimestamp(int currentTime) {
+		return (currentTime >= this.getTotalFinishTimestamp())
+			? this.getTotalFinishTimestamp()
+			: (this.getFinishedCount(currentTime) * this.forgeTime + this.forgeTime + this.startTime);
+	}
 
-    public int getForgeId() {
-        return this.forgeId;
-    }
+	public int getTotalFinishTimestamp() {
+		return this.startTime + this.forgeTime * this.count;
+	}
 
-    public void setForgeId(int value) {
-        this.forgeId = value;
-    }
+	public int getForgeId() {
+		return this.forgeId;
+	}
 
-    public int getAvatarId() {
-        return this.avatarId;
-    }
+	public void setForgeId(int value) {
+		this.forgeId = value;
+	}
 
-    public void setAvatarId(int value) {
-        this.avatarId = value;
-    }
+	public int getAvatarId() {
+		return this.avatarId;
+	}
 
-    public int getCount() {
-        return count;
-    }
+	public void setAvatarId(int value) {
+		this.avatarId = value;
+	}
 
-    public void setCount(int value) {
-        this.count = value;
-    }
+	public int getCount() {
+		return count;
+	}
 
-    public int getStartTime() {
-        return this.startTime;
-    }
+	public void setCount(int value) {
+		this.count = value;
+	}
 
-    public void setStartTime(int value) {
-        this.startTime = value;
-    }
+	public int getStartTime() {
+		return this.startTime;
+	}
 
-    public int getForgeTime() {
-        return this.forgeTime;
-    }
+	public void setStartTime(int value) {
+		this.startTime = value;
+	}
 
-    public void setForgeTime(int value) {
-        this.forgeTime = value;
-    }
+	public int getForgeTime() {
+		return this.forgeTime;
+	}
 
-    public boolean isChanged() {
-        return this.changed;
-    }
+	public void setForgeTime(int value) {
+		this.forgeTime = value;
+	}
 
-    public void setChanged(boolean value) {
-        this.changed = value;
-    }
+	public boolean isChanged() {
+		return this.changed;
+	}
 
-    public boolean updateChanged(int currentTime) {
-        int currentUnfinished = this.getUnfinishedCount(currentTime);
+	public void setChanged(boolean value) {
+		this.changed = value;
+	}
 
-        if (currentUnfinished != this.lastUnfinishedCount) {
-            this.changed = true;
-            this.lastUnfinishedCount = currentUnfinished;
-        }
+	public boolean updateChanged(int currentTime) {
+		int currentUnfinished = this.getUnfinishedCount(currentTime);
 
-        return this.changed;
-    }
+		if (currentUnfinished != this.lastUnfinishedCount) {
+			this.changed = true;
+			this.lastUnfinishedCount = currentUnfinished;
+		}
+
+		return this.changed;
+	}
 }

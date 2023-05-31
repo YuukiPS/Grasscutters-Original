@@ -10,23 +10,24 @@ import java.util.Objects;
 
 public class PacketScenePlayerSoundNotify extends BasePacket {
 
-    public PacketScenePlayerSoundNotify(Position playPosition, String soundName, int playType) {
-        super(PacketOpcodes.ScenePlayerSoundNotify, true);
+	public PacketScenePlayerSoundNotify(Position playPosition, String soundName, int playType) {
+		super(PacketOpcodes.ScenePlayerSoundNotify, true);
+		ScenePlayerSoundNotify.Builder proto = ScenePlayerSoundNotify.newBuilder();
+		if (!Objects.equals(playPosition, null)) {
+			proto.setPlayPos(
+				Vector
+					.newBuilder()
+					.setX(playPosition.getX())
+					.setY(playPosition.getY())
+					.setZ(playPosition.getZ())
+					.build()
+			);
+		}
+		if (!Objects.equals(soundName, null)) {
+			proto.setSoundName(soundName);
+		}
+		proto.setPlayType(PlaySoundType.forNumber(playType));
 
-        ScenePlayerSoundNotify.Builder proto = ScenePlayerSoundNotify.newBuilder();
-        if (!Objects.equals(playPosition, null)) {
-            proto.setPlayPos(
-                    Vector.newBuilder()
-                            .setX(playPosition.getX())
-                            .setY(playPosition.getY())
-                            .setZ(playPosition.getZ())
-                            .build());
-        }
-        if (!Objects.equals(soundName, null)) {
-            proto.setSoundName(soundName);
-        }
-        proto.setPlayType(PlaySoundType.forNumber(playType));
-
-        this.setData(proto.build());
-    }
+		this.setData(proto.build());
+	}
 }

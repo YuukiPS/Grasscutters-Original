@@ -9,38 +9,40 @@ import emu.grasscutter.game.world.Position;
 import emu.grasscutter.game.world.Scene;
 
 public class EntitySolarIsotomaElevatorPlatform extends EntityGadget {
-    @SuppressWarnings("removal")
-    public EntitySolarIsotomaElevatorPlatform(
-            EntitySolarIsotomaClientGadget isotoma,
-            Scene scene,
-            int gadgetId,
-            Position pos,
-            Position rot) {
-        super(scene, gadgetId, pos, rot);
-        setOwner(isotoma);
-        this.setRouteConfig(new AbilityRoute(rot, false, false, pos));
-        this.setContent(new GadgetAbility(this, isotoma));
-    }
 
-    @Override
-    protected void fillFightProps(ConfigEntityGadget configGadget) {
-        if (configGadget == null || configGadget.getCombat() == null) {
-            return;
-        }
-        var combatData = configGadget.getCombat();
-        var combatProperties = combatData.getProperty();
+	@SuppressWarnings("removal")
+	public EntitySolarIsotomaElevatorPlatform(
+		EntitySolarIsotomaClientGadget isotoma,
+		Scene scene,
+		int gadgetId,
+		Position pos,
+		Position rot
+	) {
+		super(scene, gadgetId, pos, rot);
+		setOwner(isotoma);
+		this.setRouteConfig(new AbilityRoute(rot, false, false, pos));
+		this.setContent(new GadgetAbility(this, isotoma));
+	}
 
-        if (combatProperties.isUseCreatorProperty()) {
-            // If useCreatorProperty == true, use owner's property;
-            GameEntity ownerEntity = getOwner();
-            if (ownerEntity != null) {
-                getFightProperties().putAll(ownerEntity.getFightProperties());
-                return;
-            } else {
-                Grasscutter.getLogger().warn("Why gadget owner is null?");
-            }
-        }
+	@Override
+	protected void fillFightProps(ConfigEntityGadget configGadget) {
+		if (configGadget == null || configGadget.getCombat() == null) {
+			return;
+		}
+		var combatData = configGadget.getCombat();
+		var combatProperties = combatData.getProperty();
 
-        super.fillFightProps(configGadget);
-    }
+		if (combatProperties.isUseCreatorProperty()) {
+			// If useCreatorProperty == true, use owner's property;
+			GameEntity ownerEntity = getOwner();
+			if (ownerEntity != null) {
+				getFightProperties().putAll(ownerEntity.getFightProperties());
+				return;
+			} else {
+				Grasscutter.getLogger().warn("Why gadget owner is null?");
+			}
+		}
+
+		super.fillFightProps(configGadget);
+	}
 }

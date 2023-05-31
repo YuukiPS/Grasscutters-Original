@@ -8,20 +8,19 @@ import emu.grasscutter.net.proto.GetSceneAreaRspOuterClass.GetSceneAreaRsp;
 
 public class PacketGetSceneAreaRsp extends BasePacket {
 
-    public PacketGetSceneAreaRsp(Player player, int sceneId) {
-        super(PacketOpcodes.GetSceneAreaRsp);
+	public PacketGetSceneAreaRsp(Player player, int sceneId) {
+		super(PacketOpcodes.GetSceneAreaRsp);
+		this.buildHeader(0);
 
-        this.buildHeader(0);
+		GetSceneAreaRsp p = GetSceneAreaRsp
+			.newBuilder()
+			.setSceneId(sceneId)
+			.addAllAreaIdList(player.getUnlockedSceneAreas(sceneId))
+			.addCityInfoList(CityInfo.newBuilder().setCityId(1).setLevel(1).build())
+			.addCityInfoList(CityInfo.newBuilder().setCityId(2).setLevel(1).build())
+			.addCityInfoList(CityInfo.newBuilder().setCityId(3).setLevel(1).build())
+			.build();
 
-        GetSceneAreaRsp p =
-                GetSceneAreaRsp.newBuilder()
-                        .setSceneId(sceneId)
-                        .addAllAreaIdList(player.getUnlockedSceneAreas(sceneId))
-                        .addCityInfoList(CityInfo.newBuilder().setCityId(1).setLevel(1).build())
-                        .addCityInfoList(CityInfo.newBuilder().setCityId(2).setLevel(1).build())
-                        .addCityInfoList(CityInfo.newBuilder().setCityId(3).setLevel(1).build())
-                        .build();
-
-        this.setData(p);
-    }
+		this.setData(p);
+	}
 }

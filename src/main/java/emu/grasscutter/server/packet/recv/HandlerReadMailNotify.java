@@ -13,22 +13,21 @@ import java.util.List;
 @Opcodes(PacketOpcodes.ReadMailNotify)
 public class HandlerReadMailNotify extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        ReadMailNotifyOuterClass.ReadMailNotify req =
-                ReadMailNotifyOuterClass.ReadMailNotify.parseFrom(payload);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		ReadMailNotifyOuterClass.ReadMailNotify req = ReadMailNotifyOuterClass.ReadMailNotify.parseFrom(payload);
 
-        List<Mail> updatedMail = new ArrayList<>();
+		List<Mail> updatedMail = new ArrayList<>();
 
-        for (int mailId : req.getMailIdListList()) {
-            Mail message = session.getPlayer().getMail(mailId);
+		for (int mailId : req.getMailIdListList()) {
+			Mail message = session.getPlayer().getMail(mailId);
 
-            message.isRead = true;
+			message.isRead = true;
 
-            session.getPlayer().replaceMailByIndex(mailId, message);
-            updatedMail.add(message);
-        }
+			session.getPlayer().replaceMailByIndex(mailId, message);
+			updatedMail.add(message);
+		}
 
-        session.send(new PacketMailChangeNotify(session.getPlayer(), updatedMail));
-    }
+		session.send(new PacketMailChangeNotify(session.getPlayer(), updatedMail));
+	}
 }

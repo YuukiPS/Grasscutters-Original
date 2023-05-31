@@ -11,7 +11,8 @@ import lombok.experimental.FieldDefaults;
 @Builder(builderMethodName = "of")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class QuestGroupSuite {
-    int scene;
-    int group;
-    int suite;
+
+	int scene;
+	int group;
+	int suite;
 }

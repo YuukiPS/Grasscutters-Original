@@ -9,19 +9,16 @@ import emu.grasscutter.game.quest.handlers.QuestExecHandler;
 
 @QuestValueExec(QuestExec.QUEST_EXEC_GRANT_TRIAL_AVATAR)
 public class ExecGrantTrialAvatar extends QuestExecHandler {
-    @Override
-    public boolean execute(GameQuest quest, QuestData.QuestExecParam condition, String... paramStr) {
-        try {
-            quest
-                    .getOwner()
-                    .getTeamManager()
-                    .addTrialAvatar(Integer.parseInt(paramStr[0]), quest.getMainQuestId());
-            Grasscutter.getLogger()
-                    .debug("Added trial avatar to team for quest {}", quest.getSubQuestId());
-            return true;
-        } catch (RuntimeException exception) {
-            exception.printStackTrace();
-            return false;
-        }
-    }
+
+	@Override
+	public boolean execute(GameQuest quest, QuestData.QuestExecParam condition, String... paramStr) {
+		try {
+			quest.getOwner().getTeamManager().addTrialAvatar(Integer.parseInt(paramStr[0]), quest.getMainQuestId());
+			Grasscutter.getLogger().debug("Added trial avatar to team for quest {}", quest.getSubQuestId());
+			return true;
+		} catch (RuntimeException exception) {
+			exception.printStackTrace();
+			return false;
+		}
+	}
 }

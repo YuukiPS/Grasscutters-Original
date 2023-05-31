@@ -5,7 +5,7 @@ import emu.grasscutter.net.packet.PacketOpcodes;
 
 public class PacketHomeEnterEditModeFinishRsp extends BasePacket {
 
-    public PacketHomeEnterEditModeFinishRsp() {
-        super(PacketOpcodes.HomeEnterEditModeFinishRsp);
-    }
+	public PacketHomeEnterEditModeFinishRsp() {
+		super(PacketOpcodes.HomeEnterEditModeFinishRsp);
+	}
 }

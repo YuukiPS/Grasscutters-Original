@@ -9,8 +9,8 @@ import emu.grasscutter.server.packet.send.PacketGetAllUnlockNameCardRsp;
 @Opcodes(PacketOpcodes.GetAllUnlockNameCardReq)
 public class HandlerGetAllUnlockNameCardReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        session.send(new PacketGetAllUnlockNameCardRsp(session.getPlayer()));
-    }
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		session.send(new PacketGetAllUnlockNameCardRsp(session.getPlayer()));
+	}
 }

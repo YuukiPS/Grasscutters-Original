@@ -7,19 +7,18 @@ import emu.grasscutter.net.packet.PacketOpcodes;
 import emu.grasscutter.net.proto.AchievementAllDataNotifyOuterClass;
 
 public class PacketAchievementAllDataNotify extends BasePacket {
-    public PacketAchievementAllDataNotify(Player player) {
-        super(PacketOpcodes.AchievementAllDataNotify);
 
-        var achievements = player.getAchievements();
-        var notify =
-                AchievementAllDataNotifyOuterClass.AchievementAllDataNotify.newBuilder()
-                        .addAllAchievementList(
-                                achievements.getAchievementList().values().stream()
-                                        .map(Achievement::toProto)
-                                        .toList())
-                        .addAllRewardTakenGoalIdList(achievements.getTakenGoalRewardIdList())
-                        .build();
+	public PacketAchievementAllDataNotify(Player player) {
+		super(PacketOpcodes.AchievementAllDataNotify);
+		var achievements = player.getAchievements();
+		var notify = AchievementAllDataNotifyOuterClass.AchievementAllDataNotify
+			.newBuilder()
+			.addAllAchievementList(
+				achievements.getAchievementList().values().stream().map(Achievement::toProto).toList()
+			)
+			.addAllRewardTakenGoalIdList(achievements.getTakenGoalRewardIdList())
+			.build();
 
-        this.setData(notify);
-    }
+		this.setData(notify);
+	}
 }

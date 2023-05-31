@@ -10,42 +10,37 @@ import java.util.Collection;
 
 public class PacketSceneEntityAppearNotify extends BasePacket {
 
-    public PacketSceneEntityAppearNotify(GameEntity entity) {
-        super(PacketOpcodes.SceneEntityAppearNotify, true);
+	public PacketSceneEntityAppearNotify(GameEntity entity) {
+		super(PacketOpcodes.SceneEntityAppearNotify, true);
+		SceneEntityAppearNotify.Builder proto = SceneEntityAppearNotify
+			.newBuilder()
+			.setAppearType(VisionType.VISION_TYPE_BORN)
+			.addEntityList(entity.toProto());
 
-        SceneEntityAppearNotify.Builder proto =
-                SceneEntityAppearNotify.newBuilder()
-                        .setAppearType(VisionType.VISION_TYPE_BORN)
-                        .addEntityList(entity.toProto());
+		this.setData(proto.build());
+	}
 
-        this.setData(proto.build());
-    }
+	public PacketSceneEntityAppearNotify(GameEntity entity, VisionType vision, int param) {
+		super(PacketOpcodes.SceneEntityAppearNotify, true);
+		SceneEntityAppearNotify.Builder proto = SceneEntityAppearNotify
+			.newBuilder()
+			.setAppearType(vision)
+			.setParam(param)
+			.addEntityList(entity.toProto());
 
-    public PacketSceneEntityAppearNotify(GameEntity entity, VisionType vision, int param) {
-        super(PacketOpcodes.SceneEntityAppearNotify, true);
+		this.setData(proto.build());
+	}
 
-        SceneEntityAppearNotify.Builder proto =
-                SceneEntityAppearNotify.newBuilder()
-                        .setAppearType(vision)
-                        .setParam(param)
-                        .addEntityList(entity.toProto());
+	public PacketSceneEntityAppearNotify(Player player) {
+		this(player.getTeamManager().getCurrentAvatarEntity());
+	}
 
-        this.setData(proto.build());
-    }
+	public PacketSceneEntityAppearNotify(Collection<? extends GameEntity> entities, VisionType visionType) {
+		super(PacketOpcodes.SceneEntityAppearNotify, true);
+		SceneEntityAppearNotify.Builder proto = SceneEntityAppearNotify.newBuilder().setAppearType(visionType);
 
-    public PacketSceneEntityAppearNotify(Player player) {
-        this(player.getTeamManager().getCurrentAvatarEntity());
-    }
+		entities.forEach(e -> proto.addEntityList(e.toProto()));
 
-    public PacketSceneEntityAppearNotify(
-            Collection<? extends GameEntity> entities, VisionType visionType) {
-        super(PacketOpcodes.SceneEntityAppearNotify, true);
-
-        SceneEntityAppearNotify.Builder proto =
-                SceneEntityAppearNotify.newBuilder().setAppearType(visionType);
-
-        entities.forEach(e -> proto.addEntityList(e.toProto()));
-
-        this.setData(proto.build());
-    }
+		this.setData(proto.build());
+	}
 }

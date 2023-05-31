@@ -9,18 +9,16 @@ import io.javalin.http.Context;
 import java.util.List;
 
 final class GachaMappingRequestHandler implements DocumentationHandler {
-    private final List<String> gachaJsons;
 
-    GachaMappingRequestHandler() {
-        this.gachaJsons = Tools.createGachaMappingJsons();
-    }
+	private final List<String> gachaJsons;
 
-    @Override
-    public void handle(Context ctx) {
-        final int langIdx =
-                Language.TextStrings.MAP_LANGUAGES.getOrDefault(
-                        DOCUMENT_LANGUAGE,
-                        0); // TODO: This should really be based off the client language somehow
-        ctx.contentType(ContentType.APPLICATION_JSON).result(gachaJsons.get(langIdx));
-    }
+	GachaMappingRequestHandler() {
+		this.gachaJsons = Tools.createGachaMappingJsons();
+	}
+
+	@Override
+	public void handle(Context ctx) {
+		final int langIdx = Language.TextStrings.MAP_LANGUAGES.getOrDefault(DOCUMENT_LANGUAGE, 0); // TODO: This should really be based off the client language somehow
+		ctx.contentType(ContentType.APPLICATION_JSON).result(gachaJsons.get(langIdx));
+	}
 }

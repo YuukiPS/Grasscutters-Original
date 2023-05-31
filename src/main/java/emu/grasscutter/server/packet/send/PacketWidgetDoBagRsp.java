@@ -6,24 +6,21 @@ import emu.grasscutter.net.proto.WidgetDoBagRspOuterClass;
 
 public class PacketWidgetDoBagRsp extends BasePacket {
 
-    public PacketWidgetDoBagRsp(int materialId) {
-        super(PacketOpcodes.WidgetDoBagRsp);
+	public PacketWidgetDoBagRsp(int materialId) {
+		super(PacketOpcodes.WidgetDoBagRsp);
+		WidgetDoBagRspOuterClass.WidgetDoBagRsp proto = WidgetDoBagRspOuterClass.WidgetDoBagRsp
+			.newBuilder()
+			.setMaterialId(materialId)
+			.setRetcode(0)
+			.build();
 
-        WidgetDoBagRspOuterClass.WidgetDoBagRsp proto =
-                WidgetDoBagRspOuterClass.WidgetDoBagRsp.newBuilder()
-                        .setMaterialId(materialId)
-                        .setRetcode(0)
-                        .build();
+		this.setData(proto);
+	}
 
-        this.setData(proto);
-    }
+	public PacketWidgetDoBagRsp() {
+		super(PacketOpcodes.WidgetDoBagRsp);
+		WidgetDoBagRspOuterClass.WidgetDoBagRsp proto = WidgetDoBagRspOuterClass.WidgetDoBagRsp.newBuilder().build();
 
-    public PacketWidgetDoBagRsp() {
-        super(PacketOpcodes.WidgetDoBagRsp);
-
-        WidgetDoBagRspOuterClass.WidgetDoBagRsp proto =
-                WidgetDoBagRspOuterClass.WidgetDoBagRsp.newBuilder().build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

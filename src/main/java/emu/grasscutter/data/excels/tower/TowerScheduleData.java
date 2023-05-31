@@ -6,44 +6,45 @@ import java.util.List;
 
 @ResourceType(name = "TowerScheduleExcelConfigData.json")
 public class TowerScheduleData extends GameResource {
-    private int scheduleId;
-    private List<Integer> entranceFloorId;
-    private List<ScheduleDetail> schedules;
-    private int monthlyLevelConfigId;
 
-    @Override
-    public int getId() {
-        return scheduleId;
-    }
+	private int scheduleId;
+	private List<Integer> entranceFloorId;
+	private List<ScheduleDetail> schedules;
+	private int monthlyLevelConfigId;
 
-    @Override
-    public void onLoad() {
-        super.onLoad();
-        this.schedules =
-                this.schedules.stream().filter(item -> item.getFloorList().size() > 0).toList();
-    }
+	@Override
+	public int getId() {
+		return scheduleId;
+	}
 
-    public int getScheduleId() {
-        return scheduleId;
-    }
+	@Override
+	public void onLoad() {
+		super.onLoad();
+		this.schedules = this.schedules.stream().filter(item -> item.getFloorList().size() > 0).toList();
+	}
 
-    public List<Integer> getEntranceFloorId() {
-        return entranceFloorId;
-    }
+	public int getScheduleId() {
+		return scheduleId;
+	}
 
-    public List<ScheduleDetail> getSchedules() {
-        return schedules;
-    }
+	public List<Integer> getEntranceFloorId() {
+		return entranceFloorId;
+	}
 
-    public int getMonthlyLevelConfigId() {
-        return monthlyLevelConfigId;
-    }
+	public List<ScheduleDetail> getSchedules() {
+		return schedules;
+	}
 
-    public static class ScheduleDetail {
-        private List<Integer> floorList;
+	public int getMonthlyLevelConfigId() {
+		return monthlyLevelConfigId;
+	}
 
-        public List<Integer> getFloorList() {
-            return floorList;
-        }
-    }
+	public static class ScheduleDetail {
+
+		private List<Integer> floorList;
+
+		public List<Integer> getFloorList() {
+			return floorList;
+		}
+	}
 }

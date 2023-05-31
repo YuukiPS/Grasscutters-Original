@@ -10,19 +10,16 @@ import emu.grasscutter.server.packet.send.PacketAvatarChangeCostumeRsp;
 @Opcodes(PacketOpcodes.AvatarChangeCostumeReq)
 public class HandlerAvatarChangeCostumeReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        AvatarChangeCostumeReq req = AvatarChangeCostumeReq.parseFrom(payload);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		AvatarChangeCostumeReq req = AvatarChangeCostumeReq.parseFrom(payload);
 
-        boolean success =
-                session.getPlayer().getAvatars().changeCostume(req.getAvatarGuid(), req.getCostumeId());
+		boolean success = session.getPlayer().getAvatars().changeCostume(req.getAvatarGuid(), req.getCostumeId());
 
-        if (success) {
-            session
-                    .getPlayer()
-                    .sendPacket(new PacketAvatarChangeCostumeRsp(req.getAvatarGuid(), req.getCostumeId()));
-        } else {
-            session.getPlayer().sendPacket(new PacketAvatarChangeCostumeRsp());
-        }
-    }
+		if (success) {
+			session.getPlayer().sendPacket(new PacketAvatarChangeCostumeRsp(req.getAvatarGuid(), req.getCostumeId()));
+		} else {
+			session.getPlayer().sendPacket(new PacketAvatarChangeCostumeRsp());
+		}
+	}
 }

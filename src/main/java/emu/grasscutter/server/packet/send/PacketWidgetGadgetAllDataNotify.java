@@ -6,11 +6,10 @@ import emu.grasscutter.net.proto.WidgetGadgetAllDataNotifyOuterClass.WidgetGadge
 
 public class PacketWidgetGadgetAllDataNotify extends BasePacket {
 
-    public PacketWidgetGadgetAllDataNotify() {
-        super(PacketOpcodes.AllWidgetDataNotify);
+	public PacketWidgetGadgetAllDataNotify() {
+		super(PacketOpcodes.AllWidgetDataNotify);
+		WidgetGadgetAllDataNotify proto = WidgetGadgetAllDataNotify.newBuilder().build();
 
-        WidgetGadgetAllDataNotify proto = WidgetGadgetAllDataNotify.newBuilder().build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

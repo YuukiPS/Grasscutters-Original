@@ -9,9 +9,10 @@ import lombok.Setter;
 @Getter
 @Setter // TODO: remove this next API break
 public class DungeonEntryData extends GameResource {
-    @Getter(onMethod_ = @Override)
-    private int id;
 
-    private int dungeonEntryId;
-    private int sceneId;
+	@Getter(onMethod_ = @Override)
+	private int id;
+
+	private int dungeonEntryId;
+	private int sceneId;
 }

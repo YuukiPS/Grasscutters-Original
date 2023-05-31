@@ -31,242 +31,271 @@ import lombok.Getter;
 import lombok.Setter;
 
 public abstract class GameEntity {
-    @Getter private final Scene scene;
-    @Getter protected int id;
-    @Getter @Setter private SpawnDataEntry spawnEntry;
 
-    @Getter @Setter private int blockId;
-    @Getter @Setter private int configId;
-    @Getter @Setter private int groupId;
+	@Getter
+	private final Scene scene;
 
-    @Getter @Setter private MotionState motionState;
-    @Getter @Setter private int lastMoveSceneTimeMs;
-    @Getter @Setter private int lastMoveReliableSeq;
+	@Getter
+	protected int id;
 
-    @Getter @Setter private boolean lockHP;
+	@Getter
+	@Setter
+	private SpawnDataEntry spawnEntry;
 
-    // Lua controller for specific actions
-    @Getter @Setter private EntityController entityController;
-    @Getter private ElementType lastAttackType = ElementType.None;
+	@Getter
+	@Setter
+	private int blockId;
 
-    @Getter private List<Ability> instancedAbilities = new ArrayList<>();
+	@Getter
+	@Setter
+	private int configId;
 
-    @Getter
-    private Int2ObjectMap<AbilityModifierController> instancedModifiers =
-            new Int2ObjectOpenHashMap<>();
+	@Getter
+	@Setter
+	private int groupId;
 
-    @Getter private Map<String, Float> globalAbilityValues = new HashMap<>();
+	@Getter
+	@Setter
+	private MotionState motionState;
 
-    public GameEntity(Scene scene) {
-        this.scene = scene;
-        this.motionState = MotionState.MOTION_STATE_NONE;
-    }
+	@Getter
+	@Setter
+	private int lastMoveSceneTimeMs;
 
-    public abstract void initAbilities();
+	@Getter
+	@Setter
+	private int lastMoveReliableSeq;
 
-    public int getEntityType() {
-        return this.getId() >> 24;
-    }
+	@Getter
+	@Setter
+	private boolean lockHP;
 
-    public abstract int getEntityTypeId();
+	// Lua controller for specific actions
+	@Getter
+	@Setter
+	private EntityController entityController;
 
-    public World getWorld() {
-        return this.getScene().getWorld();
-    }
+	@Getter
+	private ElementType lastAttackType = ElementType.None;
 
-    public boolean isAlive() {
-        return true;
-    }
+	@Getter
+	private List<Ability> instancedAbilities = new ArrayList<>();
 
-    public LifeState getLifeState() {
-        return this.isAlive() ? LifeState.LIFE_ALIVE : LifeState.LIFE_DEAD;
-    }
+	@Getter
+	private Int2ObjectMap<AbilityModifierController> instancedModifiers = new Int2ObjectOpenHashMap<>();
 
-    public abstract Int2FloatMap getFightProperties();
+	@Getter
+	private Map<String, Float> globalAbilityValues = new HashMap<>();
 
-    public abstract Position getPosition();
+	public GameEntity(Scene scene) {
+		this.scene = scene;
+		this.motionState = MotionState.MOTION_STATE_NONE;
+	}
 
-    public abstract Position getRotation();
+	public abstract void initAbilities();
 
-    public void setFightProperty(FightProperty prop, float value) {
-        this.getFightProperties().put(prop.getId(), value);
-    }
+	public int getEntityType() {
+		return this.getId() >> 24;
+	}
 
-    public void setFightProperty(int id, float value) {
-        this.getFightProperties().put(id, value);
-    }
+	public abstract int getEntityTypeId();
 
-    public void addFightProperty(FightProperty prop, float value) {
-        this.getFightProperties().put(prop.getId(), this.getFightProperty(prop) + value);
-    }
+	public World getWorld() {
+		return this.getScene().getWorld();
+	}
 
-    public float getFightProperty(FightProperty prop) {
-        return this.getFightProperties().getOrDefault(prop.getId(), 0f);
-    }
+	public boolean isAlive() {
+		return true;
+	}
 
-    public boolean hasFightProperty(FightProperty prop) {
-        return this.getFightProperties().containsKey(prop.getId());
-    }
+	public LifeState getLifeState() {
+		return this.isAlive() ? LifeState.LIFE_ALIVE : LifeState.LIFE_DEAD;
+	}
 
-    public void addAllFightPropsToEntityInfo(SceneEntityInfo.Builder entityInfo) {
-        this.getFightProperties()
-                .forEach(
-                        (key, value) -> {
-                            if (key == 0) return;
-                            entityInfo.addFightPropList(
-                                    FightPropPair.newBuilder().setPropType(key).setPropValue(value).build());
-                        });
-    }
+	public abstract Int2FloatMap getFightProperties();
 
-    protected MotionInfo getMotionInfo() {
-        return MotionInfo.newBuilder()
-                .setPos(this.getPosition().toProto())
-                .setRot(this.getRotation().toProto())
-                .setSpeed(Vector.newBuilder())
-                .setState(this.getMotionState())
-                .build();
-    }
+	public abstract Position getPosition();
 
-    public float heal(float amount) {
-        return heal(amount, false);
-    }
+	public abstract Position getRotation();
 
-    public float heal(float amount, boolean mute) {
-        if (this.getFightProperties() == null) {
-            return 0f;
-        }
+	public void setFightProperty(FightProperty prop, float value) {
+		this.getFightProperties().put(prop.getId(), value);
+	}
 
-        float curHp = this.getFightProperty(FightProperty.FIGHT_PROP_CUR_HP);
-        float maxHp = this.getFightProperty(FightProperty.FIGHT_PROP_MAX_HP);
+	public void setFightProperty(int id, float value) {
+		this.getFightProperties().put(id, value);
+	}
 
-        if (curHp >= maxHp) {
-            return 0f;
-        }
+	public void addFightProperty(FightProperty prop, float value) {
+		this.getFightProperties().put(prop.getId(), this.getFightProperty(prop) + value);
+	}
 
-        float healed = Math.min(maxHp - curHp, amount);
-        this.addFightProperty(FightProperty.FIGHT_PROP_CUR_HP, healed);
+	public float getFightProperty(FightProperty prop) {
+		return this.getFightProperties().getOrDefault(prop.getId(), 0f);
+	}
 
-        this.getScene()
-                .broadcastPacket(
-                        new PacketEntityFightPropUpdateNotify(this, FightProperty.FIGHT_PROP_CUR_HP));
+	public boolean hasFightProperty(FightProperty prop) {
+		return this.getFightProperties().containsKey(prop.getId());
+	}
 
-        return healed;
-    }
+	public void addAllFightPropsToEntityInfo(SceneEntityInfo.Builder entityInfo) {
+		this.getFightProperties()
+			.forEach((key, value) -> {
+				if (key == 0) return;
+				entityInfo.addFightPropList(FightPropPair.newBuilder().setPropType(key).setPropValue(value).build());
+			});
+	}
 
-    public void damage(float amount) {
-        this.damage(amount, 0, ElementType.None);
-    }
+	protected MotionInfo getMotionInfo() {
+		return MotionInfo
+			.newBuilder()
+			.setPos(this.getPosition().toProto())
+			.setRot(this.getRotation().toProto())
+			.setSpeed(Vector.newBuilder())
+			.setState(this.getMotionState())
+			.build();
+	}
 
-    public void damage(float amount, ElementType attackType) {
-        this.damage(amount, 0, attackType);
-    }
+	public float heal(float amount) {
+		return heal(amount, false);
+	}
 
-    public void damage(float amount, int killerId, ElementType attackType) {
-        // Check if the entity has properties.
-        if (this.getFightProperties() == null || !hasFightProperty(FightProperty.FIGHT_PROP_CUR_HP)) {
-            return;
-        }
+	public float heal(float amount, boolean mute) {
+		if (this.getFightProperties() == null) {
+			return 0f;
+		}
 
-        // Invoke entity damage event.
-        EntityDamageEvent event =
-                new EntityDamageEvent(this, amount, attackType, this.getScene().getEntityById(killerId));
-        event.call();
-        if (event.isCanceled()) {
-            return; // If the event is canceled, do not damage the entity.
-        }
+		float curHp = this.getFightProperty(FightProperty.FIGHT_PROP_CUR_HP);
+		float maxHp = this.getFightProperty(FightProperty.FIGHT_PROP_MAX_HP);
 
-        float curHp = getFightProperty(FightProperty.FIGHT_PROP_CUR_HP);
-        if (curHp != Float.POSITIVE_INFINITY && !lockHP || lockHP && curHp <= event.getDamage()) {
-            // Add negative HP to the current HP property.
-            this.addFightProperty(FightProperty.FIGHT_PROP_CUR_HP, -(event.getDamage()));
-        }
+		if (curHp >= maxHp) {
+			return 0f;
+		}
 
-        this.lastAttackType = attackType;
+		float healed = Math.min(maxHp - curHp, amount);
+		this.addFightProperty(FightProperty.FIGHT_PROP_CUR_HP, healed);
 
-        // Check if dead
-        boolean isDead = false;
-        if (this.getFightProperty(FightProperty.FIGHT_PROP_CUR_HP) <= 0f) {
-            this.setFightProperty(FightProperty.FIGHT_PROP_CUR_HP, 0f);
-            isDead = true;
-        }
+		this.getScene().broadcastPacket(new PacketEntityFightPropUpdateNotify(this, FightProperty.FIGHT_PROP_CUR_HP));
 
-        this.runLuaCallbacks(event);
+		return healed;
+	}
 
-        // Packets
-        this.getScene()
-                .broadcastPacket(
-                        new PacketEntityFightPropUpdateNotify(this, FightProperty.FIGHT_PROP_CUR_HP));
+	public void damage(float amount) {
+		this.damage(amount, 0, ElementType.None);
+	}
 
-        // Check if dead.
-        if (isDead) {
-            this.getScene().killEntity(this, killerId);
-        }
-    }
+	public void damage(float amount, ElementType attackType) {
+		this.damage(amount, 0, attackType);
+	}
 
-    /**
-     * Runs the Lua callbacks for {@link EntityDamageEvent}.
-     *
-     * @param event The damage event.
-     */
-    public void runLuaCallbacks(EntityDamageEvent event) {
-        if (entityController != null) {
-            entityController.onBeHurt(this, event.getAttackElementType(), true); // todo is host handling
-        }
-    }
+	public void damage(float amount, int killerId, ElementType attackType) {
+		// Check if the entity has properties.
+		if (this.getFightProperties() == null || !hasFightProperty(FightProperty.FIGHT_PROP_CUR_HP)) {
+			return;
+		}
 
-    /**
-     * Move this entity to a new position.
-     *
-     * @param position The new position.
-     * @param rotation The new rotation.
-     */
-    public void move(Position position, Position rotation) {
-        // Set the position and rotation.
-        this.getPosition().set(position);
-        this.getRotation().set(rotation);
-    }
+		// Invoke entity damage event.
+		EntityDamageEvent event = new EntityDamageEvent(
+			this,
+			amount,
+			attackType,
+			this.getScene().getEntityById(killerId)
+		);
+		event.call();
+		if (event.isCanceled()) {
+			return; // If the event is canceled, do not damage the entity.
+		}
 
-    /**
-     * Called when a player interacts with this entity
-     *
-     * @param player Player that is interacting with this entity
-     * @param interactReq Interact request protobuf data
-     */
-    public void onInteract(Player player, GadgetInteractReq interactReq) {}
+		float curHp = getFightProperty(FightProperty.FIGHT_PROP_CUR_HP);
+		if (curHp != Float.POSITIVE_INFINITY && !lockHP || lockHP && curHp <= event.getDamage()) {
+			// Add negative HP to the current HP property.
+			this.addFightProperty(FightProperty.FIGHT_PROP_CUR_HP, -(event.getDamage()));
+		}
 
-    /** Called when this entity is added to the world */
-    public void onCreate() {}
+		this.lastAttackType = attackType;
 
-    public void onRemoved() {}
+		// Check if dead
+		boolean isDead = false;
+		if (this.getFightProperty(FightProperty.FIGHT_PROP_CUR_HP) <= 0f) {
+			this.setFightProperty(FightProperty.FIGHT_PROP_CUR_HP, 0f);
+			isDead = true;
+		}
 
-    public void onTick(int sceneTime) {
-        if (entityController != null) {
-            entityController.onTimer(this, sceneTime);
-        }
-    }
+		this.runLuaCallbacks(event);
 
-    public int onClientExecuteRequest(int param1, int param2, int param3) {
-        if (entityController != null) {
-            return entityController.onClientExecuteRequest(this, param1, param2, param3);
-        }
-        return 0;
-    }
+		// Packets
+		this.getScene().broadcastPacket(new PacketEntityFightPropUpdateNotify(this, FightProperty.FIGHT_PROP_CUR_HP));
 
-    /**
-     * Called when this entity dies
-     *
-     * @param killerId Entity id of the entity that killed this entity
-     */
-    public void onDeath(int killerId) {
-        // Invoke entity death event.
-        EntityDeathEvent event = new EntityDeathEvent(this, killerId);
-        event.call();
+		// Check if dead.
+		if (isDead) {
+			this.getScene().killEntity(this, killerId);
+		}
+	}
 
-        // Run Lua callbacks.
-        if (entityController != null) {
-            entityController.onDie(this, getLastAttackType());
-        }
-    }
+	/**
+	 * Runs the Lua callbacks for {@link EntityDamageEvent}.
+	 *
+	 * @param event The damage event.
+	 */
+	public void runLuaCallbacks(EntityDamageEvent event) {
+		if (entityController != null) {
+			entityController.onBeHurt(this, event.getAttackElementType(), true); // todo is host handling
+		}
+	}
 
-    public abstract SceneEntityInfo toProto();
+	/**
+	 * Move this entity to a new position.
+	 *
+	 * @param position The new position.
+	 * @param rotation The new rotation.
+	 */
+	public void move(Position position, Position rotation) {
+		// Set the position and rotation.
+		this.getPosition().set(position);
+		this.getRotation().set(rotation);
+	}
+
+	/**
+	 * Called when a player interacts with this entity
+	 *
+	 * @param player Player that is interacting with this entity
+	 * @param interactReq Interact request protobuf data
+	 */
+	public void onInteract(Player player, GadgetInteractReq interactReq) {}
+
+	/** Called when this entity is added to the world */
+	public void onCreate() {}
+
+	public void onRemoved() {}
+
+	public void onTick(int sceneTime) {
+		if (entityController != null) {
+			entityController.onTimer(this, sceneTime);
+		}
+	}
+
+	public int onClientExecuteRequest(int param1, int param2, int param3) {
+		if (entityController != null) {
+			return entityController.onClientExecuteRequest(this, param1, param2, param3);
+		}
+		return 0;
+	}
+
+	/**
+	 * Called when this entity dies
+	 *
+	 * @param killerId Entity id of the entity that killed this entity
+	 */
+	public void onDeath(int killerId) {
+		// Invoke entity death event.
+		EntityDeathEvent event = new EntityDeathEvent(this, killerId);
+		event.call();
+
+		// Run Lua callbacks.
+		if (entityController != null) {
+			entityController.onDie(this, getLastAttackType());
+		}
+	}
+
+	public abstract SceneEntityInfo toProto();
 }

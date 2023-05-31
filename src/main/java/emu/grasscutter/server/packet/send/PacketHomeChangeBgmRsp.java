@@ -5,11 +5,11 @@ import emu.grasscutter.net.packet.PacketOpcodes;
 import emu.grasscutter.net.proto.HomeChangeBgmRspOuterClass;
 
 public class PacketHomeChangeBgmRsp extends BasePacket {
-    public PacketHomeChangeBgmRsp() {
-        super(PacketOpcodes.HomeChangeBgmRsp);
 
-        var rsp = HomeChangeBgmRspOuterClass.HomeChangeBgmRsp.newBuilder().setRetcode(0).build();
+	public PacketHomeChangeBgmRsp() {
+		super(PacketOpcodes.HomeChangeBgmRsp);
+		var rsp = HomeChangeBgmRspOuterClass.HomeChangeBgmRsp.newBuilder().setRetcode(0).build();
 
-        this.setData(rsp);
-    }
+		this.setData(rsp);
+	}
 }

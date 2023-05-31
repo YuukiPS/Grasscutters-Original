@@ -8,21 +8,17 @@ import java.util.List;
 
 public class PacketAbilityInvocationsNotify extends BasePacket {
 
-    public PacketAbilityInvocationsNotify(AbilityInvokeEntry entry) {
-        super(PacketOpcodes.AbilityInvocationsNotify, true);
+	public PacketAbilityInvocationsNotify(AbilityInvokeEntry entry) {
+		super(PacketOpcodes.AbilityInvocationsNotify, true);
+		AbilityInvocationsNotify proto = AbilityInvocationsNotify.newBuilder().addInvokes(entry).build();
 
-        AbilityInvocationsNotify proto =
-                AbilityInvocationsNotify.newBuilder().addInvokes(entry).build();
+		this.setData(proto);
+	}
 
-        this.setData(proto);
-    }
+	public PacketAbilityInvocationsNotify(List<AbilityInvokeEntry> entries) {
+		super(PacketOpcodes.AbilityInvocationsNotify, true);
+		AbilityInvocationsNotify proto = AbilityInvocationsNotify.newBuilder().addAllInvokes(entries).build();
 
-    public PacketAbilityInvocationsNotify(List<AbilityInvokeEntry> entries) {
-        super(PacketOpcodes.AbilityInvocationsNotify, true);
-
-        AbilityInvocationsNotify proto =
-                AbilityInvocationsNotify.newBuilder().addAllInvokes(entries).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

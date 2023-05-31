@@ -3,22 +3,23 @@ package emu.grasscutter.game.combine;
 import java.util.List;
 
 public class ReliquaryDecomposeEntry {
-    private int configId;
-    private List<Integer> items;
 
-    public int getConfigId() {
-        return configId;
-    }
+	private int configId;
+	private List<Integer> items;
 
-    public void setConfigId(int configId) {
-        this.configId = configId;
-    }
+	public int getConfigId() {
+		return configId;
+	}
 
-    public List<Integer> getItems() {
-        return items;
-    }
+	public void setConfigId(int configId) {
+		this.configId = configId;
+	}
 
-    public void setItems(List<Integer> items) {
-        this.items = items;
-    }
+	public List<Integer> getItems() {
+		return items;
+	}
+
+	public void setItems(List<Integer> items) {
+		this.items = items;
+	}
 }

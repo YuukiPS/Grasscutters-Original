@@ -7,32 +7,33 @@ import emu.grasscutter.data.ResourceType;
 
 @ResourceType(name = "AvatarCostumeExcelConfigData.json")
 public class AvatarCostumeData extends GameResource {
-    @SerializedName(value = "skinId", alternate = "costumeId")
-    private int skinId;
 
-    private int itemId;
-    private int characterId;
-    private int quality;
+	@SerializedName(value = "skinId", alternate = "costumeId")
+	private int skinId;
 
-    @Override
-    public int getId() {
-        return this.skinId;
-    }
+	private int itemId;
+	private int characterId;
+	private int quality;
 
-    public int getItemId() {
-        return this.itemId;
-    }
+	@Override
+	public int getId() {
+		return this.skinId;
+	}
 
-    public int getCharacterId() {
-        return characterId;
-    }
+	public int getItemId() {
+		return this.itemId;
+	}
 
-    public int getQuality() {
-        return quality;
-    }
+	public int getCharacterId() {
+		return characterId;
+	}
 
-    @Override
-    public void onLoad() {
-        GameData.getAvatarCostumeDataItemIdMap().put(this.getItemId(), this);
-    }
+	public int getQuality() {
+		return quality;
+	}
+
+	@Override
+	public void onLoad() {
+		GameData.getAvatarCostumeDataItemIdMap().put(this.getItemId(), this);
+	}
 }

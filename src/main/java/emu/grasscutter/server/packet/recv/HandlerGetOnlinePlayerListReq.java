@@ -8,8 +8,9 @@ import emu.grasscutter.server.packet.send.PacketGetOnlinePlayerListRsp;
 
 @Opcodes(PacketOpcodes.GetOnlinePlayerListReq)
 public class HandlerGetOnlinePlayerListReq extends PacketHandler {
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        session.send(new PacketGetOnlinePlayerListRsp(session.getPlayer()));
-    }
+
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		session.send(new PacketGetOnlinePlayerListRsp(session.getPlayer()));
+	}
 }

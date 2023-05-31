@@ -6,16 +6,15 @@ import emu.grasscutter.net.proto.AddBackupAvatarTeamRspOuterClass.AddBackupAvata
 import emu.grasscutter.net.proto.RetcodeOuterClass.Retcode;
 
 public class PacketAddBackupAvatarTeamRsp extends BasePacket {
-    public PacketAddBackupAvatarTeamRsp(Retcode retcode) {
-        super(PacketOpcodes.AddBackupAvatarTeamRsp);
 
-        AddBackupAvatarTeamRsp proto =
-                AddBackupAvatarTeamRsp.newBuilder().setRetcode(retcode.getNumber()).build();
+	public PacketAddBackupAvatarTeamRsp(Retcode retcode) {
+		super(PacketOpcodes.AddBackupAvatarTeamRsp);
+		AddBackupAvatarTeamRsp proto = AddBackupAvatarTeamRsp.newBuilder().setRetcode(retcode.getNumber()).build();
 
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 
-    public PacketAddBackupAvatarTeamRsp() {
-        this(Retcode.RET_SUCC);
-    }
+	public PacketAddBackupAvatarTeamRsp() {
+		this(Retcode.RET_SUCC);
+	}
 }

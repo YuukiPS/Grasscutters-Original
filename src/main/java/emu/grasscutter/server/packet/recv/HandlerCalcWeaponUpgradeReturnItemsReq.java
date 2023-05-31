@@ -12,25 +12,24 @@ import java.util.List;
 @Opcodes(PacketOpcodes.CalcWeaponUpgradeReturnItemsReq)
 public class HandlerCalcWeaponUpgradeReturnItemsReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        CalcWeaponUpgradeReturnItemsReq req = CalcWeaponUpgradeReturnItemsReq.parseFrom(payload);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		CalcWeaponUpgradeReturnItemsReq req = CalcWeaponUpgradeReturnItemsReq.parseFrom(payload);
 
-        List<ItemParam> returnOres =
-                session
-                        .getServer()
-                        .getInventorySystem()
-                        .calcWeaponUpgradeReturnItems(
-                                session.getPlayer(),
-                                req.getTargetWeaponGuid(),
-                                req.getFoodWeaponGuidListList(),
-                                req.getItemParamListList());
+		List<ItemParam> returnOres = session
+			.getServer()
+			.getInventorySystem()
+			.calcWeaponUpgradeReturnItems(
+				session.getPlayer(),
+				req.getTargetWeaponGuid(),
+				req.getFoodWeaponGuidListList(),
+				req.getItemParamListList()
+			);
 
-        if (returnOres != null) {
-            session.send(
-                    new PacketCalcWeaponUpgradeReturnItemsRsp(req.getTargetWeaponGuid(), returnOres));
-        } else {
-            session.send(new PacketCalcWeaponUpgradeReturnItemsRsp());
-        }
-    }
+		if (returnOres != null) {
+			session.send(new PacketCalcWeaponUpgradeReturnItemsRsp(req.getTargetWeaponGuid(), returnOres));
+		} else {
+			session.send(new PacketCalcWeaponUpgradeReturnItemsRsp());
+		}
+	}
 }

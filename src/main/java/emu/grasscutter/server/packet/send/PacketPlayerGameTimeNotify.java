@@ -7,15 +7,14 @@ import emu.grasscutter.net.proto.PlayerGameTimeNotifyOuterClass.PlayerGameTimeNo
 
 public class PacketPlayerGameTimeNotify extends BasePacket {
 
-    public PacketPlayerGameTimeNotify(Player player) {
-        super(PacketOpcodes.PlayerGameTimeNotify);
+	public PacketPlayerGameTimeNotify(Player player) {
+		super(PacketOpcodes.PlayerGameTimeNotify);
+		PlayerGameTimeNotify proto = PlayerGameTimeNotify
+			.newBuilder()
+			.setGameTime((int) player.getWorld().getTotalGameTimeMinutes())
+			.setUid(player.getUid())
+			.build();
 
-        PlayerGameTimeNotify proto =
-                PlayerGameTimeNotify.newBuilder()
-                        .setGameTime((int) player.getWorld().getTotalGameTimeMinutes())
-                        .setUid(player.getUid())
-                        .build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

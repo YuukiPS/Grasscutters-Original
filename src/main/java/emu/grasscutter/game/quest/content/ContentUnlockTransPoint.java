@@ -8,12 +8,12 @@ import emu.grasscutter.game.quest.QuestValueContent;
 
 @QuestValueContent(QUEST_CONTENT_UNLOCK_TRANS_POINT)
 public class ContentUnlockTransPoint extends BaseContent {
-    @Override
-    public boolean execute(
-            GameQuest quest, QuestData.QuestContentCondition condition, String paramStr, int... params) {
-        var sceneId = condition.getParam()[0];
-        var scenePointId = condition.getParam()[1];
-        var scenePoints = quest.getOwner().getUnlockedScenePoints().get(sceneId);
-        return scenePoints != null && scenePoints.contains(scenePointId);
-    }
+
+	@Override
+	public boolean execute(GameQuest quest, QuestData.QuestContentCondition condition, String paramStr, int... params) {
+		var sceneId = condition.getParam()[0];
+		var scenePointId = condition.getParam()[1];
+		var scenePoints = quest.getOwner().getUnlockedScenePoints().get(sceneId);
+		return scenePoints != null && scenePoints.contains(scenePointId);
+	}
 }

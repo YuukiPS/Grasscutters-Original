@@ -6,27 +6,26 @@ import emu.grasscutter.data.ResourceType;
 
 @ResourceType(name = "ReliquarySetExcelConfigData.json")
 public class ReliquarySetData extends GameResource {
-    private int setId;
-    private int[] setNeedNum;
 
-    @SerializedName(
-            value = "equipAffixId",
-            alternate = {"EquipAffixId"})
-    private int equipAffixId;
+	private int setId;
+	private int[] setNeedNum;
 
-    @Override
-    public int getId() {
-        return setId;
-    }
+	@SerializedName(value = "equipAffixId", alternate = { "EquipAffixId" })
+	private int equipAffixId;
 
-    public int[] getSetNeedNum() {
-        return setNeedNum;
-    }
+	@Override
+	public int getId() {
+		return setId;
+	}
 
-    public int getEquipAffixId() {
-        return equipAffixId;
-    }
+	public int[] getSetNeedNum() {
+		return setNeedNum;
+	}
 
-    @Override
-    public void onLoad() {}
+	public int getEquipAffixId() {
+		return equipAffixId;
+	}
+
+	@Override
+	public void onLoad() {}
 }

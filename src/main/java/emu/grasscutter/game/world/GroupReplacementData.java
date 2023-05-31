@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class GroupReplacementData {
-    int id;
-    List<Integer> replace_groups;
+
+	int id;
+	List<Integer> replace_groups;
 }

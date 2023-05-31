@@ -17,46 +17,46 @@ import lombok.val;
 @Opcodes(PacketOpcodes.QuestCreateEntityReq)
 public class HandlerQuestCreateEntityReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        val req = QuestCreateEntityReq.parseFrom(payload);
-        val entity = req.getEntity();
-        val scene = session.getPlayer().getWorld().getSceneById(entity.getSceneId());
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		val req = QuestCreateEntityReq.parseFrom(payload);
+		val entity = req.getEntity();
+		val scene = session.getPlayer().getWorld().getSceneById(entity.getSceneId());
 
-        val pos = new Position(entity.getPos());
-        val rot = new Position(entity.getRot());
-        GameEntity gameEntity = null;
-        switch (entity.getEntityCase()) {
-            case GADGET_ID -> {
-                val gadgetId = entity.getGadgetId();
-                val gadgetInfo = entity.getGadget();
-                GadgetData gadgetData = GameData.getGadgetDataMap().get(gadgetId);
-                gameEntity =
-                        switch (gadgetData.getType()) {
-                            case Vehicle -> new EntityVehicle(scene, session.getPlayer(), gadgetId, 0, pos, rot);
-                            default -> new EntityGadget(scene, gadgetId, pos, rot);
-                        };
-            }
-            case ITEM_ID -> {
-                val itemId = entity.getItemId();
-                ItemData itemData = GameData.getItemDataMap().get(itemId);
-                gameEntity = new EntityItem(scene, null, itemData, pos, 1, true);
-            }
-            case MONSTER_ID -> {
-                val monsterId = entity.getMonsterId();
-                val level = entity.getLevel();
-                MonsterData monsterData = GameData.getMonsterDataMap().get(monsterId);
-                gameEntity = new EntityMonster(scene, monsterData, pos, level);
-            }
-            case NPC_ID -> {}
-        }
+		val pos = new Position(entity.getPos());
+		val rot = new Position(entity.getRot());
+		GameEntity gameEntity = null;
+		switch (entity.getEntityCase()) {
+			case GADGET_ID -> {
+				val gadgetId = entity.getGadgetId();
+				val gadgetInfo = entity.getGadget();
+				GadgetData gadgetData = GameData.getGadgetDataMap().get(gadgetId);
+				gameEntity =
+					switch (gadgetData.getType()) {
+						case Vehicle -> new EntityVehicle(scene, session.getPlayer(), gadgetId, 0, pos, rot);
+						default -> new EntityGadget(scene, gadgetId, pos, rot);
+					};
+			}
+			case ITEM_ID -> {
+				val itemId = entity.getItemId();
+				ItemData itemData = GameData.getItemDataMap().get(itemId);
+				gameEntity = new EntityItem(scene, null, itemData, pos, 1, true);
+			}
+			case MONSTER_ID -> {
+				val monsterId = entity.getMonsterId();
+				val level = entity.getLevel();
+				MonsterData monsterData = GameData.getMonsterDataMap().get(monsterId);
+				gameEntity = new EntityMonster(scene, monsterData, pos, level);
+			}
+			case NPC_ID -> {}
+		}
 
-        if (gameEntity != null) {
-            scene.addEntity(gameEntity);
-        }
+		if (gameEntity != null) {
+			scene.addEntity(gameEntity);
+		}
 
-        val createdEntityId = gameEntity != null ? gameEntity.getId() : -1;
+		val createdEntityId = gameEntity != null ? gameEntity.getId() : -1;
 
-        session.send(new PacketQuestCreateEntityRsp(createdEntityId, req));
-    }
+		session.send(new PacketQuestCreateEntityRsp(createdEntityId, req));
+	}
 }

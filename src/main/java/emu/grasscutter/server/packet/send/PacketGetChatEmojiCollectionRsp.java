@@ -7,16 +7,18 @@ import emu.grasscutter.net.proto.GetChatEmojiCollectionRspOuterClass;
 import java.util.List;
 
 public class PacketGetChatEmojiCollectionRsp extends BasePacket {
-    public PacketGetChatEmojiCollectionRsp(List<Integer> emojiIds) {
-        super(PacketOpcodes.GetChatEmojiCollectionRsp);
 
-        var rsp =
-                GetChatEmojiCollectionRspOuterClass.GetChatEmojiCollectionRsp.newBuilder()
-                        .setChatEmojiCollectionData(
-                                ChatEmojiCollectionDataOuterClass.ChatEmojiCollectionData.newBuilder()
-                                        .addAllEmojiIdList(emojiIds)
-                                        .build());
+	public PacketGetChatEmojiCollectionRsp(List<Integer> emojiIds) {
+		super(PacketOpcodes.GetChatEmojiCollectionRsp);
+		var rsp = GetChatEmojiCollectionRspOuterClass.GetChatEmojiCollectionRsp
+			.newBuilder()
+			.setChatEmojiCollectionData(
+				ChatEmojiCollectionDataOuterClass.ChatEmojiCollectionData
+					.newBuilder()
+					.addAllEmojiIdList(emojiIds)
+					.build()
+			);
 
-        this.setData(rsp);
-    }
+		this.setData(rsp);
+	}
 }

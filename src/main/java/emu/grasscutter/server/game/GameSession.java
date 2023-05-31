@@ -24,241 +24,253 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class GameSession implements GameSessionManager.KcpChannel {
-    private final GameServer server;
-    private GameSessionManager.KcpTunnel tunnel;
 
-    @Getter @Setter private Account account;
-    @Getter private Player player;
+	private final GameServer server;
+	private GameSessionManager.KcpTunnel tunnel;
 
-    @Setter private boolean useSecretKey;
-    @Getter @Setter private SessionState state;
+	@Getter
+	@Setter
+	private Account account;
 
-    @Getter private int clientTime;
-    @Getter private long lastPingTime;
-    private int lastClientSeq = 10;
+	@Getter
+	private Player player;
 
-    public GameSession(GameServer server) {
-        this.server = server;
-        this.state = SessionState.WAITING_FOR_TOKEN;
-        this.lastPingTime = System.currentTimeMillis();
-    }
+	@Setter
+	private boolean useSecretKey;
 
-    public GameServer getServer() {
-        return server;
-    }
+	@Getter
+	@Setter
+	private SessionState state;
 
-    public InetSocketAddress getAddress() {
-        try {
-            return tunnel.getAddress();
-        } catch (Throwable ignore) {
-            return null;
-        }
-    }
+	@Getter
+	private int clientTime;
 
-    public boolean useSecretKey() {
-        return useSecretKey;
-    }
+	@Getter
+	private long lastPingTime;
 
-    public String getAccountId() {
-        return this.getAccount().getId();
-    }
+	private int lastClientSeq = 10;
 
-    public synchronized void setPlayer(Player player) {
-        this.player = player;
-        this.player.setSession(this);
-        this.player.setAccount(this.getAccount());
-    }
+	public GameSession(GameServer server) {
+		this.server = server;
+		this.state = SessionState.WAITING_FOR_TOKEN;
+		this.lastPingTime = System.currentTimeMillis();
+	}
 
-    public boolean isLoggedIn() {
-        return this.getPlayer() != null;
-    }
+	public GameServer getServer() {
+		return server;
+	}
 
-    public void updateLastPingTime(int clientTime) {
-        this.clientTime = clientTime;
-        this.lastPingTime = System.currentTimeMillis();
-    }
+	public InetSocketAddress getAddress() {
+		try {
+			return tunnel.getAddress();
+		} catch (Throwable ignore) {
+			return null;
+		}
+	}
 
-    public int getNextClientSequence() {
-        return ++lastClientSeq;
-    }
+	public boolean useSecretKey() {
+		return useSecretKey;
+	}
 
-    public void replayPacket(int opcode, String name) {
-        Path filePath = FileUtils.getPluginPath(name);
-        File p = filePath.toFile();
+	public String getAccountId() {
+		return this.getAccount().getId();
+	}
 
-        if (!p.exists()) return;
+	public synchronized void setPlayer(Player player) {
+		this.player = player;
+		this.player.setSession(this);
+		this.player.setAccount(this.getAccount());
+	}
 
-        byte[] packet = FileUtils.read(p);
+	public boolean isLoggedIn() {
+		return this.getPlayer() != null;
+	}
 
-        BasePacket basePacket = new BasePacket(opcode);
-        basePacket.setData(packet);
+	public void updateLastPingTime(int clientTime) {
+		this.clientTime = clientTime;
+		this.lastPingTime = System.currentTimeMillis();
+	}
 
-        send(basePacket);
-    }
+	public int getNextClientSequence() {
+		return ++lastClientSeq;
+	}
 
-    public void logPacket(String sendOrRecv, int opcode, byte[] payload) {
-        Grasscutter.getLogger()
-                .info(sendOrRecv + ": " + PacketOpcodesUtils.getOpcodeName(opcode) + " (" + opcode + ")");
-        if (GAME_INFO.isShowPacketPayload) System.out.println(Utils.bytesToHex(payload));
-    }
+	public void replayPacket(int opcode, String name) {
+		Path filePath = FileUtils.getPluginPath(name);
+		File p = filePath.toFile();
 
-    public void send(BasePacket packet) {
-        // Test
-        if (packet.getOpcode() <= 0) {
-            Grasscutter.getLogger().warn("Tried to send packet with missing cmd id!");
-            return;
-        }
+		if (!p.exists()) return;
 
-        // Header
-        if (packet.shouldBuildHeader()) {
-            packet.buildHeader(this.getNextClientSequence());
-        }
+		byte[] packet = FileUtils.read(p);
 
-        // Log
-        switch (GAME_INFO.logPackets) {
-            case ALL -> {
-                if (!PacketOpcodesUtils.LOOP_PACKETS.contains(packet.getOpcode())
-                        || GAME_INFO.isShowLoopPackets) {
-                    logPacket("SEND", packet.getOpcode(), packet.getData());
-                }
-            }
-            case WHITELIST -> {
-                if (SERVER.debugWhitelist.contains(packet.getOpcode())) {
-                    logPacket("SEND", packet.getOpcode(), packet.getData());
-                }
-            }
-            case BLACKLIST -> {
-                if (!SERVER.debugBlacklist.contains(packet.getOpcode())) {
-                    logPacket("SEND", packet.getOpcode(), packet.getData());
-                }
-            }
-            default -> {}
-        }
+		BasePacket basePacket = new BasePacket(opcode);
+		basePacket.setData(packet);
 
-        // Invoke event.
-        SendPacketEvent event = new SendPacketEvent(this, packet);
-        event.call();
-        if (!event.isCanceled()) { // If event is not cancelled, continue.
-            tunnel.writeData(event.getPacket().build());
-        }
-    }
+		send(basePacket);
+	}
 
-    @Override
-    public void onConnected(GameSessionManager.KcpTunnel tunnel) {
-        this.tunnel = tunnel;
-        Grasscutter.getLogger().info(translate("messages.game.connect", this.getAddress().toString()));
-    }
+	public void logPacket(String sendOrRecv, int opcode, byte[] payload) {
+		Grasscutter
+			.getLogger()
+			.info(sendOrRecv + ": " + PacketOpcodesUtils.getOpcodeName(opcode) + " (" + opcode + ")");
+		if (GAME_INFO.isShowPacketPayload) System.out.println(Utils.bytesToHex(payload));
+	}
 
-    @Override
-    public void handleReceive(byte[] bytes) {
-        // Decrypt and turn back into a packet
-        if (this.getState() != SessionState.WAITING_FOR_TOKEN)
-            Crypto.xor(bytes, useSecretKey() ? Crypto.ENCRYPT_KEY : Crypto.DISPATCH_KEY);
-        ByteBuf packet = Unpooled.wrappedBuffer(bytes);
+	public void send(BasePacket packet) {
+		// Test
+		if (packet.getOpcode() <= 0) {
+			Grasscutter.getLogger().warn("Tried to send packet with missing cmd id!");
+			return;
+		}
 
-        // Log
-        // logPacket(packet);
-        // Handle
-        try {
-            boolean allDebug = GAME_INFO.logPackets == ServerDebugMode.ALL;
-            while (packet.readableBytes() > 0) {
-                // Length
-                if (packet.readableBytes() < 12) {
-                    return;
-                }
-                // Packet sanity check
-                int const1 = packet.readShort();
-                if (const1 != 17767) {
-                    if (allDebug) {
-                        Grasscutter.getLogger()
-                                .error("Bad Data Package Received: got {} ,expect 17767", const1);
-                    }
-                    return; // Bad packet
-                }
-                // Data
-                int opcode = packet.readShort();
-                int headerLength = packet.readShort();
-                int payloadLength = packet.readInt();
-                byte[] header = new byte[headerLength];
-                byte[] payload = new byte[payloadLength];
+		// Header
+		if (packet.shouldBuildHeader()) {
+			packet.buildHeader(this.getNextClientSequence());
+		}
 
-                packet.readBytes(header);
-                packet.readBytes(payload);
-                // Sanity check #2
-                int const2 = packet.readShort();
-                if (const2 != -30293) {
-                    if (allDebug) {
-                        Grasscutter.getLogger()
-                                .error("Bad Data Package Received: got {} ,expect -30293", const2);
-                    }
-                    return; // Bad packet
-                }
+		// Log
+		switch (GAME_INFO.logPackets) {
+			case ALL -> {
+				if (!PacketOpcodesUtils.LOOP_PACKETS.contains(packet.getOpcode()) || GAME_INFO.isShowLoopPackets) {
+					logPacket("SEND", packet.getOpcode(), packet.getData());
+				}
+			}
+			case WHITELIST -> {
+				if (SERVER.debugWhitelist.contains(packet.getOpcode())) {
+					logPacket("SEND", packet.getOpcode(), packet.getData());
+				}
+			}
+			case BLACKLIST -> {
+				if (!SERVER.debugBlacklist.contains(packet.getOpcode())) {
+					logPacket("SEND", packet.getOpcode(), packet.getData());
+				}
+			}
+			default -> {}
+		}
 
-                // Log packet
-                switch (GAME_INFO.logPackets) {
-                    case ALL -> {
-                        if (!PacketOpcodesUtils.LOOP_PACKETS.contains(opcode) || GAME_INFO.isShowLoopPackets) {
-                            logPacket("RECV", opcode, payload);
-                        }
-                    }
-                    case WHITELIST -> {
-                        if (SERVER.debugWhitelist.contains(opcode)) {
-                            logPacket("RECV", opcode, payload);
-                        }
-                    }
-                    case BLACKLIST -> {
-                        if (!(SERVER.debugBlacklist.contains(opcode))) {
-                            logPacket("RECV", opcode, payload);
-                        }
-                    }
-                    default -> {}
-                }
+		// Invoke event.
+		SendPacketEvent event = new SendPacketEvent(this, packet);
+		event.call();
+		if (!event.isCanceled()) { // If event is not cancelled, continue.
+			tunnel.writeData(event.getPacket().build());
+		}
+	}
 
-                // Handle
-                getServer().getPacketHandler().handle(this, opcode, header, payload);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            // byteBuf.release(); //Needn't
-            packet.release();
-        }
-    }
+	@Override
+	public void onConnected(GameSessionManager.KcpTunnel tunnel) {
+		this.tunnel = tunnel;
+		Grasscutter.getLogger().info(translate("messages.game.connect", this.getAddress().toString()));
+	}
 
-    @Override
-    public void handleClose() {
-        setState(SessionState.INACTIVE);
-        // send disconnection pack in case of reconnection
-        Grasscutter.getLogger()
-                .info(translate("messages.game.disconnect", this.getAddress().toString()));
-        // Save after disconnecting
-        if (this.isLoggedIn()) {
-            Player player = getPlayer();
-            // Call logout event.
-            player.onLogout();
-        }
-        try {
-            send(new BasePacket(PacketOpcodes.ServerDisconnectClientNotify));
-        } catch (Throwable ignore) {
-            Grasscutter.getLogger().warn("closing {} error", getAddress().getAddress().getHostAddress());
-        }
-        tunnel = null;
-    }
+	@Override
+	public void handleReceive(byte[] bytes) {
+		// Decrypt and turn back into a packet
+		if (this.getState() != SessionState.WAITING_FOR_TOKEN) Crypto.xor(
+			bytes,
+			useSecretKey() ? Crypto.ENCRYPT_KEY : Crypto.DISPATCH_KEY
+		);
+		ByteBuf packet = Unpooled.wrappedBuffer(bytes);
 
-    public void close() {
-        tunnel.close();
-    }
+		// Log
+		// logPacket(packet);
+		// Handle
+		try {
+			boolean allDebug = GAME_INFO.logPackets == ServerDebugMode.ALL;
+			while (packet.readableBytes() > 0) {
+				// Length
+				if (packet.readableBytes() < 12) {
+					return;
+				}
+				// Packet sanity check
+				int const1 = packet.readShort();
+				if (const1 != 17767) {
+					if (allDebug) {
+						Grasscutter.getLogger().error("Bad Data Package Received: got {} ,expect 17767", const1);
+					}
+					return; // Bad packet
+				}
+				// Data
+				int opcode = packet.readShort();
+				int headerLength = packet.readShort();
+				int payloadLength = packet.readInt();
+				byte[] header = new byte[headerLength];
+				byte[] payload = new byte[payloadLength];
 
-    public boolean isActive() {
-        return getState() == SessionState.ACTIVE;
-    }
+				packet.readBytes(header);
+				packet.readBytes(payload);
+				// Sanity check #2
+				int const2 = packet.readShort();
+				if (const2 != -30293) {
+					if (allDebug) {
+						Grasscutter.getLogger().error("Bad Data Package Received: got {} ,expect -30293", const2);
+					}
+					return; // Bad packet
+				}
 
-    public enum SessionState {
-        INACTIVE,
-        WAITING_FOR_TOKEN,
-        WAITING_FOR_LOGIN,
-        PICKING_CHARACTER,
-        ACTIVE,
-        ACCOUNT_BANNED
-    }
+				// Log packet
+				switch (GAME_INFO.logPackets) {
+					case ALL -> {
+						if (!PacketOpcodesUtils.LOOP_PACKETS.contains(opcode) || GAME_INFO.isShowLoopPackets) {
+							logPacket("RECV", opcode, payload);
+						}
+					}
+					case WHITELIST -> {
+						if (SERVER.debugWhitelist.contains(opcode)) {
+							logPacket("RECV", opcode, payload);
+						}
+					}
+					case BLACKLIST -> {
+						if (!(SERVER.debugBlacklist.contains(opcode))) {
+							logPacket("RECV", opcode, payload);
+						}
+					}
+					default -> {}
+				}
+
+				// Handle
+				getServer().getPacketHandler().handle(this, opcode, header, payload);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			// byteBuf.release(); //Needn't
+			packet.release();
+		}
+	}
+
+	@Override
+	public void handleClose() {
+		setState(SessionState.INACTIVE);
+		// send disconnection pack in case of reconnection
+		Grasscutter.getLogger().info(translate("messages.game.disconnect", this.getAddress().toString()));
+		// Save after disconnecting
+		if (this.isLoggedIn()) {
+			Player player = getPlayer();
+			// Call logout event.
+			player.onLogout();
+		}
+		try {
+			send(new BasePacket(PacketOpcodes.ServerDisconnectClientNotify));
+		} catch (Throwable ignore) {
+			Grasscutter.getLogger().warn("closing {} error", getAddress().getAddress().getHostAddress());
+		}
+		tunnel = null;
+	}
+
+	public void close() {
+		tunnel.close();
+	}
+
+	public boolean isActive() {
+		return getState() == SessionState.ACTIVE;
+	}
+
+	public enum SessionState {
+		INACTIVE,
+		WAITING_FOR_TOKEN,
+		WAITING_FOR_LOGIN,
+		PICKING_CHARACTER,
+		ACTIVE,
+		ACCOUNT_BANNED
+	}
 }

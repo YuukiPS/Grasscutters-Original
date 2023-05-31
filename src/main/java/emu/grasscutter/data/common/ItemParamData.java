@@ -4,36 +4,33 @@ import com.google.gson.annotations.SerializedName;
 
 // Used in excels
 public class ItemParamData {
-    @SerializedName(
-            value = "id",
-            alternate = {"itemId"})
-    private int id;
 
-    @SerializedName(
-            value = "count",
-            alternate = {"itemCount"})
-    private int count;
+	@SerializedName(value = "id", alternate = { "itemId" })
+	private int id;
 
-    public ItemParamData() {}
+	@SerializedName(value = "count", alternate = { "itemCount" })
+	private int count;
 
-    public ItemParamData(int id, int count) {
-        this.id = id;
-        this.count = count;
-    }
+	public ItemParamData() {}
 
-    public int getId() {
-        return id;
-    }
+	public ItemParamData(int id, int count) {
+		this.id = id;
+		this.count = count;
+	}
 
-    public int getItemId() {
-        return id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public int getCount() {
-        return count;
-    }
+	public int getItemId() {
+		return id;
+	}
 
-    public int getItemCount() {
-        return count;
-    }
+	public int getCount() {
+		return count;
+	}
+
+	public int getItemCount() {
+		return count;
+	}
 }

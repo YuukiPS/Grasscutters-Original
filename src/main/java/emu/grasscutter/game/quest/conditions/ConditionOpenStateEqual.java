@@ -9,15 +9,16 @@ import lombok.val;
 @QuestValueCond(QuestCond.QUEST_COND_OPEN_STATE_EQUAL)
 public class ConditionOpenStateEqual extends BaseCondition {
 
-    @Override
-    public boolean execute(
-            Player owner,
-            QuestData questData,
-            QuestData.QuestAcceptCondition condition,
-            String paramStr,
-            int... params) {
-        val openStateId = condition.getParam()[0];
-        val requiredState = condition.getParam()[1];
-        return owner.getProgressManager().getOpenState(openStateId) == requiredState;
-    }
+	@Override
+	public boolean execute(
+		Player owner,
+		QuestData questData,
+		QuestData.QuestAcceptCondition condition,
+		String paramStr,
+		int... params
+	) {
+		val openStateId = condition.getParam()[0];
+		val requiredState = condition.getParam()[1];
+		return owner.getProgressManager().getOpenState(openStateId) == requiredState;
+	}
 }

@@ -8,9 +8,9 @@ import emu.grasscutter.game.quest.QuestValueContent;
 
 @QuestValueContent(QUEST_CONTENT_ITEM_LESS_THAN)
 public class ContentItemLessThan extends BaseContent {
-    @Override
-    public boolean execute(
-            GameQuest quest, QuestData.QuestContentCondition condition, String paramStr, int... params) {
-        return condition.getParam()[0] == params[0] && condition.getCount() > params[1];
-    }
+
+	@Override
+	public boolean execute(GameQuest quest, QuestData.QuestContentCondition condition, String paramStr, int... params) {
+		return condition.getParam()[0] == params[0] && condition.getCount() > params[1];
+	}
 }

@@ -11,29 +11,28 @@ import java.util.stream.Stream;
 
 public class PacketServerBuffChangeNotify extends BasePacket {
 
-    public PacketServerBuffChangeNotify(
-            Player player, ServerBuffChangeType changeType, PlayerBuff buff) {
-        this(player, changeType, Stream.of(buff));
-    }
+	public PacketServerBuffChangeNotify(Player player, ServerBuffChangeType changeType, PlayerBuff buff) {
+		this(player, changeType, Stream.of(buff));
+	}
 
-    public PacketServerBuffChangeNotify(
-            Player player, ServerBuffChangeType changeType, Collection<PlayerBuff> buffs) {
-        this(player, changeType, buffs.stream());
-    }
+	public PacketServerBuffChangeNotify(Player player, ServerBuffChangeType changeType, Collection<PlayerBuff> buffs) {
+		this(player, changeType, buffs.stream());
+	}
 
-    public PacketServerBuffChangeNotify(
-            Player player, ServerBuffChangeType changeType, Stream<PlayerBuff> buffs) {
-        super(PacketOpcodes.ServerBuffChangeNotify);
+	public PacketServerBuffChangeNotify(Player player, ServerBuffChangeType changeType, Stream<PlayerBuff> buffs) {
+		super(PacketOpcodes.ServerBuffChangeNotify);
+		var proto = ServerBuffChangeNotify.newBuilder();
 
-        var proto = ServerBuffChangeNotify.newBuilder();
+		player
+			.getTeamManager()
+			.getActiveTeam()
+			.stream()
+			.mapToLong(entity -> entity.getAvatar().getGuid())
+			.forEach(proto::addAvatarGuidList);
 
-        player.getTeamManager().getActiveTeam().stream()
-                .mapToLong(entity -> entity.getAvatar().getGuid())
-                .forEach(proto::addAvatarGuidList);
+		proto.setServerBuffChangeType(changeType);
+		buffs.map(PlayerBuff::toProto).forEach(proto::addServerBuffList);
 
-        proto.setServerBuffChangeType(changeType);
-        buffs.map(PlayerBuff::toProto).forEach(proto::addServerBuffList);
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

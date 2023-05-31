@@ -8,22 +8,21 @@ import emu.grasscutter.net.proto.GetOnlinePlayerListRspOuterClass.GetOnlinePlaye
 import java.util.List;
 
 public class PacketGetOnlinePlayerListRsp extends BasePacket {
-    public PacketGetOnlinePlayerListRsp(Player session) {
-        super(PacketOpcodes.GetOnlinePlayerListRsp);
 
-        List<Player> players =
-                Grasscutter.getGameServer().getPlayers().values().stream().limit(50).toList();
+	public PacketGetOnlinePlayerListRsp(Player session) {
+		super(PacketOpcodes.GetOnlinePlayerListRsp);
+		List<Player> players = Grasscutter.getGameServer().getPlayers().values().stream().limit(50).toList();
 
-        GetOnlinePlayerListRsp.Builder proto = GetOnlinePlayerListRsp.newBuilder();
+		GetOnlinePlayerListRsp.Builder proto = GetOnlinePlayerListRsp.newBuilder();
 
-        if (players.size() != 0) {
-            for (Player player : players) {
-                if (player.getUid() == session.getUid()) continue;
+		if (players.size() != 0) {
+			for (Player player : players) {
+				if (player.getUid() == session.getUid()) continue;
 
-                proto.addPlayerInfoList(player.getOnlinePlayerInfo());
-            }
-        }
+				proto.addPlayerInfoList(player.getOnlinePlayerInfo());
+			}
+		}
 
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

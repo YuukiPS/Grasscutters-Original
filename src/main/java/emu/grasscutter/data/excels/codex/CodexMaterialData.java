@@ -4,26 +4,27 @@ import emu.grasscutter.data.GameData;
 import emu.grasscutter.data.GameResource;
 import emu.grasscutter.data.ResourceType;
 
-@ResourceType(name = {"MaterialCodexExcelConfigData.json"})
+@ResourceType(name = { "MaterialCodexExcelConfigData.json" })
 public class CodexMaterialData extends GameResource {
-    private int Id;
-    private int materialId;
-    private int sortOrder;
 
-    public int getSortOrder() {
-        return sortOrder;
-    }
+	private int Id;
+	private int materialId;
+	private int sortOrder;
 
-    public int getMaterialId() {
-        return materialId;
-    }
+	public int getSortOrder() {
+		return sortOrder;
+	}
 
-    public int getId() {
-        return Id;
-    }
+	public int getMaterialId() {
+		return materialId;
+	}
 
-    @Override
-    public void onLoad() {
-        GameData.getCodexMaterialDataIdMap().put(this.getMaterialId(), this);
-    }
+	public int getId() {
+		return Id;
+	}
+
+	@Override
+	public void onLoad() {
+		GameData.getCodexMaterialDataIdMap().put(this.getMaterialId(), this);
+	}
 }

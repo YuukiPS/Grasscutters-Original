@@ -10,14 +10,13 @@ import emu.grasscutter.game.activity.PlayerActivityData;
  */
 public abstract class ActivityConditionBaseHandler {
 
-    /**
-     * Execute activity condition handler and return result of it's calculation
-     *
-     * @param activityData {@link PlayerActivityData} object containing info about activity
-     * @param activityConfig
-     * @param params params for handler
-     * @return result of condition calculation
-     */
-    public abstract boolean execute(
-            PlayerActivityData activityData, ActivityConfigItem activityConfig, int... params);
+	/**
+	 * Execute activity condition handler and return result of it's calculation
+	 *
+	 * @param activityData {@link PlayerActivityData} object containing info about activity
+	 * @param activityConfig
+	 * @param params params for handler
+	 * @return result of condition calculation
+	 */
+	public abstract boolean execute(PlayerActivityData activityData, ActivityConfigItem activityConfig, int... params);
 }

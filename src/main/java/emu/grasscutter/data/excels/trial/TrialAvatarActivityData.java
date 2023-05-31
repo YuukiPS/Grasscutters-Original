@@ -10,12 +10,13 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = false)
 @Data
 public class TrialAvatarActivityData extends GameResource implements BaseTrialActivityData {
-    private int ScheduleId;
-    private List<Integer> AvatarIndexIdList;
-    private List<Integer> RewardIdList;
 
-    @Override
-    public int getId() {
-        return ScheduleId;
-    }
+	private int ScheduleId;
+	private List<Integer> AvatarIndexIdList;
+	private List<Integer> RewardIdList;
+
+	@Override
+	public int getId() {
+		return ScheduleId;
+	}
 }

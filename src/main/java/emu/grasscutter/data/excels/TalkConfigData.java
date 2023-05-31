@@ -12,44 +12,32 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Data
 public final class TalkConfigData extends GameResource {
-    @SerializedName(
-            value = "id",
-            alternate = {"_id"})
-    private int id;
 
-    @SerializedName(
-            value = "finishExec",
-            alternate = {"_finishExec"})
-    private List<TalkExecParam> finishExec;
+	@SerializedName(value = "id", alternate = { "_id" })
+	private int id;
 
-    @SerializedName(
-            value = "questId",
-            alternate = {"_questId"})
-    private int questId;
+	@SerializedName(value = "finishExec", alternate = { "_finishExec" })
+	private List<TalkExecParam> finishExec;
 
-    @SerializedName(
-            value = "npcId",
-            alternate = {"_npcId"})
-    private List<Integer> npcId;
+	@SerializedName(value = "questId", alternate = { "_questId" })
+	private int questId;
 
-    @Override
-    public void onLoad() {
-        this.finishExec =
-                this.finishExec == null
-                        ? List.of()
-                        : this.finishExec.stream().filter(x -> x.getType() != null).toList();
-    }
+	@SerializedName(value = "npcId", alternate = { "_npcId" })
+	private List<Integer> npcId;
 
-    @Data
-    public static class TalkExecParam {
-        @SerializedName(
-                value = "type",
-                alternate = {"_type"})
-        private TalkExec type;
+	@Override
+	public void onLoad() {
+		this.finishExec =
+			this.finishExec == null ? List.of() : this.finishExec.stream().filter(x -> x.getType() != null).toList();
+	}
 
-        @SerializedName(
-                value = "param",
-                alternate = {"_param"})
-        private String[] param;
-    }
+	@Data
+	public static class TalkExecParam {
+
+		@SerializedName(value = "type", alternate = { "_type" })
+		private TalkExec type;
+
+		@SerializedName(value = "param", alternate = { "_param" })
+		private String[] param;
+	}
 }

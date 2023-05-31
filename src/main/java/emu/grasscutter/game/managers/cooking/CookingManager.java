@@ -22,164 +22,164 @@ import java.util.List;
 import java.util.Set;
 
 public class CookingManager extends BasePlayerManager {
-    private static final int MANUAL_PERFECT_COOK_QUALITY = 3;
-    private static Set<Integer> defaultUnlockedRecipies;
 
-    public CookingManager(Player player) {
-        super(player);
-    }
+	private static final int MANUAL_PERFECT_COOK_QUALITY = 3;
+	private static Set<Integer> defaultUnlockedRecipies;
 
-    public static void initialize() {
-        // Initialize the set of recipies that are unlocked by default.
-        defaultUnlockedRecipies = new HashSet<>();
+	public CookingManager(Player player) {
+		super(player);
+	}
 
-        for (var recipe : GameData.getCookRecipeDataMap().values()) {
-            if (recipe.isDefaultUnlocked()) {
-                defaultUnlockedRecipies.add(recipe.getId());
-            }
-        }
-    }
+	public static void initialize() {
+		// Initialize the set of recipies that are unlocked by default.
+		defaultUnlockedRecipies = new HashSet<>();
 
-    /********************
-     * Unlocking for recipies.
-     ********************/
-    public boolean unlockRecipe(int id) {
-        if (this.player.getUnlockedRecipies().containsKey(id)) {
-            return false; // Recipe already unlocked
-        }
-        // Tell the client that this blueprint is now unlocked and add the unlocked item to the player.
-        this.player.getUnlockedRecipies().put(id, 0);
-        this.player.sendPacket(new PacketCookRecipeDataNotify(id));
+		for (var recipe : GameData.getCookRecipeDataMap().values()) {
+			if (recipe.isDefaultUnlocked()) {
+				defaultUnlockedRecipies.add(recipe.getId());
+			}
+		}
+	}
 
-        return true;
-    }
+	/********************
+	 * Unlocking for recipies.
+	 ********************/
+	public boolean unlockRecipe(int id) {
+		if (this.player.getUnlockedRecipies().containsKey(id)) {
+			return false; // Recipe already unlocked
+		}
+		// Tell the client that this blueprint is now unlocked and add the unlocked item to the player.
+		this.player.getUnlockedRecipies().put(id, 0);
+		this.player.sendPacket(new PacketCookRecipeDataNotify(id));
 
-    /********************
-     * Perform cooking.
-     ********************/
-    private double getSpecialtyChance(ItemData cookedItem) {
-        // Chances taken from the Wiki.
-        return switch (cookedItem.getRankLevel()) {
-            case 1 -> 0.25;
-            case 2 -> 0.2;
-            case 3 -> 0.15;
-            default -> 0;
-        };
-    }
+		return true;
+	}
 
-    public void handlePlayerCookReq(PlayerCookReq req) {
-        // Get info from the request.
-        int recipeId = req.getRecipeId();
-        int quality = req.getQteQuality();
-        int count = req.getCookCount();
-        int avatar = req.getAssistAvatar();
+	/********************
+	 * Perform cooking.
+	 ********************/
+	private double getSpecialtyChance(ItemData cookedItem) {
+		// Chances taken from the Wiki.
+		return switch (cookedItem.getRankLevel()) {
+			case 1 -> 0.25;
+			case 2 -> 0.2;
+			case 3 -> 0.15;
+			default -> 0;
+		};
+	}
 
-        // Get recipe data.
-        var recipeData = GameData.getCookRecipeDataMap().get(recipeId);
-        if (recipeData == null) {
-            this.player.sendPacket(new PacketPlayerCookRsp(Retcode.RET_FAIL));
-            return;
-        }
+	public void handlePlayerCookReq(PlayerCookReq req) {
+		// Get info from the request.
+		int recipeId = req.getRecipeId();
+		int quality = req.getQteQuality();
+		int count = req.getCookCount();
+		int avatar = req.getAssistAvatar();
 
-        // Get proficiency for player.
-        int proficiency = this.player.getUnlockedRecipies().getOrDefault(recipeId, 0);
+		// Get recipe data.
+		var recipeData = GameData.getCookRecipeDataMap().get(recipeId);
+		if (recipeData == null) {
+			this.player.sendPacket(new PacketPlayerCookRsp(Retcode.RET_FAIL));
+			return;
+		}
 
-        // Try consuming materials.
-        boolean success =
-                player.getInventory().payItems(recipeData.getInputVec(), count, ActionReason.Cook);
-        if (!success) {
-            this.player.sendPacket(new PacketPlayerCookRsp(Retcode.RET_FAIL));
-        }
+		// Get proficiency for player.
+		int proficiency = this.player.getUnlockedRecipies().getOrDefault(recipeId, 0);
 
-        // Get result item information.
-        int qualityIndex = quality == 0 ? 2 : quality - 1;
+		// Try consuming materials.
+		boolean success = player.getInventory().payItems(recipeData.getInputVec(), count, ActionReason.Cook);
+		if (!success) {
+			this.player.sendPacket(new PacketPlayerCookRsp(Retcode.RET_FAIL));
+		}
 
-        ItemParamData resultParam = recipeData.getQualityOutputVec().get(qualityIndex);
-        ItemData resultItemData = GameData.getItemDataMap().get(resultParam.getItemId());
+		// Get result item information.
+		int qualityIndex = quality == 0 ? 2 : quality - 1;
 
-        // Handle character's specialties.
-        int specialtyCount = 0;
-        double specialtyChance = this.getSpecialtyChance(resultItemData);
+		ItemParamData resultParam = recipeData.getQualityOutputVec().get(qualityIndex);
+		ItemData resultItemData = GameData.getItemDataMap().get(resultParam.getItemId());
 
-        var bonusData = GameData.getCookBonusDataMap().get(avatar);
-        if (bonusData != null && recipeId == bonusData.getRecipeId()) {
-            // Roll for specialy replacements.
-            for (int i = 0; i < count; i++) {
-                if (ThreadLocalRandom.current().nextDouble() <= specialtyChance) {
-                    specialtyCount++;
-                }
-            }
-        }
+		// Handle character's specialties.
+		int specialtyCount = 0;
+		double specialtyChance = this.getSpecialtyChance(resultItemData);
 
-        // Obtain results.
-        List<GameItem> cookResults = new ArrayList<>();
+		var bonusData = GameData.getCookBonusDataMap().get(avatar);
+		if (bonusData != null && recipeId == bonusData.getRecipeId()) {
+			// Roll for specialy replacements.
+			for (int i = 0; i < count; i++) {
+				if (ThreadLocalRandom.current().nextDouble() <= specialtyChance) {
+					specialtyCount++;
+				}
+			}
+		}
 
-        int normalCount = count - specialtyCount;
-        GameItem cookResultNormal = new GameItem(resultItemData, resultParam.getCount() * normalCount);
-        cookResults.add(cookResultNormal);
-        this.player.getInventory().addItem(cookResultNormal);
+		// Obtain results.
+		List<GameItem> cookResults = new ArrayList<>();
 
-        if (specialtyCount > 0) {
-            ItemData specialtyItemData = GameData.getItemDataMap().get(bonusData.getReplacementItemId());
-            GameItem cookResultSpecialty =
-                    new GameItem(specialtyItemData, resultParam.getCount() * specialtyCount);
-            cookResults.add(cookResultSpecialty);
-            this.player.getInventory().addItem(cookResultSpecialty);
-        }
+		int normalCount = count - specialtyCount;
+		GameItem cookResultNormal = new GameItem(resultItemData, resultParam.getCount() * normalCount);
+		cookResults.add(cookResultNormal);
+		this.player.getInventory().addItem(cookResultNormal);
 
-        // Increase player proficiency, if this was a manual perfect cook.
-        if (quality == MANUAL_PERFECT_COOK_QUALITY) {
-            proficiency = Math.min(proficiency + 1, recipeData.getMaxProficiency());
-            this.player.getUnlockedRecipies().put(recipeId, proficiency);
-        }
+		if (specialtyCount > 0) {
+			ItemData specialtyItemData = GameData.getItemDataMap().get(bonusData.getReplacementItemId());
+			GameItem cookResultSpecialty = new GameItem(specialtyItemData, resultParam.getCount() * specialtyCount);
+			cookResults.add(cookResultSpecialty);
+			this.player.getInventory().addItem(cookResultSpecialty);
+		}
 
-        // Send response.
-        this.player.sendPacket(
-                new PacketPlayerCookRsp(cookResults, quality, count, recipeId, proficiency));
-    }
+		// Increase player proficiency, if this was a manual perfect cook.
+		if (quality == MANUAL_PERFECT_COOK_QUALITY) {
+			proficiency = Math.min(proficiency + 1, recipeData.getMaxProficiency());
+			this.player.getUnlockedRecipies().put(recipeId, proficiency);
+		}
 
-    /********************
-     * Cooking arguments.
-     ********************/
-    public void handleCookArgsReq(PlayerCookArgsReq req) {
-        this.player.sendPacket(new PacketPlayerCookArgsRsp());
-    }
+		// Send response.
+		this.player.sendPacket(new PacketPlayerCookRsp(cookResults, quality, count, recipeId, proficiency));
+	}
 
-    /********************
-     * Notify unlocked recipies.
-     ********************/
-    private void addDefaultUnlocked() {
-        // Get recipies that are already unlocked.
-        var unlockedRecipies = this.player.getUnlockedRecipies();
+	/********************
+	 * Cooking arguments.
+	 ********************/
+	public void handleCookArgsReq(PlayerCookArgsReq req) {
+		this.player.sendPacket(new PacketPlayerCookArgsRsp());
+	}
 
-        // Get recipies that should be unlocked by default but aren't.
-        var additionalRecipies = new HashSet<>(defaultUnlockedRecipies);
-        additionalRecipies.removeAll(unlockedRecipies.keySet());
+	/********************
+	 * Notify unlocked recipies.
+	 ********************/
+	private void addDefaultUnlocked() {
+		// Get recipies that are already unlocked.
+		var unlockedRecipies = this.player.getUnlockedRecipies();
 
-        // Add them to the player.
-        for (int id : additionalRecipies) {
-            unlockedRecipies.put(id, 0);
-        }
-    }
+		// Get recipies that should be unlocked by default but aren't.
+		var additionalRecipies = new HashSet<>(defaultUnlockedRecipies);
+		additionalRecipies.removeAll(unlockedRecipies.keySet());
 
-    public void sendCookDataNotify() {
-        // Default unlocked recipes to player if they don't have them yet.
-        this.addDefaultUnlocked();
+		// Add them to the player.
+		for (int id : additionalRecipies) {
+			unlockedRecipies.put(id, 0);
+		}
+	}
 
-        // Get unlocked recipes.
-        var unlockedRecipes = this.player.getUnlockedRecipies();
+	public void sendCookDataNotify() {
+		// Default unlocked recipes to player if they don't have them yet.
+		this.addDefaultUnlocked();
 
-        // Construct CookRecipeData protos.
-        List<CookRecipeDataOuterClass.CookRecipeData> data = new ArrayList<>();
-        unlockedRecipes.forEach(
-                (recipeId, proficiency) ->
-                        data.add(
-                                CookRecipeDataOuterClass.CookRecipeData.newBuilder()
-                                        .setRecipeId(recipeId)
-                                        .setProficiency(proficiency)
-                                        .build()));
+		// Get unlocked recipes.
+		var unlockedRecipes = this.player.getUnlockedRecipies();
 
-        // Send packet.
-        this.player.sendPacket(new PacketCookDataNotify(data));
-    }
+		// Construct CookRecipeData protos.
+		List<CookRecipeDataOuterClass.CookRecipeData> data = new ArrayList<>();
+		unlockedRecipes.forEach((recipeId, proficiency) ->
+			data.add(
+				CookRecipeDataOuterClass.CookRecipeData
+					.newBuilder()
+					.setRecipeId(recipeId)
+					.setProficiency(proficiency)
+					.build()
+			)
+		);
+
+		// Send packet.
+		this.player.sendPacket(new PacketCookDataNotify(data));
+	}
 }

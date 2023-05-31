@@ -10,52 +10,47 @@ import java.util.List;
 
 public class PacketDungeonEntryInfoRsp extends BasePacket {
 
-    public PacketDungeonEntryInfoRsp(PointData pointData) {
-        super(PacketOpcodes.DungeonEntryInfoRsp);
+	public PacketDungeonEntryInfoRsp(PointData pointData) {
+		super(PacketOpcodes.DungeonEntryInfoRsp);
+		DungeonEntryInfoRsp.Builder proto = DungeonEntryInfoRsp.newBuilder().setPointId(pointData.getId());
 
-        DungeonEntryInfoRsp.Builder proto =
-                DungeonEntryInfoRsp.newBuilder().setPointId(pointData.getId());
+		if (pointData.getDungeonIds() != null) {
+			for (int dungeonId : pointData.getDungeonIds()) {
+				DungeonEntryInfo info = DungeonEntryInfo.newBuilder().setDungeonId(dungeonId).build();
+				proto.addDungeonEntryList(info);
+			}
+		}
 
-        if (pointData.getDungeonIds() != null) {
-            for (int dungeonId : pointData.getDungeonIds()) {
-                DungeonEntryInfo info = DungeonEntryInfo.newBuilder().setDungeonId(dungeonId).build();
-                proto.addDungeonEntryList(info);
-            }
-        }
+		this.setData(proto);
+	}
 
-        this.setData(proto);
-    }
+	/**
+	 * Used in conjunction with quest-related dungeons.
+	 *
+	 * @param pointData The data associated with the dungeon.
+	 * @param additional A collection of additional quest-related dungeon IDs.
+	 */
+	public PacketDungeonEntryInfoRsp(PointData pointData, List<Integer> additional) {
+		super(PacketOpcodes.DungeonEntryInfoRsp);
+		var packet = DungeonEntryInfoRsp.newBuilder().setPointId(pointData.getId());
 
-    /**
-     * Used in conjunction with quest-related dungeons.
-     *
-     * @param pointData The data associated with the dungeon.
-     * @param additional A collection of additional quest-related dungeon IDs.
-     */
-    public PacketDungeonEntryInfoRsp(PointData pointData, List<Integer> additional) {
-        super(PacketOpcodes.DungeonEntryInfoRsp);
+		// Add dungeon IDs from the point data.
+		if (pointData.getDungeonIds() != null) {
+			Arrays
+				.stream(pointData.getDungeonIds())
+				.forEach(id -> packet.addDungeonEntryList(DungeonEntryInfo.newBuilder().setDungeonId(id)));
+		}
 
-        var packet = DungeonEntryInfoRsp.newBuilder().setPointId(pointData.getId());
+		// Add additional dungeon IDs.
+		additional.forEach(id -> packet.addDungeonEntryList(DungeonEntryInfo.newBuilder().setDungeonId(id)));
 
-        // Add dungeon IDs from the point data.
-        if (pointData.getDungeonIds() != null) {
-            Arrays.stream(pointData.getDungeonIds())
-                    .forEach(
-                            id -> packet.addDungeonEntryList(DungeonEntryInfo.newBuilder().setDungeonId(id)));
-        }
+		this.setData(packet);
+	}
 
-        // Add additional dungeon IDs.
-        additional.forEach(
-                id -> packet.addDungeonEntryList(DungeonEntryInfo.newBuilder().setDungeonId(id)));
+	public PacketDungeonEntryInfoRsp() {
+		super(PacketOpcodes.DungeonEntryInfoRsp);
+		DungeonEntryInfoRsp proto = DungeonEntryInfoRsp.newBuilder().setRetcode(1).build();
 
-        this.setData(packet);
-    }
-
-    public PacketDungeonEntryInfoRsp() {
-        super(PacketOpcodes.DungeonEntryInfoRsp);
-
-        DungeonEntryInfoRsp proto = DungeonEntryInfoRsp.newBuilder().setRetcode(1).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

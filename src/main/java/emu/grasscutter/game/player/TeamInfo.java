@@ -10,86 +10,87 @@ import java.util.List;
 
 @Entity
 public final class TeamInfo {
-    private String name;
-    private List<Integer> avatars;
 
-    public TeamInfo() {
-        this.name = "";
-        this.avatars = new ArrayList<>(GAME_OPTIONS.avatarLimits.singlePlayerTeam);
-    }
+	private String name;
+	private List<Integer> avatars;
 
-    public TeamInfo(List<Integer> avatars) {
-        this.name = "";
-        this.avatars = avatars;
-    }
+	public TeamInfo() {
+		this.name = "";
+		this.avatars = new ArrayList<>(GAME_OPTIONS.avatarLimits.singlePlayerTeam);
+	}
 
-    public String getName() {
-        return name;
-    }
+	public TeamInfo(List<Integer> avatars) {
+		this.name = "";
+		this.avatars = avatars;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public List<Integer> getAvatars() {
-        return avatars;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public int size() {
-        return avatars.size();
-    }
+	public List<Integer> getAvatars() {
+		return avatars;
+	}
 
-    public boolean contains(Avatar avatar) {
-        return getAvatars().contains(avatar.getAvatarId());
-    }
+	public int size() {
+		return avatars.size();
+	}
 
-    public boolean addAvatar(Avatar avatar) {
-        if (contains(avatar)) {
-            return false;
-        }
+	public boolean contains(Avatar avatar) {
+		return getAvatars().contains(avatar.getAvatarId());
+	}
 
-        getAvatars().add(avatar.getAvatarId());
+	public boolean addAvatar(Avatar avatar) {
+		if (contains(avatar)) {
+			return false;
+		}
 
-        return true;
-    }
+		getAvatars().add(avatar.getAvatarId());
 
-    public boolean removeAvatar(int slot) {
-        if (size() <= 1) {
-            return false;
-        }
+		return true;
+	}
 
-        getAvatars().remove(slot);
+	public boolean removeAvatar(int slot) {
+		if (size() <= 1) {
+			return false;
+		}
 
-        return true;
-    }
+		getAvatars().remove(slot);
 
-    public void copyFrom(TeamInfo team) {
-        copyFrom(team, GAME_OPTIONS.avatarLimits.singlePlayerTeam);
-    }
+		return true;
+	}
 
-    public void copyFrom(TeamInfo team, int maxTeamSize) {
-        // Clone avatar ids from team to copy from
-        List<Integer> avatarIds = new ArrayList<>(team.getAvatars());
+	public void copyFrom(TeamInfo team) {
+		copyFrom(team, GAME_OPTIONS.avatarLimits.singlePlayerTeam);
+	}
 
-        // Clear current avatar list first
-        this.getAvatars().clear();
+	public void copyFrom(TeamInfo team, int maxTeamSize) {
+		// Clone avatar ids from team to copy from
+		List<Integer> avatarIds = new ArrayList<>(team.getAvatars());
 
-        // Copy from team
-        int len = Math.min(avatarIds.size(), maxTeamSize);
-        for (int i = 0; i < len; i++) {
-            int id = avatarIds.get(i);
-            this.getAvatars().add(id);
-        }
-    }
+		// Clear current avatar list first
+		this.getAvatars().clear();
 
-    public AvatarTeam toProto(Player player) {
-        AvatarTeam.Builder avatarTeam = AvatarTeam.newBuilder().setTeamName(this.getName());
+		// Copy from team
+		int len = Math.min(avatarIds.size(), maxTeamSize);
+		for (int i = 0; i < len; i++) {
+			int id = avatarIds.get(i);
+			this.getAvatars().add(id);
+		}
+	}
 
-        for (int i = 0; i < this.getAvatars().size(); i++) {
-            Avatar avatar = player.getAvatars().getAvatarById(this.getAvatars().get(i));
-            avatarTeam.addAvatarGuidList(avatar.getGuid());
-        }
+	public AvatarTeam toProto(Player player) {
+		AvatarTeam.Builder avatarTeam = AvatarTeam.newBuilder().setTeamName(this.getName());
 
-        return avatarTeam.build();
-    }
+		for (int i = 0; i < this.getAvatars().size(); i++) {
+			Avatar avatar = player.getAvatars().getAvatarById(this.getAvatars().get(i));
+			avatarTeam.addAvatarGuidList(avatar.getGuid());
+		}
+
+		return avatarTeam.build();
+	}
 }

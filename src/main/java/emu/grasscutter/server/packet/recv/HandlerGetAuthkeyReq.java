@@ -9,8 +9,8 @@ import emu.grasscutter.server.packet.send.PacketGetAuthkeyRsp;
 @Opcodes(PacketOpcodes.GetAuthkeyReq)
 public class HandlerGetAuthkeyReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        session.send(new PacketGetAuthkeyRsp());
-    }
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		session.send(new PacketGetAuthkeyRsp());
+	}
 }

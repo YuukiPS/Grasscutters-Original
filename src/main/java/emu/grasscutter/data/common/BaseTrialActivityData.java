@@ -3,7 +3,7 @@ package emu.grasscutter.data.common;
 import java.util.List;
 
 public interface BaseTrialActivityData {
-    List<Integer> getAvatarIndexIdList();
+	List<Integer> getAvatarIndexIdList();
 
-    List<Integer> getRewardIdList();
+	List<Integer> getRewardIdList();
 }

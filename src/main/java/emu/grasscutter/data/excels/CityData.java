@@ -13,12 +13,13 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CityData extends GameResource {
-    int cityId;
-    int sceneId;
-    List<Integer> areaIdVec;
 
-    @Override
-    public int getId() {
-        return this.cityId;
-    }
+	int cityId;
+	int sceneId;
+	List<Integer> areaIdVec;
+
+	@Override
+	public int getId() {
+		return this.cityId;
+	}
 }

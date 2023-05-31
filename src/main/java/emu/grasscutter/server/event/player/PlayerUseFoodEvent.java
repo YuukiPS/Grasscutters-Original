@@ -10,13 +10,17 @@ import lombok.Setter;
 
 /** This event is invoked when the player uses food on an avatar. */
 public final class PlayerUseFoodEvent extends PlayerEvent implements Cancellable {
-    @Getter private final EntityAvatar selectedAvatar;
-    @Getter @Setter private ItemData foodUsed;
 
-    public PlayerUseFoodEvent(Player player, ItemData foodUsed, EntityAvatar selectedAvatar) {
-        super(player);
+	@Getter
+	private final EntityAvatar selectedAvatar;
 
-        this.foodUsed = foodUsed;
-        this.selectedAvatar = selectedAvatar;
-    }
+	@Getter
+	@Setter
+	private ItemData foodUsed;
+
+	public PlayerUseFoodEvent(Player player, ItemData foodUsed, EntityAvatar selectedAvatar) {
+		super(player);
+		this.foodUsed = foodUsed;
+		this.selectedAvatar = selectedAvatar;
+	}
 }

@@ -10,14 +10,14 @@ import emu.grasscutter.server.packet.send.PacketSetPlayerSignatureRsp;
 @Opcodes(PacketOpcodes.SetPlayerSignatureReq)
 public class HandlerSetPlayerSignatureReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        // Auto template
-        SetPlayerSignatureReq req = SetPlayerSignatureReq.parseFrom(payload);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		// Auto template
+		SetPlayerSignatureReq req = SetPlayerSignatureReq.parseFrom(payload);
 
-        if (req.getSignature() != null && req.getSignature().length() > 0) {
-            session.getPlayer().setSignature(req.getSignature());
-            session.send(new PacketSetPlayerSignatureRsp(session.getPlayer()));
-        }
-    }
+		if (req.getSignature() != null && req.getSignature().length() > 0) {
+			session.getPlayer().setSignature(req.getSignature());
+			session.send(new PacketSetPlayerSignatureRsp(session.getPlayer()));
+		}
+	}
 }

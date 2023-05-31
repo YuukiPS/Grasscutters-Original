@@ -6,11 +6,12 @@ import emu.grasscutter.server.event.types.PlayerEvent;
 import lombok.Getter;
 
 public final class PlayerEnterDungeonEvent extends PlayerEvent {
-    @Getter private final DungeonData dungeon;
 
-    public PlayerEnterDungeonEvent(Player player, DungeonData dungeon) {
-        super(player);
+	@Getter
+	private final DungeonData dungeon;
 
-        this.dungeon = dungeon;
-    }
+	public PlayerEnterDungeonEvent(Player player, DungeonData dungeon) {
+		super(player);
+		this.dungeon = dungeon;
+	}
 }

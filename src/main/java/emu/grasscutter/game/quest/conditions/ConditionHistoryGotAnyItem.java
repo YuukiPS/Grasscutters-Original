@@ -9,14 +9,15 @@ import lombok.val;
 @QuestValueCond(QuestCond.QUEST_COND_HISTORY_GOT_ANY_ITEM)
 public class ConditionHistoryGotAnyItem extends BaseCondition {
 
-    @Override
-    public boolean execute(
-            Player owner,
-            QuestData questData,
-            QuestData.QuestAcceptCondition condition,
-            String paramStr,
-            int... params) {
-        val itemId = condition.getParam()[0];
-        return owner.getPlayerProgress().hasPlayerObtainedItemHistorically(itemId);
-    }
+	@Override
+	public boolean execute(
+		Player owner,
+		QuestData questData,
+		QuestData.QuestAcceptCondition condition,
+		String paramStr,
+		int... params
+	) {
+		val itemId = condition.getParam()[0];
+		return owner.getPlayerProgress().hasPlayerObtainedItemHistorically(itemId);
+	}
 }

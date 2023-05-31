@@ -8,24 +8,25 @@ import emu.grasscutter.net.proto.TakeAchievementGoalRewardRspOuterClass;
 import java.util.List;
 
 public class PacketTakeAchievementGoalRewardRsp extends BasePacket {
-    public PacketTakeAchievementGoalRewardRsp() {
-        super(PacketOpcodes.TakeAchievementGoalRewardRsp);
-        this.setData(
-                TakeAchievementGoalRewardRspOuterClass.TakeAchievementGoalRewardRsp.newBuilder()
-                        .setRetcode(RetcodeOuterClass.Retcode.RET_REWARD_HAS_TAKEN_VALUE)
-                        .build());
-    }
 
-    public PacketTakeAchievementGoalRewardRsp(
-            List<Integer> ids, List<ItemParamOuterClass.ItemParam> items) {
-        super(PacketOpcodes.TakeAchievementGoalRewardRsp);
+	public PacketTakeAchievementGoalRewardRsp() {
+		super(PacketOpcodes.TakeAchievementGoalRewardRsp);
+		this.setData(
+				TakeAchievementGoalRewardRspOuterClass.TakeAchievementGoalRewardRsp
+					.newBuilder()
+					.setRetcode(RetcodeOuterClass.Retcode.RET_REWARD_HAS_TAKEN_VALUE)
+					.build()
+			);
+	}
 
-        var rsp =
-                TakeAchievementGoalRewardRspOuterClass.TakeAchievementGoalRewardRsp.newBuilder()
-                        .addAllIdList(ids)
-                        .addAllItemList(items)
-                        .build();
+	public PacketTakeAchievementGoalRewardRsp(List<Integer> ids, List<ItemParamOuterClass.ItemParam> items) {
+		super(PacketOpcodes.TakeAchievementGoalRewardRsp);
+		var rsp = TakeAchievementGoalRewardRspOuterClass.TakeAchievementGoalRewardRsp
+			.newBuilder()
+			.addAllIdList(ids)
+			.addAllItemList(items)
+			.build();
 
-        this.setData(rsp);
-    }
+		this.setData(rsp);
+	}
 }

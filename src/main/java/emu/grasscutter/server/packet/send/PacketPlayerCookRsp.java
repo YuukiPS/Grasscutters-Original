@@ -10,30 +10,26 @@ import emu.grasscutter.net.proto.RetcodeOuterClass.Retcode;
 import java.util.List;
 
 public class PacketPlayerCookRsp extends BasePacket {
-    public PacketPlayerCookRsp(Retcode retcode) {
-        super(PacketOpcodes.PlayerCookRsp);
 
-        PlayerCookRsp proto = PlayerCookRsp.newBuilder().setRetcode(retcode.getNumber()).build();
+	public PacketPlayerCookRsp(Retcode retcode) {
+		super(PacketOpcodes.PlayerCookRsp);
+		PlayerCookRsp proto = PlayerCookRsp.newBuilder().setRetcode(retcode.getNumber()).build();
 
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 
-    public PacketPlayerCookRsp(
-            List<GameItem> output, int quality, int count, int recipeId, int proficiency) {
-        super(PacketOpcodes.PlayerCookRsp);
+	public PacketPlayerCookRsp(List<GameItem> output, int quality, int count, int recipeId, int proficiency) {
+		super(PacketOpcodes.PlayerCookRsp);
+		PlayerCookRsp.Builder proto = PlayerCookRsp
+			.newBuilder()
+			.setRecipeData(CookRecipeData.newBuilder().setRecipeId(recipeId).setProficiency(proficiency))
+			.setQteQuality(quality)
+			.setCookCount(count);
 
-        PlayerCookRsp.Builder proto =
-                PlayerCookRsp.newBuilder()
-                        .setRecipeData(
-                                CookRecipeData.newBuilder().setRecipeId(recipeId).setProficiency(proficiency))
-                        .setQteQuality(quality)
-                        .setCookCount(count);
+		for (var item : output) {
+			proto.addItemList(ItemParam.newBuilder().setItemId(item.getItemId()).setCount(item.getCount()));
+		}
 
-        for (var item : output) {
-            proto.addItemList(
-                    ItemParam.newBuilder().setItemId(item.getItemId()).setCount(item.getCount()));
-        }
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

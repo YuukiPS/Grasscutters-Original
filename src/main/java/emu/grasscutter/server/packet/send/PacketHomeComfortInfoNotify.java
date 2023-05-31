@@ -11,35 +11,35 @@ import java.util.List;
 
 public class PacketHomeComfortInfoNotify extends BasePacket {
 
-    public PacketHomeComfortInfoNotify(Player player) {
-        super(PacketOpcodes.HomeComfortInfoNotify);
+	public PacketHomeComfortInfoNotify(Player player) {
+		super(PacketOpcodes.HomeComfortInfoNotify);
+		if (player.getRealmList() == null) {
+			// Do not send
+			return;
+		}
 
-        if (player.getRealmList() == null) {
-            // Do not send
-            return;
-        }
+		List<HomeModuleComfortInfoOuterClass.HomeModuleComfortInfo> comfortInfoList = new ArrayList<>();
 
-        List<HomeModuleComfortInfoOuterClass.HomeModuleComfortInfo> comfortInfoList = new ArrayList<>();
+		for (int moduleId : player.getRealmList()) {
+			var homeScene = player.getHome().getHomeSceneItem(moduleId + 2000);
+			var blockComfortList = homeScene.getBlockItems().values().stream().map(HomeBlockItem::calComfort).toList();
+			var homeRoomScene = player.getHome().getHomeSceneItem(homeScene.getRoomSceneId());
 
-        for (int moduleId : player.getRealmList()) {
-            var homeScene = player.getHome().getHomeSceneItem(moduleId + 2000);
-            var blockComfortList =
-                    homeScene.getBlockItems().values().stream().map(HomeBlockItem::calComfort).toList();
-            var homeRoomScene = player.getHome().getHomeSceneItem(homeScene.getRoomSceneId());
+			comfortInfoList.add(
+				HomeModuleComfortInfoOuterClass.HomeModuleComfortInfo
+					.newBuilder()
+					.setModuleId(moduleId)
+					.setRoomSceneComfortValue(homeRoomScene.calComfort())
+					.addAllWorldSceneBlockComfortValueList(blockComfortList)
+					.build()
+			);
+		}
 
-            comfortInfoList.add(
-                    HomeModuleComfortInfoOuterClass.HomeModuleComfortInfo.newBuilder()
-                            .setModuleId(moduleId)
-                            .setRoomSceneComfortValue(homeRoomScene.calComfort())
-                            .addAllWorldSceneBlockComfortValueList(blockComfortList)
-                            .build());
-        }
+		HomeComfortInfoNotifyOuterClass.HomeComfortInfoNotify proto = HomeComfortInfoNotifyOuterClass.HomeComfortInfoNotify
+			.newBuilder()
+			.addAllModuleInfoList(comfortInfoList)
+			.build();
 
-        HomeComfortInfoNotifyOuterClass.HomeComfortInfoNotify proto =
-                HomeComfortInfoNotifyOuterClass.HomeComfortInfoNotify.newBuilder()
-                        .addAllModuleInfoList(comfortInfoList)
-                        .build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

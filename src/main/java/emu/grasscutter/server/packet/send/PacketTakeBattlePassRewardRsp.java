@@ -9,19 +9,17 @@ import emu.grasscutter.net.proto.TakeBattlePassRewardRspOuterClass.TakeBattlePas
 import java.util.List;
 
 public class PacketTakeBattlePassRewardRsp extends BasePacket {
-    public PacketTakeBattlePassRewardRsp(
-            List<BattlePassRewardTakeOption> takeOptionList, List<GameItem> rewardItems) {
-        super(PacketOpcodes.TakeBattlePassRewardRsp);
 
-        var proto = TakeBattlePassRewardRsp.newBuilder().addAllTakeOptionList(takeOptionList);
+	public PacketTakeBattlePassRewardRsp(List<BattlePassRewardTakeOption> takeOptionList, List<GameItem> rewardItems) {
+		super(PacketOpcodes.TakeBattlePassRewardRsp);
+		var proto = TakeBattlePassRewardRsp.newBuilder().addAllTakeOptionList(takeOptionList);
 
-        if (rewardItems != null) {
-            for (var item : rewardItems) {
-                proto.addItemList(
-                        ItemParam.newBuilder().setItemId(item.getItemId()).setCount(item.getCount()));
-            }
-        }
+		if (rewardItems != null) {
+			for (var item : rewardItems) {
+				proto.addItemList(ItemParam.newBuilder().setItemId(item.getItemId()).setCount(item.getCount()));
+			}
+		}
 
-        setData(proto);
-    }
+		setData(proto);
+	}
 }

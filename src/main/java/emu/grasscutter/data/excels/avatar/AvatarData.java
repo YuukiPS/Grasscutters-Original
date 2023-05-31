@@ -12,175 +12,209 @@ import emu.grasscutter.utils.Utils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
-import lombok.Getter;
-
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
 
 @ResourceType(name = "AvatarExcelConfigData.json", loadPriority = LoadPriority.LOW)
 public class AvatarData extends GameResource {
 
-    private String iconName;
-    @Getter private String bodyType;
-    @Getter private String qualityType;
-    @Getter private int chargeEfficiency;
-    @Getter private int initialWeapon;
-    @Getter private WeaponType weaponType;
-    @Getter private String imageName;
-    @Getter private int avatarPromoteId;
-    @Getter private String cutsceneShow;
-    @Getter private int skillDepotId;
-    @Getter private int staminaRecoverSpeed;
-    @Getter private List<Integer> candSkillDepotIds;
-    @Getter private String avatarIdentityType;
-    @Getter private List<Integer> avatarPromoteRewardLevelList;
-    @Getter private List<Integer> avatarPromoteRewardIdList;
+	private String iconName;
 
-    @Getter
-    private long nameTextMapHash;
+	@Getter
+	private String bodyType;
 
-    private float hpBase;
-    private float attackBase;
-    private float defenseBase;
-    private float critical;
-    private float criticalHurt;
+	@Getter
+	private String qualityType;
 
-    private List<PropGrowCurve> propGrowCurves;
-    @Getter(onMethod_ = @Override)
-    private int id;
+	@Getter
+	private int chargeEfficiency;
 
-    // Transient
-    @Getter
-    private String name;
+	@Getter
+	private int initialWeapon;
 
-    private Int2ObjectMap<String> growthCurveMap;
-    private float[] hpGrowthCurve;
-    private float[] attackGrowthCurve;
-    private float[] defenseGrowthCurve;
-    @Getter
-    private AvatarSkillDepotData skillDepot;
-    @Getter
-    private IntList abilities;
-    @Getter
-    private List<String> abilitieNames = new ArrayList<>();
+	@Getter
+	private WeaponType weaponType;
 
-    @Getter
-    private List<Integer> fetters;
-    @Getter
-    private int nameCardRewardId;
-    @Getter
-    private int nameCardId;
+	@Getter
+	private String imageName;
 
-    public float getBaseHp(int level) {
-        try {
-            return this.hpBase * this.hpGrowthCurve[level - 1];
-        } catch (Exception e) {
-            return this.hpBase;
-        }
-    }
+	@Getter
+	private int avatarPromoteId;
 
-    public float getBaseAttack(int level) {
-        try {
-            return this.attackBase * this.attackGrowthCurve[level - 1];
-        } catch (Exception e) {
-            return this.attackBase;
-        }
-    }
+	@Getter
+	private String cutsceneShow;
 
-    public float getBaseDefense(int level) {
-        try {
-            return this.defenseBase * this.defenseGrowthCurve[level - 1];
-        } catch (Exception e) {
-            return this.defenseBase;
-        }
-    }
+	@Getter
+	private int skillDepotId;
 
-    public float getBaseCritical() {
-        return this.critical;
-    }
+	@Getter
+	private int staminaRecoverSpeed;
 
-    public float getBaseCriticalHurt() {
-        return this.criticalHurt;
-    }
+	@Getter
+	private List<Integer> candSkillDepotIds;
 
-    public float getGrowthCurveById(int level, FightProperty prop) {
-        String growCurve = this.growthCurveMap.get(prop.getId());
-        if (growCurve == null) {
-            return 1f;
-        }
-        AvatarCurveData curveData = GameData.getAvatarCurveDataMap().get(level);
-        if (curveData == null) {
-            return 1f;
-        }
-        return curveData.getCurveInfos().getOrDefault(growCurve, 1f);
-    }
+	@Getter
+	private String avatarIdentityType;
 
-    @Override
-    public void onLoad() {
-        this.skillDepot = GameData.getAvatarSkillDepotDataMap().get(this.skillDepotId);
+	@Getter
+	private List<Integer> avatarPromoteRewardLevelList;
 
-        // Get fetters from GameData
-        this.fetters = GameData.getFetterDataEntries().get(this.id);
+	@Getter
+	private List<Integer> avatarPromoteRewardIdList;
 
-        if (GameData.getFetterCharacterCardDataMap().get(this.id) != null) {
-            this.nameCardRewardId = GameData.getFetterCharacterCardDataMap().get(this.id).getRewardId();
-        }
+	@Getter
+	private long nameTextMapHash;
 
-        if (GameData.getRewardDataMap().get(this.nameCardRewardId) != null) {
-            this.nameCardId = GameData.getRewardDataMap().get(this.nameCardRewardId).getRewardItemList().get(0).getItemId();
-        }
+	private float hpBase;
+	private float attackBase;
+	private float defenseBase;
+	private float critical;
+	private float criticalHurt;
 
-        int size = GameData.getAvatarCurveDataMap().size();
-        this.hpGrowthCurve = new float[size];
-        this.attackGrowthCurve = new float[size];
-        this.defenseGrowthCurve = new float[size];
-        for (AvatarCurveData curveData : GameData.getAvatarCurveDataMap().values()) {
-            int level = curveData.getLevel() - 1;
-            for (PropGrowCurve growCurve : this.propGrowCurves) {
-                FightProperty prop = FightProperty.getPropByName(growCurve.getType());
-                switch (prop) {
-                    case FIGHT_PROP_BASE_HP:
-                        this.hpGrowthCurve[level] = curveData.getCurveInfos().get(growCurve.getGrowCurve());
-                        break;
-                    case FIGHT_PROP_BASE_ATTACK:
-                        this.attackGrowthCurve[level] = curveData.getCurveInfos().get(growCurve.getGrowCurve());
-                        break;
-                    case FIGHT_PROP_BASE_DEFENSE:
-                        this.defenseGrowthCurve[level] = curveData.getCurveInfos().get(growCurve.getGrowCurve());
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
+	private List<PropGrowCurve> propGrowCurves;
 
-        /*
+	@Getter(onMethod_ = @Override)
+	private int id;
+
+	// Transient
+	@Getter
+	private String name;
+
+	private Int2ObjectMap<String> growthCurveMap;
+	private float[] hpGrowthCurve;
+	private float[] attackGrowthCurve;
+	private float[] defenseGrowthCurve;
+
+	@Getter
+	private AvatarSkillDepotData skillDepot;
+
+	@Getter
+	private IntList abilities;
+
+	@Getter
+	private List<String> abilitieNames = new ArrayList<>();
+
+	@Getter
+	private List<Integer> fetters;
+
+	@Getter
+	private int nameCardRewardId;
+
+	@Getter
+	private int nameCardId;
+
+	public float getBaseHp(int level) {
+		try {
+			return this.hpBase * this.hpGrowthCurve[level - 1];
+		} catch (Exception e) {
+			return this.hpBase;
+		}
+	}
+
+	public float getBaseAttack(int level) {
+		try {
+			return this.attackBase * this.attackGrowthCurve[level - 1];
+		} catch (Exception e) {
+			return this.attackBase;
+		}
+	}
+
+	public float getBaseDefense(int level) {
+		try {
+			return this.defenseBase * this.defenseGrowthCurve[level - 1];
+		} catch (Exception e) {
+			return this.defenseBase;
+		}
+	}
+
+	public float getBaseCritical() {
+		return this.critical;
+	}
+
+	public float getBaseCriticalHurt() {
+		return this.criticalHurt;
+	}
+
+	public float getGrowthCurveById(int level, FightProperty prop) {
+		String growCurve = this.growthCurveMap.get(prop.getId());
+		if (growCurve == null) {
+			return 1f;
+		}
+		AvatarCurveData curveData = GameData.getAvatarCurveDataMap().get(level);
+		if (curveData == null) {
+			return 1f;
+		}
+		return curveData.getCurveInfos().getOrDefault(growCurve, 1f);
+	}
+
+	@Override
+	public void onLoad() {
+		this.skillDepot = GameData.getAvatarSkillDepotDataMap().get(this.skillDepotId);
+
+		// Get fetters from GameData
+		this.fetters = GameData.getFetterDataEntries().get(this.id);
+
+		if (GameData.getFetterCharacterCardDataMap().get(this.id) != null) {
+			this.nameCardRewardId = GameData.getFetterCharacterCardDataMap().get(this.id).getRewardId();
+		}
+
+		if (GameData.getRewardDataMap().get(this.nameCardRewardId) != null) {
+			this.nameCardId =
+				GameData.getRewardDataMap().get(this.nameCardRewardId).getRewardItemList().get(0).getItemId();
+		}
+
+		int size = GameData.getAvatarCurveDataMap().size();
+		this.hpGrowthCurve = new float[size];
+		this.attackGrowthCurve = new float[size];
+		this.defenseGrowthCurve = new float[size];
+		for (AvatarCurveData curveData : GameData.getAvatarCurveDataMap().values()) {
+			int level = curveData.getLevel() - 1;
+			for (PropGrowCurve growCurve : this.propGrowCurves) {
+				FightProperty prop = FightProperty.getPropByName(growCurve.getType());
+				switch (prop) {
+					case FIGHT_PROP_BASE_HP:
+						this.hpGrowthCurve[level] = curveData.getCurveInfos().get(growCurve.getGrowCurve());
+						break;
+					case FIGHT_PROP_BASE_ATTACK:
+						this.attackGrowthCurve[level] = curveData.getCurveInfos().get(growCurve.getGrowCurve());
+						break;
+					case FIGHT_PROP_BASE_DEFENSE:
+						this.defenseGrowthCurve[level] = curveData.getCurveInfos().get(growCurve.getGrowCurve());
+						break;
+					default:
+						break;
+				}
+			}
+		}
+
+		/*
         for (PropGrowCurve growCurve : this.PropGrowCurves) {
             FightProperty prop = FightProperty.getPropByName(growCurve.getType());
             this.growthCurveMap.put(prop.getId(), growCurve.getGrowCurve());
         }
         */
 
-        // Cache abilities
-        this.buildEmbryo();
-    }
+		// Cache abilities
+		this.buildEmbryo();
+	}
 
-    /**
-     * Create ability embryos.
-     */
-    public void buildEmbryo() {
-        var split = this.iconName.split("_");
-        if (split.length > 0) {
-            this.name = split[split.length - 1];
+	/**
+	 * Create ability embryos.
+	 */
+	public void buildEmbryo() {
+		var split = this.iconName.split("_");
+		if (split.length > 0) {
+			this.name = split[split.length - 1];
 
-            var info = GameData.getAbilityEmbryoInfo().get(this.name);
-            if (info != null) {
-                this.abilities = new IntArrayList(info.getAbilities().length);
-                for (var ability : info.getAbilities()) {
-                    this.abilities.add(Utils.abilityHash(ability));
-                    this.abilitieNames.add(ability);
-                }
-            }
-        }
-    }
+			var info = GameData.getAbilityEmbryoInfo().get(this.name);
+			if (info != null) {
+				this.abilities = new IntArrayList(info.getAbilities().length);
+				for (var ability : info.getAbilities()) {
+					this.abilities.add(Utils.abilityHash(ability));
+					this.abilitieNames.add(ability);
+				}
+			}
+		}
+	}
 }

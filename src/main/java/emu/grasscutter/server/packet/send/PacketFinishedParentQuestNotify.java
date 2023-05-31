@@ -9,18 +9,17 @@ import emu.grasscutter.net.proto.FinishedParentQuestNotifyOuterClass.FinishedPar
 
 public class PacketFinishedParentQuestNotify extends BasePacket {
 
-    public PacketFinishedParentQuestNotify(Player player) {
-        super(PacketOpcodes.FinishedParentQuestNotify, true);
+	public PacketFinishedParentQuestNotify(Player player) {
+		super(PacketOpcodes.FinishedParentQuestNotify, true);
+		FinishedParentQuestNotify.Builder proto = FinishedParentQuestNotify.newBuilder();
 
-        FinishedParentQuestNotify.Builder proto = FinishedParentQuestNotify.newBuilder();
+		for (GameMainQuest mainQuest : player.getQuestManager().getMainQuests().values()) {
+			// Canceled Quests do not appear in this packet
+			if (mainQuest.getState() != ParentQuestState.PARENT_QUEST_STATE_CANCELED) {
+				proto.addParentQuestList(mainQuest.toProto(false));
+			}
+		}
 
-        for (GameMainQuest mainQuest : player.getQuestManager().getMainQuests().values()) {
-            // Canceled Quests do not appear in this packet
-            if (mainQuest.getState() != ParentQuestState.PARENT_QUEST_STATE_CANCELED) {
-                proto.addParentQuestList(mainQuest.toProto(false));
-            }
-        }
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

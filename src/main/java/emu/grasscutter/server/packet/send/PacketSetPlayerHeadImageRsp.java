@@ -8,14 +8,13 @@ import emu.grasscutter.net.proto.SetPlayerHeadImageRspOuterClass.SetPlayerHeadIm
 
 public class PacketSetPlayerHeadImageRsp extends BasePacket {
 
-    public PacketSetPlayerHeadImageRsp(Player player) {
-        super(PacketOpcodes.SetPlayerHeadImageRsp);
+	public PacketSetPlayerHeadImageRsp(Player player) {
+		super(PacketOpcodes.SetPlayerHeadImageRsp);
+		SetPlayerHeadImageRsp proto = SetPlayerHeadImageRsp
+			.newBuilder()
+			.setProfilePicture(ProfilePicture.newBuilder().setAvatarId(player.getHeadImage()))
+			.build();
 
-        SetPlayerHeadImageRsp proto =
-                SetPlayerHeadImageRsp.newBuilder()
-                        .setProfilePicture(ProfilePicture.newBuilder().setAvatarId(player.getHeadImage()))
-                        .build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

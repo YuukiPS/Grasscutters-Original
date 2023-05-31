@@ -9,13 +9,14 @@ import lombok.Getter;
 @ResourceType(name = "ReliquaryMainPropExcelConfigData.json")
 @Getter
 public class ReliquaryMainPropData extends GameResource {
-    @Getter(onMethod_ = @Override)
-    private int id;
 
-    private int propDepotId;
+	@Getter(onMethod_ = @Override)
+	private int id;
 
-    @SerializedName("propType")
-    private FightProperty fightProp;
+	private int propDepotId;
 
-    private int weight;
+	@SerializedName("propType")
+	private FightProperty fightProp;
+
+	private int weight;
 }

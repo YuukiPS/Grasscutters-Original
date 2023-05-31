@@ -19,103 +19,98 @@ import emu.grasscutter.game.Account;
 import org.reflections.Reflections;
 
 public final class DatabaseManager {
-    private static Datastore gameDatastore;
-    private static Datastore dispatchDatastore;
 
-    public static Datastore getGameDatastore() {
-        return gameDatastore;
-    }
+	private static Datastore gameDatastore;
+	private static Datastore dispatchDatastore;
 
-    public static Datastore getAccountDatastore() {
-        if (Grasscutter.getRunMode() == ServerRunMode.HYBRID) return gameDatastore;
-        else return dispatchDatastore;
-    }
+	public static Datastore getGameDatastore() {
+		return gameDatastore;
+	}
 
-    public static MongoDatabase getGameDatabase() {
-        return getGameDatastore().getDatabase();
-    }
+	public static Datastore getAccountDatastore() {
+		if (Grasscutter.getRunMode() == ServerRunMode.HYBRID) return gameDatastore; else return dispatchDatastore;
+	}
 
-    public static void initialize() {
-        // Initialize
-        MongoClient gameMongoClient = MongoClients.create(DATABASE.game.connectionUri);
+	public static MongoDatabase getGameDatabase() {
+		return getGameDatastore().getDatabase();
+	}
 
-        // Set mapper options.
-        MapperOptions mapperOptions =
-                MapperOptions.builder().storeEmpties(true).storeNulls(false).build();
+	public static void initialize() {
+		// Initialize
+		MongoClient gameMongoClient = MongoClients.create(DATABASE.game.connectionUri);
 
-        // Create data store.
-        gameDatastore =
-                Morphia.createDatastore(gameMongoClient, DATABASE.game.collection, mapperOptions);
+		// Set mapper options.
+		MapperOptions mapperOptions = MapperOptions.builder().storeEmpties(true).storeNulls(false).build();
 
-        // Map classes.
-        Class<?>[] entities =
-                new Reflections(Grasscutter.class.getPackageName())
-                        .getTypesAnnotatedWith(Entity.class).stream()
-                                .filter(
-                                        cls -> {
-                                            Entity e = cls.getAnnotation(Entity.class);
-                                            return e != null && !e.value().equals(Mapper.IGNORED_FIELDNAME);
-                                        })
-                                .toArray(Class<?>[]::new);
+		// Create data store.
+		gameDatastore = Morphia.createDatastore(gameMongoClient, DATABASE.game.collection, mapperOptions);
 
-        gameDatastore.getMapper().map(entities);
+		// Map classes.
+		Class<?>[] entities = new Reflections(Grasscutter.class.getPackageName())
+			.getTypesAnnotatedWith(Entity.class)
+			.stream()
+			.filter(cls -> {
+				Entity e = cls.getAnnotation(Entity.class);
+				return e != null && !e.value().equals(Mapper.IGNORED_FIELDNAME);
+			})
+			.toArray(Class<?>[]::new);
 
-        // Ensure indexes for the game datastore
-        ensureIndexes(gameDatastore);
+		gameDatastore.getMapper().map(entities);
 
-        if (Grasscutter.getRunMode() != ServerRunMode.HYBRID) {
-            MongoClient dispatchMongoClient = MongoClients.create(DATABASE.server.connectionUri);
+		// Ensure indexes for the game datastore
+		ensureIndexes(gameDatastore);
 
-            dispatchDatastore =
-                    Morphia.createDatastore(dispatchMongoClient, DATABASE.server.collection, mapperOptions);
-            dispatchDatastore.getMapper().map(new Class<?>[] {DatabaseCounter.class, Account.class});
+		if (Grasscutter.getRunMode() != ServerRunMode.HYBRID) {
+			MongoClient dispatchMongoClient = MongoClients.create(DATABASE.server.connectionUri);
 
-            // Ensure indexes for dispatch datastore
-            ensureIndexes(dispatchDatastore);
-        }
-    }
+			dispatchDatastore = Morphia.createDatastore(dispatchMongoClient, DATABASE.server.collection, mapperOptions);
+			dispatchDatastore.getMapper().map(new Class<?>[] { DatabaseCounter.class, Account.class });
 
-    /**
-     * Ensures the database indexes exist and rebuilds them if there is an error with them
-     *
-     * @param datastore The datastore to ensure indexes on
-     */
-    private static void ensureIndexes(Datastore datastore) {
-        try {
-            datastore.ensureIndexes();
-        } catch (MongoCommandException e) {
-            Grasscutter.getLogger().info("Mongo index error: ", e);
-            // Duplicate index error
-            if (e.getCode() == 85) {
-                // Drop all indexes and re add them
-                MongoIterable<String> collections = datastore.getDatabase().listCollectionNames();
-                for (String name : collections) {
-                    datastore.getDatabase().getCollection(name).dropIndexes();
-                }
-                // Add back indexes
-                datastore.ensureIndexes();
-            }
-        }
-    }
+			// Ensure indexes for dispatch datastore
+			ensureIndexes(dispatchDatastore);
+		}
+	}
 
-    public static synchronized int getNextId(Class<?> c) {
-        DatabaseCounter counter =
-                getGameDatastore()
-                        .find(DatabaseCounter.class)
-                        .filter(Filters.eq("_id", c.getSimpleName()))
-                        .first();
-        if (counter == null) {
-            counter = new DatabaseCounter(c.getSimpleName());
-        }
+	/**
+	 * Ensures the database indexes exist and rebuilds them if there is an error with them
+	 *
+	 * @param datastore The datastore to ensure indexes on
+	 */
+	private static void ensureIndexes(Datastore datastore) {
+		try {
+			datastore.ensureIndexes();
+		} catch (MongoCommandException e) {
+			Grasscutter.getLogger().info("Mongo index error: ", e);
+			// Duplicate index error
+			if (e.getCode() == 85) {
+				// Drop all indexes and re add them
+				MongoIterable<String> collections = datastore.getDatabase().listCollectionNames();
+				for (String name : collections) {
+					datastore.getDatabase().getCollection(name).dropIndexes();
+				}
+				// Add back indexes
+				datastore.ensureIndexes();
+			}
+		}
+	}
 
-        try {
-            return counter.getNextId();
-        } finally {
-            DatabaseHelper.saveGameAsync(counter);
-        }
-    }
+	public static synchronized int getNextId(Class<?> c) {
+		DatabaseCounter counter = getGameDatastore()
+			.find(DatabaseCounter.class)
+			.filter(Filters.eq("_id", c.getSimpleName()))
+			.first();
+		if (counter == null) {
+			counter = new DatabaseCounter(c.getSimpleName());
+		}
 
-    public static synchronized int getNextId(Object o) {
-        return getNextId(o.getClass());
-    }
+		try {
+			return counter.getNextId();
+		} finally {
+			DatabaseHelper.saveGameAsync(counter);
+		}
+	}
+
+	public static synchronized int getNextId(Object o) {
+		return getNextId(o.getClass());
+	}
 }

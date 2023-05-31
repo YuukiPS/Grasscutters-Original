@@ -6,20 +6,20 @@ import emu.grasscutter.net.packet.PacketOpcodes;
 import emu.grasscutter.net.proto.HomeAllUnlockedBgmIdListNotifyOuterClass;
 
 public class PacketHomeAllUnlockedBgmIdListNotify extends BasePacket {
-    public PacketHomeAllUnlockedBgmIdListNotify(Player player) {
-        super(PacketOpcodes.HomeAllUnlockedBgmIdListNotify);
 
-        if (player.getRealmList() == null) {
-            return;
-        }
+	public PacketHomeAllUnlockedBgmIdListNotify(Player player) {
+		super(PacketOpcodes.HomeAllUnlockedBgmIdListNotify);
+		if (player.getRealmList() == null) {
+			return;
+		}
 
-        var unlocked = player.getHome().getUnlockedHomeBgmList();
+		var unlocked = player.getHome().getUnlockedHomeBgmList();
 
-        var notify =
-                HomeAllUnlockedBgmIdListNotifyOuterClass.HomeAllUnlockedBgmIdListNotify.newBuilder()
-                        .addAllAllUnlockedBgmIdList(unlocked)
-                        .build();
+		var notify = HomeAllUnlockedBgmIdListNotifyOuterClass.HomeAllUnlockedBgmIdListNotify
+			.newBuilder()
+			.addAllAllUnlockedBgmIdList(unlocked)
+			.build();
 
-        this.setData(notify);
-    }
+		this.setData(notify);
+	}
 }

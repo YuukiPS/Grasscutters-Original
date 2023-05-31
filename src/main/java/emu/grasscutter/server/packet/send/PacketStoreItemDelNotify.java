@@ -9,29 +9,26 @@ import java.util.Collection;
 
 public class PacketStoreItemDelNotify extends BasePacket {
 
-    private PacketStoreItemDelNotify() {
-        super(PacketOpcodes.StoreItemDelNotify);
-    }
+	private PacketStoreItemDelNotify() {
+		super(PacketOpcodes.StoreItemDelNotify);
+	}
 
-    public PacketStoreItemDelNotify(GameItem item) {
-        this();
+	public PacketStoreItemDelNotify(GameItem item) {
+		this();
+		StoreItemDelNotify.Builder proto = StoreItemDelNotify
+			.newBuilder()
+			.setStoreType(StoreType.STORE_TYPE_PACK)
+			.addGuidList(item.getGuid());
 
-        StoreItemDelNotify.Builder proto =
-                StoreItemDelNotify.newBuilder()
-                        .setStoreType(StoreType.STORE_TYPE_PACK)
-                        .addGuidList(item.getGuid());
+		this.setData(proto);
+	}
 
-        this.setData(proto);
-    }
+	public PacketStoreItemDelNotify(Collection<GameItem> items) {
+		this();
+		StoreItemDelNotify.Builder proto = StoreItemDelNotify.newBuilder().setStoreType(StoreType.STORE_TYPE_PACK);
 
-    public PacketStoreItemDelNotify(Collection<GameItem> items) {
-        this();
+		items.stream().forEach(item -> proto.addGuidList(item.getGuid()));
 
-        StoreItemDelNotify.Builder proto =
-                StoreItemDelNotify.newBuilder().setStoreType(StoreType.STORE_TYPE_PACK);
-
-        items.stream().forEach(item -> proto.addGuidList(item.getGuid()));
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

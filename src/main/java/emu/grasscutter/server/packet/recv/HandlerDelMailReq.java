@@ -9,10 +9,10 @@ import emu.grasscutter.server.game.GameSession;
 @Opcodes(PacketOpcodes.DelMailReq)
 public class HandlerDelMailReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        DelMailReqOuterClass.DelMailReq req = DelMailReqOuterClass.DelMailReq.parseFrom(payload);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		DelMailReqOuterClass.DelMailReq req = DelMailReqOuterClass.DelMailReq.parseFrom(payload);
 
-        session.getPlayer().getMailHandler().deleteMail(req.getMailIdListList());
-    }
+		session.getPlayer().getMailHandler().deleteMail(req.getMailIdListList());
+	}
 }

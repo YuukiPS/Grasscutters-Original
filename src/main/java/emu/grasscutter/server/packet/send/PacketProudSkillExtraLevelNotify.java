@@ -7,17 +7,16 @@ import emu.grasscutter.net.proto.ProudSkillExtraLevelNotifyOuterClass.ProudSkill
 
 public class PacketProudSkillExtraLevelNotify extends BasePacket {
 
-    public PacketProudSkillExtraLevelNotify(Avatar avatar, int talentIndex) {
-        super(PacketOpcodes.ProudSkillExtraLevelNotify);
+	public PacketProudSkillExtraLevelNotify(Avatar avatar, int talentIndex) {
+		super(PacketOpcodes.ProudSkillExtraLevelNotify);
+		ProudSkillExtraLevelNotify proto = ProudSkillExtraLevelNotify
+			.newBuilder()
+			.setAvatarGuid(avatar.getGuid())
+			.setTalentType(3) // Talent type = 3
+			.setTalentIndex(talentIndex)
+			.setExtraLevel(3)
+			.build();
 
-        ProudSkillExtraLevelNotify proto =
-                ProudSkillExtraLevelNotify.newBuilder()
-                        .setAvatarGuid(avatar.getGuid())
-                        .setTalentType(3) // Talent type = 3
-                        .setTalentIndex(talentIndex)
-                        .setExtraLevel(3)
-                        .build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

@@ -7,20 +7,21 @@ import java.util.List;
 
 @ResourceType(name = "RewardExcelConfigData.json")
 public class RewardData extends GameResource {
-    public int rewardId;
-    public List<ItemParamData> rewardItemList;
 
-    @Override
-    public int getId() {
-        return rewardId;
-    }
+	public int rewardId;
+	public List<ItemParamData> rewardItemList;
 
-    public List<ItemParamData> getRewardItemList() {
-        return rewardItemList;
-    }
+	@Override
+	public int getId() {
+		return rewardId;
+	}
 
-    @Override
-    public void onLoad() {
-        rewardItemList = rewardItemList.stream().filter(i -> i.getId() > 0).toList();
-    }
+	public List<ItemParamData> getRewardItemList() {
+		return rewardItemList;
+	}
+
+	@Override
+	public void onLoad() {
+		rewardItemList = rewardItemList.stream().filter(i -> i.getId() > 0).toList();
+	}
 }

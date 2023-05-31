@@ -6,11 +6,10 @@ import emu.grasscutter.net.proto.SceneEntityDrownRspOuterClass.SceneEntityDrownR
 
 public class PacketSceneEntityDrownRsp extends BasePacket {
 
-    public PacketSceneEntityDrownRsp(int entityId) {
-        super(PacketOpcodes.SceneEntityDrownRsp);
+	public PacketSceneEntityDrownRsp(int entityId) {
+		super(PacketOpcodes.SceneEntityDrownRsp);
+		SceneEntityDrownRsp proto = SceneEntityDrownRsp.newBuilder().setEntityId(entityId).build();
 
-        SceneEntityDrownRsp proto = SceneEntityDrownRsp.newBuilder().setEntityId(entityId).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

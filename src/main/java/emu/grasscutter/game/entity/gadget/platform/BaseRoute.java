@@ -10,74 +10,89 @@ import lombok.Setter;
 import lombok.val;
 
 public abstract class BaseRoute {
-    @Getter @Setter private boolean isStarted;
-    @Getter @Setter private boolean isActive;
-    @Getter @Setter private Position startRot;
-    @Getter @Setter private int startSceneTime;
-    @Getter @Setter private int stopSceneTime;
 
-    BaseRoute(Position startRot, boolean isStarted, boolean isActive) {
-        this.startRot = startRot;
-        this.isStarted = isStarted;
-        this.isActive = isActive;
-    }
+	@Getter
+	@Setter
+	private boolean isStarted;
 
-    BaseRoute(SceneGadget gadget) {
-        this.startRot = gadget.rot;
-        this.isStarted = gadget.start_route;
-        this.isActive = gadget.start_route;
-    }
+	@Getter
+	@Setter
+	private boolean isActive;
 
-    public static BaseRoute fromSceneGadget(SceneGadget sceneGadget) {
-        if (sceneGadget.route_id != 0) {
-            return new ConfigRoute(sceneGadget);
-        } else if (sceneGadget.is_use_point_array) {
-            return new PointArrayRoute(sceneGadget);
-        }
-        return null;
-    }
+	@Getter
+	@Setter
+	private Position startRot;
 
-    public boolean startRoute(Scene scene) {
-        if (this.isStarted) {
-            return false;
-        }
-        this.isStarted = true;
-        this.isActive = true;
-        this.startSceneTime = scene.getSceneTime() + 300;
+	@Getter
+	@Setter
+	private int startSceneTime;
 
-        return true;
-    }
+	@Getter
+	@Setter
+	private int stopSceneTime;
 
-    public boolean stopRoute(Scene scene) {
-        if (!this.isStarted) {
-            return false;
-        }
-        this.isStarted = false;
-        this.isActive = false;
-        this.startSceneTime = scene.getSceneTime();
-        this.stopSceneTime = scene.getSceneTime();
+	BaseRoute(Position startRot, boolean isStarted, boolean isActive) {
+		this.startRot = startRot;
+		this.isStarted = isStarted;
+		this.isActive = isActive;
+	}
 
-        return true;
-    }
+	BaseRoute(SceneGadget gadget) {
+		this.startRot = gadget.rot;
+		this.isStarted = gadget.start_route;
+		this.isActive = gadget.start_route;
+	}
 
-    private MathQuaternion.Builder rotAsMathQuaternion() {
-        val result = MathQuaternion.newBuilder();
-        if (startRot != null) {
-            result.setX(startRot.getX()).setY(startRot.getY()).setZ(startRot.getZ());
-        }
-        return result;
-    }
+	public static BaseRoute fromSceneGadget(SceneGadget sceneGadget) {
+		if (sceneGadget.route_id != 0) {
+			return new ConfigRoute(sceneGadget);
+		} else if (sceneGadget.is_use_point_array) {
+			return new PointArrayRoute(sceneGadget);
+		}
+		return null;
+	}
 
-    public PlatformInfo.Builder toProto() {
-        val result =
-                PlatformInfo.newBuilder()
-                        .setIsStarted(isStarted)
-                        .setIsActive(isActive)
-                        .setStartRot(rotAsMathQuaternion())
-                        .setStartSceneTime(startSceneTime);
-        if (!isStarted) {
-            result.setStopSceneTime(stopSceneTime);
-        }
-        return result;
-    }
+	public boolean startRoute(Scene scene) {
+		if (this.isStarted) {
+			return false;
+		}
+		this.isStarted = true;
+		this.isActive = true;
+		this.startSceneTime = scene.getSceneTime() + 300;
+
+		return true;
+	}
+
+	public boolean stopRoute(Scene scene) {
+		if (!this.isStarted) {
+			return false;
+		}
+		this.isStarted = false;
+		this.isActive = false;
+		this.startSceneTime = scene.getSceneTime();
+		this.stopSceneTime = scene.getSceneTime();
+
+		return true;
+	}
+
+	private MathQuaternion.Builder rotAsMathQuaternion() {
+		val result = MathQuaternion.newBuilder();
+		if (startRot != null) {
+			result.setX(startRot.getX()).setY(startRot.getY()).setZ(startRot.getZ());
+		}
+		return result;
+	}
+
+	public PlatformInfo.Builder toProto() {
+		val result = PlatformInfo
+			.newBuilder()
+			.setIsStarted(isStarted)
+			.setIsActive(isActive)
+			.setStartRot(rotAsMathQuaternion())
+			.setStartSceneTime(startSceneTime);
+		if (!isStarted) {
+			result.setStopSceneTime(stopSceneTime);
+		}
+		return result;
+	}
 }

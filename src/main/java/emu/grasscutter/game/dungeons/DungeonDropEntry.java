@@ -3,49 +3,50 @@ package emu.grasscutter.game.dungeons;
 import java.util.List;
 
 public class DungeonDropEntry {
-    private List<Integer> counts;
-    private List<Integer> items;
-    private List<Integer> probabilities;
-    private List<Integer> itemProbabilities;
-    private boolean mpDouble;
 
-    public List<Integer> getCounts() {
-        return counts;
-    }
+	private List<Integer> counts;
+	private List<Integer> items;
+	private List<Integer> probabilities;
+	private List<Integer> itemProbabilities;
+	private boolean mpDouble;
 
-    public void setCounts(List<Integer> counts) {
-        this.counts = counts;
-    }
+	public List<Integer> getCounts() {
+		return counts;
+	}
 
-    public List<Integer> getItems() {
-        return items;
-    }
+	public void setCounts(List<Integer> counts) {
+		this.counts = counts;
+	}
 
-    public void setItems(List<Integer> items) {
-        this.items = items;
-    }
+	public List<Integer> getItems() {
+		return items;
+	}
 
-    public List<Integer> getProbabilities() {
-        return probabilities;
-    }
+	public void setItems(List<Integer> items) {
+		this.items = items;
+	}
 
-    public void setProbabilities(List<Integer> probabilities) {
-        this.probabilities = probabilities;
-    }
+	public List<Integer> getProbabilities() {
+		return probabilities;
+	}
 
-    public List<Integer> getItemProbabilities() {
-        return itemProbabilities;
-    }
+	public void setProbabilities(List<Integer> probabilities) {
+		this.probabilities = probabilities;
+	}
 
-    public void setItemProbabilities(List<Integer> itemProbabilities) {
-        this.itemProbabilities = itemProbabilities;
-    }
+	public List<Integer> getItemProbabilities() {
+		return itemProbabilities;
+	}
 
-    public boolean isMpDouble() {
-        return mpDouble;
-    }
+	public void setItemProbabilities(List<Integer> itemProbabilities) {
+		this.itemProbabilities = itemProbabilities;
+	}
 
-    public void setMpDouble(boolean mpDouble) {
-        this.mpDouble = mpDouble;
-    }
+	public boolean isMpDouble() {
+		return mpDouble;
+	}
+
+	public void setMpDouble(boolean mpDouble) {
+		this.mpDouble = mpDouble;
+	}
 }

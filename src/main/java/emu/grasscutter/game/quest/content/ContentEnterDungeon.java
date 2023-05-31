@@ -9,9 +9,8 @@ import emu.grasscutter.game.quest.QuestValueContent;
 @QuestValueContent(QUEST_CONTENT_ENTER_DUNGEON)
 public class ContentEnterDungeon extends BaseContent {
 
-    @Override
-    public boolean execute(
-            GameQuest quest, QuestData.QuestContentCondition condition, String paramStr, int... params) {
-        return condition.getParam()[0] == params[0]; // missing params[1]
-    }
+	@Override
+	public boolean execute(GameQuest quest, QuestData.QuestContentCondition condition, String paramStr, int... params) {
+		return condition.getParam()[0] == params[0]; // missing params[1]
+	}
 }

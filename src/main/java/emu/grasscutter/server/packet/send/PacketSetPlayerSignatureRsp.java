@@ -7,12 +7,10 @@ import emu.grasscutter.net.proto.SetPlayerSignatureRspOuterClass.SetPlayerSignat
 
 public class PacketSetPlayerSignatureRsp extends BasePacket {
 
-    public PacketSetPlayerSignatureRsp(Player player) {
-        super(PacketOpcodes.SetPlayerSignatureRsp);
+	public PacketSetPlayerSignatureRsp(Player player) {
+		super(PacketOpcodes.SetPlayerSignatureRsp);
+		SetPlayerSignatureRsp proto = SetPlayerSignatureRsp.newBuilder().setSignature(player.getSignature()).build();
 
-        SetPlayerSignatureRsp proto =
-                SetPlayerSignatureRsp.newBuilder().setSignature(player.getSignature()).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

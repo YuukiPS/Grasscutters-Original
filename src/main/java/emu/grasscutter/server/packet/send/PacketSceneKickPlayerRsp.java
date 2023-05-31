@@ -7,22 +7,20 @@ import emu.grasscutter.net.proto.SceneKickPlayerRspOuterClass.SceneKickPlayerRsp
 
 public class PacketSceneKickPlayerRsp extends BasePacket {
 
-    public PacketSceneKickPlayerRsp(int targetUid) {
-        super(PacketOpcodes.SceneKickPlayerRsp);
+	public PacketSceneKickPlayerRsp(int targetUid) {
+		super(PacketOpcodes.SceneKickPlayerRsp);
+		SceneKickPlayerRsp proto = SceneKickPlayerRsp.newBuilder().setTargetUid(targetUid).build();
 
-        SceneKickPlayerRsp proto = SceneKickPlayerRsp.newBuilder().setTargetUid(targetUid).build();
+		this.setData(proto);
+	}
 
-        this.setData(proto);
-    }
+	public PacketSceneKickPlayerRsp() {
+		super(PacketOpcodes.SceneKickPlayerRsp);
+		SceneKickPlayerRsp proto = SceneKickPlayerRsp
+			.newBuilder()
+			.setRetcode(RetcodeOuterClass.Retcode.RET_SVR_ERROR_VALUE)
+			.build();
 
-    public PacketSceneKickPlayerRsp() {
-        super(PacketOpcodes.SceneKickPlayerRsp);
-
-        SceneKickPlayerRsp proto =
-                SceneKickPlayerRsp.newBuilder()
-                        .setRetcode(RetcodeOuterClass.Retcode.RET_SVR_ERROR_VALUE)
-                        .build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

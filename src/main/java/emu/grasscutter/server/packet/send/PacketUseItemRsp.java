@@ -8,25 +8,22 @@ import emu.grasscutter.net.proto.UseItemRspOuterClass.UseItemRsp;
 
 public class PacketUseItemRsp extends BasePacket {
 
-    public PacketUseItemRsp(long targetGuid, GameItem useItem) {
-        super(PacketOpcodes.UseItemRsp);
+	public PacketUseItemRsp(long targetGuid, GameItem useItem) {
+		super(PacketOpcodes.UseItemRsp);
+		UseItemRsp proto = UseItemRsp
+			.newBuilder()
+			.setTargetGuid(targetGuid)
+			.setItemId(useItem.getItemId())
+			.setGuid(useItem.getGuid())
+			.build();
 
-        UseItemRsp proto =
-                UseItemRsp.newBuilder()
-                        .setTargetGuid(targetGuid)
-                        .setItemId(useItem.getItemId())
-                        .setGuid(useItem.getGuid())
-                        .build();
+		this.setData(proto);
+	}
 
-        this.setData(proto);
-    }
+	public PacketUseItemRsp() {
+		super(PacketOpcodes.UseItemRsp);
+		UseItemRsp proto = UseItemRsp.newBuilder().setRetcode(RetcodeOuterClass.Retcode.RET_SVR_ERROR_VALUE).build();
 
-    public PacketUseItemRsp() {
-        super(PacketOpcodes.UseItemRsp);
-
-        UseItemRsp proto =
-                UseItemRsp.newBuilder().setRetcode(RetcodeOuterClass.Retcode.RET_SVR_ERROR_VALUE).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

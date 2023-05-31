@@ -11,56 +11,56 @@ import it.unimi.dsi.fastutil.ints.Int2FloatMap;
 import lombok.Getter;
 
 public class EntityWorld extends GameEntity {
-    @Getter private World world;
 
-    public EntityWorld(World world) {
-        super(null);
+	@Getter
+	private World world;
 
-        this.world = world;
-        this.id = world.getNextEntityId(EntityIdType.MPLEVEL);
+	public EntityWorld(World world) {
+		super(null);
+		this.world = world;
+		this.id = world.getNextEntityId(EntityIdType.MPLEVEL);
 
-        this.initAbilities();
-    }
+		this.initAbilities();
+	}
 
-    @Override
-    public Scene getScene() {
-        return this.world.getHost().getScene();
-    }
+	@Override
+	public Scene getScene() {
+		return this.world.getHost().getScene();
+	}
 
-    @Override
-    public void initAbilities() {
-        // Load abilities from levelElementAbilities
-        for (var ability :
-                GameData.getConfigGlobalCombat().getDefaultAbilities().getDefaultMPLevelAbilities()) {
-            var data = GameData.getAbilityData(ability);
-            if (data != null) world.getHost().getAbilityManager().addAbilityToEntity(this, data);
-        }
-    }
+	@Override
+	public void initAbilities() {
+		// Load abilities from levelElementAbilities
+		for (var ability : GameData.getConfigGlobalCombat().getDefaultAbilities().getDefaultMPLevelAbilities()) {
+			var data = GameData.getAbilityData(ability);
+			if (data != null) world.getHost().getAbilityManager().addAbilityToEntity(this, data);
+		}
+	}
 
-    @Override
-    public int getEntityTypeId() {
-        return EntityIdType.TEAM.getId();
-    }
+	@Override
+	public int getEntityTypeId() {
+		return EntityIdType.TEAM.getId();
+	}
 
-    @Override
-    public Int2FloatMap getFightProperties() {
-        // TODO
-        return new Int2FloatArrayMap();
-    }
+	@Override
+	public Int2FloatMap getFightProperties() {
+		// TODO
+		return new Int2FloatArrayMap();
+	}
 
-    @Override
-    public Position getPosition() {
-        // TODO Auto-generated method stub
-        return new Position(0, 0, 0);
-    }
+	@Override
+	public Position getPosition() {
+		// TODO Auto-generated method stub
+		return new Position(0, 0, 0);
+	}
 
-    @Override
-    public Position getRotation() {
-        return new Position(0, 0, 0);
-    }
+	@Override
+	public Position getRotation() {
+		return new Position(0, 0, 0);
+	}
 
-    @Override
-    public SceneEntityInfo toProto() {
-        return null;
-    }
+	@Override
+	public SceneEntityInfo toProto() {
+		return null;
+	}
 }

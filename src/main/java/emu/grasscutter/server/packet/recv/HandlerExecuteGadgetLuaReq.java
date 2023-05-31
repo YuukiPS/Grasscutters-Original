@@ -13,17 +13,17 @@ import emu.grasscutter.server.packet.send.PacketExecuteGadgetLuaRsp;
 @Opcodes(PacketOpcodes.ExecuteGadgetLuaReq)
 public class HandlerExecuteGadgetLuaReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        ExecuteGadgetLuaReq req = ExecuteGadgetLuaReq.parseFrom(payload);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		ExecuteGadgetLuaReq req = ExecuteGadgetLuaReq.parseFrom(payload);
 
-        Player player = session.getPlayer();
-        GameEntity entity = player.getScene().getEntities().get(req.getSourceEntityId());
+		Player player = session.getPlayer();
+		GameEntity entity = player.getScene().getEntities().get(req.getSourceEntityId());
 
-        int result = 1;
-        if (entity instanceof EntityGadget gadget)
-            result = gadget.onClientExecuteRequest(req.getParam1(), req.getParam2(), req.getParam3());
+		int result = 1;
+		if (entity instanceof EntityGadget gadget) result =
+			gadget.onClientExecuteRequest(req.getParam1(), req.getParam2(), req.getParam3());
 
-        player.sendPacket(new PacketExecuteGadgetLuaRsp(result));
-    }
+		player.sendPacket(new PacketExecuteGadgetLuaRsp(result));
+	}
 }

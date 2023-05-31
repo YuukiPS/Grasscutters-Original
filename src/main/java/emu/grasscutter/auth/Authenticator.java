@@ -10,13 +10,12 @@ import emu.grasscutter.server.http.objects.LoginResultJson;
  *     ComboTokenResJson}
  */
 public interface Authenticator<T> {
-
-    /**
-     * Attempt to authenticate the client with the provided credentials.
-     *
-     * @param request The authentication request wrapped in a {@link
-     *     AuthenticationSystem.AuthenticationRequest} object.
-     * @return The result of the login in an object.
-     */
-    T authenticate(AuthenticationSystem.AuthenticationRequest request);
+	/**
+	 * Attempt to authenticate the client with the provided credentials.
+	 *
+	 * @param request The authentication request wrapped in a {@link
+	 *     AuthenticationSystem.AuthenticationRequest} object.
+	 * @return The result of the login in an object.
+	 */
+	T authenticate(AuthenticationSystem.AuthenticationRequest request);
 }

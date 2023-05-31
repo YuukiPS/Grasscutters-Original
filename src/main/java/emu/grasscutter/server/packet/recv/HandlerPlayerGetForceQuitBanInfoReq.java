@@ -10,17 +10,14 @@ import emu.grasscutter.server.packet.send.PacketPlayerGetForceQuitBanInfoRsp;
 @Opcodes(PacketOpcodes.PlayerGetForceQuitBanInfoReq)
 public class HandlerPlayerGetForceQuitBanInfoReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-
-        if (session.getServer().getMultiplayerSystem().leaveCoop(session.getPlayer())) {
-            // Success
-            session.send(
-                    new PacketPlayerGetForceQuitBanInfoRsp(RetcodeOuterClass.Retcode.RET_SUCC_VALUE));
-        } else {
-            // Fail
-            session.send(
-                    new PacketPlayerGetForceQuitBanInfoRsp(RetcodeOuterClass.Retcode.RET_SVR_ERROR_VALUE));
-        }
-    }
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		if (session.getServer().getMultiplayerSystem().leaveCoop(session.getPlayer())) {
+			// Success
+			session.send(new PacketPlayerGetForceQuitBanInfoRsp(RetcodeOuterClass.Retcode.RET_SUCC_VALUE));
+		} else {
+			// Fail
+			session.send(new PacketPlayerGetForceQuitBanInfoRsp(RetcodeOuterClass.Retcode.RET_SVR_ERROR_VALUE));
+		}
+	}
 }

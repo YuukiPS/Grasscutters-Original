@@ -8,8 +8,8 @@ import emu.grasscutter.server.game.GameSession;
 @Opcodes(PacketOpcodes.EvtAiSyncCombatThreatInfoNotify)
 public class HandlerEvtAiSyncCombatThreatInfoNotify extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        // Auto template
-    }
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		// Auto template
+	}
 }

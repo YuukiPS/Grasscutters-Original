@@ -33,99 +33,107 @@ import lombok.Setter;
 
 public class EntityVehicle extends EntityBaseGadget {
 
-    @Getter private final Player owner;
+	@Getter
+	private final Player owner;
 
-    @Getter(onMethod_ = @Override)
-    private final Int2FloatMap fightProperties;
+	@Getter(onMethod_ = @Override)
+	private final Int2FloatMap fightProperties;
 
-    @Getter private final int pointId;
-    @Getter private final int gadgetId;
+	@Getter
+	private final int pointId;
 
-    @Getter @Setter private float curStamina;
-    @Getter private List<VehicleMember> vehicleMembers;
-    @Nullable @Getter private ConfigEntityGadget configGadget;
+	@Getter
+	private final int gadgetId;
 
-    public EntityVehicle(
-            Scene scene, Player player, int gadgetId, int pointId, Position pos, Position rot) {
-        super(scene, pos, rot);
-        this.owner = player;
-        this.id = getScene().getWorld().getNextEntityId(EntityIdType.GADGET);
-        this.fightProperties = new Int2FloatOpenHashMap();
-        this.gadgetId = gadgetId;
-        this.pointId = pointId;
-        this.curStamina = 240; // might be in configGadget.GCALKECLLLP.JBAKBEFIMBN.ANBMPHPOALP
-        this.vehicleMembers = new ArrayList<>();
-        GadgetData data = GameData.getGadgetDataMap().get(gadgetId);
-        if (data != null && data.getJsonName() != null) {
-            this.configGadget = GameData.getGadgetConfigData().get(data.getJsonName());
-        }
+	@Getter
+	@Setter
+	private float curStamina;
 
-        fillFightProps(configGadget);
-    }
+	@Getter
+	private List<VehicleMember> vehicleMembers;
 
-    @Override
-    protected void fillFightProps(ConfigEntityGadget configGadget) {
-        super.fillFightProps(configGadget);
-        this.addFightProperty(FightProperty.FIGHT_PROP_CUR_SPEED, 0);
-        this.addFightProperty(FightProperty.FIGHT_PROP_CHARGE_EFFICIENCY, 0);
-    }
+	@Nullable
+	@Getter
+	private ConfigEntityGadget configGadget;
 
-    @Override
-    public SceneEntityInfo toProto() {
+	public EntityVehicle(Scene scene, Player player, int gadgetId, int pointId, Position pos, Position rot) {
+		super(scene, pos, rot);
+		this.owner = player;
+		this.id = getScene().getWorld().getNextEntityId(EntityIdType.GADGET);
+		this.fightProperties = new Int2FloatOpenHashMap();
+		this.gadgetId = gadgetId;
+		this.pointId = pointId;
+		this.curStamina = 240; // might be in configGadget.GCALKECLLLP.JBAKBEFIMBN.ANBMPHPOALP
+		this.vehicleMembers = new ArrayList<>();
+		GadgetData data = GameData.getGadgetDataMap().get(gadgetId);
+		if (data != null && data.getJsonName() != null) {
+			this.configGadget = GameData.getGadgetConfigData().get(data.getJsonName());
+		}
 
-        VehicleInfo vehicle =
-                VehicleInfo.newBuilder()
-                        .setOwnerUid(this.owner.getUid())
-                        .setCurStamina(getCurStamina())
-                        .build();
+		fillFightProps(configGadget);
+	}
 
-        EntityAuthorityInfo authority =
-                EntityAuthorityInfo.newBuilder()
-                        .setAbilityInfo(AbilitySyncStateInfo.newBuilder())
-                        .setRendererChangedInfo(EntityRendererChangedInfo.newBuilder())
-                        .setAiInfo(
-                                SceneEntityAiInfo.newBuilder()
-                                        .setIsAiOpen(true)
-                                        .setBornPos(getPosition().toProto()))
-                        .setBornPos(getPosition().toProto())
-                        .build();
+	@Override
+	protected void fillFightProps(ConfigEntityGadget configGadget) {
+		super.fillFightProps(configGadget);
+		this.addFightProperty(FightProperty.FIGHT_PROP_CUR_SPEED, 0);
+		this.addFightProperty(FightProperty.FIGHT_PROP_CHARGE_EFFICIENCY, 0);
+	}
 
-        SceneGadgetInfo.Builder gadgetInfo =
-                SceneGadgetInfo.newBuilder()
-                        .setGadgetId(this.getGadgetId())
-                        .setAuthorityPeerId(this.getOwner().getPeerId())
-                        .setIsEnableInteract(true)
-                        .setVehicleInfo(vehicle);
+	@Override
+	public SceneEntityInfo toProto() {
+		VehicleInfo vehicle = VehicleInfo
+			.newBuilder()
+			.setOwnerUid(this.owner.getUid())
+			.setCurStamina(getCurStamina())
+			.build();
 
-        SceneEntityInfo.Builder entityInfo =
-                SceneEntityInfo.newBuilder()
-                        .setEntityId(getId())
-                        .setEntityType(ProtEntityType.PROT_ENTITY_TYPE_GADGET)
-                        .setMotionInfo(
-                                MotionInfo.newBuilder()
-                                        .setPos(getPosition().toProto())
-                                        .setRot(getRotation().toProto())
-                                        .setSpeed(Vector.newBuilder()))
-                        .addAnimatorParaList(AnimatorParameterValueInfoPair.newBuilder())
-                        .setGadget(gadgetInfo)
-                        .setEntityAuthorityInfo(authority)
-                        .setLifeState(1);
+		EntityAuthorityInfo authority = EntityAuthorityInfo
+			.newBuilder()
+			.setAbilityInfo(AbilitySyncStateInfo.newBuilder())
+			.setRendererChangedInfo(EntityRendererChangedInfo.newBuilder())
+			.setAiInfo(SceneEntityAiInfo.newBuilder().setIsAiOpen(true).setBornPos(getPosition().toProto()))
+			.setBornPos(getPosition().toProto())
+			.build();
 
-        PropPair pair =
-                PropPair.newBuilder()
-                        .setType(PlayerProperty.PROP_LEVEL.getId())
-                        .setPropValue(ProtoHelper.newPropValue(PlayerProperty.PROP_LEVEL, 47))
-                        .build();
+		SceneGadgetInfo.Builder gadgetInfo = SceneGadgetInfo
+			.newBuilder()
+			.setGadgetId(this.getGadgetId())
+			.setAuthorityPeerId(this.getOwner().getPeerId())
+			.setIsEnableInteract(true)
+			.setVehicleInfo(vehicle);
 
-        this.addAllFightPropsToEntityInfo(entityInfo);
-        entityInfo.addPropList(pair);
+		SceneEntityInfo.Builder entityInfo = SceneEntityInfo
+			.newBuilder()
+			.setEntityId(getId())
+			.setEntityType(ProtEntityType.PROT_ENTITY_TYPE_GADGET)
+			.setMotionInfo(
+				MotionInfo
+					.newBuilder()
+					.setPos(getPosition().toProto())
+					.setRot(getRotation().toProto())
+					.setSpeed(Vector.newBuilder())
+			)
+			.addAnimatorParaList(AnimatorParameterValueInfoPair.newBuilder())
+			.setGadget(gadgetInfo)
+			.setEntityAuthorityInfo(authority)
+			.setLifeState(1);
 
-        return entityInfo.build();
-    }
+		PropPair pair = PropPair
+			.newBuilder()
+			.setType(PlayerProperty.PROP_LEVEL.getId())
+			.setPropValue(ProtoHelper.newPropValue(PlayerProperty.PROP_LEVEL, 47))
+			.build();
 
-    @Override
-    public void initAbilities() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'initAbilities'");
-    }
+		this.addAllFightPropsToEntityInfo(entityInfo);
+		entityInfo.addPropList(pair);
+
+		return entityInfo.build();
+	}
+
+	@Override
+	public void initAbilities() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'initAbilities'");
+	}
 }

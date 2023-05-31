@@ -8,9 +8,10 @@ import emu.grasscutter.server.game.GameSession;
 
 @Opcodes(PacketOpcodes.TakeAchievementRewardReq)
 public class HandlerTakeAchievementRewardReq extends PacketHandler {
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        var req = TakeAchievementRewardReqOuterClass.TakeAchievementRewardReq.parseFrom(payload);
-        session.getPlayer().getAchievements().takeReward(req.getIdListList());
-    }
+
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		var req = TakeAchievementRewardReqOuterClass.TakeAchievementRewardReq.parseFrom(payload);
+		session.getPlayer().getAchievements().takeReward(req.getIdListList());
+	}
 }

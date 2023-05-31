@@ -6,12 +6,13 @@ import emu.grasscutter.net.proto.SetWidgetSlotRspOuterClass;
 
 public class PacketSetWidgetSlotRsp extends BasePacket {
 
-    public PacketSetWidgetSlotRsp(int materialId) {
-        super(PacketOpcodes.SetWidgetSlotRsp);
+	public PacketSetWidgetSlotRsp(int materialId) {
+		super(PacketOpcodes.SetWidgetSlotRsp);
+		SetWidgetSlotRspOuterClass.SetWidgetSlotRsp proto = SetWidgetSlotRspOuterClass.SetWidgetSlotRsp
+			.newBuilder()
+			.setMaterialId(materialId)
+			.build();
 
-        SetWidgetSlotRspOuterClass.SetWidgetSlotRsp proto =
-                SetWidgetSlotRspOuterClass.SetWidgetSlotRsp.newBuilder().setMaterialId(materialId).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

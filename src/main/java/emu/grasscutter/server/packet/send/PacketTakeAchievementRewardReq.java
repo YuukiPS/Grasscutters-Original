@@ -7,11 +7,10 @@ import emu.grasscutter.server.game.GameSession;
 
 public class PacketTakeAchievementRewardReq extends BasePacket {
 
-    public PacketTakeAchievementRewardReq(GameSession session) {
-        super(PacketOpcodes.TakeAchievementRewardReq);
+	public PacketTakeAchievementRewardReq(GameSession session) {
+		super(PacketOpcodes.TakeAchievementRewardReq);
+		TakeAchievementRewardReq proto = TakeAchievementRewardReq.newBuilder().build();
 
-        TakeAchievementRewardReq proto = TakeAchievementRewardReq.newBuilder().build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

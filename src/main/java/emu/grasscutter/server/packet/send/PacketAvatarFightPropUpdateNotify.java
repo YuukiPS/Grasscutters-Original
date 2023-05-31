@@ -9,27 +9,25 @@ import java.util.Map;
 
 public class PacketAvatarFightPropUpdateNotify extends BasePacket {
 
-    public PacketAvatarFightPropUpdateNotify(Avatar avatar, FightProperty prop) {
-        super(PacketOpcodes.AvatarFightPropUpdateNotify);
+	public PacketAvatarFightPropUpdateNotify(Avatar avatar, FightProperty prop) {
+		super(PacketOpcodes.AvatarFightPropUpdateNotify);
+		AvatarFightPropUpdateNotify proto = AvatarFightPropUpdateNotify
+			.newBuilder()
+			.setAvatarGuid(avatar.getGuid())
+			.putFightPropMap(prop.getId(), avatar.getFightProperty(prop))
+			.build();
 
-        AvatarFightPropUpdateNotify proto =
-                AvatarFightPropUpdateNotify.newBuilder()
-                        .setAvatarGuid(avatar.getGuid())
-                        .putFightPropMap(prop.getId(), avatar.getFightProperty(prop))
-                        .build();
+		this.setData(proto);
+	}
 
-        this.setData(proto);
-    }
+	public PacketAvatarFightPropUpdateNotify(Avatar avatar, Map<Integer, Float> propUpdateList) {
+		super(PacketOpcodes.AvatarFightPropUpdateNotify);
+		AvatarFightPropUpdateNotify proto = AvatarFightPropUpdateNotify
+			.newBuilder()
+			.setAvatarGuid(avatar.getGuid())
+			.putAllFightPropMap(propUpdateList)
+			.build();
 
-    public PacketAvatarFightPropUpdateNotify(Avatar avatar, Map<Integer, Float> propUpdateList) {
-        super(PacketOpcodes.AvatarFightPropUpdateNotify);
-
-        AvatarFightPropUpdateNotify proto =
-                AvatarFightPropUpdateNotify.newBuilder()
-                        .setAvatarGuid(avatar.getGuid())
-                        .putAllFightPropMap(propUpdateList)
-                        .build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

@@ -4,40 +4,41 @@ import dev.morphia.annotations.Entity;
 
 @Entity
 public class ShopLimit {
-    private int shopGoodId;
-    private int hasBought;
-    private int hasBoughtInPeriod = 0;
-    private int nextRefreshTime = 0;
 
-    public int getShopGoodId() {
-        return shopGoodId;
-    }
+	private int shopGoodId;
+	private int hasBought;
+	private int hasBoughtInPeriod = 0;
+	private int nextRefreshTime = 0;
 
-    public void setShopGoodId(int shopGoodId) {
-        this.shopGoodId = shopGoodId;
-    }
+	public int getShopGoodId() {
+		return shopGoodId;
+	}
 
-    public int getHasBought() {
-        return hasBought;
-    }
+	public void setShopGoodId(int shopGoodId) {
+		this.shopGoodId = shopGoodId;
+	}
 
-    public void setHasBought(int hasBought) {
-        this.hasBought = hasBought;
-    }
+	public int getHasBought() {
+		return hasBought;
+	}
 
-    public int getNextRefreshTime() {
-        return nextRefreshTime;
-    }
+	public void setHasBought(int hasBought) {
+		this.hasBought = hasBought;
+	}
 
-    public void setNextRefreshTime(int nextRefreshTime) {
-        this.nextRefreshTime = nextRefreshTime;
-    }
+	public int getNextRefreshTime() {
+		return nextRefreshTime;
+	}
 
-    public int getHasBoughtInPeriod() {
-        return hasBoughtInPeriod;
-    }
+	public void setNextRefreshTime(int nextRefreshTime) {
+		this.nextRefreshTime = nextRefreshTime;
+	}
 
-    public void setHasBoughtInPeriod(int hasBoughtInPeriod) {
-        this.hasBoughtInPeriod = hasBoughtInPeriod;
-    }
+	public int getHasBoughtInPeriod() {
+		return hasBoughtInPeriod;
+	}
+
+	public void setHasBoughtInPeriod(int hasBoughtInPeriod) {
+		this.hasBoughtInPeriod = hasBoughtInPeriod;
+	}
 }

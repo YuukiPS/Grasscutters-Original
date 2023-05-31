@@ -27,125 +27,137 @@ import it.unimi.dsi.fastutil.ints.Int2FloatMap;
 import lombok.Getter;
 
 public class EntityClientGadget extends EntityBaseGadget {
-    @Getter private final Player owner;
 
-    @Getter(onMethod_ = @Override)
-    private int gadgetId;
+	@Getter
+	private final Player owner;
 
-    @Getter private int ownerEntityId;
-    @Getter private int targetEntityId;
-    @Getter private boolean asyncLoad;
+	@Getter(onMethod_ = @Override)
+	private int gadgetId;
 
-    @Getter private int originalOwnerEntityId;
+	@Getter
+	private int ownerEntityId;
 
-    @Getter private final GadgetData gadgetData;
-    private ConfigEntityGadget configGadget;
+	@Getter
+	private int targetEntityId;
 
-    public EntityClientGadget(Scene scene, Player player, EvtCreateGadgetNotify notify) {
-        super(
-                scene,
-                new Position(notify.getInitPos()),
-                new Position(notify.getInitEulerAngles()),
-                notify.getCampId(),
-                notify.getCampType());
-        this.owner = player;
-        this.id = notify.getEntityId();
-        this.gadgetId = notify.getConfigId();
-        this.ownerEntityId = notify.getPropOwnerEntityId();
-        this.targetEntityId = notify.getTargetEntityId();
-        this.asyncLoad = notify.getIsAsyncLoad();
+	@Getter
+	private boolean asyncLoad;
 
-        this.gadgetData = GameData.getGadgetDataMap().get(gadgetId);
-        if (gadgetData != null && gadgetData.getJsonName() != null) {
-            this.configGadget = GameData.getGadgetConfigData().get(gadgetData.getJsonName());
-        }
+	@Getter
+	private int originalOwnerEntityId;
 
-        GameEntity owner = scene.getEntityById(this.ownerEntityId);
-        if (owner instanceof EntityClientGadget ownerGadget) {
-            this.originalOwnerEntityId = ownerGadget.getOriginalOwnerEntityId();
-        } else {
-            this.originalOwnerEntityId = this.ownerEntityId;
-        }
+	@Getter
+	private final GadgetData gadgetData;
 
-        this.initAbilities();
-    }
+	private ConfigEntityGadget configGadget;
 
-    @Override
-    public void initAbilities() {
-        if (this.configGadget != null && this.configGadget.getAbilities() != null) {
-            for (var ability : this.configGadget.getAbilities()) {
-                addConfigAbility(ability);
-            }
-        }
-    }
+	public EntityClientGadget(Scene scene, Player player, EvtCreateGadgetNotify notify) {
+		super(
+			scene,
+			new Position(notify.getInitPos()),
+			new Position(notify.getInitEulerAngles()),
+			notify.getCampId(),
+			notify.getCampType()
+		);
+		this.owner = player;
+		this.id = notify.getEntityId();
+		this.gadgetId = notify.getConfigId();
+		this.ownerEntityId = notify.getPropOwnerEntityId();
+		this.targetEntityId = notify.getTargetEntityId();
+		this.asyncLoad = notify.getIsAsyncLoad();
 
-    private void addConfigAbility(ConfigAbilityData abilityData) {
-        var data = GameData.getAbilityData(abilityData.getAbilityName());
-        if (data != null) owner.getAbilityManager().addAbilityToEntity(this, data);
-    }
+		this.gadgetData = GameData.getGadgetDataMap().get(gadgetId);
+		if (gadgetData != null && gadgetData.getJsonName() != null) {
+			this.configGadget = GameData.getGadgetConfigData().get(gadgetData.getJsonName());
+		}
 
-    @Override
-    public void onDeath(int killerId) {
-        super.onDeath(killerId); // Invoke super class's onDeath() method.
-    }
+		GameEntity owner = scene.getEntityById(this.ownerEntityId);
+		if (owner instanceof EntityClientGadget ownerGadget) {
+			this.originalOwnerEntityId = ownerGadget.getOriginalOwnerEntityId();
+		} else {
+			this.originalOwnerEntityId = this.ownerEntityId;
+		}
 
-    @Override
-    public Int2FloatMap getFightProperties() {
-        return null;
-    }
+		this.initAbilities();
+	}
 
-    @Override
-    public SceneEntityInfo toProto() {
-        EntityAuthorityInfo authority =
-                EntityAuthorityInfo.newBuilder()
-                        .setAbilityInfo(AbilitySyncStateInfo.newBuilder())
-                        .setRendererChangedInfo(EntityRendererChangedInfo.newBuilder())
-                        .setAiInfo(
-                                SceneEntityAiInfo.newBuilder().setIsAiOpen(true).setBornPos(Vector.newBuilder()))
-                        .setBornPos(Vector.newBuilder())
-                        .build();
+	@Override
+	public void initAbilities() {
+		if (this.configGadget != null && this.configGadget.getAbilities() != null) {
+			for (var ability : this.configGadget.getAbilities()) {
+				addConfigAbility(ability);
+			}
+		}
+	}
 
-        SceneEntityInfo.Builder entityInfo =
-                SceneEntityInfo.newBuilder()
-                        .setEntityId(getId())
-                        .setEntityType(ProtEntityType.PROT_ENTITY_TYPE_GADGET)
-                        .setMotionInfo(
-                                MotionInfo.newBuilder()
-                                        .setPos(getPosition().toProto())
-                                        .setRot(getRotation().toProto())
-                                        .setSpeed(Vector.newBuilder()))
-                        .addAnimatorParaList(AnimatorParameterValueInfoPair.newBuilder())
-                        .setEntityClientData(EntityClientData.newBuilder())
-                        .setEntityAuthorityInfo(authority)
-                        .setLifeState(1);
+	private void addConfigAbility(ConfigAbilityData abilityData) {
+		var data = GameData.getAbilityData(abilityData.getAbilityName());
+		if (data != null) owner.getAbilityManager().addAbilityToEntity(this, data);
+	}
 
-        PropPair pair =
-                PropPair.newBuilder()
-                        .setType(PlayerProperty.PROP_LEVEL.getId())
-                        .setPropValue(ProtoHelper.newPropValue(PlayerProperty.PROP_LEVEL, 1))
-                        .build();
-        entityInfo.addPropList(pair);
+	@Override
+	public void onDeath(int killerId) {
+		super.onDeath(killerId); // Invoke super class's onDeath() method.
+	}
 
-        ClientGadgetInfoOuterClass.ClientGadgetInfo clientGadget =
-                ClientGadgetInfoOuterClass.ClientGadgetInfo.newBuilder()
-                        .setCampId(this.getCampId())
-                        .setCampType(this.getCampType())
-                        .setOwnerEntityId(this.getOwnerEntityId())
-                        .setTargetEntityId(this.getTargetEntityId())
-                        .setAsyncLoad(this.isAsyncLoad())
-                        .build();
+	@Override
+	public Int2FloatMap getFightProperties() {
+		return null;
+	}
 
-        SceneGadgetInfo.Builder gadgetInfo =
-                SceneGadgetInfo.newBuilder()
-                        .setGadgetId(this.getGadgetId())
-                        .setOwnerEntityId(this.getOwnerEntityId())
-                        .setIsEnableInteract(true)
-                        .setClientGadget(clientGadget)
-                        .setPropOwnerEntityId(this.getOwnerEntityId())
-                        .setAuthorityPeerId(this.getOwner().getPeerId());
+	@Override
+	public SceneEntityInfo toProto() {
+		EntityAuthorityInfo authority = EntityAuthorityInfo
+			.newBuilder()
+			.setAbilityInfo(AbilitySyncStateInfo.newBuilder())
+			.setRendererChangedInfo(EntityRendererChangedInfo.newBuilder())
+			.setAiInfo(SceneEntityAiInfo.newBuilder().setIsAiOpen(true).setBornPos(Vector.newBuilder()))
+			.setBornPos(Vector.newBuilder())
+			.build();
 
-        entityInfo.setGadget(gadgetInfo);
+		SceneEntityInfo.Builder entityInfo = SceneEntityInfo
+			.newBuilder()
+			.setEntityId(getId())
+			.setEntityType(ProtEntityType.PROT_ENTITY_TYPE_GADGET)
+			.setMotionInfo(
+				MotionInfo
+					.newBuilder()
+					.setPos(getPosition().toProto())
+					.setRot(getRotation().toProto())
+					.setSpeed(Vector.newBuilder())
+			)
+			.addAnimatorParaList(AnimatorParameterValueInfoPair.newBuilder())
+			.setEntityClientData(EntityClientData.newBuilder())
+			.setEntityAuthorityInfo(authority)
+			.setLifeState(1);
 
-        return entityInfo.build();
-    }
+		PropPair pair = PropPair
+			.newBuilder()
+			.setType(PlayerProperty.PROP_LEVEL.getId())
+			.setPropValue(ProtoHelper.newPropValue(PlayerProperty.PROP_LEVEL, 1))
+			.build();
+		entityInfo.addPropList(pair);
+
+		ClientGadgetInfoOuterClass.ClientGadgetInfo clientGadget = ClientGadgetInfoOuterClass.ClientGadgetInfo
+			.newBuilder()
+			.setCampId(this.getCampId())
+			.setCampType(this.getCampType())
+			.setOwnerEntityId(this.getOwnerEntityId())
+			.setTargetEntityId(this.getTargetEntityId())
+			.setAsyncLoad(this.isAsyncLoad())
+			.build();
+
+		SceneGadgetInfo.Builder gadgetInfo = SceneGadgetInfo
+			.newBuilder()
+			.setGadgetId(this.getGadgetId())
+			.setOwnerEntityId(this.getOwnerEntityId())
+			.setIsEnableInteract(true)
+			.setClientGadget(clientGadget)
+			.setPropOwnerEntityId(this.getOwnerEntityId())
+			.setAuthorityPeerId(this.getOwner().getPeerId());
+
+		entityInfo.setGadget(gadgetInfo);
+
+		return entityInfo.build();
+	}
 }

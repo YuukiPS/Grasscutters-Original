@@ -7,12 +7,10 @@ import java.util.List;
 
 public class PacketAvatarDelNotify extends BasePacket {
 
-    public PacketAvatarDelNotify(List<Long> avatarGuidList) {
-        super(PacketOpcodes.AvatarDelNotify);
+	public PacketAvatarDelNotify(List<Long> avatarGuidList) {
+		super(PacketOpcodes.AvatarDelNotify);
+		AvatarDelNotify proto = AvatarDelNotify.newBuilder().addAllAvatarGuidList(avatarGuidList).build();
 
-        AvatarDelNotify proto =
-                AvatarDelNotify.newBuilder().addAllAvatarGuidList(avatarGuidList).build();
-
-        this.setData(proto);
-    }
+		this.setData(proto);
+	}
 }

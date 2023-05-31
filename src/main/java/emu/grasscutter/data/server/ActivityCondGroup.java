@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class ActivityCondGroup {
-    int condGroupId;
-    List<Integer> condIds;
+
+	int condGroupId;
+	List<Integer> condIds;
 }

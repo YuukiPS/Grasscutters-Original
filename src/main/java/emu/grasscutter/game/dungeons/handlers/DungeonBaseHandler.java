@@ -4,6 +4,5 @@ import emu.grasscutter.data.excels.dungeon.DungeonPassConfigData;
 
 public abstract class DungeonBaseHandler {
 
-    public abstract boolean execute(
-            DungeonPassConfigData.DungeonPassCondition condition, int... params);
+	public abstract boolean execute(DungeonPassConfigData.DungeonPassCondition condition, int... params);
 }

@@ -8,44 +8,47 @@ import emu.grasscutter.net.proto.BattlePassUnlockStatusOuterClass.BattlePassUnlo
 
 @Entity
 public class BattlePassReward {
-    private int level;
-    private int rewardId;
-    private boolean paid;
 
-    @Transient private BattlePassMissionData data;
+	private int level;
+	private int rewardId;
+	private boolean paid;
 
-    @Deprecated // Morphia only
-    public BattlePassReward() {}
+	@Transient
+	private BattlePassMissionData data;
 
-    public BattlePassReward(int level, int rewardId, boolean paid) {
-        this.level = level;
-        this.rewardId = rewardId;
-        this.paid = paid;
-    }
+	@Deprecated // Morphia only
+	public BattlePassReward() {}
 
-    public int getLevel() {
-        return level;
-    }
+	public BattlePassReward(int level, int rewardId, boolean paid) {
+		this.level = level;
+		this.rewardId = rewardId;
+		this.paid = paid;
+	}
 
-    public int getRewardId() {
-        return rewardId;
-    }
+	public int getLevel() {
+		return level;
+	}
 
-    public boolean isPaid() {
-        return paid;
-    }
+	public int getRewardId() {
+		return rewardId;
+	}
 
-    public BattlePassRewardTag toProto() {
-        var protoBuilder = BattlePassRewardTag.newBuilder();
+	public boolean isPaid() {
+		return paid;
+	}
 
-        protoBuilder
-                .setLevel(this.getLevel())
-                .setRewardId(this.getRewardId())
-                .setUnlockStatus(
-                        this.isPaid()
-                                ? BattlePassUnlockStatus.BATTLE_PASS_UNLOCK_STATUS_PAID
-                                : BattlePassUnlockStatus.BATTLE_PASS_UNLOCK_STATUS_FREE);
+	public BattlePassRewardTag toProto() {
+		var protoBuilder = BattlePassRewardTag.newBuilder();
 
-        return protoBuilder.build();
-    }
+		protoBuilder
+			.setLevel(this.getLevel())
+			.setRewardId(this.getRewardId())
+			.setUnlockStatus(
+				this.isPaid()
+					? BattlePassUnlockStatus.BATTLE_PASS_UNLOCK_STATUS_PAID
+					: BattlePassUnlockStatus.BATTLE_PASS_UNLOCK_STATUS_FREE
+			);
+
+		return protoBuilder.build();
+	}
 }

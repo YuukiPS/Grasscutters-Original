@@ -6,11 +6,9 @@ import emu.grasscutter.net.proto.ShowClientGuideNotifyOuterClass.ShowClientGuide
 
 public class PacketShowClientGuideNotify extends BasePacket {
 
-    public PacketShowClientGuideNotify(String guideName) {
-        super(PacketOpcodes.ShowClientGuideNotify, true);
-
-        ShowClientGuideNotify proto =
-                ShowClientGuideNotify.newBuilder().setGuideName(guideName).build();
-        this.setData(proto);
-    }
+	public PacketShowClientGuideNotify(String guideName) {
+		super(PacketOpcodes.ShowClientGuideNotify, true);
+		ShowClientGuideNotify proto = ShowClientGuideNotify.newBuilder().setGuideName(guideName).build();
+		this.setData(proto);
+	}
 }

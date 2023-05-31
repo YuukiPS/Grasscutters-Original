@@ -9,17 +9,18 @@ import java.util.List;
 
 public class PacketGetInvestigationMonsterRsp extends BasePacket {
 
-    public PacketGetInvestigationMonsterRsp(
-            Player player, WorldDataSystem worldDataManager, List<Integer> cityIdListList) {
+	public PacketGetInvestigationMonsterRsp(
+		Player player,
+		WorldDataSystem worldDataManager,
+		List<Integer> cityIdListList
+	) {
+		super(PacketOpcodes.GetInvestigationMonsterRsp);
+		var resp = GetInvestigationMonsterRspOuterClass.GetInvestigationMonsterRsp.newBuilder();
 
-        super(PacketOpcodes.GetInvestigationMonsterRsp);
+		cityIdListList.forEach(id ->
+			resp.addAllMonsterList(worldDataManager.getInvestigationMonstersByCityId(player, id))
+		);
 
-        var resp = GetInvestigationMonsterRspOuterClass.GetInvestigationMonsterRsp.newBuilder();
-
-        cityIdListList.forEach(
-                id ->
-                        resp.addAllMonsterList(worldDataManager.getInvestigationMonstersByCityId(player, id)));
-
-        this.setData(resp.build());
-    }
+		this.setData(resp.build());
+	}
 }

@@ -9,14 +9,11 @@ import emu.grasscutter.server.game.GameSession;
 @Opcodes(PacketOpcodes.WeaponPromoteReq)
 public class HandlerWeaponPromoteReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        WeaponPromoteReq req = WeaponPromoteReq.parseFrom(payload);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		WeaponPromoteReq req = WeaponPromoteReq.parseFrom(payload);
 
-        // Ascend weapon
-        session
-                .getServer()
-                .getInventorySystem()
-                .promoteWeapon(session.getPlayer(), req.getTargetWeaponGuid());
-    }
+		// Ascend weapon
+		session.getServer().getInventorySystem().promoteWeapon(session.getPlayer(), req.getTargetWeaponGuid());
+	}
 }

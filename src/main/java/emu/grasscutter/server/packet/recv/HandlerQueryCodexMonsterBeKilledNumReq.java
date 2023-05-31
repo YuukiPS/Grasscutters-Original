@@ -10,10 +10,9 @@ import emu.grasscutter.server.packet.send.PacketQueryCodexMonsterBeKilledNumRsp;
 @Opcodes(PacketOpcodes.QueryCodexMonsterBeKilledNumReq)
 public class HandlerQueryCodexMonsterBeKilledNumReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        QueryCodexMonsterBeKilledNumReq req = QueryCodexMonsterBeKilledNumReq.parseFrom(payload);
-        session.send(
-                new PacketQueryCodexMonsterBeKilledNumRsp(session.getPlayer(), req.getCodexIdListList()));
-    }
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		QueryCodexMonsterBeKilledNumReq req = QueryCodexMonsterBeKilledNumReq.parseFrom(payload);
+		session.send(new PacketQueryCodexMonsterBeKilledNumRsp(session.getPlayer(), req.getCodexIdListList()));
+	}
 }

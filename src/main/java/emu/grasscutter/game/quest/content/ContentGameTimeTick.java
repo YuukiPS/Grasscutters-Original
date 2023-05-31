@@ -9,29 +9,25 @@ import lombok.val;
 
 @QuestValueContent(QUEST_CONTENT_GAME_TIME_TICK)
 public class ContentGameTimeTick extends BaseContent {
-    @Override
-    public boolean execute(
-            GameQuest quest, QuestData.QuestContentCondition condition, String paramStr, int... params) {
-        val daysSinceStart =
-                quest.getOwner().getWorld().getTotalGameTimeDays() - quest.getStartGameDay();
-        val currentHour = quest.getOwner().getWorld().getGameTimeHours();
 
-        // params[0] is days since start, str is hours of day
-        val range = condition.getParamStr().split(",");
-        val from = Integer.parseInt(range[0]);
-        val to = Integer.parseInt(range[1]);
+	@Override
+	public boolean execute(GameQuest quest, QuestData.QuestContentCondition condition, String paramStr, int... params) {
+		val daysSinceStart = quest.getOwner().getWorld().getTotalGameTimeDays() - quest.getStartGameDay();
+		val currentHour = quest.getOwner().getWorld().getGameTimeHours();
 
-        val daysToPass = condition.getParam()[0];
-        // if to is at the beginning of the day, we need to pass it one more time
-        val daysMod = to < from && daysToPass > 0 && currentHour < to ? 1 : 0;
+		// params[0] is days since start, str is hours of day
+		val range = condition.getParamStr().split(",");
+		val from = Integer.parseInt(range[0]);
+		val to = Integer.parseInt(range[1]);
 
-        val isTimeMet =
-                from < to
-                        ? currentHour >= from && currentHour < to
-                        : currentHour < to || currentHour >= from;
+		val daysToPass = condition.getParam()[0];
+		// if to is at the beginning of the day, we need to pass it one more time
+		val daysMod = to < from && daysToPass > 0 && currentHour < to ? 1 : 0;
 
-        val isDaysSinceMet = daysSinceStart >= daysToPass + daysMod;
+		val isTimeMet = from < to ? currentHour >= from && currentHour < to : currentHour < to || currentHour >= from;
 
-        return isTimeMet && isDaysSinceMet;
-    }
+		val isDaysSinceMet = daysSinceStart >= daysToPass + daysMod;
+
+		return isTimeMet && isDaysSinceMet;
+	}
 }

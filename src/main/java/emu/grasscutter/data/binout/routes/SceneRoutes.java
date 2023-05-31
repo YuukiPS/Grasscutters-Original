@@ -8,6 +8,9 @@ import lombok.experimental.FieldDefaults;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SceneRoutes {
-    private int sceneId;
-    @Nullable private Route[] routes;
+
+	private int sceneId;
+
+	@Nullable
+	private Route[] routes;
 }

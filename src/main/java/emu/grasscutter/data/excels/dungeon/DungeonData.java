@@ -13,75 +13,100 @@ import lombok.Getter;
 @ResourceType(name = "DungeonExcelConfigData.json")
 public class DungeonData extends GameResource {
 
-    @Getter(onMethod_ = @Override)
-    private int id;
+	@Getter(onMethod_ = @Override)
+	private int id;
 
-    @Getter private int sceneId;
-    @Getter private int showLevel;
-    private DungeonType type;
-    private DungeonSubType subType;
-    private DungeonPlayType playType;
-    private DungeonInvolveType involveType;
-    @Getter private int limitLevel;
-    @Getter private int passCond;
-    @Getter private int reviveMaxCount;
-    @Getter private int settleCountdownTime;
-    @Getter private int failSettleCountdownTime;
-    @Getter private int quitSettleCountdownTime;
-    @Getter private List<SettleShowType> settleShows;
-    @Getter private int passRewardPreviewID;
-    @Getter private int statueCostID;
-    @Getter private int statueCostCount;
+	@Getter
+	private int sceneId;
 
-    // not part of DungeonExcelConfigData
-    @Getter private RewardPreviewData rewardPreviewData;
+	@Getter
+	private int showLevel;
 
-    public DungeonType getType() {
-        if (type == null) {
-            return DungeonType.DUNGEON_NONE;
-        }
-        return type;
-    }
+	private DungeonType type;
+	private DungeonSubType subType;
+	private DungeonPlayType playType;
+	private DungeonInvolveType involveType;
 
-    public DungeonSubType getSubType() {
-        if (subType == null) {
-            return DungeonSubType.DUNGEON_SUB_NONE;
-        }
-        return subType;
-    }
+	@Getter
+	private int limitLevel;
 
-    public DungeonPlayType getPlayType() {
-        if (playType == null) {
-            return DungeonPlayType.DUNGEON_PLAY_TYPE_NONE;
-        }
-        return playType;
-    }
+	@Getter
+	private int passCond;
 
-    public DungeonInvolveType getInvolveType() {
-        if (involveType == null) {
-            return DungeonInvolveType.INVOLVE_NONE;
-        }
-        return involveType;
-    }
+	@Getter
+	private int reviveMaxCount;
 
-    /**
-     * @return The position of the player when they enter the dungeon.
-     */
-    public Position getStartPosition() {
-        return SceneMeta.of(this.getSceneId()).config.born_pos;
-    }
+	@Getter
+	private int settleCountdownTime;
 
-    /**
-     * @return The rotation of the player when they enter the dungeon.
-     */
-    public Position getStartRotation() {
-        return SceneMeta.of(this.getSceneId()).config.born_rot;
-    }
+	@Getter
+	private int failSettleCountdownTime;
 
-    @Override
-    public void onLoad() {
-        if (this.passRewardPreviewID > 0) {
-            this.rewardPreviewData = GameData.getRewardPreviewDataMap().get(this.passRewardPreviewID);
-        }
-    }
+	@Getter
+	private int quitSettleCountdownTime;
+
+	@Getter
+	private List<SettleShowType> settleShows;
+
+	@Getter
+	private int passRewardPreviewID;
+
+	@Getter
+	private int statueCostID;
+
+	@Getter
+	private int statueCostCount;
+
+	// not part of DungeonExcelConfigData
+	@Getter
+	private RewardPreviewData rewardPreviewData;
+
+	public DungeonType getType() {
+		if (type == null) {
+			return DungeonType.DUNGEON_NONE;
+		}
+		return type;
+	}
+
+	public DungeonSubType getSubType() {
+		if (subType == null) {
+			return DungeonSubType.DUNGEON_SUB_NONE;
+		}
+		return subType;
+	}
+
+	public DungeonPlayType getPlayType() {
+		if (playType == null) {
+			return DungeonPlayType.DUNGEON_PLAY_TYPE_NONE;
+		}
+		return playType;
+	}
+
+	public DungeonInvolveType getInvolveType() {
+		if (involveType == null) {
+			return DungeonInvolveType.INVOLVE_NONE;
+		}
+		return involveType;
+	}
+
+	/**
+	 * @return The position of the player when they enter the dungeon.
+	 */
+	public Position getStartPosition() {
+		return SceneMeta.of(this.getSceneId()).config.born_pos;
+	}
+
+	/**
+	 * @return The rotation of the player when they enter the dungeon.
+	 */
+	public Position getStartRotation() {
+		return SceneMeta.of(this.getSceneId()).config.born_rot;
+	}
+
+	@Override
+	public void onLoad() {
+		if (this.passRewardPreviewID > 0) {
+			this.rewardPreviewData = GameData.getRewardPreviewDataMap().get(this.passRewardPreviewID);
+		}
+	}
 }

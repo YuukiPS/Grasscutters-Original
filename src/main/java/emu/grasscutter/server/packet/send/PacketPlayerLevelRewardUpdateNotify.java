@@ -7,15 +7,14 @@ import java.util.Set;
 
 public class PacketPlayerLevelRewardUpdateNotify extends BasePacket {
 
-    public PacketPlayerLevelRewardUpdateNotify(Set<Integer> rewardedLevels) {
-        super(PacketOpcodes.PlayerLevelRewardUpdateNotify);
+	public PacketPlayerLevelRewardUpdateNotify(Set<Integer> rewardedLevels) {
+		super(PacketOpcodes.PlayerLevelRewardUpdateNotify);
+		PlayerLevelRewardUpdateNotify.Builder proto = PlayerLevelRewardUpdateNotify.newBuilder();
 
-        PlayerLevelRewardUpdateNotify.Builder proto = PlayerLevelRewardUpdateNotify.newBuilder();
+		for (Integer level : rewardedLevels) {
+			proto.addLevelList(level);
+		}
 
-        for (Integer level : rewardedLevels) {
-            proto.addLevelList(level);
-        }
-
-        this.setData(proto.build());
-    }
+		this.setData(proto.build());
+	}
 }

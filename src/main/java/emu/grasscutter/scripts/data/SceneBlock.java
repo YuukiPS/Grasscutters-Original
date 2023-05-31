@@ -18,70 +18,74 @@ import lombok.ToString;
 @ToString
 @Setter
 public class SceneBlock {
-    public int id;
-    public Position max;
-    public Position min;
 
-    public int sceneId;
-    public Map<Integer, SceneGroup> groups;
-    public RTree<SceneGroup, Geometry> sceneGroupIndex;
+	public int id;
+	public Position max;
+	public Position min;
 
-    private transient boolean loaded; // Not an actual variable in the scripts either
+	public int sceneId;
+	public Map<Integer, SceneGroup> groups;
+	public RTree<SceneGroup, Geometry> sceneGroupIndex;
 
-    public boolean isLoaded() {
-        return this.loaded;
-    }
+	private transient boolean loaded; // Not an actual variable in the scripts either
 
-    public void setLoaded(boolean loaded) {
-        this.loaded = loaded;
-    }
+	public boolean isLoaded() {
+		return this.loaded;
+	}
 
-    public boolean contains(Position pos) {
-        int range = Grasscutter.getConfig().server.game.loadEntitiesForPlayerRange;
-        return pos.getX() <= (this.max.getX() + range)
-                && pos.getX() >= (this.min.getX() - range)
-                && pos.getZ() <= (this.max.getZ() + range)
-                && pos.getZ() >= (this.min.getZ() - range);
-    }
+	public void setLoaded(boolean loaded) {
+		this.loaded = loaded;
+	}
 
-    public SceneBlock load(int sceneId, Bindings bindings) {
-        if (this.loaded) {
-            return this;
-        }
-        this.sceneId = sceneId;
-        this.setLoaded(true);
+	public boolean contains(Position pos) {
+		int range = Grasscutter.getConfig().server.game.loadEntitiesForPlayerRange;
+		return (
+			pos.getX() <= (this.max.getX() + range) &&
+			pos.getX() >= (this.min.getX() - range) &&
+			pos.getZ() <= (this.max.getZ() + range) &&
+			pos.getZ() >= (this.min.getZ() - range)
+		);
+	}
 
-        CompiledScript cs =
-                ScriptLoader.getScript(
-                        "Scene/" + sceneId + "/scene" + sceneId + "_block" + this.id + ".lua");
+	public SceneBlock load(int sceneId, Bindings bindings) {
+		if (this.loaded) {
+			return this;
+		}
+		this.sceneId = sceneId;
+		this.setLoaded(true);
 
-        if (cs == null) {
-            return null;
-        }
+		CompiledScript cs = ScriptLoader.getScript(
+			"Scene/" + sceneId + "/scene" + sceneId + "_block" + this.id + ".lua"
+		);
 
-        // Eval script
-        try {
-            cs.eval(bindings);
+		if (cs == null) {
+			return null;
+		}
 
-            // Set groups
-            this.groups =
-                    ScriptLoader.getSerializer().toList(SceneGroup.class, bindings.get("groups")).stream()
-                            .collect(Collectors.toMap(x -> x.id, y -> y, (a, b) -> a));
+		// Eval script
+		try {
+			cs.eval(bindings);
 
-            this.groups.values().forEach(g -> g.block_id = this.id);
-            this.sceneGroupIndex =
-                    SceneIndexManager.buildIndex(3, this.groups.values(), g -> g.pos.toPoint());
-        } catch (ScriptException exception) {
-            Grasscutter.getLogger()
-                    .error(
-                            "An error occurred while loading block " + this.id + " in scene " + sceneId,
-                            exception);
-        }
-        Grasscutter.getLogger().trace("Successfully loaded block {} in scene {}.", this.id, sceneId);
-        return this;
-    }
+			// Set groups
+			this.groups =
+				ScriptLoader
+					.getSerializer()
+					.toList(SceneGroup.class, bindings.get("groups"))
+					.stream()
+					.collect(Collectors.toMap(x -> x.id, y -> y, (a, b) -> a));
 
-    public Rectangle toRectangle() {
-        return Rectangle.create(this.min.toXZDoubleArray(), this.max.toXZDoubleArray());
-    }
+			this.groups.values().forEach(g -> g.block_id = this.id);
+			this.sceneGroupIndex = SceneIndexManager.buildIndex(3, this.groups.values(), g -> g.pos.toPoint());
+		} catch (ScriptException exception) {
+			Grasscutter
+				.getLogger()
+				.error("An error occurred while loading block " + this.id + " in scene " + sceneId, exception);
+		}
+		Grasscutter.getLogger().trace("Successfully loaded block {} in scene {}.", this.id, sceneId);
+		return this;
+	}
+
+	public Rectangle toRectangle() {
+		return Rectangle.create(this.min.toXZDoubleArray(), this.max.toXZDoubleArray());
+	}
 }

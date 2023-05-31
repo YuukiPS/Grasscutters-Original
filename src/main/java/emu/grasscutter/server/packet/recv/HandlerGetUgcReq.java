@@ -14,26 +14,24 @@ import lombok.val;
 @Opcodes(PacketOpcodes.GetUgcReq)
 public class HandlerGetUgcReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        val req = GetUgcReq.parseFrom(payload);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		val req = GetUgcReq.parseFrom(payload);
 
-        PacketGetUgcRsp rsp = null;
+		PacketGetUgcRsp rsp = null;
 
-        if (req.getUgcType() == UgcTypeOuterClass.UgcType.UGC_TYPE_MUSIC_GAME) {
-            val musicGameBeatmap = MusicGameBeatmap.getByShareId(req.getUgcGuid());
+		if (req.getUgcType() == UgcTypeOuterClass.UgcType.UGC_TYPE_MUSIC_GAME) {
+			val musicGameBeatmap = MusicGameBeatmap.getByShareId(req.getUgcGuid());
 
-            if (musicGameBeatmap != null) {
-                rsp =
-                        new PacketGetUgcRsp(
-                                musicGameBeatmap.toBriefProto().build(), musicGameBeatmap.toProto(), req);
-            } else {
-                rsp = new PacketGetUgcRsp(RetcodeOuterClass.Retcode.RET_UGC_DATA_NOT_FOUND, req);
-            }
-        } else {
-            rsp = new PacketGetUgcRsp(RetcodeOuterClass.Retcode.RET_UGC_DISABLED, req);
-        }
+			if (musicGameBeatmap != null) {
+				rsp = new PacketGetUgcRsp(musicGameBeatmap.toBriefProto().build(), musicGameBeatmap.toProto(), req);
+			} else {
+				rsp = new PacketGetUgcRsp(RetcodeOuterClass.Retcode.RET_UGC_DATA_NOT_FOUND, req);
+			}
+		} else {
+			rsp = new PacketGetUgcRsp(RetcodeOuterClass.Retcode.RET_UGC_DISABLED, req);
+		}
 
-        session.send(rsp);
-    }
+		session.send(rsp);
+	}
 }

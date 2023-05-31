@@ -12,14 +12,13 @@ import emu.grasscutter.server.packet.send.PacketEvtAvatarLockChairRsp;
 @Opcodes(PacketOpcodes.EvtAvatarLockChairReq)
 public class HandlerEvtAvatarLockChairReq extends PacketHandler {
 
-    @Override
-    public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        PacketHead head = PacketHead.parseFrom(header);
-        EvtAvatarLockChairReq lockChairReq = EvtAvatarLockChairReq.parseFrom(payload);
+	@Override
+	public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+		PacketHead head = PacketHead.parseFrom(header);
+		EvtAvatarLockChairReq lockChairReq = EvtAvatarLockChairReq.parseFrom(payload);
 
-        EntityAvatar entityAvatar = session.getPlayer().getTeamManager().getCurrentAvatarEntity();
+		EntityAvatar entityAvatar = session.getPlayer().getTeamManager().getCurrentAvatarEntity();
 
-        session.send(
-                new PacketEvtAvatarLockChairRsp(head.getClientSequenceId(), entityAvatar, lockChairReq));
-    }
+		session.send(new PacketEvtAvatarLockChairRsp(head.getClientSequenceId(), entityAvatar, lockChairReq));
+	}
 }

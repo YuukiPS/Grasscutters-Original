@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class MonsterMapping {
-    private int monsterId;
-    private String monsterJson;
+
+	private int monsterId;
+	private String monsterJson;
 }

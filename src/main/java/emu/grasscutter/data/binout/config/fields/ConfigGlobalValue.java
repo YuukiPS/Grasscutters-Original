@@ -7,6 +7,7 @@ import lombok.Data;
 /** Contains information about the entities SGVs */
 @Data
 public class ConfigGlobalValue {
-    Set<String> serverGlobalValues;
-    Map<String, Float> initServerGlobalValues;
+
+	Set<String> serverGlobalValues;
+	Map<String, Float> initServerGlobalValues;
 }
