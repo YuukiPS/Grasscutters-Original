@@ -282,8 +282,9 @@ public class Avatar {
                 .forEach(proudSkillId -> this.proudSkillList.add(proudSkillId));
         this.recalcStats();
 
-        // Send the depot change notification.
-        if (notify) this.owner.sendPacket(new PacketAvatarSkillDepotChangeNotify(this));
+        if (notify) {
+            owner.sendPacket(new PacketAvatarSkillDepotChangeNotify(this));
+        }
     }
 
     /**

@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import emu.grasscutter.Grasscutter;
 import emu.grasscutter.database.DatabaseHelper;
+import emu.grasscutter.server.event.dispatch.ServerMessageEvent;
 import emu.grasscutter.server.game.GameServer;
 import emu.grasscutter.server.http.handlers.GachaHandler;
 import emu.grasscutter.utils.Crypto;
@@ -43,6 +44,8 @@ public final class DispatchClient extends WebSocketClient implements IDispatcher
         this.registerHandler(PacketIds.GachaHistoryReq, this::fetchGachaHistory);
         this.registerHandler(PacketIds.GmTalkReq, this::handleHandbookAction);
         this.registerHandler(PacketIds.GetPlayerFieldsReq, this::fetchPlayerFields);
+        this.registerHandler(PacketIds.GetPlayerByAccountReq, this::fetchPlayerByAccount);
+        this.registerHandler(PacketIds.ServerMessageNotify, ServerMessageEvent::invoke);
     }
 
     /**
@@ -108,7 +111,7 @@ public final class DispatchClient extends WebSocketClient implements IDispatcher
     }
 
     /**
-     * Fetches the fields of an online player.
+     * Fetches the fields of a player.
      *
      * @param socket The socket the packet was received from.
      * @param object The packet data.
@@ -129,6 +132,31 @@ public final class DispatchClient extends WebSocketClient implements IDispatcher
 
         // Return the response object.
         this.sendMessage(PacketIds.GetPlayerFieldsRsp, DispatchUtils.getPlayerFields(playerId, fields));
+    }
+
+    /**
+     * Fetches the fields of a player by the account.
+     *
+     * @param socket The socket the packet was received from.
+     * @param object The packet data.
+     */
+    private void fetchPlayerByAccount(WebSocket socket, JsonElement object) {
+        var message = IDispatcher.decode(object);
+        var accountId = message.get("accountId").getAsString();
+        var fieldsRaw = message.get("fields").getAsJsonArray();
+
+        // Get the player with the specified ID.
+        var player = Grasscutter.getGameServer().getPlayerByAccountId(accountId);
+        if (player == null) return;
+
+        // Convert the fields array.
+        var fieldsList = new ArrayList<String>();
+        for (var field : fieldsRaw) fieldsList.add(field.getAsString());
+        var fields = fieldsList.toArray(new String[0]);
+
+        // Return the response object.
+        this.sendMessage(
+                PacketIds.GetPlayerByAccountRsp, DispatchUtils.getPlayerByAccount(accountId, fields));
     }
 
     /**

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
@@ -20,14 +21,16 @@ public class LuaTableJacksonSerializer extends JsonSerializer<LuaTable> implemen
 
     public LuaTableJacksonSerializer() {
         if (objectMapper == null) {
-            objectMapper = new ObjectMapper();
-            objectMapper.configure(MapperFeature.PROPAGATE_TRANSIENT_MARKER, true);
-            // Some properties in Lua table but not in java field
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            objectMapper =
+                    JsonMapper.builder()
+                            .configure(MapperFeature.PROPAGATE_TRANSIENT_MARKER, true)
+                            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                            .build();
             objectMapper
                     .configOverride(List.class)
                     .setSetterInfo(JsonSetter.Value.forContentNulls(Nulls.AS_EMPTY));
-            SimpleModule luaSerializeModule = new SimpleModule();
+
+            var luaSerializeModule = new SimpleModule();
             luaSerializeModule.addSerializer(LuaTable.class, this);
             objectMapper.registerModule(luaSerializeModule);
         }

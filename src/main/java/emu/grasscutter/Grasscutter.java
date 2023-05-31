@@ -33,11 +33,16 @@ import emu.grasscutter.utils.JsonUtils;
 import emu.grasscutter.utils.StartupArguments;
 import emu.grasscutter.utils.Utils;
 import emu.grasscutter.utils.lang.Language;
+import io.netty.util.concurrent.FastThreadLocalThread;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOError;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.Setter;
@@ -74,6 +79,17 @@ public final class Grasscutter {
     @Getter @Setter private static PermissionHandler permissionHandler;
 
     private static LineReader consoleLineReader = null;
+
+    @Getter
+    private static final ExecutorService threadPool =
+            new ThreadPoolExecutor(
+                    6,
+                    6,
+                    60,
+                    TimeUnit.SECONDS,
+                    new LinkedBlockingDeque<>(),
+                    FastThreadLocalThread::new,
+                    new ThreadPoolExecutor.AbortPolicy());
 
     static {
         // Declare logback configuration.

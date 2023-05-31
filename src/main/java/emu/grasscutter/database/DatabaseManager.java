@@ -107,10 +107,11 @@ public final class DatabaseManager {
         if (counter == null) {
             counter = new DatabaseCounter(c.getSimpleName());
         }
+
         try {
             return counter.getNextId();
         } finally {
-            getGameDatastore().save(counter);
+            DatabaseHelper.saveGameAsync(counter);
         }
     }
 

@@ -6,6 +6,7 @@ import emu.grasscutter.data.common.DynamicFloat;
 import emu.grasscutter.game.world.GridPosition;
 import emu.grasscutter.game.world.Position;
 import emu.grasscutter.utils.JsonAdapters.*;
+import emu.grasscutter.utils.objects.JObject;
 import it.unimi.dsi.fastutil.ints.IntList;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -27,6 +28,7 @@ public final class JsonUtils {
                     .registerTypeAdapter(Position.class, new PositionAdapter())
                     .registerTypeAdapter(GridPosition.class, new GridPositionAdapter())
                     .registerTypeAdapter(byte[].class, new ByteArrayAdapter())
+                    .registerTypeAdapter(JObject.class, new JObject.Adapter())
                     .registerTypeAdapterFactory(new EnumTypeAdapterFactory())
                     .disableHtmlEscaping()
                     .create();
@@ -111,6 +113,14 @@ public final class JsonUtils {
             Path filename, Class<T1> keyType, Class<T2> valueType) throws IOException {
         try (var fileReader = Files.newBufferedReader(filename, StandardCharsets.UTF_8)) {
             return loadToMap(fileReader, keyType, valueType);
+        }
+    }
+
+    public static <T1, T2> Map<T1, T2> loadToMap(Path filename, Class<T1> keyType, Type valueType)
+            throws IOException {
+        try (var fileReader = Files.newBufferedReader(filename, StandardCharsets.UTF_8)) {
+            return gson.fromJson(
+                    fileReader, TypeToken.getParameterized(Map.class, keyType, valueType).getType());
         }
     }
 

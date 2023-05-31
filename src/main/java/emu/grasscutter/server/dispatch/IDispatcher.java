@@ -8,7 +8,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import emu.grasscutter.utils.Crypto;
 import emu.grasscutter.utils.JsonAdapters.ByteArrayAdapter;
+import emu.grasscutter.utils.objects.JObject;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,7 @@ public interface IDispatcher {
             new GsonBuilder()
                     .disableHtmlEscaping()
                     .registerTypeAdapter(byte[].class, new ByteArrayAdapter())
+                    .registerTypeAdapter(JObject.class, new JObject.Adapter())
                     .create();
 
     Function<JsonElement, JsonObject> DEFAULT_PARSER =
@@ -242,6 +245,49 @@ public interface IDispatcher {
 
         // Register the callback.
         this.getCallbacks().get(packetId).add(callback);
+    }
+
+    /**
+     * Sends a server message to the client.
+     *
+     * @param data The data to send.
+     * @param binary Whether the data is binary.
+     */
+    default void sendServerMessage(byte[] data, boolean binary) {
+        var message =
+                new JObject()
+                        .add("binary", binary)
+                        .add("data", Base64.getEncoder().encodeToString(data))
+                        .gson();
+
+        this.sendMessage(PacketIds.ServerMessageNotify, message);
+    }
+
+    /**
+     * Sends a server message to the client. The data is sent as a string.
+     *
+     * @param data The data to send.
+     */
+    default void sendServerMessage(String data) {
+        this.sendServerMessage(data.getBytes(), false);
+    }
+
+    /**
+     * Sends a server message to the client. The data is sent as a byte array.
+     *
+     * @param data The data to send.
+     */
+    default void sendServerMessage(byte[] data) {
+        this.sendServerMessage(data, true);
+    }
+
+    /**
+     * Sends a server message to the client. The data is sent as a JSON object.
+     *
+     * @param data The data to send.
+     */
+    default void sendServerMessage(Object data) {
+        this.sendServerMessage(JSON.toJson(data));
     }
 
     /**

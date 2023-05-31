@@ -78,6 +78,8 @@ public final class Scene {
     @Getter private int tickCount = 0;
     @Getter private boolean isPaused = false;
 
+    @Getter private GameEntity sceneEntity;
+
     public Scene(World world, SceneData sceneData) {
         this.world = world;
         this.sceneData = sceneData;
@@ -98,6 +100,7 @@ public final class Scene {
         this.scriptManager = new SceneScriptManager(this);
         this.blossomManager = new BlossomManager(this);
         this.unlockedForces = new HashSet<>();
+        this.sceneEntity = new EntityScene(this);
     }
 
     public int getId() {
@@ -113,7 +116,34 @@ public final class Scene {
     }
 
     public GameEntity getEntityById(int id) {
-        return this.entities.get(id);
+        // Check if the scene's entity ID is referenced.
+        if (id == 0x13800001) return this.sceneEntity;
+        else if (id == this.getWorld().getLevelEntityId()) return this.getWorld().getEntity();
+
+        var teamEntityPlayer =
+                players.stream().filter(p -> p.getTeamManager().getEntity().getId() == id).findAny();
+        if (teamEntityPlayer.isPresent()) return teamEntityPlayer.get().getTeamManager().getEntity();
+
+        // Check for an avatar.
+        var entity = this.entities.get(id);
+        if (entity == null && (id >> 24) == EntityType.Avatar.getValue()) {
+            for (var player : this.getPlayers()) {
+                for (var avatar : player.getTeamManager().getActiveTeam()) {
+                    if (avatar.getId() == id) return avatar;
+                }
+            }
+        }
+
+        // Check for a weapon.
+        if (entity == null && (id >> 24) == EntityIdType.WEAPON.getId()) {
+            for (var player : this.getPlayers()) {
+                for (var avatar : player.getTeamManager().getActiveTeam()) {
+                    if (avatar.getWeaponEntityId() == id) return avatar;
+                }
+            }
+        }
+
+        return entity;
     }
 
     public GameEntity getEntityByConfigId(int configId) {
@@ -336,6 +366,14 @@ public final class Scene {
 
     public void addEntities(Collection<? extends GameEntity> entities) {
         addEntities(entities, VisionType.VISION_TYPE_BORN);
+    }
+
+    public void updateEntity(GameEntity entity) {
+        this.broadcastPacket(new PacketSceneEntityUpdateNotify(entity));
+    }
+
+    public void updateEntity(GameEntity entity, VisionType type) {
+        this.broadcastPacket(new PacketSceneEntityUpdateNotify(Arrays.asList(entity), type));
     }
 
     private static <T> List<List<T>> chopped(List<T> list, final int L) {

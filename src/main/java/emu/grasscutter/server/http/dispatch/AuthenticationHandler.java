@@ -11,6 +11,7 @@ import emu.grasscutter.server.http.objects.ComboTokenReqJson.LoginTokenData;
 import emu.grasscutter.server.http.objects.LoginAccountRequestJson;
 import emu.grasscutter.server.http.objects.LoginTokenRequestJson;
 import emu.grasscutter.utils.JsonUtils;
+import emu.grasscutter.utils.Utils;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -36,7 +37,8 @@ public final class AuthenticationHandler implements Router {
         ctx.json(responseData);
 
         // Log to console.
-        Grasscutter.getLogger().info(translate("messages.dispatch.account.login_attempt", ctx.ip()));
+        Grasscutter.getLogger()
+                .info(translate("messages.dispatch.account.login_attempt", Utils.address(ctx)));
     }
 
     /**
@@ -59,7 +61,8 @@ public final class AuthenticationHandler implements Router {
         ctx.json(responseData);
 
         // Log to console.
-        Grasscutter.getLogger().info(translate("messages.dispatch.account.login_attempt", ctx.ip()));
+        Grasscutter.getLogger()
+                .info(translate("messages.dispatch.account.login_attempt", Utils.address(ctx)));
     }
 
     /**
@@ -85,7 +88,8 @@ public final class AuthenticationHandler implements Router {
         ctx.json(responseData);
 
         // Log to console.
-        Grasscutter.getLogger().info(translate("messages.dispatch.account.login_attempt", ctx.ip()));
+        Grasscutter.getLogger()
+                .info(translate("messages.dispatch.account.login_attempt", Utils.address(ctx)));
     }
 
     @Override

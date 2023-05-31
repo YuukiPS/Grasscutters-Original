@@ -19,21 +19,21 @@ public final class PullRecentChatReqOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>uint32 begin_sequence = 1;</code>
+     * <code>uint32 begin_sequence = 7;</code>
      * @return The beginSequence.
      */
     int getBeginSequence();
 
     /**
-     * <code>uint32 pull_num = 15;</code>
+     * <code>uint32 pull_num = 3;</code>
      * @return The pullNum.
      */
     int getPullNum();
   }
   /**
    * <pre>
-   * CmdId: 5022
-   * Name: NCFBCDPLLIG
+   * CmdId: 4985
+   * Obf: AGIBPLMCLFN
    * </pre>
    *
    * Protobuf type {@code PullRecentChatReq}
@@ -80,14 +80,14 @@ public final class PullRecentChatReqOuterClass {
             case 0:
               done = true;
               break;
-            case 8: {
-
-              beginSequence_ = input.readUInt32();
-              break;
-            }
-            case 120: {
+            case 24: {
 
               pullNum_ = input.readUInt32();
+              break;
+            }
+            case 56: {
+
+              beginSequence_ = input.readUInt32();
               break;
             }
             default: {
@@ -122,10 +122,10 @@ public final class PullRecentChatReqOuterClass {
               emu.grasscutter.net.proto.PullRecentChatReqOuterClass.PullRecentChatReq.class, emu.grasscutter.net.proto.PullRecentChatReqOuterClass.PullRecentChatReq.Builder.class);
     }
 
-    public static final int BEGIN_SEQUENCE_FIELD_NUMBER = 1;
+    public static final int BEGIN_SEQUENCE_FIELD_NUMBER = 7;
     private int beginSequence_;
     /**
-     * <code>uint32 begin_sequence = 1;</code>
+     * <code>uint32 begin_sequence = 7;</code>
      * @return The beginSequence.
      */
     @java.lang.Override
@@ -133,10 +133,10 @@ public final class PullRecentChatReqOuterClass {
       return beginSequence_;
     }
 
-    public static final int PULL_NUM_FIELD_NUMBER = 15;
+    public static final int PULL_NUM_FIELD_NUMBER = 3;
     private int pullNum_;
     /**
-     * <code>uint32 pull_num = 15;</code>
+     * <code>uint32 pull_num = 3;</code>
      * @return The pullNum.
      */
     @java.lang.Override
@@ -158,11 +158,11 @@ public final class PullRecentChatReqOuterClass {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (beginSequence_ != 0) {
-        output.writeUInt32(1, beginSequence_);
-      }
       if (pullNum_ != 0) {
-        output.writeUInt32(15, pullNum_);
+        output.writeUInt32(3, pullNum_);
+      }
+      if (beginSequence_ != 0) {
+        output.writeUInt32(7, beginSequence_);
       }
       unknownFields.writeTo(output);
     }
@@ -173,13 +173,13 @@ public final class PullRecentChatReqOuterClass {
       if (size != -1) return size;
 
       size = 0;
-      if (beginSequence_ != 0) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(1, beginSequence_);
-      }
       if (pullNum_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(15, pullNum_);
+          .computeUInt32Size(3, pullNum_);
+      }
+      if (beginSequence_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(7, beginSequence_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -312,8 +312,8 @@ public final class PullRecentChatReqOuterClass {
     }
     /**
      * <pre>
-     * CmdId: 5022
-     * Name: NCFBCDPLLIG
+     * CmdId: 4985
+     * Obf: AGIBPLMCLFN
      * </pre>
      *
      * Protobuf type {@code PullRecentChatReq}
@@ -470,7 +470,7 @@ public final class PullRecentChatReqOuterClass {
 
       private int beginSequence_ ;
       /**
-       * <code>uint32 begin_sequence = 1;</code>
+       * <code>uint32 begin_sequence = 7;</code>
        * @return The beginSequence.
        */
       @java.lang.Override
@@ -478,7 +478,7 @@ public final class PullRecentChatReqOuterClass {
         return beginSequence_;
       }
       /**
-       * <code>uint32 begin_sequence = 1;</code>
+       * <code>uint32 begin_sequence = 7;</code>
        * @param value The beginSequence to set.
        * @return This builder for chaining.
        */
@@ -489,7 +489,7 @@ public final class PullRecentChatReqOuterClass {
         return this;
       }
       /**
-       * <code>uint32 begin_sequence = 1;</code>
+       * <code>uint32 begin_sequence = 7;</code>
        * @return This builder for chaining.
        */
       public Builder clearBeginSequence() {
@@ -501,7 +501,7 @@ public final class PullRecentChatReqOuterClass {
 
       private int pullNum_ ;
       /**
-       * <code>uint32 pull_num = 15;</code>
+       * <code>uint32 pull_num = 3;</code>
        * @return The pullNum.
        */
       @java.lang.Override
@@ -509,7 +509,7 @@ public final class PullRecentChatReqOuterClass {
         return pullNum_;
       }
       /**
-       * <code>uint32 pull_num = 15;</code>
+       * <code>uint32 pull_num = 3;</code>
        * @param value The pullNum to set.
        * @return This builder for chaining.
        */
@@ -520,7 +520,7 @@ public final class PullRecentChatReqOuterClass {
         return this;
       }
       /**
-       * <code>uint32 pull_num = 15;</code>
+       * <code>uint32 pull_num = 3;</code>
        * @return This builder for chaining.
        */
       public Builder clearPullNum() {
@@ -597,8 +597,8 @@ public final class PullRecentChatReqOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\027PullRecentChatReq.proto\"=\n\021PullRecentC" +
-      "hatReq\022\026\n\016begin_sequence\030\001 \001(\r\022\020\n\010pull_n" +
-      "um\030\017 \001(\rB\033\n\031emu.grasscutter.net.protob\006p" +
+      "hatReq\022\026\n\016begin_sequence\030\007 \001(\r\022\020\n\010pull_n" +
+      "um\030\003 \001(\rB\033\n\031emu.grasscutter.net.protob\006p" +
       "roto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor

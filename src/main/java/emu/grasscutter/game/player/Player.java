@@ -76,6 +76,7 @@ import emu.grasscutter.server.game.GameSession.SessionState;
 import emu.grasscutter.server.packet.send.*;
 import emu.grasscutter.utils.*;
 import emu.grasscutter.utils.helpers.DateHelper;
+import emu.grasscutter.utils.objects.FieldFetch;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import lombok.Getter;
@@ -92,7 +93,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import static emu.grasscutter.config.Configuration.GAME_OPTIONS;
 
 @Entity(value = "players", useDiscriminator = false)
-public class Player implements PlayerHook {
+public class Player implements PlayerHook, FieldFetch {
     @Id private int id;
     @Indexed(options = @IndexOptions(unique = true))
     @Getter private String accountId;
@@ -338,7 +339,6 @@ public class Player implements PlayerHook {
      * @param gameTime The new game time.
      */
     public void updatePlayerGameTime(long gameTime) {
-        if (this.getWorld().isTimeLocked()) return;
         if (this.playerGameTime == gameTime) return;
 
         // Update the game time.
@@ -1313,16 +1313,17 @@ public class Player implements PlayerHook {
         }
 
         // Load from db
-        this.achievements = Achievements.getByPlayer(this);
-        this.getAvatars().loadFromDatabase();
-        this.getInventory().loadFromDatabase();
+        var runner = Grasscutter.getThreadPool();
+        runner.submit(() -> this.achievements = Achievements.getByPlayer(this));
 
-        this.getFriendsList().loadFromDatabase();
-        this.getMailHandler().loadFromDatabase();
-        this.getQuestManager().loadFromDatabase();
+        runner.submit(this.getAvatars()::loadFromDatabase);
+        runner.submit(this.getInventory()::loadFromDatabase);
 
-        this.loadBattlePassManager();
-        this.getAvatars().postLoad(); // Needs to be called after inventory is handled
+        runner.submit(this.getFriendsList()::loadFromDatabase);
+        runner.submit(this.getMailHandler()::loadFromDatabase);
+        runner.submit(this.getQuestManager()::loadFromDatabase);
+
+        runner.submit(this::loadBattlePassManager);
 
         this.getPlayerProgress().setPlayer(this); // Add reference to the player.
     }
@@ -1397,7 +1398,7 @@ public class Player implements PlayerHook {
         home = GameHome.getByUid(getUid());
         home.onOwnerLogin(this);
         // Activity
-        activityManager = new ActivityManager(this);
+        this.activityManager = new ActivityManager(this);
 
         session.send(new PacketPlayerEnterSceneNotify(this)); // Enter game world
         session.send(new PacketPlayerLevelRewardUpdateNotify(rewardedLevels));

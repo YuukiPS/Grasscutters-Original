@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import emu.grasscutter.Grasscutter;
 import emu.grasscutter.database.DatabaseHelper;
+import emu.grasscutter.server.event.dispatch.ServerMessageEvent;
 import emu.grasscutter.utils.Crypto;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -40,6 +41,7 @@ public final class DispatchServer extends WebSocketServer implements IDispatcher
         this.registerHandler(PacketIds.LoginNotify, this::handleLogin);
         this.registerHandler(PacketIds.TokenValidateReq, this::validateToken);
         this.registerHandler(PacketIds.GetAccountReq, this::fetchAccount);
+        this.registerHandler(PacketIds.ServerMessageNotify, ServerMessageEvent::invoke);
     }
 
     /**

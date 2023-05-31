@@ -38,7 +38,7 @@ public final class DefaultAuthenticators {
             assert requestData != null; // This should never be null.
 
             boolean successfulLogin = false;
-            String address = request.getContext().ip();
+            String address = Utils.address(request.getContext());
             String responseMessage = translate("messages.dispatch.account.username_error");
             String loggerMessage = "";
 
@@ -98,7 +98,7 @@ public final class DefaultAuthenticators {
             assert requestData != null; // This should never be null.
 
             boolean successfulLogin = false;
-            String address = request.getContext().ip();
+            String address = Utils.address(request.getContext());
             String responseMessage = translate("messages.dispatch.account.username_error");
             String loggerMessage = "";
             String decryptedPassword = "";
@@ -209,7 +209,7 @@ public final class DefaultAuthenticators {
             assert requestData != null;
 
             boolean successfulLogin;
-            String address = request.getContext().ip();
+            String address = Utils.address(request.getContext());
             String loggerMessage;
 
             // Log the attempt.
@@ -257,7 +257,7 @@ public final class DefaultAuthenticators {
             assert loginData != null;
 
             boolean successfulLogin;
-            String address = request.getContext().ip();
+            String address = Utils.address(request.getContext());
             String loggerMessage;
 
             // Get account from database.
@@ -395,7 +395,7 @@ public final class DefaultAuthenticators {
 
             // Check to see if an IP authentication can be performed.
             if (Grasscutter.getRunMode() == ServerRunMode.HYBRID) {
-                var player = Grasscutter.getGameServer().getPlayerByIpAddress(ctx.ip());
+                var player = Grasscutter.getGameServer().getPlayerByIpAddress(Utils.address(ctx));
                 if (player != null) {
                     // Get the player's session token.
                     var sessionKey = player.getAccount().getSessionKey();

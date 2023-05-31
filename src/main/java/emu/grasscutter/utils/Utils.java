@@ -7,6 +7,7 @@ import emu.grasscutter.Grasscutter;
 import emu.grasscutter.config.ConfigContainer;
 import emu.grasscutter.data.DataLoader;
 import emu.grasscutter.game.world.Position;
+import io.javalin.http.Context;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
@@ -462,5 +463,26 @@ public final class Utils {
         }
         if (start < input.length()) output.add(input.substring(start));
         return output;
+    }
+
+    /**
+     * Fetches the IP address of a web request.
+     *
+     * @param ctx The context of the request.
+     * @return The IP address of the request.
+     */
+    public static String address(Context ctx) {
+        // Check headers.
+        var address = ctx.header("CF-Connecting-IP");
+        if (address != null) return address;
+
+        address = ctx.header("X-Forwarded-For");
+        if (address != null) return address;
+
+        address = ctx.header("X-Real-IP");
+        if (address != null) return address;
+
+        // Return the request IP.
+        return ctx.ip();
     }
 }

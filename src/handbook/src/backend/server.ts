@@ -1,12 +1,14 @@
 import type { CommandResponse } from "@backend/types";
 import emitter from "@backend/events";
 
+import { getWindowDetails } from "@app/utils";
+
 let playerToken: string | null = null; // The session token for the player.
 export let targetPlayer = 0; // The UID of the target player.
 
 // The server's address and port.
-export let address: string = "127.0.0.1",
-    port: string = "443";
+export let address: string = getWindowDetails().address,
+    port: string = getWindowDetails().port.toString();
 export let encrypted: boolean = true;
 
 export let lockedPlayer = false; // Whether the UID field is locked.
@@ -16,6 +18,9 @@ export let connected = false; // Whether the server is connected.
  * Loads the server details from local storage.
  */
 export function setup(): void {
+    // Check if the server is disabled.
+    if (getWindowDetails().disable) return;
+
     // Load the server details from local storage.
     const storedAddress = localStorage.getItem("address");
     const storedPort = localStorage.getItem("port");
@@ -59,15 +64,19 @@ export function setTargetPlayer(player: number, token: string | null = null): vo
  * @param newAddress The server's address.
  * @param newPort The server's port.
  */
-export async function setServerDetails(newAddress: string | null, newPort: string | null): Promise<void> {
-    // Apply the new details.
-    if (newAddress != null) {
-        address = newAddress;
-        localStorage.setItem("address", newAddress);
-    }
-    if (newPort != null) {
-        port = newPort;
-        localStorage.setItem("port", newPort);
+export async function setServerDetails(newAddress: string | null, newPort: string | number | null): Promise<void> {
+    if (!getWindowDetails().disable) {
+        if (typeof newPort == "number") newPort = newPort.toString();
+
+        // Apply the new details.
+        if (newAddress != null) {
+            address = newAddress;
+            localStorage.setItem("address", newAddress);
+        }
+        if (newPort != null) {
+            port = newPort;
+            localStorage.setItem("port", newPort);
+        }
     }
 
     // Check if the server is encrypted.

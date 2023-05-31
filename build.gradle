@@ -26,14 +26,16 @@ plugins {
 
     id 'eclipse' // Eclipse Support
 
-    id 'maven-publish' // Support for publishing to Maven repositories.
-    id 'signing' // Support for signing build artifacts.
-
     id 'io.freefair.lombok' version '6.6.1' // Lombok for delombok'ification
 }
 
 spotless {
     java {
+        target fileTree(rootDir) {
+            include '**/*.java'
+            exclude '**/generated/**/*.*'
+        }
+
         importOrder('io.grasscutter', '', 'java', 'javax', '\\#java', '\\#') // Configure import order.
         googleJavaFormat('1.15.0') // Use Google's Java formatter.
         formatAnnotations() // Reformat annotations.
@@ -175,77 +177,6 @@ test {
     setMaxHeapSize('4G')
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifactId = 'grasscutter'
-            from components.java
-            versionMapping {
-                usage('java-api') {
-                    fromResolutionOf('runtimeClasspath')
-                }
-                usage('java-runtime') {
-                    fromResolutionResult()
-                }
-            }
-
-            pom {
-                name = 'Grasscutter'
-                description = 'A server software reimplementation for an anime game.'
-                url = 'https://github.com/Grasscutters/Grasscutter'
-                licenses {
-                    license {
-                        name = 'The Apache License, Version 2.0'
-                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-                developers {
-                    developer {
-                        id = 'meledy'
-                        name = 'Meledy'
-                        email = 'meledy@grasscutter.io' // not a real email kek
-                    }
-                }
-                scm {
-                    connection = 'scm:git:git@github.com:Grasscutters/Grasscutter.git'
-                    developerConnection = 'scm:git:ssh://github.com:Grasscutters/Grasscutter.git'
-                    url = 'https://github.com/Grasscutters/Grasscutter'
-                }
-            }
-        }
-    }
-
-    repositories {
-        maven {
-            if (version.endsWith('-dev')) {
-                // Check if the action being ran is 'publish'.
-                if (project.hasProperty('publish')) {
-                    println('Publishing to Ben4J-Maven')
-                }
-
-                url 'https://repo.4benj.com/releases'
-                name '4benj-maven'
-                credentials {
-                    username System.getenv('benj_maven_username')
-                    password System.getenv('benj_maven_token')
-                }
-            } else {
-                // Check if the action being ran is 'publish'.
-                if (project.hasProperty('publish')) {
-                    println('Publishing to Sonatype')
-                }
-
-                def releasesRepoUrl = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
-                def snapshotsRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
-                url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
-
-                name = 'sonatype'
-                credentials(PasswordCredentials)
-            }
-        }
-    }
-}
-
 clean {
     delete protobuf.generatedFilesBaseDir
 }
@@ -279,11 +210,6 @@ eclipse {
     }
 }
 
-signing {
-    if (!version.endsWith('-dev')) {
-        sign publishing.publications.mavenJava
-    }
-}
 
 javadoc {
     options.encoding = 'UTF-8'

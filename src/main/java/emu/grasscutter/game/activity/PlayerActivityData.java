@@ -111,9 +111,12 @@ public class PlayerActivityData {
         }
 
         public static WatcherInfo init(ActivityWatcher watcher) {
+            var watcherData = watcher.getActivityWatcherData();
+            var progress = watcherData != null ? watcherData.getProgress() : 0;
+
             return WatcherInfo.of()
                     .watcherId(watcher.getWatcherId())
-                    .totalProgress(watcher.getActivityWatcherData().getProgress())
+                    .totalProgress(progress)
                     .isTakenReward(false)
                     .build();
         }

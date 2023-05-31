@@ -572,6 +572,9 @@ public class Inventory extends BasePlayerManager implements Iterable<GameItem> {
                 }
             }
         }
+
+        // Load avatars after inventory.
+        this.getPlayer().getAvatars().postLoad();
     }
 
     @Override
