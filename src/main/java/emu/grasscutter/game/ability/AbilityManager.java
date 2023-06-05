@@ -1,20 +1,14 @@
 package emu.grasscutter.game.ability;
 
-import com.google.protobuf.ByteString;
-import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.*;
 import emu.grasscutter.Grasscutter;
 import emu.grasscutter.data.GameData;
-import emu.grasscutter.data.binout.AbilityData;
-import emu.grasscutter.data.binout.AbilityMixinData;
-import emu.grasscutter.data.binout.AbilityModifier;
+import emu.grasscutter.data.binout.*;
 import emu.grasscutter.data.binout.AbilityModifier.AbilityModifierAction;
-import emu.grasscutter.game.ability.actions.AbilityAction;
-import emu.grasscutter.game.ability.actions.AbilityActionHandler;
-import emu.grasscutter.game.ability.mixins.AbilityMixin;
-import emu.grasscutter.game.ability.mixins.AbilityMixinHandler;
+import emu.grasscutter.game.ability.actions.*;
+import emu.grasscutter.game.ability.mixins.*;
 import emu.grasscutter.game.entity.GameEntity;
-import emu.grasscutter.game.player.BasePlayerManager;
-import emu.grasscutter.game.player.Player;
+import emu.grasscutter.game.player.*;
 import emu.grasscutter.net.proto.AbilityInvokeEntryOuterClass.AbilityInvokeEntry;
 import emu.grasscutter.net.proto.AbilityMetaAddAbilityOuterClass.AbilityMetaAddAbility;
 import emu.grasscutter.net.proto.AbilityMetaModifierChangeOuterClass.AbilityMetaModifierChange;
@@ -24,10 +18,7 @@ import emu.grasscutter.net.proto.AbilityScalarValueEntryOuterClass.AbilityScalar
 import emu.grasscutter.net.proto.ModifierActionOuterClass.ModifierAction;
 import io.netty.util.concurrent.FastThreadLocalThread;
 import java.util.HashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import lombok.Getter;
 import org.reflections.Reflections;
 
@@ -96,8 +87,7 @@ public final class AbilityManager extends BasePlayerManager {
 
     public void executeAction(
             Ability ability, AbilityModifierAction action, ByteString abilityData, GameEntity target) {
-        AbilityActionHandler handler = actionHandlers.get(action.type);
-
+        var handler = actionHandlers.get(action.type);
         if (handler == null || ability == null) {
             Grasscutter.getLogger()
                     .debug("Could not execute ability action {} at {}", action.type, ability);
@@ -108,17 +98,16 @@ public final class AbilityManager extends BasePlayerManager {
                 () -> {
                     if (!handler.execute(ability, action, abilityData, target)) {
                         Grasscutter.getLogger()
-                                .debug("Execute ability action failed {} at {}", action.type, ability);
+                                .debug("Ability execute action failed for {} at {}.", action.type, ability);
                     }
                 });
     }
 
     public void executeMixin(Ability ability, AbilityMixinData mixinData, ByteString abilityData) {
-        AbilityMixinHandler handler = mixinHandlers.get(mixinData.type);
-
-        if (handler == null || ability == null || mixinData == null) {
+        var handler = mixinHandlers.get(mixinData.type);
+        if (handler == null || ability == null) {
             Grasscutter.getLogger()
-                    .error("Could not execute ability mixin {} at {}", mixinData.type, ability);
+                    .trace("Could not execute ability mixin {} at {}", mixinData.type, ability);
             return;
         }
 
@@ -126,7 +115,7 @@ public final class AbilityManager extends BasePlayerManager {
                 () -> {
                     if (!handler.execute(ability, mixinData, abilityData)) {
                         Grasscutter.getLogger()
-                                .error("exec ability action failed {} at {}", mixinData.type, ability);
+                                .error("Ability execute action failed for {} at {}.", mixinData.type, ability);
                     }
                 });
     }
@@ -335,7 +324,7 @@ public final class AbilityManager extends BasePlayerManager {
 
         var instancedAbilityIndex = head.getInstancedAbilityId() - 1;
         if (instancedAbilityIndex >= entity.getInstancedAbilities().size()) {
-            Grasscutter.getLogger().error("Ability not found {}", head.getInstancedAbilityId());
+            Grasscutter.getLogger().trace("Ability not found {}", head.getInstancedAbilityId());
             return;
         }
 
@@ -356,7 +345,7 @@ public final class AbilityManager extends BasePlayerManager {
 
         var instancedAbilityIndex = head.getInstancedAbilityId() - 1;
         if (instancedAbilityIndex >= entity.getInstancedAbilities().size()) {
-            Grasscutter.getLogger().error("Ability not found {}", head.getInstancedAbilityId());
+            Grasscutter.getLogger().trace("Ability not found {}", head.getInstancedAbilityId());
             return;
         }
 
@@ -497,16 +486,19 @@ public final class AbilityManager extends BasePlayerManager {
 
         if (key.startsWith("SGV_")) return; // Server does not allow to change this variables I think
         switch (entry.getValueType().getNumber()) {
-            case AbilityScalarType.ABILITY_SCALAR_TYPE_FLOAT_VALUE:
+            case AbilityScalarType.ABILITY_SCALAR_TYPE_FLOAT_VALUE -> {
                 if (!Float.isNaN(entry.getFloatValue()))
                     entity.getGlobalAbilityValues().put(key, entry.getFloatValue());
-                break;
-            case AbilityScalarType.ABILITY_SCALAR_TYPE_UINT_VALUE:
-                entity.getGlobalAbilityValues().put(key, (float) entry.getUintValue());
-                break;
-            default:
+            }
+            case AbilityScalarType.ABILITY_SCALAR_TYPE_UINT_VALUE -> entity
+                    .getGlobalAbilityValues()
+                    .put(key, (float) entry.getUintValue());
+            default -> {
                 return;
+            }
         }
+
+        entity.onAbilityValueUpdate();
     }
 
     private void invokeAction(

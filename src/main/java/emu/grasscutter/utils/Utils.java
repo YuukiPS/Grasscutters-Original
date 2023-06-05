@@ -7,20 +7,14 @@ import emu.grasscutter.Grasscutter;
 import emu.grasscutter.config.ConfigContainer;
 import emu.grasscutter.data.DataLoader;
 import emu.grasscutter.game.world.Position;
+import emu.grasscutter.utils.objects.Returnable;
 import io.javalin.http.Context;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
-import io.netty.buffer.Unpooled;
-import it.unimi.dsi.fastutil.ints.IntArrayList;
-import it.unimi.dsi.fastutil.ints.IntList;
+import io.netty.buffer.*;
+import it.unimi.dsi.fastutil.ints.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-import java.time.DayOfWeek;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.nio.file.*;
+import java.time.*;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -196,10 +190,6 @@ public final class Utils {
         // Check for game data.
         if (!fileExists(dataFolder)) createFolder(dataFolder);
 
-        // Make sure the data folder is populated, if there are any missing files copy them from
-        // resources
-        DataLoader.checkAllFiles();
-
         // Check for Server resources.
         if (!Files.exists(getResourcePath("Server"))) {
             logger.info(translate("messages.status.resources.missing_server"));
@@ -217,6 +207,9 @@ public final class Utils {
 
         // Exit if there are any missing files.
         if (exit) System.exit(1);
+
+        // Validate the data directory.
+        DataLoader.checkAllFiles();
     }
 
     /**
@@ -484,5 +477,20 @@ public final class Utils {
 
         // Return the request IP.
         return ctx.ip();
+    }
+
+    /**
+     * Waits for the task to return true. This will halt the thread until the task returns true.
+     *
+     * @param runnable The task to run.
+     */
+    public static void waitFor(Returnable<Boolean> runnable) {
+        while (!runnable.invoke()) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

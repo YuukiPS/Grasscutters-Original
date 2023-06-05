@@ -6,10 +6,8 @@ import emu.grasscutter.game.entity.GameEntity;
 import emu.grasscutter.game.player.Player;
 import emu.grasscutter.net.proto.AbilityStringOuterClass.AbilityString;
 import emu.grasscutter.utils.Utils;
-import it.unimi.dsi.fastutil.objects.Object2FloatMap;
-import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
-import java.util.HashMap;
-import java.util.Map;
+import it.unimi.dsi.fastutil.objects.*;
+import java.util.*;
 import lombok.Getter;
 
 public class Ability {
@@ -53,5 +51,11 @@ public class Ability {
         if (abString.hasHash()) return GameData.getAbilityHashes().get(abString.getHash());
 
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return "Ability Name: %s; Entity Owner: %s; Player Owner: %s"
+                .formatted(data.abilityName, owner, playerOwner);
     }
 }

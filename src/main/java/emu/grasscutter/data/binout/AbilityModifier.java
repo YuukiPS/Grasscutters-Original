@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import emu.grasscutter.data.common.DynamicFloat;
 import emu.grasscutter.game.props.ElementType;
 import java.io.Serializable;
+import lombok.ToString;
 
 public class AbilityModifier implements Serializable {
     private static final long serialVersionUID = -2001232313615923575L;
@@ -43,6 +44,7 @@ public class AbilityModifier implements Serializable {
     public ElementType elementType;
     public DynamicFloat elementDurability = DynamicFloat.ZERO;
 
+    @ToString
     public static class AbilityModifierAction implements Serializable {
         public enum Type {
             ActCameraRadialBlur,
@@ -318,6 +320,8 @@ public class AbilityModifier implements Serializable {
         public String abilityFormula;
         public String srcTarget, dstTarget;
         public String srcKey, dstKey;
+
+        public int skillID;
 
         public int param1;
         public int param2;

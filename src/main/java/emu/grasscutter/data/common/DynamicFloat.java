@@ -3,13 +3,9 @@ package emu.grasscutter.data.common;
 import emu.grasscutter.data.excels.ProudSkillData;
 import emu.grasscutter.game.ability.Ability;
 import it.unimi.dsi.fastutil.floats.FloatArrayList;
-import it.unimi.dsi.fastutil.objects.Object2FloatArrayMap;
-import it.unimi.dsi.fastutil.objects.Object2FloatMap;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import lombok.Getter;
-import lombok.val;
+import it.unimi.dsi.fastutil.objects.*;
+import java.util.*;
+import lombok.*;
 
 @Getter
 public class DynamicFloat {
@@ -114,6 +110,7 @@ public class DynamicFloat {
                         s = s.substring(1);
                     } else if (s.startsWith("-%")) {
                         s = s.substring(2);
+                        negative = true;
                     }
 
                     this.op = Op.KEY;
