@@ -31,7 +31,7 @@ public final class ForgeQueueDataOuterClass {
     int getFinishCount();
 
     /**
-     * <code>uint32 total_finish_timestamp = 13;</code>
+     * <code>uint32 total_finish_timestamp = 8;</code>
      * @return The totalFinishTimestamp.
      */
     int getTotalFinishTimestamp();
@@ -49,7 +49,7 @@ public final class ForgeQueueDataOuterClass {
     int getForgeId();
 
     /**
-     * <code>uint32 next_finish_timestamp = 8;</code>
+     * <code>uint32 next_finish_timestamp = 13;</code>
      * @return The nextFinishTimestamp.
      */
     int getNextFinishTimestamp();
@@ -121,7 +121,7 @@ public final class ForgeQueueDataOuterClass {
             }
             case 64: {
 
-              nextFinishTimestamp_ = input.readUInt32();
+              totalFinishTimestamp_ = input.readUInt32();
               break;
             }
             case 72: {
@@ -131,7 +131,7 @@ public final class ForgeQueueDataOuterClass {
             }
             case 104: {
 
-              totalFinishTimestamp_ = input.readUInt32();
+              nextFinishTimestamp_ = input.readUInt32();
               break;
             }
             case 112: {
@@ -198,10 +198,10 @@ public final class ForgeQueueDataOuterClass {
       return finishCount_;
     }
 
-    public static final int TOTAL_FINISH_TIMESTAMP_FIELD_NUMBER = 13;
+    public static final int TOTAL_FINISH_TIMESTAMP_FIELD_NUMBER = 8;
     private int totalFinishTimestamp_;
     /**
-     * <code>uint32 total_finish_timestamp = 13;</code>
+     * <code>uint32 total_finish_timestamp = 8;</code>
      * @return The totalFinishTimestamp.
      */
     @java.lang.Override
@@ -231,10 +231,10 @@ public final class ForgeQueueDataOuterClass {
       return forgeId_;
     }
 
-    public static final int NEXT_FINISH_TIMESTAMP_FIELD_NUMBER = 8;
+    public static final int NEXT_FINISH_TIMESTAMP_FIELD_NUMBER = 13;
     private int nextFinishTimestamp_;
     /**
-     * <code>uint32 next_finish_timestamp = 8;</code>
+     * <code>uint32 next_finish_timestamp = 13;</code>
      * @return The nextFinishTimestamp.
      */
     @java.lang.Override
@@ -273,14 +273,14 @@ public final class ForgeQueueDataOuterClass {
       if (queueId_ != 0) {
         output.writeUInt32(4, queueId_);
       }
-      if (nextFinishTimestamp_ != 0) {
-        output.writeUInt32(8, nextFinishTimestamp_);
+      if (totalFinishTimestamp_ != 0) {
+        output.writeUInt32(8, totalFinishTimestamp_);
       }
       if (unfinishCount_ != 0) {
         output.writeUInt32(9, unfinishCount_);
       }
-      if (totalFinishTimestamp_ != 0) {
-        output.writeUInt32(13, totalFinishTimestamp_);
+      if (nextFinishTimestamp_ != 0) {
+        output.writeUInt32(13, nextFinishTimestamp_);
       }
       if (avatarId_ != 0) {
         output.writeUInt32(14, avatarId_);
@@ -305,17 +305,17 @@ public final class ForgeQueueDataOuterClass {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(4, queueId_);
       }
-      if (nextFinishTimestamp_ != 0) {
+      if (totalFinishTimestamp_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(8, nextFinishTimestamp_);
+          .computeUInt32Size(8, totalFinishTimestamp_);
       }
       if (unfinishCount_ != 0) {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(9, unfinishCount_);
       }
-      if (totalFinishTimestamp_ != 0) {
+      if (nextFinishTimestamp_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(13, totalFinishTimestamp_);
+          .computeUInt32Size(13, nextFinishTimestamp_);
       }
       if (avatarId_ != 0) {
         size += com.google.protobuf.CodedOutputStream
@@ -725,7 +725,7 @@ public final class ForgeQueueDataOuterClass {
 
       private int totalFinishTimestamp_ ;
       /**
-       * <code>uint32 total_finish_timestamp = 13;</code>
+       * <code>uint32 total_finish_timestamp = 8;</code>
        * @return The totalFinishTimestamp.
        */
       @java.lang.Override
@@ -733,7 +733,7 @@ public final class ForgeQueueDataOuterClass {
         return totalFinishTimestamp_;
       }
       /**
-       * <code>uint32 total_finish_timestamp = 13;</code>
+       * <code>uint32 total_finish_timestamp = 8;</code>
        * @param value The totalFinishTimestamp to set.
        * @return This builder for chaining.
        */
@@ -744,7 +744,7 @@ public final class ForgeQueueDataOuterClass {
         return this;
       }
       /**
-       * <code>uint32 total_finish_timestamp = 13;</code>
+       * <code>uint32 total_finish_timestamp = 8;</code>
        * @return This builder for chaining.
        */
       public Builder clearTotalFinishTimestamp() {
@@ -818,7 +818,7 @@ public final class ForgeQueueDataOuterClass {
 
       private int nextFinishTimestamp_ ;
       /**
-       * <code>uint32 next_finish_timestamp = 8;</code>
+       * <code>uint32 next_finish_timestamp = 13;</code>
        * @return The nextFinishTimestamp.
        */
       @java.lang.Override
@@ -826,7 +826,7 @@ public final class ForgeQueueDataOuterClass {
         return nextFinishTimestamp_;
       }
       /**
-       * <code>uint32 next_finish_timestamp = 8;</code>
+       * <code>uint32 next_finish_timestamp = 13;</code>
        * @param value The nextFinishTimestamp to set.
        * @return This builder for chaining.
        */
@@ -837,7 +837,7 @@ public final class ForgeQueueDataOuterClass {
         return this;
       }
       /**
-       * <code>uint32 next_finish_timestamp = 8;</code>
+       * <code>uint32 next_finish_timestamp = 13;</code>
        * @return This builder for chaining.
        */
       public Builder clearNextFinishTimestamp() {
@@ -946,9 +946,9 @@ public final class ForgeQueueDataOuterClass {
     java.lang.String[] descriptorData = {
       "\n\024ForgeQueueData.proto\"\264\001\n\016ForgeQueueDat" +
       "a\022\021\n\tavatar_id\030\016 \001(\r\022\024\n\014finish_count\030\017 \001" +
-      "(\r\022\036\n\026total_finish_timestamp\030\r \001(\r\022\020\n\010qu" +
+      "(\r\022\036\n\026total_finish_timestamp\030\010 \001(\r\022\020\n\010qu" +
       "eue_id\030\004 \001(\r\022\020\n\010forge_id\030\001 \001(\r\022\035\n\025next_f" +
-      "inish_timestamp\030\010 \001(\r\022\026\n\016unfinish_count\030" +
+      "inish_timestamp\030\r \001(\r\022\026\n\016unfinish_count\030" +
       "\t \001(\rB\033\n\031emu.grasscutter.net.protob\006prot" +
       "o3"
     };
