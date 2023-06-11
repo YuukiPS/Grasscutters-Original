@@ -343,8 +343,12 @@ public final class RegionHandler implements Router {
      * @return A {@link QueryCurrRegionHttpRsp} object.
      */
     public static QueryCurrRegionHttpRsp getCurrentRegion() {
-        return Grasscutter.getRunMode() == ServerRunMode.HYBRID
-                ? regions.get("os_usa").getRegionQuery()
-                : null;
+        // TODO fix it
+        if (SERVER.runMode == ServerRunMode.HYBRID) {
+            if (regions.get("os_usa") != null) {
+                return regions.get("os_usa").getRegionQuery();
+            }
+        }
+        return null;
     }
 }

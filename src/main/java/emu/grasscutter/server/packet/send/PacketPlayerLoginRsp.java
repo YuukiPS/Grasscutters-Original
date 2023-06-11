@@ -4,8 +4,6 @@ import static emu.grasscutter.config.Configuration.GAME_INFO;
 import static emu.grasscutter.config.Configuration.lr;
 
 import com.google.protobuf.ByteString;
-import emu.grasscutter.Grasscutter;
-import emu.grasscutter.Grasscutter.ServerRunMode;
 import emu.grasscutter.net.packet.BasePacket;
 import emu.grasscutter.net.packet.PacketOpcodes;
 import emu.grasscutter.net.proto.PlayerLoginRspOuterClass.PlayerLoginRsp;
@@ -14,7 +12,6 @@ import emu.grasscutter.net.proto.RegionInfoOuterClass.RegionInfo;
 import emu.grasscutter.server.game.GameSession;
 import emu.grasscutter.server.http.dispatch.RegionHandler;
 import emu.grasscutter.utils.Crypto;
-import java.util.Objects;
 
 public class PacketPlayerLoginRsp extends BasePacket {
 
@@ -27,30 +24,34 @@ public class PacketPlayerLoginRsp extends BasePacket {
 
         RegionInfo info;
 
-        if (Grasscutter.getRunMode() == ServerRunMode.GAME_ONLY) {
-            if (regionCache == null) {
-                try {
-                    // todo: we might want to push custom config to client
-                    RegionInfo serverRegion =
-                            RegionInfo.newBuilder()
-                                    .setGateserverIp(lr(GAME_INFO.accessAddress, GAME_INFO.bindAddress))
-                                    .setGateserverPort(lr(GAME_INFO.accessPort, GAME_INFO.bindPort))
-                                    .setSecretKey(ByteString.copyFrom(Crypto.DISPATCH_SEED))
-                                    .build();
+        if (regionCache == null) {
+            // if no cache try fetching region use server game info
+            RegionInfo serverRegion =
+                    RegionInfo.newBuilder()
+                            .setGateserverIp(lr(GAME_INFO.accessAddress, GAME_INFO.bindAddress))
+                            .setGateserverPort(lr(GAME_INFO.accessPort, GAME_INFO.bindPort))
+                            .setSecretKey(ByteString.copyFrom(Crypto.DISPATCH_SEED))
+                            .build();
 
-                    regionCache =
-                            QueryCurrRegionHttpRspOuterClass.QueryCurrRegionHttpRsp.newBuilder()
-                                    .setRegionInfo(serverRegion)
-                                    .build();
-                } catch (Exception e) {
-                    Grasscutter.getLogger().error("Error while initializing region cache!", e);
-                }
+            // Check if get Current Region is null
+            var tes1 = RegionHandler.getCurrentRegion();
+            if (tes1 == null) {
+                // jif yes we take it from serverRegion;
+                info = serverRegion;
+            } else {
+                // if there just take it from cache
+                info = tes1.getRegionInfo();
             }
 
-            info = regionCache.getRegionInfo();
-        } else {
-            info = Objects.requireNonNull(RegionHandler.getCurrentRegion()).getRegionInfo();
+            // Update Cache from info
+            regionCache =
+                    QueryCurrRegionHttpRspOuterClass.QueryCurrRegionHttpRsp.newBuilder()
+                            .setRegionInfo(info)
+                            .build();
         }
+
+        // Fetch from Cache, TODO: null check?
+        info = regionCache.getRegionInfo();
 
         PlayerLoginRsp p =
                 PlayerLoginRsp.newBuilder()
