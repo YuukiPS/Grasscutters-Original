@@ -216,9 +216,14 @@ public final class PluginManager {
                     Grasscutter.getLogger().info(translate("plugin.enabling_plugin", name));
                     try {
                         plugin.onEnable();
+                        return;
+                    } catch (NoSuchMethodError ignored) {
+                        Grasscutter.getLogger().error(translate("plugin.invalid_api.outdated", name));
                     } catch (Throwable exception) {
                         Grasscutter.getLogger().error(translate("plugin.enabling_failed", name), exception);
                     }
+
+                    this.disablePlugin(plugin);
                 });
     }
 

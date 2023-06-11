@@ -323,9 +323,28 @@ public class AbilityModifier implements Serializable {
 
         public int skillID;
 
+        public AbilityModifierAction[] actions;
+        public AbilityModifierAction[] successActions;
+        public AbilityModifierAction[] failActions;
+
+        public DropType dropType = DropType.LevelControl;
+        public DynamicFloat baseEnergy;
+        public DynamicFloat ratio = DynamicFloat.ONE;
+        public int configID;
+
+        public DynamicFloat valueRangeMin;
+        public DynamicFloat valueRangeMax;
+        public String overrideMapKey;
+
         public int param1;
         public int param2;
         public int param3;
+
+        public enum DropType {
+            LevelControl,
+            BigWorldOnly,
+            ForceDrop
+        }
     }
 
     // The following should be implemented into DynamicFloat if older resource formats need to be

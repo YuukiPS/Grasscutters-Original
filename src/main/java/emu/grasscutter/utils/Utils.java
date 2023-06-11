@@ -12,6 +12,7 @@ import io.javalin.http.Context;
 import io.netty.buffer.*;
 import it.unimi.dsi.fastutil.ints.*;
 import java.io.*;
+import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.time.*;
@@ -484,6 +485,7 @@ public final class Utils {
      *
      * @param runnable The task to run.
      */
+    @SuppressWarnings("BusyWait")
     public static void waitFor(Returnable<Boolean> runnable) {
         while (!runnable.invoke()) {
             try {
@@ -492,5 +494,44 @@ public final class Utils {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Recursively finds all fields in a class.
+     *
+     * @param type The class to find fields in.
+     * @return A list of all fields in the class.
+     */
+    public static List<Field> getAllFields(Class<?> type) {
+        var fields = new LinkedList<>(Arrays.asList(type.getDeclaredFields()));
+
+        // Check for superclasses.
+        if (type.getSuperclass() != null) {
+            fields.addAll(getAllFields(type.getSuperclass()));
+        }
+
+        return fields;
+    }
+
+    /**
+     * Sleeps the current thread without an exception.
+     *
+     * @param millis The amount of milliseconds to sleep.
+     */
+    public static void sleep(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException ignored) {
+        }
+    }
+
+    /**
+     * Unescapes a JSON string.
+     *
+     * @param json The JSON string to unescape.
+     * @return The unescaped JSON string.
+     */
+    public static String unescapeJson(String json) {
+        return json.replaceAll("\"", "\"");
     }
 }

@@ -30,30 +30,50 @@ public class AbilityLocalIdGenerator {
     }
 
     public void initializeActionLocalIds(
-            AbilityModifierAction[] actions, Map<Integer, AbilityModifierAction> localIdToAction) {
+            AbilityModifierAction actions[], Map<Integer, AbilityModifierAction> localIdToAction) {
+        this.initializeActionLocalIds(actions, localIdToAction, false);
+    }
+
+    public void initializeActionLocalIds(
+            AbilityModifierAction[] actions,
+            Map<Integer, AbilityModifierAction> localIdToAction,
+            boolean preserveActionIndex) {
         if (actions == null) return;
-        actionIndex = 0;
-        for (AbilityModifierAction action : actions) {
-            actionIndex++;
-            long id = GetLocalId();
-            localIdToAction.put((int) id, action);
+        if (!preserveActionIndex) this.actionIndex = 0;
+        for (int i = 0; i < actions.length; i++) {
+            this.actionIndex++;
+
+            var id = GetLocalId();
+            localIdToAction.put((int) id, actions[i]);
+
+            if (actions[i].actions != null)
+                this.initializeActionLocalIds(actions[i].actions, localIdToAction, true);
+            else {
+                if (actions[i].successActions != null)
+                    this.initializeActionLocalIds(
+                            actions[i].successActions,
+                            localIdToAction,
+                            true); // Need to check this specific order
+                if (actions[i].failActions != null)
+                    this.initializeActionLocalIds(actions[i].failActions, localIdToAction, true);
+            }
         }
 
-        actionIndex = 0;
+        if (!preserveActionIndex) actionIndex = 0;
     }
 
     public void initializeMixinsLocalIds(
             AbilityMixinData[] mixins, Map<Integer, AbilityMixinData> localIdToAction) {
         if (mixins == null) return;
-        mixinIndex = 0;
-        for (AbilityMixinData mixin : mixins) {
-            long id = GetLocalId();
+        this.mixinIndex = 0;
+        for (var mixin : mixins) {
+            var id = GetLocalId();
             localIdToAction.put((int) id, mixin);
 
-            mixinIndex++;
+            this.mixinIndex++;
         }
 
-        mixinIndex = 0;
+        this.mixinIndex = 0;
     }
 
     public long GetLocalId() {

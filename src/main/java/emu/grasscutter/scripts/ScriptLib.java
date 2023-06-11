@@ -129,7 +129,7 @@ public class ScriptLib {
 
     public int SetWorktopOptionsByGroupId(int groupId, int configId, int[] options) {
         logger.debug("[LUA] Call SetWorktopOptionsByGroupId with {},{},{}",
-            groupId,configId,options);
+            groupId, configId, options);
 
         val entity = getSceneScriptManager().getScene().getEntityByConfigId(configId, groupId);
 
@@ -667,6 +667,7 @@ public class ScriptLib {
             var1);
 
         for(var player : getSceneScriptManager().getScene().getPlayers()){
+            player.getPlayerProgress().addToCurrentProgress(var1, 1);
             player.getQuestManager().queueEvent(QuestCond.QUEST_COND_LUA_NOTIFY, var1);
             player.getQuestManager().queueEvent(QuestContent.QUEST_CONTENT_LUA_NOTIFY, var1);
         }
@@ -1596,6 +1597,16 @@ public class ScriptLib {
         gadget.setInteractEnabled(enable);
 
         return 0;
+    }
+
+    public int DropSubfield(LuaTable table) {
+        String subfield_name = table.get("subfield_name").toString();
+        var entity = getCurrentEntity();
+        if(!entity.isPresent()) return -1;
+
+        entity.get().dropSubfield(subfield_name);
+
+        return -1;
     }
 
     public int[] GetGatherConfigIdList() {

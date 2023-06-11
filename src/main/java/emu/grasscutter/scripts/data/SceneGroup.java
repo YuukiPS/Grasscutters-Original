@@ -21,8 +21,8 @@ import org.luaj.vm2.LuaValue;
 @ToString
 @Setter
 public final class SceneGroup {
-
-    public transient int block_id; // Not an actual variable in the scripts but we will keep it here for reference
+    public transient int
+            block_id; // Not an actual variable in the scripts but we will keep it here for reference
 
     public int id;
     public int refresh_id;
@@ -39,9 +39,7 @@ public final class SceneGroup {
     public SceneBusiness business;
     public SceneGarbage garbages;
     public SceneInitConfig init_config;
-
-    @Getter
-    public boolean dynamic_load = false;
+    @Getter public boolean dynamic_load = false;
 
     public SceneReplaceable is_replaceable;
 
@@ -110,48 +108,43 @@ public final class SceneGroup {
 
             // Set
             this.monsters =
-                ScriptLoader
-                    .getSerializer()
-                    .toList(SceneMonster.class, this.bindings.get("monsters"))
-                    .stream()
-                    .collect(Collectors.toMap(x -> x.config_id, y -> y, (a, b) -> a));
+                    ScriptLoader.getSerializer()
+                            .toList(SceneMonster.class, this.bindings.get("monsters"))
+                            .stream()
+                            .collect(Collectors.toMap(x -> x.config_id, y -> y, (a, b) -> a));
             this.monsters.values().forEach(m -> m.group = this);
 
             this.npcs =
-                ScriptLoader
-                    .getSerializer()
-                    .toList(SceneNPC.class, this.bindings.get("npcs"))
-                    .stream()
-                    .collect(Collectors.toMap(x -> x.config_id, y -> y, (a, b) -> a));
+                    ScriptLoader.getSerializer().toList(SceneNPC.class, this.bindings.get("npcs")).stream()
+                            .collect(Collectors.toMap(x -> x.config_id, y -> y, (a, b) -> a));
             this.npcs.values().forEach(m -> m.group = this);
 
             this.gadgets =
-                ScriptLoader
-                    .getSerializer()
-                    .toList(SceneGadget.class, this.bindings.get("gadgets"))
-                    .stream()
-                    .collect(Collectors.toMap(x -> x.config_id, y -> y, (a, b) -> a));
+                    ScriptLoader.getSerializer()
+                            .toList(SceneGadget.class, this.bindings.get("gadgets"))
+                            .stream()
+                            .collect(Collectors.toMap(x -> x.config_id, y -> y, (a, b) -> a));
             this.gadgets.values().forEach(m -> m.group = this);
 
             this.triggers =
-                ScriptLoader
-                    .getSerializer()
-                    .toList(SceneTrigger.class, this.bindings.get("triggers"))
-                    .stream()
-                    .collect(Collectors.toMap(SceneTrigger::getName, y -> y, (a, b) -> a));
+                    ScriptLoader.getSerializer()
+                            .toList(SceneTrigger.class, this.bindings.get("triggers"))
+                            .stream()
+                            .collect(Collectors.toMap(SceneTrigger::getName, y -> y, (a, b) -> a));
             this.triggers.values().forEach(t -> t.currentGroup = this);
 
-            this.suites = ScriptLoader.getSerializer().toList(SceneSuite.class, this.bindings.get("suites"));
+            this.suites =
+                    ScriptLoader.getSerializer().toList(SceneSuite.class, this.bindings.get("suites"));
             this.regions =
-                ScriptLoader
-                    .getSerializer()
-                    .toList(SceneRegion.class, this.bindings.get("regions"))
-                    .stream()
-                    .collect(Collectors.toMap(x -> x.config_id, y -> y, (a, b) -> a));
+                    ScriptLoader.getSerializer()
+                            .toList(SceneRegion.class, this.bindings.get("regions"))
+                            .stream()
+                            .collect(Collectors.toMap(x -> x.config_id, y -> y, (a, b) -> a));
             this.regions.values().forEach(m -> m.group = this);
 
             this.init_config =
-                ScriptLoader.getSerializer().toObject(SceneInitConfig.class, this.bindings.get("init_config"));
+                    ScriptLoader.getSerializer()
+                            .toObject(SceneInitConfig.class, this.bindings.get("init_config"));
 
             // Garbages // TODO: fix properly later
             Object garbagesValue = this.bindings.get("garbages");
@@ -159,15 +152,16 @@ public final class SceneGroup {
                 this.garbages = new SceneGarbage();
                 if (garbagesTable.checktable().get("gadgets") != LuaValue.NIL) {
                     this.garbages.gadgets =
-                        ScriptLoader
-                            .getSerializer()
-                            .toList(SceneGadget.class, garbagesTable.checktable().get("gadgets").checktable());
+                            ScriptLoader.getSerializer()
+                                    .toList(
+                                            SceneGadget.class, garbagesTable.checktable().get("gadgets").checktable());
                     this.garbages.gadgets.forEach(m -> m.group = this);
                 }
             }
 
             // Add variables to suite
-            this.variables = ScriptLoader.getSerializer().toList(SceneVar.class, this.bindings.get("variables"));
+            this.variables =
+                    ScriptLoader.getSerializer().toList(SceneVar.class, this.bindings.get("variables"));
 
             // Add monsters and gadgets to suite
             this.suites.forEach(i -> i.init(this));
@@ -208,10 +202,9 @@ public final class SceneGroup {
     }
 
     public Optional<SceneBossChest> searchBossChestInGroup() {
-        return this.gadgets.values()
-            .stream()
-            .filter(g -> g.boss_chest != null && g.boss_chest.monster_config_id > 0)
-            .map(g -> g.boss_chest)
-            .findFirst();
+        return this.gadgets.values().stream()
+                .filter(g -> g.boss_chest != null && g.boss_chest.monster_config_id > 0)
+                .map(g -> g.boss_chest)
+                .findFirst();
     }
 }

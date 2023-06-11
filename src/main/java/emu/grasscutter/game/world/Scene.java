@@ -1,54 +1,43 @@
 package emu.grasscutter.game.world;
 
 import emu.grasscutter.Grasscutter;
-import emu.grasscutter.data.GameData;
-import emu.grasscutter.data.GameDepot;
+import emu.grasscutter.data.*;
 import emu.grasscutter.data.binout.SceneNpcBornEntry;
 import emu.grasscutter.data.binout.routes.Route;
-import emu.grasscutter.data.excels.ItemData;
-import emu.grasscutter.data.excels.SceneData;
+import emu.grasscutter.data.excels.*;
 import emu.grasscutter.data.excels.codex.CodexAnimalData;
 import emu.grasscutter.data.excels.monster.MonsterData;
 import emu.grasscutter.data.excels.world.WorldLevelData;
 import emu.grasscutter.data.server.Grid;
 import emu.grasscutter.game.avatar.Avatar;
-import emu.grasscutter.game.dungeons.DungeonManager;
-import emu.grasscutter.game.dungeons.DungeonSettleListener;
+import emu.grasscutter.game.dungeons.*;
 import emu.grasscutter.game.dungeons.challenge.WorldChallenge;
 import emu.grasscutter.game.dungeons.enums.DungeonPassConditionType;
 import emu.grasscutter.game.entity.*;
 import emu.grasscutter.game.entity.gadget.GadgetWorktop;
 import emu.grasscutter.game.inventory.GameItem;
 import emu.grasscutter.game.managers.blossom.BlossomManager;
-import emu.grasscutter.game.player.Player;
-import emu.grasscutter.game.player.TeamInfo;
+import emu.grasscutter.game.player.*;
 import emu.grasscutter.game.props.*;
 import emu.grasscutter.game.quest.QuestGroupSuite;
 import emu.grasscutter.game.world.data.TeleportProperties;
 import emu.grasscutter.net.packet.BasePacket;
+import emu.grasscutter.net.proto.*;
 import emu.grasscutter.net.proto.AttackResultOuterClass.AttackResult;
-import emu.grasscutter.net.proto.EnterTypeOuterClass;
-import emu.grasscutter.net.proto.SelectWorktopOptionReqOuterClass;
 import emu.grasscutter.net.proto.VisionTypeOuterClass.VisionType;
-import emu.grasscutter.scripts.SceneIndexManager;
-import emu.grasscutter.scripts.SceneScriptManager;
+import emu.grasscutter.scripts.*;
 import emu.grasscutter.scripts.constants.EventType;
-import emu.grasscutter.scripts.data.SceneBlock;
-import emu.grasscutter.scripts.data.SceneGroup;
-import emu.grasscutter.scripts.data.ScriptArgs;
+import emu.grasscutter.scripts.data.*;
 import emu.grasscutter.server.event.entity.EntityCreationEvent;
 import emu.grasscutter.server.event.player.PlayerTeleportEvent;
 import emu.grasscutter.server.packet.send.*;
 import emu.grasscutter.utils.objects.KahnsSort;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.val;
+import lombok.*;
 
 public final class Scene {
     @Getter private final World world;
@@ -551,11 +540,18 @@ public final class Scene {
         }
 
         var sceneTime = getSceneTimeSeconds();
-        getEntities().forEach((eid, e) -> e.onTick(sceneTime));
+
+        var entities = Map.copyOf(this.getEntities());
+        entities.forEach(
+                (eid, e) -> {
+                    if (!e.isAlive()) {
+                        this.getEntities().remove(eid);
+                    } else e.onTick(sceneTime);
+                });
 
         blossomManager.onTick();
 
-        checkNpcGroup();
+        this.checkNpcGroup();
 
         this.finishLoading();
         this.checkPlayerRespawn();
@@ -700,18 +696,6 @@ public final class Scene {
             npcBornEntries.addAll(loadNpcForPlayer(player));
         }
 
-        // clear the unreachable group for client
-        var toUnload =
-                this.npcBornEntrySet.stream()
-                        .filter(i -> !npcBornEntries.contains(i))
-                        .map(SceneNpcBornEntry::getGroupId)
-                        .toList();
-
-        if (toUnload.size() > 0) {
-            broadcastPacket(new PacketGroupUnloadNotify(toUnload));
-            Grasscutter.getLogger().trace("Unload NPC Group {}", toUnload);
-        }
-        // exchange the new npcBornEntry Set
         this.npcBornEntrySet = npcBornEntries;
     }
 
@@ -1164,14 +1148,27 @@ public final class Scene {
                         pos.toDoubleArray(),
                         Grasscutter.getConfig().server.game.loadEntitiesForPlayerRange);
 
-        var sceneNpcBornEntries =
+        var sceneNpcBornCanidates =
                 npcList.stream().filter(i -> !this.npcBornEntrySet.contains(i)).toList();
+
+        List<SceneNpcBornEntry> sceneNpcBornEntries = new ArrayList<>();
+        sceneNpcBornCanidates.forEach(
+                i -> {
+                    var groupInstance = scriptManager.getGroupInstanceById(i.getGroupId());
+                    if (groupInstance == null) return;
+                    if (i.getSuiteIdList() != null
+                            && !i.getSuiteIdList().contains(groupInstance.getActiveSuiteId())) return;
+                    sceneNpcBornEntries.add(i);
+                });
 
         if (sceneNpcBornEntries.size() > 0) {
             this.broadcastPacket(new PacketGroupSuiteNotify(sceneNpcBornEntries));
             Grasscutter.getLogger().trace("Loaded Npc Group Suite {}", sceneNpcBornEntries);
         }
-        return npcList;
+
+        return npcList.stream()
+                .filter(i -> this.npcBornEntrySet.contains(i) || sceneNpcBornEntries.contains(i))
+                .toList();
     }
 
     public void loadGroupForQuest(List<QuestGroupSuite> sceneGroupSuite) {

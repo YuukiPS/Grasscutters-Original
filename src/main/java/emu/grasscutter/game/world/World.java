@@ -4,17 +4,14 @@ import static emu.grasscutter.server.event.player.PlayerTeleportEvent.TeleportTy
 
 import emu.grasscutter.data.GameData;
 import emu.grasscutter.data.excels.dungeon.DungeonData;
-import emu.grasscutter.game.entity.EntityTeam;
-import emu.grasscutter.game.entity.EntityWorld;
+import emu.grasscutter.game.entity.*;
 import emu.grasscutter.game.player.Player;
 import emu.grasscutter.game.player.Player.SceneLoadState;
-import emu.grasscutter.game.props.EnterReason;
-import emu.grasscutter.game.props.EntityIdType;
-import emu.grasscutter.game.props.PlayerProperty;
-import emu.grasscutter.game.props.SceneType;
+import emu.grasscutter.game.props.*;
 import emu.grasscutter.game.quest.enums.QuestContent;
 import emu.grasscutter.game.world.data.TeleportProperties;
 import emu.grasscutter.net.packet.BasePacket;
+import emu.grasscutter.net.proto.ChatInfoOuterClass.ChatInfo.*;
 import emu.grasscutter.net.proto.EnterTypeOuterClass.EnterType;
 import emu.grasscutter.scripts.data.SceneConfig;
 import emu.grasscutter.server.event.player.PlayerTeleportEvent;
@@ -22,15 +19,9 @@ import emu.grasscutter.server.event.player.PlayerTeleportEvent.TeleportType;
 import emu.grasscutter.server.game.GameServer;
 import emu.grasscutter.server.packet.send.*;
 import emu.grasscutter.utils.ConversionUtils;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import lombok.Getter;
-import lombok.val;
+import it.unimi.dsi.fastutil.ints.*;
+import java.util.*;
+import lombok.*;
 import org.jetbrains.annotations.NotNull;
 
 public class World implements Iterable<Player> {
@@ -44,7 +35,8 @@ public class World implements Iterable<Player> {
     private int nextPeerId = 0;
     private int worldLevel;
 
-    @Getter private boolean isMultiplayer, timeLocked = false;
+    @Getter private boolean isMultiplayer = false;
+    @Getter private boolean timeLocked;
 
     private long lastUpdateTime;
     @Getter private int tickCount = 0;
@@ -65,6 +57,7 @@ public class World implements Iterable<Player> {
         this.entity = new EntityWorld(this);
         this.worldLevel = player.getWorldLevel();
         this.isMultiplayer = isMultiplayer;
+        this.timeLocked = player.getProperty(PlayerProperty.PROP_IS_GAME_TIME_LOCKED) != 0;
 
         this.lastUpdateTime = System.currentTimeMillis();
         this.currentWorldTime = host.getPlayerGameTime();
@@ -164,6 +157,16 @@ public class World implements Iterable<Player> {
                             player.getTeamManager().getCurrentSinglePlayerTeamInfo(),
                             player.getTeamManager().getMaxTeamSize());
             player.getTeamManager().setCurrentCharacterIndex(0);
+
+            if (player != this.getHost()) {
+                this.broadcastPacket(
+                        new PacketPlayerChatNotify(
+                                player,
+                                0,
+                                SystemHint.newBuilder()
+                                        .setType(SystemHintType.SYSTEM_HINT_TYPE_CHAT_ENTER_WORLD.getNumber())
+                                        .build()));
+            }
         }
 
         // Add to scene
@@ -217,6 +220,14 @@ public class World implements Iterable<Player> {
                                 victim.getSceneId(),
                                 victim.getPosition()));
             }
+        } else {
+            this.broadcastPacket(
+                    new PacketPlayerChatNotify(
+                            player,
+                            0,
+                            SystemHint.newBuilder()
+                                    .setType(SystemHintType.SYSTEM_HINT_TYPE_CHAT_LEAVE_WORLD.getNumber())
+                                    .build()));
         }
     }
 
@@ -512,10 +523,6 @@ public class World implements Iterable<Player> {
      */
     public void changeTime(long gameTime) {
         this.currentWorldTime = gameTime;
-
-        // Trigger script events.
-        this.players.forEach(
-                player -> player.getQuestManager().queueEvent(QuestContent.QUEST_CONTENT_GAME_TIME_TICK));
     }
 
     /**

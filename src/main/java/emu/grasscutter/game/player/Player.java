@@ -345,15 +345,10 @@ public class Player implements PlayerHook, FieldFetch {
         this.playerGameTime = gameTime;
 
         // If the player is the host of the world, update the game time as well.
-        if (this.getWorld().getHost() == this) {
-            this.getWorld().changeTime(gameTime);
+        var world = this.getWorld();
+        if (world != null && world.getHost() == this) {
+            world.changeTime(gameTime);
         }
-
-        // Trigger the script event for game time update.
-        var questManager = this.getQuestManager();
-        questManager.queueEvent(QuestCond.QUEST_COND_IS_DAYTIME);
-        questManager.queueEvent(QuestCond.QUEST_COND_TIME_VAR_GT_EQ);
-        questManager.queueEvent(QuestCond.QUEST_COND_TIME_VAR_PASS_DAY);
 
         this.save();
     }
@@ -707,14 +702,16 @@ public class Player implements PlayerHook, FieldFetch {
     }
 
     public void onEnterRegion(SceneRegion region) {
+        var enterRegionName = "ENTER_REGION_" + region.config_id;
         this.getQuestManager().forEachActiveQuest(quest -> {
             if (quest.getTriggerData() != null &&
-                quest.getTriggers().containsKey("ENTER_REGION_"+ region.config_id)) {
+                quest.getTriggers().containsKey(enterRegionName) &&
+                    region.getGroupId() == quest.getTriggerData().get(enterRegionName).getGroupId()) {
                 // If trigger hasn't been fired yet
-                if (!Boolean.TRUE.equals(quest.getTriggers().put("ENTER_REGION_" + region.config_id, true))) {
+                if (!Boolean.TRUE.equals(quest.getTriggers().put(enterRegionName, true))) {
                     this.getSession().send(new PacketServerCondMeetQuestListUpdateNotify());
                     this.getQuestManager().queueEvent(QuestContent.QUEST_CONTENT_TRIGGER_FIRE,
-                        quest.getTriggerData().get("ENTER_REGION_" + region.config_id).getId(), 0);
+                        quest.getTriggerData().get(enterRegionName).getId(), 0);
                 }
             }
         });
@@ -722,13 +719,15 @@ public class Player implements PlayerHook, FieldFetch {
     }
 
     public void onLeaveRegion(SceneRegion region) {
+        var leaveRegionName = "LEAVE_REGION_" + region.config_id;
         this.getQuestManager().forEachActiveQuest(quest -> {
-            if (quest.getTriggers().containsKey("LEAVE_REGION_" + region.config_id)) {
+            if (quest.getTriggers().containsKey(leaveRegionName) &&
+                region.getGroupId() == quest.getTriggerData().get(leaveRegionName).getGroupId()) {
                 // If trigger hasn't been fired yet
-                if (!Boolean.TRUE.equals(quest.getTriggers().put("LEAVE_REGION_" + region.config_id, true))) {
+                if (!Boolean.TRUE.equals(quest.getTriggers().put(leaveRegionName, true))) {
                     this.getSession().send(new PacketServerCondMeetQuestListUpdateNotify());
                     this.getQuestManager().queueEvent(QuestContent.QUEST_CONTENT_TRIGGER_FIRE,
-                        quest.getTriggerData().get("LEAVE_REGION_" + region.config_id).getId(), 0);
+                        quest.getTriggerData().get(leaveRegionName).getId(), 0);
                 }
             }
         });

@@ -1,6 +1,5 @@
 package emu.grasscutter.game.quest.exec;
 
-import emu.grasscutter.Grasscutter;
 import emu.grasscutter.data.excels.quest.QuestData;
 import emu.grasscutter.game.quest.GameQuest;
 import emu.grasscutter.game.quest.QuestValueExec;
@@ -27,33 +26,16 @@ public class ExecNotifyGroupLua extends QuestExecHandler {
         }
         scene.runWhenFinished(
                 () -> {
-                    val groupInstance = scriptManager.getGroupInstanceById(groupId);
-
-                    if (groupInstance != null) {
-                        // workaround to make sure the triggers are still there todo find better way of trigger
-                        // handling
-                        scriptManager.refreshGroup(groupInstance);
-                        Grasscutter.getLogger()
-                                .trace(
-                                        "group: {} \ncondition: {} \nparamStr {}",
-                                        groupInstance.getLuaGroup(),
-                                        condition,
-                                        paramStr);
-                    } else {
-                        Grasscutter.getLogger()
-                                .debug(
-                                        "notify, no group instance for:\n group: {} \ncondition: {} \nparamStr {}",
-                                        groupId,
-                                        condition,
-                                        paramStr);
-                    }
-
                     val eventType =
                             quest.getState() == QuestState.QUEST_STATE_FINISHED
                                     ? EventType.EVENT_QUEST_FINISH
                                     : EventType.EVENT_QUEST_START;
                     scriptManager.callEvent(
-                            new ScriptArgs(groupId, eventType, quest.getSubQuestId())
+                            new ScriptArgs(
+                                            groupId,
+                                            eventType,
+                                            quest.getSubQuestId(),
+                                            quest.getState() == QuestState.QUEST_STATE_FINISHED ? 1 : 0)
                                     .setEventSource(quest.getSubQuestId()));
                 });
 

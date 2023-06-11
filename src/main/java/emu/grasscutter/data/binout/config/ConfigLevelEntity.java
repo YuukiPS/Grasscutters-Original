@@ -11,4 +11,6 @@ public class ConfigLevelEntity {
     @Getter private List<ConfigAbilityData> avatarAbilities;
     @Getter private List<ConfigAbilityData> teamAbilities;
     @Getter private List<Integer> preloadMonsterEntityIDs;
+
+    @Getter private String dropElemControlType;
 }

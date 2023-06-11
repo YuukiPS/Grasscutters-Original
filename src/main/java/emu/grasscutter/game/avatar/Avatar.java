@@ -1243,13 +1243,15 @@ public class Avatar {
                         });
 
         // Add costume if avatar has a costume.
-        GameData.getAvatarCostumeDataItemIdMap()
-                .values()
-                .forEach(
-                        costumeData -> {
-                            if (costumeData.getCharacterId() != this.getAvatarId()) return;
-                            this.setCostume(costumeData.getId());
-                        });
+        if (GAME_OPTIONS.trialCostumes) {
+            GameData.getAvatarCostumeDataItemIdMap()
+                    .values()
+                    .forEach(
+                            costumeData -> {
+                                if (costumeData.getCharacterId() != this.getAvatarId()) return;
+                                this.setCostume(costumeData.getId());
+                            });
+        }
     }
 
     /** Equips the items applied from {@link Avatar#applyTrialItems()}. */

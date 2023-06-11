@@ -8,7 +8,7 @@ import emu.grasscutter.auth.*;
 import emu.grasscutter.command.*;
 import emu.grasscutter.config.ConfigContainer;
 import emu.grasscutter.data.ResourceLoader;
-import emu.grasscutter.database.DatabaseManager;
+import emu.grasscutter.database.*;
 import emu.grasscutter.plugin.PluginManager;
 import emu.grasscutter.plugin.api.ServerHelper;
 import emu.grasscutter.server.dispatch.DispatchServer;
@@ -183,6 +183,25 @@ public final class Grasscutter {
     private static void onShutdown() {
         // Disable all plugins.
         if (pluginManager != null) pluginManager.disablePlugins();
+        // Shutdown the game server.
+        if (gameServer != null) gameServer.onServerShutdown();
+
+        try {
+            // Wait for Grasscutter's thread pool to finish.
+            var executor = Grasscutter.getThreadPool();
+            executor.shutdown();
+            if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
+                executor.shutdownNow();
+            }
+
+            // Wait for database operations to finish.
+            var dbExecutor = DatabaseHelper.getEventExecutor();
+            dbExecutor.shutdown();
+            if (!dbExecutor.awaitTermination(5, TimeUnit.SECONDS)) {
+                dbExecutor.shutdownNow();
+            }
+        } catch (InterruptedException ignored) {
+        }
     }
 
     /*

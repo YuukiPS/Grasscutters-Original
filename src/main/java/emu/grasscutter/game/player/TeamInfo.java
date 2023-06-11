@@ -5,8 +5,7 @@ import static emu.grasscutter.config.Configuration.GAME_OPTIONS;
 import dev.morphia.annotations.Entity;
 import emu.grasscutter.game.avatar.Avatar;
 import emu.grasscutter.net.proto.AvatarTeamOuterClass.AvatarTeam;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 public final class TeamInfo {
@@ -87,6 +86,8 @@ public final class TeamInfo {
 
         for (int i = 0; i < this.getAvatars().size(); i++) {
             Avatar avatar = player.getAvatars().getAvatarById(this.getAvatars().get(i));
+            if (avatar == null) continue;
+
             avatarTeam.addAvatarGuidList(avatar.getGuid());
         }
 

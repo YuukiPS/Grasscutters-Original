@@ -2,11 +2,9 @@ package emu.grasscutter.database;
 
 import static com.mongodb.client.model.Filters.eq;
 
-import dev.morphia.query.FindOptions;
-import dev.morphia.query.Sort;
+import dev.morphia.query.*;
 import dev.morphia.query.experimental.filters.Filters;
-import emu.grasscutter.GameConstants;
-import emu.grasscutter.Grasscutter;
+import emu.grasscutter.*;
 import emu.grasscutter.game.Account;
 import emu.grasscutter.game.achievement.Achievements;
 import emu.grasscutter.game.activity.PlayerActivityData;
@@ -26,8 +24,10 @@ import io.netty.util.concurrent.FastThreadLocalThread;
 import java.util.List;
 import java.util.concurrent.*;
 import java.util.stream.Stream;
+import lombok.Getter;
 
 public final class DatabaseHelper {
+    @Getter
     private static final ExecutorService eventExecutor =
             new ThreadPoolExecutor(
                     6,

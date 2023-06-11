@@ -32,10 +32,11 @@ import emu.grasscutter.server.event.internal.*;
 import emu.grasscutter.server.event.types.ServerEvent;
 import emu.grasscutter.server.scheduler.ServerTaskScheduler;
 import emu.grasscutter.task.TaskMap;
+import emu.grasscutter.utils.Utils;
 import java.net.*;
 import java.time.*;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.*;
 import kcp.highway.*;
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
@@ -163,9 +164,6 @@ public final class GameServer extends KcpServer implements Iterable<Player> {
 
         // Chata manager
         this.chatManager = new ChatSystem(this);
-
-        // Hook into shutdown event.
-        Runtime.getRuntime().addShutdownHook(new Thread(this::onServerShutdown));
     }
 
     private static InetSocketAddress getAdapterInetSocketAddress() {
@@ -326,16 +324,27 @@ public final class GameServer extends KcpServer implements Iterable<Player> {
     }
 
     public void onServerShutdown() {
-        ServerStopEvent event = new ServerStopEvent(ServerEvent.Type.GAME, OffsetDateTime.now());
+        var event = new ServerStopEvent(ServerEvent.Type.GAME, OffsetDateTime.now());
         event.call();
 
-        this.getPlayers()
-                .forEach(
-                        (uid, player) -> {
-                            player.getSession().close();
-                        });
-
+        // Save players & the world.
+        this.getPlayers().forEach((uid, player) -> player.getSession().close());
         this.getWorlds().forEach(World::save);
+
+        Utils.sleep(1000L); // Wait 1 second for operations to finish.
+        this.stop(); // Stop the server.
+
+        try {
+            var threadPool = GameSessionManager.getLogicThread();
+
+            // Shutdown network thread.
+            threadPool.shutdownGracefully();
+            // Wait for the network thread to finish.
+            if (!threadPool.awaitTermination(5, TimeUnit.SECONDS)) {
+                Grasscutter.getLogger().error("Logic thread did not terminate!");
+            }
+        } catch (InterruptedException ignored) {
+        }
     }
 
     @NotNull @Override

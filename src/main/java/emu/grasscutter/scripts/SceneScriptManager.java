@@ -681,8 +681,8 @@ public class SceneScriptManager {
                                             || !groupInstance.getDeadEntities().contains(m.config_id));
                         })
                 .map(g -> createGadget(group.id, group.block_id, g, groupInstance.getCachedGadgetState(g)))
-                .peek(g -> groupInstance.cacheGadgetState(g.getMetaGadget(), g.getState()))
                 .filter(Objects::nonNull)
+                .peek(g -> groupInstance.cacheGadgetState(g.getMetaGadget(), g.getState()))
                 .toList();
     }
 
@@ -801,26 +801,28 @@ public class SceneScriptManager {
     private void realCallEvent(@Nonnull ScriptArgs params) {
         try {
             ScriptLoader.getScriptLib().setSceneScriptManager(this);
-            int eventType = params.type;
-            Set<SceneTrigger> relevantTriggers = new HashSet<>();
-            if (eventType == EventType.EVENT_ENTER_REGION || eventType == EventType.EVENT_LEAVE_REGION) {
-                relevantTriggers =
-                        this.getTriggersByEvent(eventType).stream()
+
+            var eventType = params.type;
+            var relevantTriggers =
+                    switch (eventType) {
+                        case EventType.EVENT_ENTER_REGION, EventType.EVENT_LEAVE_REGION -> this
+                                .getTriggersByEvent(eventType)
+                                .stream()
                                 .filter(
                                         t ->
-                                                t.getCondition().contains(String.valueOf(params.param1))
+                                                !t.getCondition().isEmpty()
+                                                        && t.getCondition().substring(29).equals(String.valueOf(params.param1))
                                                         && (t.getSource().isEmpty()
                                                                 || t.getSource().equals(params.getEventSource())))
                                 .collect(Collectors.toSet());
-            } else {
-                relevantTriggers =
-                        this.getTriggersByEvent(eventType).stream()
+                        default -> this.getTriggersByEvent(eventType).stream()
                                 .filter(
                                         t -> params.getGroupId() == 0 || t.getCurrentGroup().id == params.getGroupId())
                                 .filter(
                                         t -> (t.getSource().isEmpty() || t.getSource().equals(params.getEventSource())))
                                 .collect(Collectors.toSet());
-            }
+                    };
+
             for (SceneTrigger trigger : relevantTriggers) {
                 handleEventForTrigger(params, trigger);
             }
