@@ -233,7 +233,8 @@ public final class Grasscutter {
         } catch (Exception exception) {
             getLogger()
                     .error(
-                            "There was an error while trying to load the configuration from config.json. Please make sure that there are no syntax errors. If you want to start with a default configuration, delete your existing config.json.", exception);
+                            "There was an error while trying to load the configuration from config.json. Please make sure that there are no syntax errors. If you want to start with a default configuration, delete your existing config.json.",
+                            exception);
             System.exit(1);
         }
     }

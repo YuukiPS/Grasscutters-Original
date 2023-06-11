@@ -14,7 +14,6 @@ import dev.morphia.mapping.Mapper;
 import dev.morphia.mapping.MapperOptions;
 import dev.morphia.query.experimental.filters.Filters;
 import emu.grasscutter.Grasscutter;
-import emu.grasscutter.Grasscutter.ServerRunMode;
 import emu.grasscutter.game.Account;
 import org.reflections.Reflections;
 
@@ -61,12 +60,12 @@ public final class DatabaseManager {
 
         // Ensure indexes for the game datastore
         ensureIndexes(gameDatastore);
-        
+
         MongoClient dispatchMongoClient = MongoClients.create(DATABASE.server.connectionUri);
 
         dispatchDatastore =
-                    Morphia.createDatastore(dispatchMongoClient, DATABASE.server.collection, mapperOptions);
-            dispatchDatastore.getMapper().map(new Class<?>[] {DatabaseCounter.class, Account.class});
+                Morphia.createDatastore(dispatchMongoClient, DATABASE.server.collection, mapperOptions);
+        dispatchDatastore.getMapper().map(new Class<?>[] {DatabaseCounter.class, Account.class});
 
         // Ensure indexes for dispatch datastore
         ensureIndexes(dispatchDatastore);

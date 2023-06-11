@@ -64,20 +64,20 @@ public final class FileUtils {
         fs = null;
         path = Path.of(resources);
 
-        Path pathzip = Paths.get(resources+"resources.zip");
+        Path pathzip = Paths.get(resources + "resources.zip");
 
-		if (resources.endsWith(".zip") || Files.exists(pathzip)) {
-			Grasscutter.getLogger().info("Found file zip res");
-			var tmptes = path;
-			if (Files.exists(pathzip)) {
-				tmptes = pathzip; // foce use it
-			}
-			try {
-				fs = FileSystems.newFileSystem(tmptes);
-			} catch (IOException e) {
-				Grasscutter.getLogger().error("Failed to load resources zip \"" + resources + "\"");
-			}
-		}
+        if (resources.endsWith(".zip") || Files.exists(pathzip)) {
+            Grasscutter.getLogger().info("Found file zip res");
+            var tmptes = path;
+            if (Files.exists(pathzip)) {
+                tmptes = pathzip; // foce use it
+            }
+            try {
+                fs = FileSystems.newFileSystem(tmptes);
+            } catch (IOException e) {
+                Grasscutter.getLogger().error("Failed to load resources zip \"" + resources + "\"");
+            }
+        }
 
         if (fs != null) {
             var root = fs.getPath("");
