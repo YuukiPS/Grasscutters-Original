@@ -27,8 +27,7 @@ public final class DatabaseManager {
     }
 
     public static Datastore getAccountDatastore() {
-        if (Grasscutter.getRunMode() == ServerRunMode.HYBRID) return gameDatastore;
-        else return dispatchDatastore;
+        return dispatchDatastore;
     }
 
     public static MongoDatabase getGameDatabase() {
@@ -62,17 +61,15 @@ public final class DatabaseManager {
 
         // Ensure indexes for the game datastore
         ensureIndexes(gameDatastore);
+        
+        MongoClient dispatchMongoClient = MongoClients.create(DATABASE.server.connectionUri);
 
-        if (Grasscutter.getRunMode() != ServerRunMode.HYBRID) {
-            MongoClient dispatchMongoClient = MongoClients.create(DATABASE.server.connectionUri);
-
-            dispatchDatastore =
+        dispatchDatastore =
                     Morphia.createDatastore(dispatchMongoClient, DATABASE.server.collection, mapperOptions);
             dispatchDatastore.getMapper().map(new Class<?>[] {DatabaseCounter.class, Account.class});
 
-            // Ensure indexes for dispatch datastore
-            ensureIndexes(dispatchDatastore);
-        }
+        // Ensure indexes for dispatch datastore
+        ensureIndexes(dispatchDatastore);
     }
 
     /**
