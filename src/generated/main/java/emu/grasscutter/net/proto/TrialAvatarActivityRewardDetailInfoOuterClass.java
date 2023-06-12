@@ -19,13 +19,13 @@ public final class TrialAvatarActivityRewardDetailInfoOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>bool received_reward = 9;</code>
+     * <code>bool received_reward = 12;</code>
      * @return The receivedReward.
      */
     boolean getReceivedReward();
 
     /**
-     * <code>bool passed_dungeon = 12;</code>
+     * <code>bool passed_dungeon = 9;</code>
      * @return The passedDungeon.
      */
     boolean getPassedDungeon();
@@ -98,12 +98,12 @@ public final class TrialAvatarActivityRewardDetailInfoOuterClass {
             }
             case 72: {
 
-              receivedReward_ = input.readBool();
+              passedDungeon_ = input.readBool();
               break;
             }
             case 96: {
 
-              passedDungeon_ = input.readBool();
+              receivedReward_ = input.readBool();
               break;
             }
             case 112: {
@@ -143,10 +143,10 @@ public final class TrialAvatarActivityRewardDetailInfoOuterClass {
               emu.grasscutter.net.proto.TrialAvatarActivityRewardDetailInfoOuterClass.TrialAvatarActivityRewardDetailInfo.class, emu.grasscutter.net.proto.TrialAvatarActivityRewardDetailInfoOuterClass.TrialAvatarActivityRewardDetailInfo.Builder.class);
     }
 
-    public static final int RECEIVED_REWARD_FIELD_NUMBER = 9;
+    public static final int RECEIVED_REWARD_FIELD_NUMBER = 12;
     private boolean receivedReward_;
     /**
-     * <code>bool received_reward = 9;</code>
+     * <code>bool received_reward = 12;</code>
      * @return The receivedReward.
      */
     @java.lang.Override
@@ -154,10 +154,10 @@ public final class TrialAvatarActivityRewardDetailInfoOuterClass {
       return receivedReward_;
     }
 
-    public static final int PASSED_DUNGEON_FIELD_NUMBER = 12;
+    public static final int PASSED_DUNGEON_FIELD_NUMBER = 9;
     private boolean passedDungeon_;
     /**
-     * <code>bool passed_dungeon = 12;</code>
+     * <code>bool passed_dungeon = 9;</code>
      * @return The passedDungeon.
      */
     @java.lang.Override
@@ -204,11 +204,11 @@ public final class TrialAvatarActivityRewardDetailInfoOuterClass {
       if (trialAvatarIndexId_ != 0) {
         output.writeUInt32(5, trialAvatarIndexId_);
       }
-      if (receivedReward_ != false) {
-        output.writeBool(9, receivedReward_);
-      }
       if (passedDungeon_ != false) {
-        output.writeBool(12, passedDungeon_);
+        output.writeBool(9, passedDungeon_);
+      }
+      if (receivedReward_ != false) {
+        output.writeBool(12, receivedReward_);
       }
       if (rewardId_ != 0) {
         output.writeUInt32(14, rewardId_);
@@ -226,13 +226,13 @@ public final class TrialAvatarActivityRewardDetailInfoOuterClass {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(5, trialAvatarIndexId_);
       }
-      if (receivedReward_ != false) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(9, receivedReward_);
-      }
       if (passedDungeon_ != false) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(12, passedDungeon_);
+          .computeBoolSize(9, passedDungeon_);
+      }
+      if (receivedReward_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(12, receivedReward_);
       }
       if (rewardId_ != 0) {
         size += com.google.protobuf.CodedOutputStream
@@ -548,7 +548,7 @@ public final class TrialAvatarActivityRewardDetailInfoOuterClass {
 
       private boolean receivedReward_ ;
       /**
-       * <code>bool received_reward = 9;</code>
+       * <code>bool received_reward = 12;</code>
        * @return The receivedReward.
        */
       @java.lang.Override
@@ -556,7 +556,7 @@ public final class TrialAvatarActivityRewardDetailInfoOuterClass {
         return receivedReward_;
       }
       /**
-       * <code>bool received_reward = 9;</code>
+       * <code>bool received_reward = 12;</code>
        * @param value The receivedReward to set.
        * @return This builder for chaining.
        */
@@ -567,7 +567,7 @@ public final class TrialAvatarActivityRewardDetailInfoOuterClass {
         return this;
       }
       /**
-       * <code>bool received_reward = 9;</code>
+       * <code>bool received_reward = 12;</code>
        * @return This builder for chaining.
        */
       public Builder clearReceivedReward() {
@@ -579,7 +579,7 @@ public final class TrialAvatarActivityRewardDetailInfoOuterClass {
 
       private boolean passedDungeon_ ;
       /**
-       * <code>bool passed_dungeon = 12;</code>
+       * <code>bool passed_dungeon = 9;</code>
        * @return The passedDungeon.
        */
       @java.lang.Override
@@ -587,7 +587,7 @@ public final class TrialAvatarActivityRewardDetailInfoOuterClass {
         return passedDungeon_;
       }
       /**
-       * <code>bool passed_dungeon = 12;</code>
+       * <code>bool passed_dungeon = 9;</code>
        * @param value The passedDungeon to set.
        * @return This builder for chaining.
        */
@@ -598,7 +598,7 @@ public final class TrialAvatarActivityRewardDetailInfoOuterClass {
         return this;
       }
       /**
-       * <code>bool passed_dungeon = 12;</code>
+       * <code>bool passed_dungeon = 9;</code>
        * @return This builder for chaining.
        */
       public Builder clearPassedDungeon() {
@@ -738,8 +738,8 @@ public final class TrialAvatarActivityRewardDetailInfoOuterClass {
     java.lang.String[] descriptorData = {
       "\n)TrialAvatarActivityRewardDetailInfo.pr" +
       "oto\"\210\001\n#TrialAvatarActivityRewardDetailI" +
-      "nfo\022\027\n\017received_reward\030\t \001(\010\022\026\n\016passed_d" +
-      "ungeon\030\014 \001(\010\022\021\n\treward_id\030\016 \001(\r\022\035\n\025trial" +
+      "nfo\022\027\n\017received_reward\030\014 \001(\010\022\026\n\016passed_d" +
+      "ungeon\030\t \001(\010\022\021\n\treward_id\030\016 \001(\r\022\035\n\025trial" +
       "_avatar_index_id\030\005 \001(\rB\033\n\031emu.grasscutte" +
       "r.net.protob\006proto3"
     };
