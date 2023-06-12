@@ -150,17 +150,13 @@ public class QuestManager extends BasePlayerManager {
     public void onLogin() {
 
         List<GameMainQuest> activeQuests = getActiveMainQuests();
-        List<GameQuest> activeSubs = new ArrayList<>(activeQuests.size());
         for (GameMainQuest quest : activeQuests) {
             List<Position> rewindPos = quest.rewind(); // <pos, rotation>
-            var activeQuest = quest.getActiveQuests();
-            if (rewindPos != null) {
+            boolean rw = true;
+            if (rw == true && rewindPos != null) {
                 getPlayer().getPosition().set(rewindPos.get(0));
                 getPlayer().getRotation().set(rewindPos.get(1));
-            }
-            if(activeQuest!=null && rewindPos!=null){
-                //activeSubs.add(activeQuest);
-                //player.sendPacket(new PacketQuestProgressUpdateNotify(activeQuest));
+                rw = false; // rewind only first
             }
             quest.checkProgress();
         }
@@ -395,7 +391,7 @@ public class QuestManager extends BasePlayerManager {
     //QUEST_EXEC are handled directly by each subQuest
 
     public void triggerEvent(QuestCond condType, String paramStr, int... params) {
-        Grasscutter.getLogger().trace("Trigger Event {}, {}, {}", condType, paramStr, params);
+        Grasscutter.getLogger().debug("Trigger Event {}, {}, {}", condType, paramStr, params);
         var potentialQuests = GameData.getQuestDataByConditions(condType, params[0], paramStr);
         if(potentialQuests == null){
             return;
@@ -448,7 +444,7 @@ public class QuestManager extends BasePlayerManager {
     }
 
     public void triggerEvent(QuestContent condType, String paramStr, int... params) {
-        Grasscutter.getLogger().trace("Trigger Event {}, {}, {}", condType, paramStr, params);
+        Grasscutter.getLogger().debug("Trigger Event {}, {}, {}", condType, paramStr, params);
 
         List<GameMainQuest> checkMainQuests = this.getMainQuests().values().stream()
             .filter(i -> i.getState() != ParentQuestState.PARENT_QUEST_STATE_FINISHED)

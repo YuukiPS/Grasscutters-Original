@@ -312,6 +312,10 @@ public class GameQuest {
         getMainQuest().save();
     }
 
+    public void delete() {
+        getMainQuest().delete();
+    }
+
     public Quest toProto() {
         Quest.Builder proto =
                 Quest.newBuilder()
