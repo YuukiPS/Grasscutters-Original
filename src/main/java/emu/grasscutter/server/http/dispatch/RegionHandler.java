@@ -95,10 +95,12 @@ public final class RegionHandler implements Router {
                             RegionInfo.newBuilder()
                                     .setGateserverIp(region.Ip)
                                     .setGateserverPort(region.Port)
-                                    .setSecretKey(ByteString.copyFrom(Crypto.DISPATCH_SEED))
-                                    .build();
+                                    .build();   
                     // Create an updated region query.
-                    var updatedQuery = QueryCurrRegionHttpRsp.newBuilder().setRegionInfo(regionInfo).build();
+                    var updatedQuery = QueryCurrRegionHttpRsp.newBuilder()
+                    .setRegionInfo(regionInfo)
+                    .setClientSecretKey(ByteString.copyFrom(Crypto.DISPATCH_SEED))
+                    .build();
                     regions.put(
                             region.Name,
                             new RegionData(

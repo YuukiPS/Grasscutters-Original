@@ -26,12 +26,10 @@ public class PacketPlayerLoginRsp extends BasePacket {
 
         if (regionCache == null) {
             // if no cache try fetching region use server game info
-            RegionInfo serverRegion =
-                    RegionInfo.newBuilder()
-                            .setGateserverIp(lr(GAME_INFO.accessAddress, GAME_INFO.bindAddress))
-                            .setGateserverPort(lr(GAME_INFO.accessPort, GAME_INFO.bindPort))
-                            .setSecretKey(ByteString.copyFrom(Crypto.DISPATCH_SEED))
-                            .build();
+            RegionInfo serverRegion = RegionInfo.newBuilder()
+                .setGateserverIp(lr(GAME_INFO.accessAddress, GAME_INFO.bindAddress))
+                .setGateserverPort(lr(GAME_INFO.accessPort, GAME_INFO.bindPort))
+                .build();
 
             // Check if get Current Region is null
             var tes1 = RegionHandler.getCurrentRegion();
@@ -44,10 +42,10 @@ public class PacketPlayerLoginRsp extends BasePacket {
             }
 
             // Update Cache from info
-            regionCache =
-                    QueryCurrRegionHttpRspOuterClass.QueryCurrRegionHttpRsp.newBuilder()
-                            .setRegionInfo(info)
-                            .build();
+            regionCache = QueryCurrRegionHttpRspOuterClass.QueryCurrRegionHttpRsp.newBuilder()
+                .setRegionInfo(info)
+                .setClientSecretKey(ByteString.copyFrom(Crypto.DISPATCH_SEED))
+                .build();
         }
 
         // Fetch from Cache, TODO: null check?
