@@ -556,10 +556,6 @@ public final class Scene {
         this.finishLoading();
         this.checkPlayerRespawn();
         if (this.tickCount++ % 10 == 0) this.broadcastPacket(new PacketSceneTimeNotify(this));
-        if (this.getPlayerCount() <= 0 && !this.dontDestroyWhenEmpty) {
-            this.getScriptManager().onDestroy();
-            this.getWorld().deregisterScene(this);
-        }
     }
 
     /** Validates a player's current position. Teleports the player if the player is out of bounds. */
@@ -842,7 +838,7 @@ public final class Scene {
                         .collect(Collectors.toSet());
 
         for (var group : this.loadedGroups) {
-            if (!visible.contains(group.id) && !group.dynamic_load)
+            if (!visible.contains(group.id) && !group.dynamic_load && !group.dontUnload)
                 unloadGroup(scriptManager.getBlocks().get(group.block_id), group.id);
         }
 
