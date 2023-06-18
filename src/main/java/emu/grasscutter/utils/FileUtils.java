@@ -18,6 +18,7 @@ import java.util.stream.Stream;
 import lombok.val;
 
 public final class FileUtils {
+
     private static final Path DATA_DEFAULT_PATH;
     private static final Path DATA_USER_PATH = Path.of(Grasscutter.config.folderStructure.data);
     private static final Path PACKETS_PATH = Path.of(Grasscutter.config.folderStructure.packets);
@@ -66,11 +67,13 @@ public final class FileUtils {
 
         Path pathzip = Paths.get(resources + "resources.zip");
 
+        Grasscutter.getLogger().info("Find zip file: " + pathzip);
+
         if (resources.endsWith(".zip") || Files.exists(pathzip)) {
-            Grasscutter.getLogger().info("Found file zip res");
             var tmptes = path;
             if (Files.exists(pathzip)) {
                 tmptes = pathzip; // foce use it
+                Grasscutter.getLogger().info("Found zip file..");
             }
             try {
                 fs = FileSystems.newFileSystem(tmptes);
