@@ -401,7 +401,8 @@ public final class QuestCommand implements CommandHandler {
                 var loggedQuests = mg.getLoggedQuests();
                 var shouldAdd = !loggedQuests.contains(questId);
 
-                if (shouldAdd) loggedQuests.add(questId); else loggedQuests.remove(questId);
+                if (shouldAdd) loggedQuests.add(questId);
+                else loggedQuests.remove(loggedQuests.indexOf(questId));
 
                 CommandHandler.sendMessage(
                     sender,

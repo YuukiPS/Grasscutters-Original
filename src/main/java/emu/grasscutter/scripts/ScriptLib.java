@@ -18,6 +18,7 @@ import emu.grasscutter.game.quest.enums.QuestContent;
 import emu.grasscutter.game.quest.enums.QuestState;
 import emu.grasscutter.game.world.SceneGroupInstance;
 import emu.grasscutter.net.proto.EnterTypeOuterClass;
+import emu.grasscutter.net.proto.VisionTypeOuterClass.VisionType;
 import emu.grasscutter.scripts.constants.EventType;
 import emu.grasscutter.scripts.constants.GroupKillPolicy;
 import emu.grasscutter.scripts.data.SceneGroup;
@@ -402,7 +403,7 @@ public class ScriptLib {
 
         val old = variables.getOrDefault(var, value);
         variables.put(var, value);
-        getSceneScriptManager().callEvent(new ScriptArgs(groupId, EventType.EVENT_VARIABLE_CHANGE, value, old));
+        getSceneScriptManager().callEvent(new ScriptArgs(groupId, EventType.EVENT_VARIABLE_CHANGE, value, old).setEventSource(var));
         return 0;
     }
 
@@ -417,7 +418,7 @@ public class ScriptLib {
         variables.put(var, old + value);
         logger.debug("[LUA] Call ChangeGroupVariableValue with {},{}",
             old, old+value);
-        getSceneScriptManager().callEvent(new ScriptArgs(groupId, EventType.EVENT_VARIABLE_CHANGE, old+value, old));
+        getSceneScriptManager().callEvent(new ScriptArgs(groupId, EventType.EVENT_VARIABLE_CHANGE, old+value, old).setEventSource(var));
         return LuaValue.ZERO;
     }
 
@@ -610,6 +611,11 @@ public class ScriptLib {
         logger.debug("[LUA] Call CreateGadget with {}",
             printTable(table));
         var configId = table.get("config_id").toint();
+        //TODO: figure out what creating gadget configId 0 does
+        if (configId == 0){
+            Grasscutter.getLogger().warn("Tried to CreateGadget with config_id 0: {}", printTable(table));
+            return 0;
+        }
 
         var group = getCurrentGroup();
 
@@ -704,7 +710,7 @@ public class ScriptLib {
             return EntityType.None.getValue();
         }
 
-        return entity.getEntityType();
+        return entity.getEntityType().getValue();
     }
 
     public int GetQuestState(int entityId, int questId){
@@ -739,11 +745,11 @@ public class ScriptLib {
 
         val entity = getSceneScriptManager().getScene().getEntityByConfigId(configId, groupId);
 
-        if(entity == null || entity.getEntityType() != entityType){
+        if(entity == null || entity.getEntityType().getValue() != entityType){
             return 1;
         }
 
-        getSceneScriptManager().getScene().removeEntity(entity);
+        getSceneScriptManager().getScene().removeEntity(entity, VisionType.VISION_TYPE_REMOVE);
 
         return 0;
     }
@@ -817,17 +823,17 @@ public class ScriptLib {
         //TODO implement
         return 0;
     }
-    public int IsPlayerAllAvatarDie(int sceneUid){
+    public boolean IsPlayerAllAvatarDie(int sceneUid){
         logger.warn("[LUA] Call unimplemented IsPlayerAllAvatarDie {}", sceneUid);
-        var playerEntities = getSceneScriptManager().getScene().getEntities().values().stream().filter(e -> e.getEntityType() == EntityIdType.AVATAR.getId()).toList();
+        var playerEntities = getSceneScriptManager().getScene().getEntities().values().stream().filter(e -> e.getEntityType() == EntityType.Avatar).toList();
         for (GameEntity p : playerEntities){
             var player = (EntityAvatar)p;
             if(player.isAlive()){
-                return 0;
+                return false;
             }
         }
         //TODO check
-        return 1;
+        return true;
     }
 
     public int sendShowCommonTipsToClient(String title, String content, int closeTime) {
@@ -861,6 +867,11 @@ public class ScriptLib {
     public int AttachChildChallenge(int var1, int var2, int var3, int[] var4, LuaTable var5, LuaTable var6){
         logger.warn("[LUA] Call unimplemented AttachChildChallenge with {} {} {} {} {} {}", var1, var2, var3, var4, var5, var6);
         //TODO implement var6 object has int success, int fail, bool fail_on_wipe
+        return 0;
+    }
+    public int StopChallenge(int var1, int var2){
+        logger.warn("[LUA] Call unimplemented StopChallenge with {} {}", var1, var2);
+        //TODO implement
         return 0;
     }
     public int CreateEffigyChallengeMonster(int var1, int[] var2){
