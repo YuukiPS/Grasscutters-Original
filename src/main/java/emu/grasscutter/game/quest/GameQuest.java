@@ -5,6 +5,7 @@ import emu.grasscutter.Grasscutter;
 import emu.grasscutter.data.GameData;
 import emu.grasscutter.data.excels.*;
 import emu.grasscutter.data.excels.quest.QuestData;
+import emu.grasscutter.data.excels.quest.QuestData.QuestContentCondition;
 import emu.grasscutter.game.dungeons.enums.DungeonPassConditionType;
 import emu.grasscutter.game.player.Player;
 import emu.grasscutter.game.props.ActionReason;
@@ -155,7 +156,7 @@ public class GameQuest {
         // TODO improve
         var oldState = state;
         if (questData.getFinishCond() != null && questData.getFinishCond().size() != 0) {
-            for (var condition : questData.getFinishCond()) {
+            for (QuestContentCondition condition : questData.getFinishCond()) {
                 if (condition.getType() == QuestContent.QUEST_CONTENT_LUA_NOTIFY) {
                     this.getOwner().getPlayerProgress().resetCurrentProgress(condition.getParamStr());
                 }
@@ -164,7 +165,7 @@ public class GameQuest {
         }
 
         if (questData.getFailCond() != null && questData.getFailCond().size() != 0) {
-            for (var condition : questData.getFailCond()) {
+            for (QuestContentCondition condition : questData.getFailCond()) {
                 if (condition.getType() == QuestContent.QUEST_CONTENT_LUA_NOTIFY) {
                     this.getOwner().getPlayerProgress().resetCurrentProgress(condition.getParamStr());
                 }

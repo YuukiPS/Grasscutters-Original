@@ -61,7 +61,7 @@ public class DynamicFloat {
         if (!this.dynamic) return constant;
 
         val fl = new FloatArrayList();
-        for (var op : this.ops) {
+        for (StackOp op : this.ops) {
             switch (op.op) {
                 case CONSTANT -> fl.push(op.fValue);
                 case KEY -> fl.push(props.getOrDefault(op.sValue, 0f) * (op.negative ? -1 : 1));

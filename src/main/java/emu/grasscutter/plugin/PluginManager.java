@@ -66,7 +66,7 @@ public final class PluginManager {
         List<PluginData> dependencies = new ArrayList<>();
 
         // Initialize all plugins.
-        for (var plugin : plugins) {
+        for (File plugin : plugins) {
             try {
                 URL url = plugin.toURI().toURL();
                 try (URLClassLoader loader = new URLClassLoader(new URL[] {url})) {

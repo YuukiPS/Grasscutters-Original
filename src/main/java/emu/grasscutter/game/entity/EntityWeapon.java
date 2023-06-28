@@ -66,7 +66,7 @@ public class EntityWeapon extends EntityBaseGadget {
     public void initAbilities() {
         // TODO: handle pre-dynamic, static and dynamic here
         if (this.configGadget != null && this.configGadget.getAbilities() != null) {
-            for (var ability : this.configGadget.getAbilities()) {
+            for (ConfigAbilityData ability : this.configGadget.getAbilities()) {
                 this.addConfigAbility(ability);
             }
         }

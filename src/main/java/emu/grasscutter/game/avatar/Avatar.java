@@ -811,7 +811,7 @@ public class Avatar {
         var skillPointModifiers = entry.getSkillPointModifiers();
         if (skillPointModifiers == null) return false;
 
-        for (var mod : skillPointModifiers) {
+        for (SkillPointModifier mod : skillPointModifiers) {
             AvatarSkillData skillData = GameData.getAvatarSkillDataMap().get(mod.getSkillId());
 
             if (skillData == null) continue;

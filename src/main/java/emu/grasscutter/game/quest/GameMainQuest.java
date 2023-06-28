@@ -62,7 +62,7 @@ public class GameMainQuest {
                 Arrays.stream(GameData.getMainQuestDataMap().get(this.parentQuestId).getSubQuests())
                         .map(SubQuestData::getSubId)
                         .toList();
-        for (var subQuestId : subQuestIds) {
+        for (Integer subQuestId : subQuestIds) {
             QuestData questConfig = GameData.getQuestDataMap().get((int) subQuestId);
             if (questConfig == null) {
                 Grasscutter.getLogger()
@@ -366,7 +366,7 @@ public class GameMainQuest {
     }
 
     public void checkProgress() {
-        for (var quest : getChildQuests().values()) {
+        for (GameQuest quest : getChildQuests().values()) {
             if (quest.getState() == QuestState.QUEST_STATE_UNFINISHED) {
                 questManager.checkQuestAlreadyFulfilled(quest);
             }
@@ -532,7 +532,7 @@ public class GameMainQuest {
                         .setVideoKey(QuestManager.getQuestKey(parentQuestId));
 
         if (withChildQuests) {
-            for (var quest : this.getChildQuests().values()) {
+            for (GameQuest quest : this.getChildQuests().values()) {
                 if (quest.getState() != QuestState.QUEST_STATE_UNSTARTED) {
                     var childQuest =
                             ChildQuest.newBuilder()

@@ -1,6 +1,8 @@
 package emu.grasscutter.game.entity;
 
 import emu.grasscutter.data.GameData;
+import emu.grasscutter.data.server.DropTableExcelConfigData.DropVectorEntry;
+import emu.grasscutter.data.server.SubfieldMapping.SubfieldMappingEntry;
 import emu.grasscutter.game.ability.*;
 import emu.grasscutter.game.player.Player;
 import emu.grasscutter.game.props.*;
@@ -15,6 +17,8 @@ import emu.grasscutter.scripts.data.controller.EntityController;
 import emu.grasscutter.server.event.entity.*;
 import emu.grasscutter.server.packet.send.PacketEntityFightPropUpdateNotify;
 import it.unimi.dsi.fastutil.ints.*;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap.Entry;
+
 import java.util.*;
 import lombok.*;
 
@@ -245,12 +249,12 @@ public abstract class GameEntity {
             case 0: // select one
                 {
                     int weightCount = 0;
-                    for (var entry : dropTableEntry.getDropVec()) weightCount += entry.getWeight();
+                    for (DropVectorEntry entry : dropTableEntry.getDropVec()) weightCount += entry.getWeight();
 
                     int randomValue = new Random().nextInt(weightCount);
 
                     weightCount = 0;
-                    for (var entry : dropTableEntry.getDropVec()) {
+                    for (DropVectorEntry entry : dropTableEntry.getDropVec()) {
                         if (randomValue >= weightCount && randomValue < (weightCount + entry.getWeight())) {
                             var countRange = parseCountRange(entry.getCountRange());
                             itemsToDrop.put(
@@ -262,7 +266,7 @@ public abstract class GameEntity {
                 break;
             case 1: // Select various
                 {
-                    for (var entry : dropTableEntry.getDropVec()) {
+                    for (DropVectorEntry entry : dropTableEntry.getDropVec()) {
                         if (entry.getWeight() < new Random().nextInt(10000)) {
                             var countRange = parseCountRange(entry.getCountRange());
                             itemsToDrop.put(
@@ -274,7 +278,7 @@ public abstract class GameEntity {
                 break;
         }
 
-        for (var entry : itemsToDrop.int2ObjectEntrySet()) {
+        for (Entry<Integer> entry : itemsToDrop.int2ObjectEntrySet()) {
             var item =
                     new EntityItem(
                             scene,
@@ -294,7 +298,7 @@ public abstract class GameEntity {
         var subfieldMapping = GameData.getSubfieldMappingMap().get(getEntityTypeId());
         if (subfieldMapping == null || subfieldMapping.getSubfields() == null) return false;
 
-        for (var entry : subfieldMapping.getSubfields()) {
+        for (SubfieldMappingEntry entry : subfieldMapping.getSubfields()) {
             if (entry.getSubfieldName().compareTo(subfieldName) == 0) {
                 return dropSubfieldItem(entry.getDrop_id());
             }

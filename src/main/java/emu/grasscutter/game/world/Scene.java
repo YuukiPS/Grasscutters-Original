@@ -119,8 +119,8 @@ public final class Scene {
         var entity = this.entities.get(id);
         if (entity == null) entity = this.weaponEntities.get(id);
         if (entity == null && (id >> 24) == EntityIdType.AVATAR.getId()) {
-            for (var player : getPlayers()) {
-                for (var avatar : player.getTeamManager().getActiveTeam()) {
+            for (Player player : getPlayers()) {
+                for (EntityAvatar avatar : player.getTeamManager().getActiveTeam()) {
                     if (avatar.getId() == id) return avatar;
                 }
             }
@@ -128,8 +128,8 @@ public final class Scene {
 
         // Check for a weapon.
         if (entity == null && (id >> 24) == EntityIdType.WEAPON.getId()) {
-            for (var player : this.getPlayers()) {
-                for (var avatar : player.getTeamManager().getActiveTeam()) {
+            for (Player player : this.getPlayers()) {
+                for (EntityAvatar avatar : player.getTeamManager().getActiveTeam()) {
                     if (avatar.getWeaponEntityId() == id) return avatar;
                 }
             }
@@ -383,11 +383,11 @@ public final class Scene {
             return;
         }
 
-        for (var entity : entities) {
+        for (GameEntity entity : entities) {
             this.addEntityDirectly(entity);
         }
 
-        for (var l : chopped(new ArrayList<>(entities), 100)) {
+        for (List<? extends GameEntity> l : chopped(new ArrayList<>(entities), 100)) {
             this.broadcastPacket(new PacketSceneEntityAppearNotify(l, visionType));
         }
     }
@@ -837,7 +837,7 @@ public final class Scene {
                         .flatMap(Collection::stream)
                         .collect(Collectors.toSet());
 
-        for (var group : this.loadedGroups) {
+        for (SceneGroup group : this.loadedGroups) {
             if (!visible.contains(group.id) && !group.dynamic_load && !group.dontUnload)
                 unloadGroup(scriptManager.getBlocks().get(group.block_id), group.id);
         }
@@ -847,7 +847,7 @@ public final class Scene {
                         .filter(g -> this.loadedGroups.stream().noneMatch(gr -> gr.id == g))
                         .map(
                                 g -> {
-                                    for (var b : scriptManager.getBlocks().values()) {
+                                    for (SceneBlock b : scriptManager.getBlocks().values()) {
                                         loadBlock(b);
                                         SceneGroup group = b.groups.getOrDefault(g, null);
                                         if (group != null && !group.dynamic_load) return group;
@@ -969,7 +969,7 @@ public final class Scene {
             return;
         }
 
-        for (var group : groups) {
+        for (SceneGroup group : groups) {
             if (this.loadedGroups.contains(group)) continue;
 
             // We load the script files for the groups here
@@ -982,7 +982,7 @@ public final class Scene {
         // Spawn gadgets AFTER triggers are added
         // TODO
         var entities = new ArrayList<GameEntity>();
-        for (var group : groups) {
+        for (SceneGroup group : groups) {
             if (this.loadedGroups.contains(group)) continue;
 
             if (group.init_config == null) {
