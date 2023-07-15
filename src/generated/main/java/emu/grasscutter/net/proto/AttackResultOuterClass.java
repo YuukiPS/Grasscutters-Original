@@ -100,10 +100,10 @@ public final class AttackResultOuterClass {
     int getElementType();
 
     /**
-     * <code>bool attack_timestamp_ms = 1597;</code>
+     * <code>uint32 attack_timestamp_ms = 1597;</code>
      * @return The attackTimestampMs.
      */
-    boolean getAttackTimestampMs();
+    int getAttackTimestampMs();
 
     /**
      * <code>uint32 amplify_reaction_type = 1235;</code>
@@ -440,7 +440,7 @@ public final class AttackResultOuterClass {
             }
             case 12776: {
 
-              attackTimestampMs_ = input.readBool();
+              attackTimestampMs_ = input.readUInt32();
               break;
             }
             case 12992: {
@@ -653,13 +653,13 @@ public final class AttackResultOuterClass {
     }
 
     public static final int ATTACK_TIMESTAMP_MS_FIELD_NUMBER = 1597;
-    private boolean attackTimestampMs_;
+    private int attackTimestampMs_;
     /**
-     * <code>bool attack_timestamp_ms = 1597;</code>
+     * <code>uint32 attack_timestamp_ms = 1597;</code>
      * @return The attackTimestampMs.
      */
     @java.lang.Override
-    public boolean getAttackTimestampMs() {
+    public int getAttackTimestampMs() {
       return attackTimestampMs_;
     }
 
@@ -1005,8 +1005,8 @@ public final class AttackResultOuterClass {
       if (amplifyReactionType_ != 0) {
         output.writeUInt32(1235, amplifyReactionType_);
       }
-      if (attackTimestampMs_ != false) {
-        output.writeBool(1597, attackTimestampMs_);
+      if (attackTimestampMs_ != 0) {
+        output.writeUInt32(1597, attackTimestampMs_);
       }
       if (hashedAnimEventId_ != 0) {
         output.writeUInt32(1624, hashedAnimEventId_);
@@ -1126,9 +1126,9 @@ public final class AttackResultOuterClass {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(1235, amplifyReactionType_);
       }
-      if (attackTimestampMs_ != false) {
+      if (attackTimestampMs_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(1597, attackTimestampMs_);
+          .computeUInt32Size(1597, attackTimestampMs_);
       }
       if (hashedAnimEventId_ != 0) {
         size += com.google.protobuf.CodedOutputStream
@@ -1287,8 +1287,7 @@ public final class AttackResultOuterClass {
       hash = (37 * hash) + ELEMENT_TYPE_FIELD_NUMBER;
       hash = (53 * hash) + getElementType();
       hash = (37 * hash) + ATTACK_TIMESTAMP_MS_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-          getAttackTimestampMs());
+      hash = (53 * hash) + getAttackTimestampMs();
       hash = (37 * hash) + AMPLIFY_REACTION_TYPE_FIELD_NUMBER;
       hash = (53 * hash) + getAmplifyReactionType();
       hash = (37 * hash) + IFHLFNMODNC_FIELD_NUMBER;
@@ -1500,7 +1499,7 @@ public final class AttackResultOuterClass {
 
         elementType_ = 0;
 
-        attackTimestampMs_ = false;
+        attackTimestampMs_ = 0;
 
         amplifyReactionType_ = 0;
 
@@ -1704,7 +1703,7 @@ public final class AttackResultOuterClass {
         if (other.getElementType() != 0) {
           setElementType(other.getElementType());
         }
-        if (other.getAttackTimestampMs() != false) {
+        if (other.getAttackTimestampMs() != 0) {
           setAttackTimestampMs(other.getAttackTimestampMs());
         }
         if (other.getAmplifyReactionType() != 0) {
@@ -2248,33 +2247,33 @@ public final class AttackResultOuterClass {
         return this;
       }
 
-      private boolean attackTimestampMs_ ;
+      private int attackTimestampMs_ ;
       /**
-       * <code>bool attack_timestamp_ms = 1597;</code>
+       * <code>uint32 attack_timestamp_ms = 1597;</code>
        * @return The attackTimestampMs.
        */
       @java.lang.Override
-      public boolean getAttackTimestampMs() {
+      public int getAttackTimestampMs() {
         return attackTimestampMs_;
       }
       /**
-       * <code>bool attack_timestamp_ms = 1597;</code>
+       * <code>uint32 attack_timestamp_ms = 1597;</code>
        * @param value The attackTimestampMs to set.
        * @return This builder for chaining.
        */
-      public Builder setAttackTimestampMs(boolean value) {
+      public Builder setAttackTimestampMs(int value) {
         
         attackTimestampMs_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>bool attack_timestamp_ms = 1597;</code>
+       * <code>uint32 attack_timestamp_ms = 1597;</code>
        * @return This builder for chaining.
        */
       public Builder clearAttackTimestampMs() {
         
-        attackTimestampMs_ = false;
+        attackTimestampMs_ = 0;
         onChanged();
         return this;
       }
@@ -3192,7 +3191,7 @@ public final class AttackResultOuterClass {
       "(\0132\026.AttackHitEffectResult\022\024\n\013HAGEIJIIBA" +
       "E\030\232\t \001(\r\022\024\n\013GGPOMBNHHCA\030\244\006 \001(\002\022\017\n\007is_cri" +
       "t\030\007 \001(\010\022\024\n\014element_type\030\010 \001(\r\022\034\n\023attack_" +
-      "timestamp_ms\030\275\014 \001(\010\022\036\n\025amplify_reaction_" +
+      "timestamp_ms\030\275\014 \001(\r\022\036\n\025amplify_reaction_" +
       "type\030\323\t \001(\r\022\023\n\013IFHLFNMODNC\030N \001(\010\022\023\n\013BIID" +
       "CDNCFPH\030\001 \001(\r\022\024\n\013AFPDNEPONHN\030\236\001 \001(\r\022\023\n\013a" +
       "ttacker_id\030\r \001(\r\022\022\n\ndefense_id\030\004 \001(\r\022\025\n\r" +
