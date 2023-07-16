@@ -51,7 +51,6 @@ public final class Scene {
     @Getter private final Set<SceneGroup> loadedGroups;
     @Getter private final BlossomManager blossomManager;
     private final HashSet<Integer> unlockedForces;
-    private final List<Runnable> afterLoadedCallbacks = new ArrayList<>();
     private final long startWorldTime;
     @Getter @Setter DungeonManager dungeonManager;
     @Getter Int2ObjectMap<Route> sceneRoutes;
@@ -67,6 +66,9 @@ public final class Scene {
     @Getter private boolean finishedLoading = false;
     @Getter private int tickCount = 0;
     @Getter private boolean isPaused = false;
+
+    private final List<Runnable> afterLoadedCallbacks = new ArrayList<>();
+    private final List<Runnable> afterHostInitCallbacks = new ArrayList<>();
 
     @Getter private GameEntity sceneEntity;
 
@@ -104,6 +106,13 @@ public final class Scene {
 
     public int getPlayerCount() {
         return this.getPlayers().size();
+    }
+
+    /**
+     * @return The scene's world's host.
+     */
+    public Player getHost() {
+        return this.getWorld().getHost();
     }
 
     public GameEntity getEntityById(int id) {
@@ -676,6 +685,29 @@ public final class Scene {
         }
 
         this.afterLoadedCallbacks.add(runnable);
+    }
+
+    /**
+     * Invoked when a player initializes loading the scene.
+     *
+     * @param player The player that initialized loading the scene.
+     */
+    public void playerSceneInitialized(Player player) {
+        // Check if the player is the host.
+        if (!player.equals(this.getHost())) return;
+
+        // Run all callbacks.
+        this.afterHostInitCallbacks.forEach(Runnable::run);
+        this.afterHostInitCallbacks.clear();
+    }
+
+    /**
+     * Run a callback when the host initializes loading the scene.
+     *
+     * @param runnable The callback to be executed.
+     */
+    public void runWhenHostInitialized(Runnable runnable) {
+        this.afterHostInitCallbacks.add(runnable);
     }
 
     public int getEntityLevel(int baseLevel, int worldLevelOverride) {
