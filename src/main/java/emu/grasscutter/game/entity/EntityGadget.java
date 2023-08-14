@@ -325,7 +325,7 @@ public class EntityGadget extends EntityBaseGadget {
         }
 
         if (routeConfig instanceof ConfigRoute configRoute) {
-            for (var task : configRoute.getScheduledIndexes()) {
+            for (int task : configRoute.getScheduledIndexes()) {
                 this.getScene().getScheduler().cancelTask(task);
             }
             configRoute.getScheduledIndexes().clear();
