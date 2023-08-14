@@ -380,7 +380,7 @@ public class ScriptLib {
         logger.debug("[LUA] Call SetGroupVariableValue with {},{}",
             var, value);
 
-        val groupId= currentGroup.get().id;
+        val groupId = currentGroup.get().id;
         val variables = getSceneScriptManager().getVariables(groupId);
 
         val old = variables.getOrDefault(var, value);
@@ -393,15 +393,44 @@ public class ScriptLib {
         logger.debug("[LUA] Call ChangeGroupVariableValue with {},{}",
             var, value);
 
-        val groupId= currentGroup.get().id;
+        val groupId = currentGroup.get().id;
         val variables = getSceneScriptManager().getVariables(groupId);
 
         val old = variables.getOrDefault(var, 0);
         variables.put(var, old + value);
-        logger.debug("[LUA] Call ChangeGroupVariableValue with {},{}",
-            old, old+value);
         getSceneScriptManager().callEvent(new ScriptArgs(groupId, EventType.EVENT_VARIABLE_CHANGE, old+value, old).setEventSource(var));
         return LuaValue.ZERO;
+    }
+
+    public int GetGroupVariableValueByGroup(String var, int groupId){
+        logger.debug("[LUA] Call GetGroupVariableValueByGroup with {},{}",
+            var,groupId);
+
+        return getSceneScriptManager().getVariables(groupId).getOrDefault(var, 0);
+    }
+
+    public int SetGroupVariableValueByGroup(String var, int value, int groupId){
+        logger.debug("[LUA] Call SetGroupVariableValueByGroup with {},{},{}",
+            var,value,groupId);
+
+        val variables = getSceneScriptManager().getVariables(groupId);
+
+        val old = variables.getOrDefault(var, value);
+        variables.put(var, value);
+        getSceneScriptManager().callEvent(new ScriptArgs(groupId, EventType.EVENT_VARIABLE_CHANGE, value, old).setEventSource(var));
+        return 0;
+    }
+
+    public int ChangeGroupVariableValueByGroup(String var, int value, int groupId){
+        logger.debug("[LUA] Call ChangeGroupVariableValueByGroup with {},{}",
+            var,groupId);
+
+        val variables = getSceneScriptManager().getVariables(groupId);
+
+        val old = variables.getOrDefault(var, 0);
+        variables.put(var, old + value);
+        getSceneScriptManager().callEvent(new ScriptArgs(groupId, EventType.EVENT_VARIABLE_CHANGE, old+value, old).setEventSource(var));
+        return 0;
     }
 
     /**
@@ -533,20 +562,6 @@ public class ScriptLib {
         return 0;
     }
 
-    public int GetGroupVariableValueByGroup(String name, int groupId){
-        logger.debug("[LUA] Call GetGroupVariableValueByGroup with {},{}",
-            name,groupId);
-
-        return getSceneScriptManager().getVariables(groupId).getOrDefault(name, 0);
-    }
-    public int ChangeGroupVariableValueByGroup(String name, int value, int groupId){
-        logger.debug("[LUA] Call ChangeGroupVariableValueByGroup with {},{}",
-            name,groupId);
-        //TODO test
-        getSceneScriptManager().getVariables(groupId).put(name, value);
-        return 0;
-    }
-
     public int SetIsAllowUseSkill(int canUse){
         logger.debug("[LUA] Call SetIsAllowUseSkill with {}",
             canUse);
@@ -568,14 +583,6 @@ public class ScriptLib {
             return 0;
         }
         getSceneScriptManager().getScene().killEntity(entity, 0);
-        return 0;
-    }
-
-    public int SetGroupVariableValueByGroup(String key, int value, int groupId){
-        logger.debug("[LUA] Call SetGroupVariableValueByGroup with {},{},{}",
-            key,value,groupId);
-
-        getSceneScriptManager().getVariables(groupId).put(key, value);
         return 0;
     }
 
@@ -955,7 +962,7 @@ public class ScriptLib {
         return 0;
     }
     public int EndTimeAxis(String var1){
-        logger.warn("[LUA] Call unimplemented EndTimeAxis with {} {} {}", var1);
+        logger.warn("[LUA] Call unimplemented EndTimeAxis with {}", var1);
         //TODO implement var1 == name?
         return 0;
     }
@@ -1071,6 +1078,12 @@ public class ScriptLib {
         return 0;
     }
 
+    public int ClearPlayerEyePoint(int var1){
+        logger.warn("[LUA] Call unimplemented ClearPlayerEyePoint with {}", var1);
+        //TODO implement
+        return 0;
+    }
+
     public int MoveAvatarByPointArray(int uid, int targetId, LuaTable var3, String var4){
         logger.warn("[LUA] Call unimplemented MoveAvatarByPointArray with {} {} {} {}", uid, targetId, printTable(var3), var4);
         //TODO implement var3 contains int speed, var4 is a json string
@@ -1129,7 +1142,7 @@ public class ScriptLib {
     }
 
     public int PlayCutSceneWithParam(int cutsceneId, int var2, LuaTable var3){
-        logger.warn("[LUA] Call unimplemented PlayCutScene with {} {}", cutsceneId, var2, var3);
+        logger.warn("[LUA] Call unimplemented PlayCutScene with {} {} {}", cutsceneId, var2, var3);
         //TODO implement
         return 0;
     }
@@ -1306,6 +1319,13 @@ public class ScriptLib {
         }
 
         configRoute.setRouteId(routeId);
+        configRoute.setStartIndex(0);
+        configRoute.setStarted(false);
+        for(var task : configRoute.getScheduledIndexes()) {
+            sceneScriptManager.get().getScene().getScheduler().cancelTask(task);
+        }
+        configRoute.getScheduledIndexes().clear();
+
         sceneScriptManager.get().getScene().broadcastPacket(new PacketPlatformChangeRouteNotify(entityGadget));
         return 0;
     }

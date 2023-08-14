@@ -7,6 +7,7 @@ import emu.grasscutter.data.binout.config.fields.ConfigAbilityData;
 import emu.grasscutter.data.excels.GadgetData;
 import emu.grasscutter.game.entity.gadget.*;
 import emu.grasscutter.game.entity.gadget.platform.BaseRoute;
+import emu.grasscutter.game.entity.gadget.platform.ConfigRoute;
 import emu.grasscutter.game.player.Player;
 import emu.grasscutter.game.props.*;
 import emu.grasscutter.game.world.*;
@@ -149,6 +150,7 @@ public class EntityGadget extends EntityBaseGadget {
     public void updateState(int state) {
         if (state == this.getState()) return; // Don't triggers events
 
+        var oldState = this.getState();
         this.setState(state);
         ticksSinceChange = getScene().getSceneTimeSeconds();
         this.getScene().broadcastPacket(new PacketGadgetStateNotify(this, state));
@@ -156,7 +158,11 @@ public class EntityGadget extends EntityBaseGadget {
                 .getScriptManager()
                 .callEvent(
                         new ScriptArgs(
-                                this.getGroupId(), EventType.EVENT_GADGET_STATE_CHANGE, state, this.getConfigId()));
+                                        this.getGroupId(),
+                                        EventType.EVENT_GADGET_STATE_CHANGE,
+                                        state,
+                                        this.getConfigId())
+                                .setParam3(oldState));
     }
 
     @Deprecated(forRemoval = true) // Dont use!
@@ -246,6 +252,62 @@ public class EntityGadget extends EntityBaseGadget {
         if (routeConfig.isStarted()) {
             return true;
         }
+
+        if (routeConfig instanceof ConfigRoute configRoute) {
+            var route = this.getScene().getSceneRouteById(configRoute.getRouteId());
+            if (route != null) {
+                var points = route.getPoints();
+                val currIndex = configRoute.getStartIndex();
+
+                Position prevpos;
+                if (currIndex == 0) {
+                    prevpos = getPosition();
+                    this.getScene()
+                            .getScriptManager()
+                            .callEvent(
+                                    new ScriptArgs(
+                                                    this.getGroupId(),
+                                                    EventType.EVENT_PLATFORM_REACH_POINT,
+                                                    this.getConfigId(),
+                                                    configRoute.getRouteId())
+                                            .setParam3(0)
+                                            .setEventSource(this.getConfigId()));
+                } else {
+                    prevpos = points[currIndex].getPos();
+                }
+
+                double time = 0;
+                for (var i = currIndex; i < points.length; ++i) {
+                    time += points[i].getPos().computeDistance(prevpos) / points[i].getTargetVelocity();
+                    prevpos = points[i].getPos();
+                    val I = i;
+                    configRoute
+                            .getScheduledIndexes()
+                            .add(
+                                    this.getScene()
+                                            .getScheduler()
+                                            .scheduleDelayedTask(
+                                                    () -> {
+                                                        if (points[I].isHasReachEvent() && I > currIndex) {
+                                                            this.getScene()
+                                                                    .getScriptManager()
+                                                                    .callEvent(
+                                                                            new ScriptArgs(
+                                                                                            this.getGroupId(),
+                                                                                            EventType.EVENT_PLATFORM_REACH_POINT,
+                                                                                            this.getConfigId(),
+                                                                                            configRoute.getRouteId())
+                                                                                    .setParam3(I)
+                                                                                    .setEventSource(this.getConfigId()));
+                                                        }
+                                                        configRoute.setStartIndex(I);
+                                                        this.position.set(points[I].getPos());
+                                                    },
+                                                    (int) time));
+                }
+            }
+        }
+
         getScene().broadcastPacket(new PacketSceneTimeNotify(getScene()));
         routeConfig.startRoute(getScene());
         getScene().broadcastPacket(new PacketPlatformStartRouteNotify(this));
@@ -261,6 +323,14 @@ public class EntityGadget extends EntityBaseGadget {
         if (!routeConfig.isStarted()) {
             return true;
         }
+
+        if (routeConfig instanceof ConfigRoute configRoute) {
+            for (var task : configRoute.getScheduledIndexes()) {
+                this.getScene().getScheduler().cancelTask(task);
+            }
+            configRoute.getScheduledIndexes().clear();
+        }
+
         routeConfig.stopRoute(getScene());
         getScene().broadcastPacket(new PacketPlatformStopRouteNotify(this));
 

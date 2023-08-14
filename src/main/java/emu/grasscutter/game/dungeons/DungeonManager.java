@@ -53,8 +53,13 @@ public final class DungeonManager {
     public DungeonManager(@NonNull Scene scene, @NonNull DungeonData dungeonData) {
         this.scene = scene;
         this.dungeonData = dungeonData;
-        this.passConfigData = GameData.getDungeonPassConfigDataMap().get(dungeonData.getPassCond());
-        this.finishedConditions = new int[passConfigData.getConds().size()];
+        if (dungeonData.getPassCond() == 0) {
+            this.passConfigData = new DungeonPassConfigData();
+            this.passConfigData.setConds(new ArrayList<>());
+        } else {
+            this.passConfigData = GameData.getDungeonPassConfigDataMap().get(dungeonData.getPassCond());
+        }
+        this.finishedConditions = new int[this.passConfigData.getConds().size()];
     }
 
     public void triggerEvent(DungeonPassConditionType conditionType, int... params) {
@@ -76,6 +81,7 @@ public final class DungeonManager {
     }
 
     public boolean isFinishedSuccessfully() {
+        if (passConfigData.getConds() == null) return false;
         return LogicType.calculate(passConfigData.getLogicType(), finishedConditions);
     }
 
@@ -280,14 +286,18 @@ public final class DungeonManager {
     }
 
     public void finishDungeon() {
-        // Mark the dungeon has completed for the players.
-        var dungeonId = this.getDungeonData().getId();
-        this.getScene()
-                .getPlayers()
-                .forEach(player -> player.getPlayerProgress().markDungeonAsComplete(dungeonId));
+        this.notifyEndDungeon(true);
+        this.endDungeon(BaseDungeonResult.DungeonEndReason.COMPLETED);
+    }
 
-        notifyEndDungeon(true);
-        endDungeon(BaseDungeonResult.DungeonEndReason.COMPLETED);
+    public void quitDungeon() {
+        this.notifyEndDungeon(false);
+        this.endDungeon(BaseDungeonResult.DungeonEndReason.QUIT);
+    }
+
+    public void failDungeon() {
+        this.notifyEndDungeon(false);
+        this.endDungeon(BaseDungeonResult.DungeonEndReason.FAILED);
     }
 
     public void notifyEndDungeon(boolean successfully) {
@@ -295,8 +305,11 @@ public final class DungeonManager {
                 .getPlayers()
                 .forEach(
                         p -> {
-                            // Trigger the fail event if needed.
-                            if (!successfully) {
+                            // Trigger the fail and success event.
+                            if (successfully) {
+                                var dungeonId = this.getDungeonData().getId();
+                                p.getPlayerProgress().markDungeonAsComplete(dungeonId);
+                            } else {
                                 p.getQuestManager()
                                         .queueEvent(QuestContent.QUEST_CONTENT_FAIL_DUNGEON, dungeonData.getId());
                             }
@@ -309,16 +322,6 @@ public final class DungeonManager {
         scene
                 .getScriptManager()
                 .callEvent(new ScriptArgs(0, EventType.EVENT_DUNGEON_SETTLE, successfully ? 1 : 0));
-    }
-
-    public void quitDungeon() {
-        notifyEndDungeon(false);
-        endDungeon(BaseDungeonResult.DungeonEndReason.QUIT);
-    }
-
-    public void failDungeon() {
-        notifyEndDungeon(false);
-        endDungeon(BaseDungeonResult.DungeonEndReason.FAILED);
     }
 
     public void endDungeon(BaseDungeonResult.DungeonEndReason endReason) {
