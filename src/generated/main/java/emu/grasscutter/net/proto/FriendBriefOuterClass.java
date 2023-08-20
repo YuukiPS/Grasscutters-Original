@@ -215,10 +215,22 @@ public final class FriendBriefOuterClass {
      * @return The platformType.
      */
     emu.grasscutter.net.proto.PlatformTypeOuterClass.PlatformType getPlatformType();
+
+    /**
+     * <code>bool IEAHDCLDOEJ = 28;</code>
+     * @return The iEAHDCLDOEJ.
+     */
+    boolean getIEAHDCLDOEJ();
+
+    /**
+     * <code>bool BJFJJMGENCH = 29;</code>
+     * @return The bJFJJMGENCH.
+     */
+    boolean getBJFJJMGENCH();
   }
   /**
    * <pre>
-   * Obf: LOJEJNBFKEA
+   * Obf: JIFKJKFNBFF
    * </pre>
    *
    * Protobuf type {@code FriendBrief}
@@ -401,6 +413,16 @@ public final class FriendBriefOuterClass {
               int rawValue = input.readEnum();
 
               platformType_ = rawValue;
+              break;
+            }
+            case 224: {
+
+              iEAHDCLDOEJ_ = input.readBool();
+              break;
+            }
+            case 232: {
+
+              bJFJJMGENCH_ = input.readBool();
               break;
             }
             default: {
@@ -856,6 +878,28 @@ public final class FriendBriefOuterClass {
       return result == null ? emu.grasscutter.net.proto.PlatformTypeOuterClass.PlatformType.UNRECOGNIZED : result;
     }
 
+    public static final int IEAHDCLDOEJ_FIELD_NUMBER = 28;
+    private boolean iEAHDCLDOEJ_;
+    /**
+     * <code>bool IEAHDCLDOEJ = 28;</code>
+     * @return The iEAHDCLDOEJ.
+     */
+    @java.lang.Override
+    public boolean getIEAHDCLDOEJ() {
+      return iEAHDCLDOEJ_;
+    }
+
+    public static final int BJFJJMGENCH_FIELD_NUMBER = 29;
+    private boolean bJFJJMGENCH_;
+    /**
+     * <code>bool BJFJJMGENCH = 29;</code>
+     * @return The bJFJJMGENCH.
+     */
+    @java.lang.Override
+    public boolean getBJFJJMGENCH() {
+      return bJFJJMGENCH_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -935,6 +979,12 @@ public final class FriendBriefOuterClass {
       }
       if (platformType_ != emu.grasscutter.net.proto.PlatformTypeOuterClass.PlatformType.PLATFORM_TYPE_EDITOR.getNumber()) {
         output.writeEnum(27, platformType_);
+      }
+      if (iEAHDCLDOEJ_ != false) {
+        output.writeBool(28, iEAHDCLDOEJ_);
+      }
+      if (bJFJJMGENCH_ != false) {
+        output.writeBool(29, bJFJJMGENCH_);
       }
       unknownFields.writeTo(output);
     }
@@ -1029,6 +1079,14 @@ public final class FriendBriefOuterClass {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(27, platformType_);
       }
+      if (iEAHDCLDOEJ_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(28, iEAHDCLDOEJ_);
+      }
+      if (bJFJJMGENCH_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(29, bJFJJMGENCH_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -1088,6 +1146,10 @@ public final class FriendBriefOuterClass {
       if (getIsPsnSource()
           != other.getIsPsnSource()) return false;
       if (platformType_ != other.platformType_) return false;
+      if (getIEAHDCLDOEJ()
+          != other.getIEAHDCLDOEJ()) return false;
+      if (getBJFJJMGENCH()
+          != other.getBJFJJMGENCH()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -1151,6 +1213,12 @@ public final class FriendBriefOuterClass {
           getIsPsnSource());
       hash = (37 * hash) + PLATFORM_TYPE_FIELD_NUMBER;
       hash = (53 * hash) + platformType_;
+      hash = (37 * hash) + IEAHDCLDOEJ_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getIEAHDCLDOEJ());
+      hash = (37 * hash) + BJFJJMGENCH_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getBJFJJMGENCH());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1248,7 +1316,7 @@ public final class FriendBriefOuterClass {
     }
     /**
      * <pre>
-     * Obf: LOJEJNBFKEA
+     * Obf: JIFKJKFNBFF
      * </pre>
      *
      * Protobuf type {@code FriendBrief}
@@ -1341,6 +1409,10 @@ public final class FriendBriefOuterClass {
 
         platformType_ = 0;
 
+        iEAHDCLDOEJ_ = false;
+
+        bJFJJMGENCH_ = false;
+
         return this;
       }
 
@@ -1402,6 +1474,8 @@ public final class FriendBriefOuterClass {
         result.isGameSource_ = isGameSource_;
         result.isPsnSource_ = isPsnSource_;
         result.platformType_ = platformType_;
+        result.iEAHDCLDOEJ_ = iEAHDCLDOEJ_;
+        result.bJFJJMGENCH_ = bJFJJMGENCH_;
         onBuilt();
         return result;
       }
@@ -1542,6 +1616,12 @@ public final class FriendBriefOuterClass {
         }
         if (other.platformType_ != 0) {
           setPlatformTypeValue(other.getPlatformTypeValue());
+        }
+        if (other.getIEAHDCLDOEJ() != false) {
+          setIEAHDCLDOEJ(other.getIEAHDCLDOEJ());
+        }
+        if (other.getBJFJJMGENCH() != false) {
+          setBJFJJMGENCH(other.getBJFJJMGENCH());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -2800,6 +2880,68 @@ public final class FriendBriefOuterClass {
         onChanged();
         return this;
       }
+
+      private boolean iEAHDCLDOEJ_ ;
+      /**
+       * <code>bool IEAHDCLDOEJ = 28;</code>
+       * @return The iEAHDCLDOEJ.
+       */
+      @java.lang.Override
+      public boolean getIEAHDCLDOEJ() {
+        return iEAHDCLDOEJ_;
+      }
+      /**
+       * <code>bool IEAHDCLDOEJ = 28;</code>
+       * @param value The iEAHDCLDOEJ to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIEAHDCLDOEJ(boolean value) {
+        
+        iEAHDCLDOEJ_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool IEAHDCLDOEJ = 28;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearIEAHDCLDOEJ() {
+        
+        iEAHDCLDOEJ_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean bJFJJMGENCH_ ;
+      /**
+       * <code>bool BJFJJMGENCH = 29;</code>
+       * @return The bJFJJMGENCH.
+       */
+      @java.lang.Override
+      public boolean getBJFJJMGENCH() {
+        return bJFJJMGENCH_;
+      }
+      /**
+       * <code>bool BJFJJMGENCH = 29;</code>
+       * @param value The bJFJJMGENCH to set.
+       * @return This builder for chaining.
+       */
+      public Builder setBJFJJMGENCH(boolean value) {
+        
+        bJFJJMGENCH_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool BJFJJMGENCH = 29;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearBJFJJMGENCH() {
+        
+        bJFJJMGENCH_ = false;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -2870,7 +3012,7 @@ public final class FriendBriefOuterClass {
       "\n\021FriendBrief.proto\032\027FriendOnlineState.p" +
       "roto\032\032SocialShowAvatarInfo.proto\032\033Friend" +
       "EnterHomeOption.proto\032\024ProfilePicture.pr" +
-      "oto\032\022PlatformType.proto\"\336\004\n\013FriendBrief\022" +
+      "oto\032\022PlatformType.proto\"\210\005\n\013FriendBrief\022" +
       "\013\n\003uid\030\001 \001(\r\022\020\n\010nickname\030\002 \001(\t\022\r\n\005level\030" +
       "\003 \001(\r\022\021\n\tavatar_id\030\004 \001(\r\022\023\n\013world_level\030" +
       "\005 \001(\r\022\021\n\tsignature\030\006 \001(\t\022(\n\014online_state" +
@@ -2885,8 +3027,9 @@ public final class FriendBriefOuterClass {
       "\0162\026.FriendEnterHomeOption\022(\n\017profile_pic" +
       "ture\030\030 \001(\0132\017.ProfilePicture\022\026\n\016is_game_s" +
       "ource\030\031 \001(\010\022\025\n\ris_psn_source\030\032 \001(\010\022$\n\rpl" +
-      "atform_type\030\033 \001(\0162\r.PlatformTypeB\033\n\031emu." +
-      "grasscutter.net.protob\006proto3"
+      "atform_type\030\033 \001(\0162\r.PlatformType\022\023\n\013IEAH" +
+      "DCLDOEJ\030\034 \001(\010\022\023\n\013BJFJJMGENCH\030\035 \001(\010B\033\n\031em" +
+      "u.grasscutter.net.protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -2902,7 +3045,7 @@ public final class FriendBriefOuterClass {
     internal_static_FriendBrief_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_FriendBrief_descriptor,
-        new java.lang.String[] { "Uid", "Nickname", "Level", "AvatarId", "WorldLevel", "Signature", "OnlineState", "Param", "IsMpModeAvailable", "OnlineId", "LastActiveTime", "NameCardId", "MpPlayerNum", "IsChatNoDisturb", "ChatSequence", "RemarkName", "ShowAvatarInfoList", "FriendEnterHomeOption", "ProfilePicture", "IsGameSource", "IsPsnSource", "PlatformType", });
+        new java.lang.String[] { "Uid", "Nickname", "Level", "AvatarId", "WorldLevel", "Signature", "OnlineState", "Param", "IsMpModeAvailable", "OnlineId", "LastActiveTime", "NameCardId", "MpPlayerNum", "IsChatNoDisturb", "ChatSequence", "RemarkName", "ShowAvatarInfoList", "FriendEnterHomeOption", "ProfilePicture", "IsGameSource", "IsPsnSource", "PlatformType", "IEAHDCLDOEJ", "BJFJJMGENCH", });
     emu.grasscutter.net.proto.FriendOnlineStateOuterClass.getDescriptor();
     emu.grasscutter.net.proto.SocialShowAvatarInfoOuterClass.getDescriptor();
     emu.grasscutter.net.proto.FriendEnterHomeOptionOuterClass.getDescriptor();
