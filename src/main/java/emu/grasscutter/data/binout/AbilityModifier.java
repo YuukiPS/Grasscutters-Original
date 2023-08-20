@@ -340,6 +340,24 @@ public class AbilityModifier implements Serializable {
         public int param2;
         public int param3;
 
+        public LuaCallType luaCallType;
+
+        @SerializedName("CallParamList")
+        public int[] callParamList;
+
+        public String funcName;
+
+        public String content;
+
+        public enum LuaCallType {
+            FromGroup,
+            CurGalleryControlGroup,
+            CurChallengeGroup,
+            SpecificGroup,
+            AbilityGroupSourceGroup,
+            CurScenePlay
+        }
+
         public enum DropType {
             LevelControl,
             BigWorldOnly,

@@ -9,6 +9,7 @@ import emu.grasscutter.data.excels.quest.QuestData;
 import emu.grasscutter.game.player.Player;
 import emu.grasscutter.game.quest.GameMainQuest;
 import emu.grasscutter.game.quest.GameQuest;
+import emu.grasscutter.game.quest.enums.ParentQuestState;
 import emu.grasscutter.game.quest.enums.QuestState;
 import emu.grasscutter.utils.lang.Language;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
     permissionTargeted = "player.quest.others"
 )
 public final class QuestCommand implements CommandHandler {
+    private static final List<String> SINGLE_ARG = List.of("dungeons", "list");
 
     @Override
     public void execute(Player sender, Player targetPlayer, List<String> args) {
@@ -402,7 +404,7 @@ public final class QuestCommand implements CommandHandler {
                 var shouldAdd = !loggedQuests.contains(questId);
 
                 if (shouldAdd) loggedQuests.add(questId);
-                else loggedQuests.remove(loggedQuests.indexOf(questId));
+                else loggedQuests.remove(questId);
 
                 CommandHandler.sendMessage(
                     sender,
@@ -447,6 +449,27 @@ public final class QuestCommand implements CommandHandler {
                     ", Make sure you log out first to repeat this quest"
                 );
                 quest.delete();
+            }
+            case "list" -> {
+                /*
+                var questManager = targetPlayer.getQuestManager();
+                var mainQuests = questManager.getActiveMainQuests();
+                var allQuestIds =
+                        mainQuests.stream()
+                                .filter(quest -> questManager.getLoggedQuests().contains(quest.getParentQuestId()))
+                                .filter(quest -> quest.getState() != ParentQuestState.PARENT_QUEST_STATE_FINISHED)
+                                .map(quest -> quest.getChildQuests().values())
+                                .flatMap(Collection::stream)
+                                .filter(quest -> quest.getState() == QuestState.QUEST_STATE_UNFINISHED)
+                                .map(GameQuest::getSubQuestId)
+                                .map(String::valueOf)
+                                .toList();
+
+                CommandHandler.sendMessage(
+                        sender,
+                        "Quests: "
+                                + (allQuestIds.isEmpty() ? "(no active quests)" : String.join(", ", allQuestIds)));
+                                */
             }
             default -> this.sendUsageMessage(sender);
         }

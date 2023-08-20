@@ -1,29 +1,20 @@
 package emu.grasscutter.scripts;
 
 import emu.grasscutter.Grasscutter;
-import emu.grasscutter.game.dungeons.challenge.enums.ChallengeEventMarkType;
-import emu.grasscutter.game.dungeons.challenge.enums.FatherChallengeProperty;
-import emu.grasscutter.game.props.ElementType;
-import emu.grasscutter.game.props.EntityType;
+import emu.grasscutter.game.dungeons.challenge.enums.*;
+import emu.grasscutter.game.props.*;
 import emu.grasscutter.game.quest.enums.QuestState;
 import emu.grasscutter.scripts.constants.*;
 import emu.grasscutter.scripts.data.SceneMeta;
-import emu.grasscutter.scripts.serializer.LuaSerializer;
-import emu.grasscutter.scripts.serializer.Serializer;
+import emu.grasscutter.scripts.serializer.*;
 import emu.grasscutter.utils.FileUtils;
-import java.io.File;
-import java.io.FileReader;
 import java.lang.ref.SoftReference;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Optional;
+import java.nio.file.*;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.script.*;
 import lombok.Getter;
-import org.luaj.vm2.LuaTable;
-import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.*;
 import org.luaj.vm2.lib.OneArgFunction;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.script.LuajContext;
@@ -53,17 +44,10 @@ public class ScriptLoader {
 
         // Lua stuff
         serializer = new LuaSerializer();
+        var ctx = (LuajContext) engine.getContext();
 
-        // Set engine to replace require as a temporary fix to missing scripts
-        LuajContext ctx = (LuajContext) engine.getContext();
-        ctx.globals.set(
-                "require",
-                new OneArgFunction() {
-                    @Override
-                    public LuaValue call(LuaValue arg0) {
-                        return LuaValue.ZERO;
-                    }
-                });
+        // Set the 'require' function handler.
+        ctx.globals.set("require", new RequireFunction());
 
         addEnumByIntValue(ctx, EntityType.values(), "EntityType");
         addEnumByIntValue(ctx, QuestState.values(), "QuestState");
@@ -120,26 +104,29 @@ public class ScriptLoader {
         }
     }
 
-    @Deprecated(forRemoval = true)
-    public static CompiledScript getScriptByPath(String path) {
-        var sc = tryGet(scriptsCache.get(path));
-        if (sc.isPresent()) {
-            return sc.get();
-        }
+    static final class RequireFunction extends OneArgFunction {
+        @Override
+        public LuaValue call(LuaValue arg) {
+            // Resolve the script path.
+            var scriptName = arg.checkjstring();
+            var scriptPath = FileUtils.getScriptPath("Common/" + scriptName + ".lua");
 
-        // Grasscutter.getLogger().debug("Loading script " + path);
+            // Load & compile the script.
+            var script = ScriptLoader.getScript(scriptPath.toString());
+            if (script == null) {
+                return LuaValue.NONE;
+            }
 
-        File file = new File(path);
+            // Append the script to the context.
+            try {
+                script.eval();
+            } catch (Exception exception) {
+                Grasscutter.getLogger()
+                        .error("Loading script {} failed! - {}", scriptPath, exception.getLocalizedMessage());
+            }
 
-        if (!file.exists()) return null;
-
-        try (FileReader fr = new FileReader(file)) {
-            var script = ((Compilable) getEngine()).compile(fr);
-            scriptsCache.put(path, new SoftReference<>(script));
-            return script;
-        } catch (Exception e) {
-            Grasscutter.getLogger().error("Loading script {} failed!", path, e);
-            return null;
+            // TODO: What is the proper return value?
+            return LuaValue.NONE;
         }
     }
 
