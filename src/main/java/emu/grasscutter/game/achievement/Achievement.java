@@ -10,6 +10,7 @@ import lombok.Setter;
 @Getter
 public class Achievement {
     @Setter private StatusOuterClass.Status status;
+    @Setter private AchievementStatus achievementStatus;
     private int id;
     private int totalProgress;
     @Setter private int curProgress;
@@ -30,7 +31,8 @@ public class Achievement {
 
     public AchievementOuterClass.Achievement toProto() {
         return AchievementOuterClass.Achievement.newBuilder()
-                .setStatus(this.getStatus())
+                .setStatus(this.getAchievementStatus().toProto())
+                //.setStatus(this.getStatus())	//deprecated
                 .setId(this.getId())
                 .setTotalProgress(this.getTotalProgress())
                 .setCurProgress(this.getCurProgress())
