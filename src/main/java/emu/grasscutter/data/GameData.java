@@ -15,6 +15,7 @@ import emu.grasscutter.data.excels.giving.*;
 import emu.grasscutter.data.excels.monster.*;
 import emu.grasscutter.data.excels.quest.*;
 import emu.grasscutter.data.excels.reliquary.*;
+import emu.grasscutter.data.excels.scene.*;
 import emu.grasscutter.data.excels.tower.*;
 import emu.grasscutter.data.excels.trial.*;
 import emu.grasscutter.data.excels.weapon.*;
@@ -26,11 +27,10 @@ import emu.grasscutter.game.quest.enums.QuestCond;
 import emu.grasscutter.game.world.GroupReplacementData;
 import emu.grasscutter.utils.Utils;
 import it.unimi.dsi.fastutil.ints.*;
-import lombok.*;
-
-import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.util.*;
+import javax.annotation.Nullable;
+import lombok.*;
 
 @SuppressWarnings({"unused", "MismatchedQueryAndUpdateOfCollection"})
 public final class GameData {
@@ -141,8 +141,7 @@ public final class GameData {
             new Int2ObjectOpenHashMap<>();
 
     @Getter
-    private static final Int2ObjectMap<BargainData> bargainDataMap
-        = new Int2ObjectOpenHashMap<>();
+    private static final Int2ObjectMap<BargainData> bargainDataMap = new Int2ObjectOpenHashMap<>();
 
     @Getter
     private static final Int2ObjectMap<BattlePassMissionData> battlePassMissionDataMap =
@@ -249,7 +248,8 @@ public final class GameData {
     private static final Int2ObjectMap<GivingData> givingDataMap = new Int2ObjectOpenHashMap<>();
 
     @Getter
-    private static final Int2ObjectMap<GivingGroupData> givingGroupDataMap = new Int2ObjectOpenHashMap<>();
+    private static final Int2ObjectMap<GivingGroupData> givingGroupDataMap =
+            new Int2ObjectOpenHashMap<>();
 
     @Getter
     @Deprecated // This is to prevent people from using this map. This is for the resource loader
@@ -270,6 +270,17 @@ public final class GameData {
             new Int2ObjectOpenHashMap<>();
 
     @Getter private static final Int2ObjectMap<ItemData> itemDataMap = new Int2ObjectOpenHashMap<>();
+
+    @Getter
+    private static final Int2ObjectMap<MapLayerData> mapLayerDataMap = new Int2ObjectOpenHashMap<>();
+
+    @Getter
+    private static final Int2ObjectMap<MapLayerFloorData> mapLayerFloorDataMap =
+            new Int2ObjectOpenHashMap<>();
+
+    @Getter
+    private static final Int2ObjectMap<MapLayerGroupData> mapLayerGroupDataMap =
+            new Int2ObjectOpenHashMap<>();
 
     @Getter
     private static final Int2ObjectMap<MonsterCurveData> monsterCurveDataMap =
@@ -336,6 +347,10 @@ public final class GameData {
 
     @Getter
     private static final Int2ObjectMap<SceneData> sceneDataMap = new Int2ObjectLinkedOpenHashMap<>();
+
+    @Getter
+    private static final Int2ObjectMap<SceneTagData> sceneTagDataMap =
+            new Int2ObjectLinkedOpenHashMap<>();
 
     @Getter
     private static final Int2ObjectMap<TalkConfigData> talkConfigDataMap =

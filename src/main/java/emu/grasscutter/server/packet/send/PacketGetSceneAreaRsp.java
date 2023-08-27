@@ -19,6 +19,8 @@ public class PacketGetSceneAreaRsp extends BasePacket {
                         .addCityInfoList(player.getSotsManager().getCityInfo(1).toProto())
                         .addCityInfoList(player.getSotsManager().getCityInfo(2).toProto())
                         .addCityInfoList(player.getSotsManager().getCityInfo(3).toProto())
+                        .addCityInfoList(player.getSotsManager().getCityInfo(4).toProto())
+                        .addCityInfoList(player.getSotsManager().getCityInfo(5).toProto())
                         .build();
 
         this.setData(p);

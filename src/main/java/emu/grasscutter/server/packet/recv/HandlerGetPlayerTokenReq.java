@@ -1,6 +1,6 @@
 package emu.grasscutter.server.packet.recv;
 
-import emu.grasscutter.Grasscutter;
+import emu.grasscutter.*;
 import emu.grasscutter.database.DatabaseHelper;
 import emu.grasscutter.game.player.Player;
 import emu.grasscutter.net.packet.*;
@@ -29,9 +29,15 @@ public class HandlerGetPlayerTokenReq extends PacketHandler {
         var account = DispatchUtils.authenticate(accountId, req.getAccountToken());
 
         // Check the account.
-        if (account == null) {
+        if (account == null && !DebugConstants.ACCEPT_CLIENT_TOKEN) {
             session.close();
             return;
+        } else if (account == null && DebugConstants.ACCEPT_CLIENT_TOKEN) {
+            account = DispatchUtils.getAccountById(accountId);
+            if (account == null) {
+                session.close();
+                return;
+            }
         }
 
         // Set account

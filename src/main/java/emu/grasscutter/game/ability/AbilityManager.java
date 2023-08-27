@@ -93,7 +93,7 @@ public final class AbilityManager extends BasePlayerManager {
         if (handler == null || ability == null) {
             if (DebugConstants.LOG_ABILITIES) {
                 Grasscutter.getLogger()
-                    .debug("Could not execute ability action {} at {}", action.type, ability);
+                        .debug("Could not execute ability action {} at {}", action.type, ability);
             }
 
             return;
@@ -180,7 +180,12 @@ public final class AbilityManager extends BasePlayerManager {
                     .handleModifierDurabilityChange(invoke);
             case ABILITY_INVOKE_ARGUMENT_META_ADD_NEW_ABILITY -> this.handleAddNewAbility(invoke);
             case ABILITY_INVOKE_ARGUMENT_META_SET_KILLED_SETATE -> this.handleKillState(invoke);
-            default -> {}
+            default -> {
+                if (DebugConstants.LOG_MISSING_ABILITIES) {
+                    Grasscutter.getLogger().trace("Missing invoke handler for ability {}.",
+                            invoke.getArgumentType().name());
+                }
+            }
         }
     }
 
@@ -521,27 +526,28 @@ public final class AbilityManager extends BasePlayerManager {
         var entity = this.player.getScene().getEntityById(invoke.getEntityId());
 
         if (entity == null) {
-            Grasscutter.getLogger().trace("Entity not found: {}", invoke.getEntityId());
+            if (DebugConstants.LOG_ABILITIES)
+                Grasscutter.getLogger().debug("Entity not found: {}", invoke.getEntityId());
             return;
         }
 
         var addAbility = AbilityMetaAddAbility.parseFrom(invoke.getAbilityData());
-
         var abilityName = Ability.getAbilityName(addAbility.getAbility().getAbilityName());
-
         var ability = GameData.getAbilityData(abilityName);
         if (ability == null) {
-            Grasscutter.getLogger().trace("Ability not found: {}", abilityName);
+            if (DebugConstants.LOG_MISSING_ABILITIES)
+                Grasscutter.getLogger().debug("Ability not found: {}", abilityName);
             return;
         }
 
         entity.getInstancedAbilities().add(new Ability(ability, entity, player));
-
-        Grasscutter.getLogger()
-                .trace(
-                        "Ability added to entity {} at index {}",
-                        entity.getId(),
-                        entity.getInstancedAbilities().size());
+        if (DebugConstants.LOG_ABILITIES) {
+            Grasscutter.getLogger()
+                    .debug(
+                            "Ability added to entity {} at index {}.",
+                            entity.getId(),
+                            entity.getInstancedAbilities().size());
+        }
     }
 
     private void handleKillState(AbilityInvokeEntry invoke) throws InvalidProtocolBufferException {
@@ -569,7 +575,7 @@ public final class AbilityManager extends BasePlayerManager {
     }
 
     public void addAbilityToEntity(GameEntity entity, AbilityData abilityData) {
-        Ability ability = new Ability(abilityData, entity, this.player);
+        var ability = new Ability(abilityData, entity, this.player);
         entity.getInstancedAbilities().add(ability); // This are in order
     }
 }

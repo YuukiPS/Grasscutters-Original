@@ -13,7 +13,8 @@ public enum ClimateType {
     CLIMATE_RAIN(3),
     CLIMATE_THUNDERSTORM(4),
     CLIMATE_SNOW(5),
-    CLIMATE_MIST(6);
+    CLIMATE_MIST(6),
+    CLIMATE_DESERT(7);
 
     private static final Int2ObjectMap<ClimateType> map = new Int2ObjectOpenHashMap<>();
     private static final Map<String, ClimateType> stringMap = new HashMap<>();

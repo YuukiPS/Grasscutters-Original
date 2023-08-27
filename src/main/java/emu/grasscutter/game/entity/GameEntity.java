@@ -17,10 +17,9 @@ import emu.grasscutter.scripts.data.controller.EntityController;
 import emu.grasscutter.server.event.entity.*;
 import emu.grasscutter.server.packet.send.PacketEntityFightPropUpdateNotify;
 import it.unimi.dsi.fastutil.ints.*;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap.Entry;
+import lombok.*;
 
 import java.util.*;
-import lombok.*;
 
 public abstract class GameEntity {
     @Getter private final Scene scene;
@@ -278,7 +277,7 @@ public abstract class GameEntity {
                 break;
         }
 
-        for (Entry<Integer> entry : itemsToDrop.int2ObjectEntrySet()) {
+        for (var entry : itemsToDrop.int2ObjectEntrySet()) {
             var item =
                     new EntityItem(
                             scene,
@@ -342,4 +341,10 @@ public abstract class GameEntity {
     }
 
     public abstract SceneEntityInfo toProto();
+
+    @Override
+    public String toString() {
+        return "Entity ID: %s; Group ID: %s; Config ID: %s"
+                .formatted(this.getId(), this.getGroupId(), this.getConfigId());
+    }
 }
