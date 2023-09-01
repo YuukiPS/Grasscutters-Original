@@ -4,8 +4,7 @@ import com.google.protobuf.ByteString;
 import emu.grasscutter.*;
 import emu.grasscutter.data.binout.AbilityModifier.AbilityModifierAction;
 import emu.grasscutter.game.ability.Ability;
-import emu.grasscutter.game.entity.EntityClientGadget;
-import emu.grasscutter.game.entity.GameEntity;
+import emu.grasscutter.game.entity.*;
 import emu.grasscutter.game.props.FightProperty;
 
 @AbilityAction(AbilityModifierAction.Type.HealHP)
@@ -13,8 +12,6 @@ public final class ActionHealHP extends AbilityActionHandler {
     @Override
     public boolean execute(
             Ability ability, AbilityModifierAction action, ByteString abilityData, GameEntity target) {
-        Grasscutter.getLogger().debug("Heal ability action executing 1");
-
         var owner = ability.getOwner();
         // handle client gadgets, that the effective caster is the current local avatar
         if (owner instanceof EntityClientGadget ownerGadget) {

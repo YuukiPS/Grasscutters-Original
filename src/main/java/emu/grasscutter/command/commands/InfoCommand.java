@@ -1,9 +1,7 @@
 package emu.grasscutter.command.commands;
 
-import emu.grasscutter.BuildConfig;
-import emu.grasscutter.Grasscutter;
-import emu.grasscutter.command.Command;
-import emu.grasscutter.command.CommandHandler;
+import emu.grasscutter.*;
+import emu.grasscutter.command.*;
 import emu.grasscutter.game.player.Player;
 import emu.grasscutter.tools.Tools;
 
@@ -28,6 +26,7 @@ public final class InfoCommand implements CommandHandler {
         var gameOptions = config.server.game;
         var questingEnabled = gameOptions.gameOptions.questing.enabled;
         var scriptsEnabled = gameOptions.enableScriptInBigWorld;
+        var fastRequire = config.server.fastRequire;
 
         CommandHandler.sendMessage(sender, """
                 Created by Meledy
@@ -52,11 +51,12 @@ public final class InfoCommand implements CommandHandler {
             Questing Enabled: %s
             Scripts Enabled: %s
             Operating System: %s
+            Using Fast Require: %s
             Resource Information: %s
 
             discord.gg/T5vZU6UyeG"""
                     .formatted(
-                            build, playerCount, questingEnabled, scriptsEnabled,
+                            build, playerCount, questingEnabled, scriptsEnabled, fastRequire,
                             System.getProperty("os.name"), resourceInfo.toString()
                     )
             );

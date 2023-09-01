@@ -27,10 +27,11 @@ import emu.grasscutter.game.quest.enums.QuestCond;
 import emu.grasscutter.game.world.GroupReplacementData;
 import emu.grasscutter.utils.Utils;
 import it.unimi.dsi.fastutil.ints.*;
+import lombok.*;
+
+import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.util.*;
-import javax.annotation.Nullable;
-import lombok.*;
 
 @SuppressWarnings({"unused", "MismatchedQueryAndUpdateOfCollection"})
 public final class GameData {
@@ -263,6 +264,10 @@ public final class GameData {
 
     @Getter
     private static final Int2ObjectMap<HomeWorldLevelData> homeWorldLevelDataMap =
+            new Int2ObjectOpenHashMap<>();
+
+    @Getter
+    private static final Int2ObjectMap<HomeWorldNPCData> homeWorldNPCDataMap =
             new Int2ObjectOpenHashMap<>();
 
     @Getter

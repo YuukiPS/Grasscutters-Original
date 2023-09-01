@@ -36,7 +36,8 @@ public final class SceneGroup {
 
     public SceneReplaceable is_replaceable;
 
-    private transient boolean loaded; // Not an actual variable in the scripts either
+    /* These are not script variables. */
+    private transient boolean loaded;
     private transient CompiledScript script;
     private transient Bindings bindings;
 
@@ -83,7 +84,7 @@ public final class SceneGroup {
         }
         // Set flag here so if there is no script, we don't call this function over and over again.
         this.setLoaded(true);
-
+        // Create the bindings.
         this.bindings = ScriptLoader.getEngine().createBindings();
 
         var cs =

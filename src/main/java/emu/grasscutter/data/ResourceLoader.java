@@ -20,6 +20,9 @@ import emu.grasscutter.scripts.*;
 import emu.grasscutter.utils.*;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.ints.*;
+import lombok.*;
+
+import javax.script.*;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
@@ -28,9 +31,6 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 import java.util.stream.*;
-import javax.script.*;
-import lombok.*;
-import org.reflections.Reflections;
 
 import static emu.grasscutter.utils.FileUtils.*;
 import static emu.grasscutter.utils.lang.Language.translate;
@@ -42,8 +42,7 @@ public final class ResourceLoader {
 
     // Get a list of all resource classes, sorted by loadPriority
     public static List<Class<?>> getResourceDefClasses() {
-        Reflections reflections = new Reflections(ResourceLoader.class.getPackage().getName());
-        Set<?> classes = reflections.getSubTypesOf(GameResource.class);
+        Set<?> classes = Grasscutter.reflector.getSubTypesOf(GameResource.class);
 
         List<Class<?>> classList = new ArrayList<>(classes.size());
         classes.forEach(
@@ -63,9 +62,8 @@ public final class ResourceLoader {
     }
 
     // Get a list containing sets of all resource classes, sorted by loadPriority
-    protected static List<Set<Class<?>>> getResourceDefClassesPrioritySets() {
-        val reflections = new Reflections(ResourceLoader.class.getPackage().getName());
-        val classes = reflections.getSubTypesOf(GameResource.class);
+    private static List<Set<Class<?>>> getResourceDefClassesPrioritySets() {
+        val classes = Grasscutter.reflector.getSubTypesOf(GameResource.class);
         val priorities = ResourceType.LoadPriority.getInOrder();
         Grasscutter.getLogger().info("Priorities are " + priorities);
         val map = new LinkedHashMap<ResourceType.LoadPriority, Set<Class<?>>>(priorities.size());

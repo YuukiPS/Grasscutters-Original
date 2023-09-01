@@ -260,6 +260,13 @@ public final class Scene {
             this.removeEntity(gadget);
         }
 
+        // Remove player widget gadgets
+        this.getEntities().values().stream()
+            .filter(gameEntity -> gameEntity instanceof EntityVehicle)
+            .map(gameEntity -> (EntityVehicle) gameEntity)
+            .filter(entityVehicle -> entityVehicle.getOwner().equals(player))
+            .forEach(entityVehicle -> this.removeEntity(entityVehicle, VisionType.VISION_TYPE_REMOVE));
+
         // Deregister scene if not in use
         if (this.getPlayerCount() <= 0 && !this.dontDestroyWhenEmpty) {
             this.getScriptManager().onDestroy();
@@ -432,7 +439,7 @@ public final class Scene {
                         .map(this::removeEntityDirectly)
                         .filter(Objects::nonNull)
                         .toList();
-        if (toRemove.size() > 0) {
+        if (!toRemove.isEmpty()) {
             this.broadcastPacket(new PacketSceneEntityDisappearNotify(toRemove, visionType));
         }
     }

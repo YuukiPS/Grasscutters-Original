@@ -16,7 +16,7 @@ import emu.grasscutter.net.proto.PlayerDieTypeOuterClass.PlayerDieType;
 import emu.grasscutter.net.proto.RetcodeOuterClass.Retcode;
 import emu.grasscutter.net.proto.TrialAvatarGrantRecordOuterClass.TrialAvatarGrantRecord.GrantReason;
 import emu.grasscutter.server.event.entity.EntityCreationEvent;
-import emu.grasscutter.server.event.player.PlayerTeamDeathEvent;
+import emu.grasscutter.server.event.player.*;
 import emu.grasscutter.server.packet.send.*;
 import emu.grasscutter.utils.Utils;
 import it.unimi.dsi.fastutil.ints.*;
@@ -33,16 +33,10 @@ public final class TeamManager extends BasePlayerDataManager {
     @Transient private final List<EntityAvatar> avatars;
     @Transient @Getter private final Set<EntityBaseGadget> gadgets;
     @Transient @Getter private final IntSet teamResonances;
-    @Transient
-    @Getter
-    private final IntSet teamResonancesConfig;
-    @Transient
-    @Getter
-    @Setter
-    private Set<String> teamAbilityEmbryos;
+    @Transient @Getter private final IntSet teamResonancesConfig;
+    @Transient @Getter @Setter private Set<String> teamAbilityEmbryos;
     // This needs to be a LinkedHashMap to guarantee insertion order.
-    @Getter
-    private LinkedHashMap<Integer, TeamInfo> teams;
+    @Getter private LinkedHashMap<Integer, TeamInfo> teams;
     private int currentTeamIndex;
     @Getter @Setter private int currentCharacterIndex;
     @Transient @Getter @Setter private TeamInfo mpTeam;
@@ -82,20 +76,24 @@ public final class TeamManager extends BasePlayerDataManager {
 
     // Add team ability embryos, NOT to be confused with avatarAbilties.
     // These should include the ones in LevelEntity (according to levelEntityConfig field in sceneId)
-    // rn only apply to big world defaults, but will fix scaramouch domain circles (BinOutput/LevelEntity/Level_Monster_Nada_setting)
+    // rn only apply to big world defaults, but will fix scaramouch domain circles
+    // (BinOutput/LevelEntity/Level_Monster_Nada_setting)
     public AbilityControlBlockOuterClass.AbilityControlBlock getAbilityControlBlock() {
-        AbilityControlBlockOuterClass.AbilityControlBlock.Builder abilityControlBlock = AbilityControlBlockOuterClass.AbilityControlBlock.newBuilder();
+        AbilityControlBlockOuterClass.AbilityControlBlock.Builder abilityControlBlock =
+                AbilityControlBlockOuterClass.AbilityControlBlock.newBuilder();
         int embryoId = 0;
 
         // add from default
         if (Arrays.stream(GameConstants.DEFAULT_TEAM_ABILITY_STRINGS).count() > 0) {
-            List<String> teamAbilties = Arrays.stream(GameConstants.DEFAULT_TEAM_ABILITY_STRINGS).toList();
+            List<String> teamAbilties =
+                    Arrays.stream(GameConstants.DEFAULT_TEAM_ABILITY_STRINGS).toList();
             for (String skill : teamAbilties) {
-                AbilityEmbryoOuterClass.AbilityEmbryo emb = AbilityEmbryoOuterClass.AbilityEmbryo.newBuilder()
-                    .setAbilityId(++embryoId)
-                    .setAbilityNameHash(Utils.abilityHash(skill))
-                    .setAbilityOverrideNameHash(GameConstants.DEFAULT_ABILITY_NAME)
-                    .build();
+                AbilityEmbryoOuterClass.AbilityEmbryo emb =
+                        AbilityEmbryoOuterClass.AbilityEmbryo.newBuilder()
+                                .setAbilityId(++embryoId)
+                                .setAbilityNameHash(Utils.abilityHash(skill))
+                                .setAbilityOverrideNameHash(GameConstants.DEFAULT_ABILITY_NAME)
+                                .build();
                 abilityControlBlock.addAbilityEmbryoList(emb);
             }
         }
@@ -103,11 +101,12 @@ public final class TeamManager extends BasePlayerDataManager {
         // same as avatar ability hash (add frm levelEntityConfig data)
         if (this.getTeamAbilityEmbryos().size() > 0) {
             for (String skill : this.getTeamAbilityEmbryos()) {
-                AbilityEmbryoOuterClass.AbilityEmbryo emb = AbilityEmbryoOuterClass.AbilityEmbryo.newBuilder()
-                    .setAbilityId(++embryoId)
-                    .setAbilityNameHash(Utils.abilityHash(skill))
-                    .setAbilityOverrideNameHash(GameConstants.DEFAULT_ABILITY_NAME)
-                    .build();
+                AbilityEmbryoOuterClass.AbilityEmbryo emb =
+                        AbilityEmbryoOuterClass.AbilityEmbryo.newBuilder()
+                                .setAbilityId(++embryoId)
+                                .setAbilityNameHash(Utils.abilityHash(skill))
+                                .setAbilityOverrideNameHash(GameConstants.DEFAULT_ABILITY_NAME)
+                                .build();
                 abilityControlBlock.addAbilityEmbryoList(emb);
             }
         }
@@ -189,7 +188,7 @@ public final class TeamManager extends BasePlayerDataManager {
 
     public EntityAvatar getCurrentAvatarEntity() {
         // Check if any avatars are equipped.
-        if (this.getActiveTeam().size() == 0) return null;
+        if (this.getActiveTeam().isEmpty()) return null;
 
         if (this.currentCharacterIndex >= this.getActiveTeam().size()) {
             this.currentCharacterIndex = 0; // Reset to the first character.
@@ -352,8 +351,8 @@ public final class TeamManager extends BasePlayerDataManager {
     /** Updates all properties of the active team. */
     public void updateTeamProperties() {
         this.updateTeamResonances(); // Update team resonances.
-        this.getPlayer()
-                .sendPacket(new PacketSceneTeamUpdateNotify(this.getPlayer())); // Notify the player.
+        this.getWorld()
+                .broadcastPacket(new PacketSceneTeamUpdateNotify(this.getPlayer())); // Notify the all players in the world.
 
         // Skill charges packet - Yes, this is official server behavior as of 2.6.0
         this.getActiveTeam().stream()
@@ -426,15 +425,22 @@ public final class TeamManager extends BasePlayerDataManager {
         }
 
         // Check if character changed
-        if (currentEntity != this.getCurrentAvatarEntity()) {
+        var newAvatarEntity = this.getCurrentAvatarEntity();
+        if (currentEntity != null && newAvatarEntity != null && currentEntity != newAvatarEntity) {
+            // Call PlayerSwitchAvatarEvent.
+            var event =
+                    new PlayerSwitchAvatarEvent(
+                            this.getPlayer(), currentEntity.getAvatar(), newAvatarEntity.getAvatar());
+            if (!event.call()) return;
+
             // Remove and Add
-            this.getPlayer().getScene().replaceEntity(currentEntity, this.getCurrentAvatarEntity());
+            this.getPlayer().getScene().replaceEntity(currentEntity, newAvatarEntity);
         }
     }
 
     public synchronized void setupAvatarTeam(int teamId, List<Long> list) {
         // Sanity checks
-        if (list.size() == 0
+        if (list.isEmpty()
                 || list.size() > this.getMaxTeamSize()
                 || this.getPlayer().isInMultiplayer()) {
             return;
@@ -734,10 +740,14 @@ public final class TeamManager extends BasePlayerDataManager {
         this.getPlayer().sendPacket(new PacketChangeTeamNameRsp(teamId, teamName));
     }
 
+    /**
+     * Swaps the current avatar in the scene.
+     *
+     * @param guid The GUID of the avatar to swap to.
+     */
     public synchronized void changeAvatar(long guid) {
         EntityAvatar oldEntity = this.getCurrentAvatarEntity();
-
-        if (guid == oldEntity.getAvatar().getGuid()) {
+        if (oldEntity == null || guid == oldEntity.getAvatar().getGuid()) {
             return;
         }
 
@@ -753,6 +763,13 @@ public final class TeamManager extends BasePlayerDataManager {
         if (index < 0 || newEntity == oldEntity) {
             return;
         }
+
+        // Call PlayerSwitchAvatarEvent.
+        var event =
+                new PlayerSwitchAvatarEvent(this.getPlayer(), oldEntity.getAvatar(), newEntity.getAvatar());
+        if (!event.call()) return;
+
+        newEntity = event.getNewAvatarEntity();
 
         // Set index
         this.setCurrentCharacterIndex(index);
