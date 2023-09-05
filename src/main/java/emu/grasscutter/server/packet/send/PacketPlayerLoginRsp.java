@@ -1,5 +1,7 @@
 package emu.grasscutter.server.packet.send;
 
+import static emu.grasscutter.config.Configuration.*;
+
 import com.google.protobuf.ByteString;
 import emu.grasscutter.net.packet.*;
 import emu.grasscutter.net.proto.PlayerLoginRspOuterClass.PlayerLoginRsp;
@@ -8,8 +10,6 @@ import emu.grasscutter.net.proto.RegionInfoOuterClass.RegionInfo;
 import emu.grasscutter.server.game.GameSession;
 import emu.grasscutter.server.http.dispatch.RegionHandler;
 import emu.grasscutter.utils.Crypto;
-
-import static emu.grasscutter.config.Configuration.*;
 
 public class PacketPlayerLoginRsp extends BasePacket {
 
