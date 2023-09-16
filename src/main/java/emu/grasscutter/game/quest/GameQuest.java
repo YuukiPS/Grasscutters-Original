@@ -159,6 +159,13 @@ public class GameQuest {
     public boolean clearProgress(boolean notifyDelete) {
         // TODO improve
         var oldState = state;
+        if (questData.getAcceptCond() != null && questData.getAcceptCond().size() != 0) {
+            this.getMainQuest()
+                    .getQuestManager()
+                    .getAcceptProgressLists()
+                    .put(this.getSubQuestId(), new int[questData.getAcceptCond().size()]);
+        }
+
         if (questData.getFinishCond() != null && questData.getFinishCond().size() != 0) {
             for (QuestContentCondition condition : questData.getFinishCond()) {
                 if (condition.getType() == QuestContent.QUEST_CONTENT_LUA_NOTIFY) {
