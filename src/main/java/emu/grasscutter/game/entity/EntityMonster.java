@@ -28,8 +28,8 @@ import emu.grasscutter.scripts.data.*;
 import emu.grasscutter.server.event.entity.EntityDamageEvent;
 import emu.grasscutter.utils.helpers.ProtoHelper;
 import it.unimi.dsi.fastutil.ints.Int2FloatOpenHashMap;
-import lombok.*;
-
+import lombok.Getter;
+import lombok.Setter;
 import javax.annotation.Nullable;
 import java.util.*;
 

@@ -15,12 +15,13 @@ import emu.grasscutter.net.proto.GivingRecordOuterClass.GivingRecord;
 import emu.grasscutter.server.packet.send.*;
 import io.netty.util.concurrent.FastThreadLocalThread;
 import it.unimi.dsi.fastutil.ints.*;
+import lombok.Getter;
+import lombok.val;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
-import lombok.*;
 
 public final class QuestManager extends BasePlayerManager {
     @Getter private final Player player;
