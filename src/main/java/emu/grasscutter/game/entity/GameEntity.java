@@ -19,6 +19,7 @@ import emu.grasscutter.server.packet.send.PacketEntityFightPropUpdateNotify;
 import it.unimi.dsi.fastutil.ints.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.AccessLevel;
 import java.util.*;
 
 public abstract class GameEntity {
