@@ -222,14 +222,11 @@ public final class QuestManager extends BasePlayerManager {
         this.player.sendPacket(new PacketGivingRecordNotify(this.getGivingRecords()));
     }
 
-    public void onPlayerBorn() {
+    public void onLogin() {
         if (this.isQuestingEnabled()) {
             this.enableQuests();
             this.sendGivingRecords();
         }
-    }
-
-    public void onLogin() {
 
         List<GameMainQuest> activeQuests = getActiveMainQuests();
         for (GameMainQuest quest : activeQuests) {
