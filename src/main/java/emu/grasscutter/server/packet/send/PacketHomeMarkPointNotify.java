@@ -39,7 +39,7 @@ public class PacketHomeMarkPointNotify extends BasePacket {
                                 var config = world.getSceneById(moduleId + 2000).getScriptManager().getConfig();
                                 markPointData
                                         .setSafePointPos(
-                                                config == null
+                                                config == null || config.born_pos == null
                                                         ? homeSceneItem.getBornPos().toProto()
                                                         : config.born_pos.toProto())
                                         .setTeapotSpiritPos(homeSceneItem.getDjinnPos().toProto());
