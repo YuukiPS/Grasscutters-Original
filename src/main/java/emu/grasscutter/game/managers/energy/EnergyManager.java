@@ -394,10 +394,11 @@ public class EnergyManager extends BasePlayerManager {
     public void refillTeamEnergy(PropChangeReason changeReason, boolean isFlat) {
         for (var entityAvatar : this.player.getTeamManager().getActiveTeam()) {
             // giving the exact amount read off the AvatarSkillData.json
-            entityAvatar.addEnergy(
-                    entityAvatar.getAvatar().getSkillDepot().getEnergySkillData().getCostElemVal(),
-                    changeReason,
-                    isFlat);
+            var skillDepot = entityAvatar.getAvatar().getSkillDepot();
+            if (skillDepot != null) {
+                entityAvatar.addEnergy(
+                        skillDepot.getEnergySkillData().getCostElemVal(), changeReason, isFlat);
+            }
         }
     }
 
