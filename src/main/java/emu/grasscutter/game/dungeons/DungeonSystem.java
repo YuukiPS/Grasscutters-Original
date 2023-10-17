@@ -173,4 +173,25 @@ public final class DungeonSystem extends BaseGameSystem {
         player.getWorld().transferPlayerToScene(player, prevScene, prevPos);
         player.sendPacket(new BasePacket(PacketOpcodes.PlayerQuitDungeonRsp));
     }
+
+    public void restartDungeon(Player player) {
+        var scene = player.getScene();
+        var dungeonManager = scene.getDungeonManager();
+        var dungeonData = dungeonManager.getDungeonData();
+        var sceneId = dungeonData.getSceneId();
+
+        // Forward over previous scene and scene point
+        var prevScene = scene.getPrevScene();
+        var pointId = scene.getPrevScenePoint();
+
+        // Destroy then create scene again to reinitialize script state
+        scene.getPlayers().forEach(scene::removePlayer);
+        if (player.getWorld().transferPlayerToScene(player, sceneId, dungeonData)) {
+            scene = player.getScene();
+            scene.setPrevScene(prevScene);
+            scene.setPrevScenePoint(pointId);
+            scene.setDungeonManager(new DungeonManager(scene, dungeonData));
+            scene.addDungeonSettleObserver(basicDungeonSettleObserver);
+        }
+    }
 }
