@@ -3,7 +3,8 @@ package emu.grasscutter.data.excels.dungeon;
 import emu.grasscutter.data.*;
 import emu.grasscutter.game.dungeons.enums.*;
 import java.util.List;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @ResourceType(name = "DungeonEntryExcelConfigData.json")
 @Getter

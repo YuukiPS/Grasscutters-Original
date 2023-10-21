@@ -1264,6 +1264,9 @@ public class ScriptLib {
         // Kill and Respawn? TODO: Do not Kill and Respawn
         int groupId = table.get("group_id").toint();
         int suite = table.get("suite").toint();
+        if(String.valueOf(groupId).contains("13330")){
+            return 1; // stop spam
+        }
         SceneGroupInstance groupInstance = getSceneScriptManager().getGroupInstanceById(groupId);
         if (groupInstance == null) {
             logger.warn("[LUA] trying to refresh unloaded group {}", groupId);

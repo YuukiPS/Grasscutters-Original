@@ -20,6 +20,7 @@ import emu.grasscutter.utils.Utils;
 import it.unimi.dsi.fastutil.ints.*;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 import lombok.val;
 import java.util.*;
 import java.util.stream.*;
