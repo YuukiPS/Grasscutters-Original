@@ -600,7 +600,7 @@ public class Scene {
         // Should be OK to check only player 0,
         // as no other players could enter Tower
         var towerManager = getPlayers().get(0).getTowerManager();
-        if (towerManager != null) {
+        if (towerManager != null && towerManager.isInProgress()) {
             towerManager.onTick();
         }
 
@@ -1109,6 +1109,9 @@ public class Scene {
         }
         if (group.regions != null) {
             group.regions.values().forEach(getScriptManager()::deregisterRegion);
+        }
+        if (challenge != null && group.id == challenge.getGroup().id) {
+            challenge.fail();
         }
 
         scriptManager.getLoadedGroupSetPerBlock().get(block.id).remove(group);
