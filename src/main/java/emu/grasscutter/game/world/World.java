@@ -5,14 +5,19 @@ import static emu.grasscutter.server.event.player.PlayerTeleportEvent.TeleportTy
 import emu.grasscutter.Grasscutter;
 import emu.grasscutter.data.GameData;
 import emu.grasscutter.data.excels.dungeon.DungeonData;
-import emu.grasscutter.game.entity.*;
+import emu.grasscutter.game.entity.EntityTeam;
+import emu.grasscutter.game.entity.EntityWorld;
 import emu.grasscutter.game.player.Player;
 import emu.grasscutter.game.player.Player.SceneLoadState;
-import emu.grasscutter.game.props.*;
+import emu.grasscutter.game.props.EnterReason;
+import emu.grasscutter.game.props.EntityIdType;
+import emu.grasscutter.game.props.PlayerProperty;
+import emu.grasscutter.game.props.SceneType;
 import emu.grasscutter.game.quest.enums.QuestContent;
 import emu.grasscutter.game.world.data.TeleportProperties;
 import emu.grasscutter.net.packet.BasePacket;
-import emu.grasscutter.net.proto.ChatInfoOuterClass.ChatInfo.*;
+import emu.grasscutter.net.proto.ChatInfoOuterClass.ChatInfo.SystemHint;
+import emu.grasscutter.net.proto.ChatInfoOuterClass.ChatInfo.SystemHintType;
 import emu.grasscutter.net.proto.EnterTypeOuterClass.EnterType;
 import emu.grasscutter.scripts.data.SceneConfig;
 import emu.grasscutter.server.event.player.PlayerTeleportEvent;
@@ -21,10 +26,20 @@ import emu.grasscutter.server.game.GameServer;
 import emu.grasscutter.server.packet.send.*;
 import emu.grasscutter.utils.ConversionUtils;
 import io.netty.util.concurrent.FastThreadLocalThread;
-import it.unimi.dsi.fastutil.ints.*;
-import java.util.*;
-import java.util.concurrent.*;
-import lombok.*;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import javax.annotation.Nullable;
+import lombok.Getter;
+import lombok.val;
 import org.jetbrains.annotations.NotNull;
 
 public class World implements Iterable<Player> {
@@ -124,7 +139,7 @@ public class World implements Iterable<Player> {
      * @param sceneId The scene ID.
      * @return The scene.
      */
-    public Scene getSceneById(int sceneId) {
+    @Nullable public Scene getSceneById(int sceneId) {
         // Get scene normally
         var scene = this.getScenes().get(sceneId);
         if (scene != null) {

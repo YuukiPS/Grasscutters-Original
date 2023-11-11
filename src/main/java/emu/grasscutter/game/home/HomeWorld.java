@@ -3,7 +3,6 @@ package emu.grasscutter.game.home;
 import emu.grasscutter.data.GameData;
 import emu.grasscutter.game.entity.EntityTeam;
 import emu.grasscutter.game.player.Player;
-import emu.grasscutter.game.world.Scene;
 import emu.grasscutter.game.world.World;
 import emu.grasscutter.net.packet.BasePacket;
 import emu.grasscutter.net.proto.ChatInfoOuterClass;
@@ -13,6 +12,7 @@ import emu.grasscutter.server.packet.send.PacketPlayerChatNotify;
 import emu.grasscutter.server.packet.send.PacketPlayerGameTimeNotify;
 import java.util.List;
 import java.util.function.Consumer;
+import javax.annotation.Nullable;
 import lombok.Getter;
 
 @Getter
@@ -66,7 +66,7 @@ public class HomeWorld extends World {
     }
 
     public boolean isRealmIdValid() {
-        return this.getHost().getCurrentRealmId() > 0;
+        return this.getSceneById(this.getHost().getCurrentRealmId() + 2000) != null;
     }
 
     @Override
@@ -147,11 +147,13 @@ public class HomeWorld extends World {
         player.setWorld(null);
 
         // Remove from scene
-        Scene scene = this.getSceneById(player.getSceneId());
-        scene.removePlayer(player);
+        var scene = this.getSceneById(player.getSceneId());
+        if (scene != null) {
+            scene.removePlayer(player);
+        }
 
         // Info packet for other players
-        if (this.getPlayers().size() > 0) {
+        if (!this.getPlayers().isEmpty()) {
             this.updatePlayerInfos(player);
         }
 
@@ -167,7 +169,7 @@ public class HomeWorld extends World {
     }
 
     @Override
-    public HomeScene getSceneById(int sceneId) {
+    @Nullable public HomeScene getSceneById(int sceneId) {
         var scene = this.getScenes().get(sceneId);
         if (scene instanceof HomeScene homeScene) {
             return homeScene;

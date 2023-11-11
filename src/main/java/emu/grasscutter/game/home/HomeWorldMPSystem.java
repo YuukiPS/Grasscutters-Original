@@ -139,11 +139,15 @@ public class HomeWorldMPSystem extends BaseGameSystem {
 
         int realmId = 2000 + owner.getCurrentRealmId();
         var item = targetHome.getHomeSceneItem(realmId);
+        var scene = world.getSceneById(realmId);
         targetHome.save();
-        var pos =
-                toSafe
-                        ? world.getSceneById(realmId).getScriptManager().getConfig().born_pos
-                        : item.getBornPos();
+
+        Position pos;
+        if (scene != null) {
+            pos = toSafe ? scene.getScriptManager().getConfig().born_pos : item.getBornPos();
+        } else {
+            pos = item.getBornPos();
+        }
 
         if (teleportPoint != 0) {
             var target = item.getTeleportPointPos(teleportPoint);
