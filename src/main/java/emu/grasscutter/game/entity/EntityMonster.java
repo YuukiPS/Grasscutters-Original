@@ -34,8 +34,6 @@ import lombok.Getter;
 import lombok.Setter;
 import javax.annotation.Nullable;
 import java.util.*;
-import javax.annotation.Nullable;
-import lombok.*;
 
 public class EntityMonster extends GameEntity {
     @Getter(onMethod_ = @Override)

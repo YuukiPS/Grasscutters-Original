@@ -31,9 +31,13 @@ import emu.grasscutter.scripts.data.*;
 import emu.grasscutter.server.packet.send.*;
 import emu.grasscutter.utils.helpers.ProtoHelper;
 import it.unimi.dsi.fastutil.ints.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.val;
+
 import java.util.*;
 import javax.annotation.Nullable;
-import lombok.*;
 
 @ToString(callSuper = true)
 public class EntityGadget extends EntityBaseGadget {
