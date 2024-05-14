@@ -109,7 +109,7 @@ public class Account {
             return email;
         } else {
             // As of game version 3.5+, only the email is displayed to a user.
-            return this.getUsername() + "@grasscutter.io";
+            return this.getUsername() + "@" + ACCOUNT.playerEmail;
         }
     }
 
@@ -235,7 +235,7 @@ public class Account {
             this.addPermission("*");
         }
 
-        // Set account default language as server default language
+        // Set account default language to server default language
         if (!document.containsKey("locale")) {
             this.locale = LANGUAGE;
         }
