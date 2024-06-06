@@ -3,7 +3,7 @@
 
 <div align="center"><a href="https://discord.gg/T5vZU6UyeG"><img alt="Discord - Grasscutter" src="https://img.shields.io/discord/965284035985305680?label=Discord&logo=discord&style=for-the-badge"></a></div>
 
-[EN](README.md) | [简中](docs/README_zh-CN.md) | [繁中](docs/README_zh-TW.md) | [FR](docs/README_fr-FR.md) | [ES](docs/README_es-ES.md) | [HE](docs/README_HE.md) | [RU](docs/README_ru-RU.md) | [PL](docs/README_pl-PL.md) | [ID](docs/README_id-ID.md) | [KR](docs/README_ko-KR.md) | [FIL/PH](docs/README_fil-PH.md) | [NL](docs/README_NL.md) | [JP](docs/README_ja-JP.md) | [IT](docs/README_it-IT.md) | [VI](docs/README_vi-VN.md)
+[EN](../README.md) | [简中](README_zh-CN.md) | [繁中](README_zh-TW.md) | [FR](README_fr-FR.md) | [ES](README_es-ES.md) | [HE](README_HE.md) | [RU](README_ru-RU.md) | [PL](README_pl-PL.md) | [ID](README_id-ID.md) | [KR](README_ko-KR.md) | [FIL/PH](README_fil-PH.md) | [NL](README_NL.md) | [JP](README_ja-JP.md) | [IT](README_it-IT.md) | [VI](README_vi-VN.md) | [HI](README_hn-IN.md)
 
 
 **Attention:** 私たちはプロジェクトへのコントリビュータをいつでも歓迎します。コントリビュートする前に、私たちの [行動規範](https://github.com/Grasscutters/Grasscutter/blob/stable/CONTRIBUTING.md)をよくお読みください。
@@ -27,7 +27,7 @@
 
 - [Java (バージョン17以降)](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) を用意する
 - [MongoDB Community Server](https://www.mongodb.com/try/download/community) を用意する
-- ゲームバージョンがREL4.0.Xのものを用意する (4.0.Xのクライアントを持っていない場合は右のリンクからダウンロード): https://github.com/MAnggiarMustofa/GI-Download-Library/blob/main/GenshinImpact/Client/4.0.0.md
+- ゲームバージョンがREL4.0.Xのクライアントを用意する (4.0.Xのクライアントを持っていない場合は右のリンクからダウンロード): [Github](https://github.com/JRSKelvin/GenshinRepository/blob/main/Version%204.0.0.md), [クラウド(123云盘)](https://www.123pan.com/s/HoqUVv-U7SBA.html)
 - [最新の Cultivation](https://github.com/Grasscutters/Cultivation/releases/latest)をダウンロードする。`.msi`インストーラを使ってください。
 - 管理者権限を付与して Cultivation を実行した後、右上端にあるダウンロードアイコンのボタンを押す。 
 - `Download All-in-One` をクリックする
@@ -35,10 +35,9 @@
 - `Game Install Path` にゲームファイルのパスを指定する。
 - `Custom Java Path` に、自分が用意したJavaのパスを指定する。 (例: `C:\Program Files\Java\jdk-17\bin\java.exe`)
 - その他の設定には手を付けず次の段階に進む。
-
 - Launch の隣にある小さいボタンを押す。
 - Launchボタンを押す
-- 好きなユーザ名でログインする。パスワードは特段気にすることはない。
+- 好きなユーザ名でログインする。ログインに関する設定がデフォルトの場合、パスワードは何を入れてもいい。
 
 
 ### ビルド
@@ -79,7 +78,22 @@ chmod +x gradlew
 ./gradlew jar # コンパイル
 ```
 
-生成されたjarファイルはプロジェクトフォルダのルートにあります。
+##### 手動によるハンドブックの生成
+
+Gradleを使用する場合:
+```shell
+./gradlew generateHandbook
+```
+
+NPMを使用する場合:
+```shell
+cd src/handbook
+npm install
+npm run build
+```
+
+
+生成されたjarファイルはプロジェクトのルートフォルダにあります。
 
 ### トラブルシューティング
 
