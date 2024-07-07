@@ -1,19 +1,16 @@
 package emu.grasscutter.net.impl;
 
 import emu.grasscutter.net.IKcpSession;
-import emu.grasscutter.net.INetworkTransport;
 import io.netty.buffer.Unpooled;
+import java.net.InetSocketAddress;
 import kcp.highway.Ukcp;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.InetSocketAddress;
-
 /**
- * This is the default implementation of a KCP session.
- * It uses {@link Ukcp} as the underlying wrapper.
+ * This is the default implementation of a KCP session. It uses {@link Ukcp} as the underlying
+ * wrapper.
  */
 @Getter
 public class KcpSessionImpl implements IKcpSession {

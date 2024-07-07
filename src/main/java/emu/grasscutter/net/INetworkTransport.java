@@ -2,13 +2,12 @@ package emu.grasscutter.net;
 
 import emu.grasscutter.Grasscutter;
 import emu.grasscutter.server.game.GameServer;
-
 import java.net.InetSocketAddress;
 
 public interface INetworkTransport {
     /**
-     * Waits for the server to be active.
-     * This should be used to ensure that the server is ready to accept connections.
+     * Waits for the server to be active. This should be used to ensure that the server is ready to
+     * accept connections.
      */
     default GameServer waitForServer() throws InterruptedException {
         int depth = 0;
@@ -32,8 +31,8 @@ public interface INetworkTransport {
     void start(InetSocketAddress listening);
 
     /**
-     * This is invoked when the transport should stop listening for incoming connections.
-     * This should also close all active connections.
+     * This is invoked when the transport should stop listening for incoming connections. This should
+     * also close all active connections.
      */
     void shutdown();
 }

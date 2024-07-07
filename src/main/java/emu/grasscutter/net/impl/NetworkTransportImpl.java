@@ -1,26 +1,25 @@
 package emu.grasscutter.net.impl;
 
+import static emu.grasscutter.config.Configuration.GAME_INFO;
+
 import emu.grasscutter.net.INetworkTransport;
 import emu.grasscutter.server.game.GameSession;
 import emu.grasscutter.utils.Utils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.DefaultEventLoop;
 import io.netty.channel.EventLoop;
+import java.net.InetSocketAddress;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import kcp.highway.ChannelConfig;
 import kcp.highway.KcpListener;
 import kcp.highway.KcpServer;
 import kcp.highway.Ukcp;
 import lombok.extern.slf4j.Slf4j;
 
-import java.net.InetSocketAddress;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
-
-import static emu.grasscutter.config.Configuration.GAME_INFO;
-
 /**
- * The default implementation of a {@link INetworkTransport}.
- * Uses {@link KcpServer} as the underlying transport.
+ * The default implementation of a {@link INetworkTransport}. Uses {@link KcpServer} as the
+ * underlying transport.
  */
 @Slf4j
 public class NetworkTransportImpl extends KcpServer implements INetworkTransport {
@@ -87,15 +86,16 @@ public class NetworkTransportImpl extends KcpServer implements INetworkTransport
                 // Copy the buffer to avoid reference issues.
                 var data = Utils.byteBufToArray(byteBuf);
 
-                transport.networkLoop.submit(() -> {
-                    // Fun fact: if we don't catch exceptions here,
-                    // we run the risk of locking the entire network loop.
-                    try {
-                        session.onReceived(data);
-                    } catch (Exception ex) {
-                        session.getLogger().warn("Unable to handle received data.", ex);
-                    }
-                });
+                transport.networkLoop.submit(
+                        () -> {
+                            // Fun fact: if we don't catch exceptions here,
+                            // we run the risk of locking the entire network loop.
+                            try {
+                                session.onReceived(data);
+                            } catch (Exception ex) {
+                                session.getLogger().warn("Unable to handle received data.", ex);
+                            }
+                        });
             } catch (Exception ex) {
                 NetworkTransportImpl.log.warn("Unable to handle received data.", ex);
             }

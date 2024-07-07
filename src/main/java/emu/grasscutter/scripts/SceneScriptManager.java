@@ -508,8 +508,7 @@ public class SceneScriptManager {
                             block -> {
                                 block.load(sceneId, meta.context);
                                 if (block.groups == null) {
-                                    Grasscutter.getLogger()
-                                            .error("block.groups null for block {}", block.id);
+                                    Grasscutter.getLogger().error("block.groups null for block {}", block.id);
                                     return;
                                 }
 
