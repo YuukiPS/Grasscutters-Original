@@ -2,6 +2,7 @@ package emu.grasscutter.net.impl;
 
 import emu.grasscutter.net.INetworkTransport;
 import emu.grasscutter.server.game.GameSession;
+import emu.grasscutter.utils.Utils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.DefaultEventLoop;
 import io.netty.channel.EventLoop;
@@ -83,11 +84,20 @@ public class NetworkTransportImpl extends KcpServer implements INetworkTransport
                     return;
                 }
 
-                transport.networkLoop.submit(() -> session.onReceived(byteBuf.array()));
+                // Copy the buffer to avoid reference issues.
+                var data = Utils.byteBufToArray(byteBuf);
+
+                transport.networkLoop.submit(() -> {
+                    // Fun fact: if we don't catch exceptions here,
+                    // we run the risk of locking the entire network loop.
+                    try {
+                        session.onReceived(data);
+                    } catch (Exception ex) {
+                        session.getLogger().warn("Unable to handle received data.", ex);
+                    }
+                });
             } catch (Exception ex) {
                 NetworkTransportImpl.log.warn("Unable to handle received data.", ex);
-            } finally {
-                byteBuf.release();
             }
         }
 

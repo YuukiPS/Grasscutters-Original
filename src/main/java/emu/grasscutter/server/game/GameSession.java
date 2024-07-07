@@ -14,6 +14,7 @@ import emu.grasscutter.utils.*;
 import io.netty.buffer.*;
 import java.net.InetSocketAddress;
 import lombok.*;
+import org.slf4j.Logger;
 
 public class GameSession implements IGameSession {
     @Getter private final GameServer server;
@@ -47,6 +48,10 @@ public class GameSession implements IGameSession {
 
     public InetSocketAddress getAddress() {
         return this.session.getAddress();
+    }
+
+    public Logger getLogger() {
+        return this.session.getLogger();
     }
 
     public synchronized void setPlayer(Player player) {
