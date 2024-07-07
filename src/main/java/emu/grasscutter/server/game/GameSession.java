@@ -7,18 +7,17 @@ import emu.grasscutter.Grasscutter;
 import emu.grasscutter.Grasscutter.ServerDebugMode;
 import emu.grasscutter.game.Account;
 import emu.grasscutter.game.player.Player;
+import emu.grasscutter.net.IKcpSession;
 import emu.grasscutter.net.packet.*;
 import emu.grasscutter.server.event.game.SendPacketEvent;
 import emu.grasscutter.utils.*;
 import io.netty.buffer.*;
-import java.io.File;
 import java.net.InetSocketAddress;
-import java.nio.file.Path;
 import lombok.*;
 
-public class GameSession implements GameSessionManager.KcpChannel {
-    private final GameServer server;
-    private GameSessionManager.KcpTunnel tunnel;
+public class GameSession implements IGameSession {
+    @Getter private final GameServer server;
+    private IKcpSession session;
 
     @Getter @Setter private Account account;
     @Getter private Player player;
@@ -33,8 +32,10 @@ public class GameSession implements GameSessionManager.KcpChannel {
     @Getter private long lastPingTime;
     private int lastClientSeq = 10;
 
-    public GameSession(GameServer server) {
+    public GameSession(GameServer server, IKcpSession session) {
         this.server = server;
+        this.session = session;
+
         this.state = SessionState.WAITING_FOR_TOKEN;
         this.lastPingTime = System.currentTimeMillis();
 
@@ -44,24 +45,8 @@ public class GameSession implements GameSessionManager.KcpChannel {
         }
     }
 
-    public GameServer getServer() {
-        return server;
-    }
-
     public InetSocketAddress getAddress() {
-        try {
-            return tunnel.getAddress();
-        } catch (Throwable ignore) {
-            return null;
-        }
-    }
-
-    public boolean useSecretKey() {
-        return useSecretKey;
-    }
-
-    public String getAccountId() {
-        return this.getAccount().getId();
+        return this.session.getAddress();
     }
 
     public synchronized void setPlayer(Player player) {
@@ -83,30 +68,16 @@ public class GameSession implements GameSessionManager.KcpChannel {
         return ++lastClientSeq;
     }
 
-    public void replayPacket(int opcode, String name) {
-        Path filePath = FileUtils.getPluginPath(name);
-        File p = filePath.toFile();
-
-        if (!p.exists()) return;
-
-        byte[] packet = FileUtils.read(p);
-
-        BasePacket basePacket = new BasePacket(opcode);
-        basePacket.setData(packet);
-
-        send(basePacket);
-    }
-
     public void logPacket(String sendOrRecv, int opcode, byte[] payload) {
-        Grasscutter.getLogger()
-                .info(sendOrRecv + ": " + PacketOpcodesUtils.getOpcodeName(opcode) + " (" + opcode + ")");
+        this.session.getLogger().info("{}: {} ({})",
+            sendOrRecv, PacketOpcodesUtils.getOpcodeName(opcode), opcode);
         if (GAME_INFO.isShowPacketPayload) System.out.println(Utils.bytesToHex(payload));
     }
 
     public void send(BasePacket packet) {
         // Test
         if (packet.getOpcode() <= 0) {
-            Grasscutter.getLogger().warn("Tried to send packet with missing cmd id!");
+            this.session.getLogger().warn("Attempted to send packet with unknown ID!");
             return;
         }
 
@@ -146,28 +117,24 @@ public class GameSession implements GameSessionManager.KcpChannel {
                 if (packet.shouldEncrypt) {
                     Crypto.xor(bytes, packet.useDispatchKey() ? Crypto.DISPATCH_KEY : this.encryptKey);
                 }
-                tunnel.writeData(bytes);
-            } catch (Exception ignored) {
-                Grasscutter.getLogger().debug("Unable to send packet to client.");
+                this.session.send(bytes);
+            } catch (Exception ex) {
+                this.session.getLogger().debug("Unable to send packet to client.", ex);
             }
         }
     }
 
     @Override
-    public void onConnected(GameSessionManager.KcpTunnel tunnel) {
-        this.tunnel = tunnel;
+    public void onConnected() {
         Grasscutter.getLogger().info(translate("messages.game.connect", this.getAddress().toString()));
     }
 
     @Override
-    public void handleReceive(byte[] bytes) {
+    public void onReceived(byte[] bytes) {
         // Decrypt and turn back into a packet
-        Crypto.xor(bytes, useSecretKey() ? this.encryptKey : Crypto.DISPATCH_KEY);
+        Crypto.xor(bytes, this.useSecretKey ? this.encryptKey : Crypto.DISPATCH_KEY);
         ByteBuf packet = Unpooled.wrappedBuffer(bytes);
 
-        // Log
-        // logPacket(packet);
-        // Handle
         try {
             boolean allDebug = GAME_INFO.logPackets == ServerDebugMode.ALL;
             while (packet.readableBytes() > 0) {
@@ -179,11 +146,11 @@ public class GameSession implements GameSessionManager.KcpChannel {
                 int const1 = packet.readShort();
                 if (const1 != 17767) {
                     if (allDebug) {
-                        Grasscutter.getLogger()
-                                .error("Bad Data Package Received: got {} ,expect 17767", const1);
+                        this.session.getLogger().error("Invalid packet header received: got {}, expected 17767", const1);
                     }
                     return; // Bad packet
                 }
+
                 // Data
                 int opcode = packet.readShort();
                 int headerLength = packet.readShort();
@@ -197,8 +164,7 @@ public class GameSession implements GameSessionManager.KcpChannel {
                 int const2 = packet.readShort();
                 if (const2 != -30293) {
                     if (allDebug) {
-                        Grasscutter.getLogger()
-                                .error("Bad Data Package Received: got {} ,expect -30293", const2);
+                        this.session.getLogger().error("Invalid packet footer received: got {}, expected -30293", const2);
                     }
                     return; // Bad packet
                 }
@@ -226,16 +192,15 @@ public class GameSession implements GameSessionManager.KcpChannel {
                 // Handle
                 getServer().getPacketHandler().handle(this, opcode, header, payload);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            this.session.getLogger().warn("Unable to process packet.", ex);
         } finally {
-            // byteBuf.release(); //Needn't
             packet.release();
         }
     }
 
     @Override
-    public void handleClose() {
+    public void onDisconnected() {
         setState(SessionState.INACTIVE);
         // send disconnection pack in case of reconnection
         Grasscutter.getLogger()
@@ -247,19 +212,20 @@ public class GameSession implements GameSessionManager.KcpChannel {
             player.onLogout();
         }
         try {
-            send(new BasePacket(PacketOpcodes.ServerDisconnectClientNotify));
-        } catch (Throwable ignore) {
-            Grasscutter.getLogger().warn("closing {} error", getAddress().getAddress().getHostAddress());
+            this.send(new BasePacket(PacketOpcodes.ServerDisconnectClientNotify));
+        } catch (Throwable ex) {
+            this.session.getLogger().warn("Failed to disconnect client.", ex);
         }
-        tunnel = null;
+
+        this.session = null;
     }
 
     public void close() {
-        tunnel.close();
+        this.session.close();
     }
 
     public boolean isActive() {
-        return getState() == SessionState.ACTIVE;
+        return this.getState() == SessionState.ACTIVE;
     }
 
     public enum SessionState {
