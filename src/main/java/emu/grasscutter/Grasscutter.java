@@ -78,13 +78,14 @@ public final class Grasscutter {
         mongoLogger.setLevel(Level.OFF);
 
         // Configure the reflector.
-        reflector = new Reflections(
-            new ConfigurationBuilder()
-                .forPackage("emu.grasscutter")
-                .filterInputsBy(new FilterBuilder()
-                    .includePackage("emu.grasscutter")
-                    .excludePackage("emu.grasscutter.net.proto"))
-        );
+        reflector =
+                new Reflections(
+                        new ConfigurationBuilder()
+                                .forPackage("emu.grasscutter")
+                                .filterInputsBy(
+                                        new FilterBuilder()
+                                                .includePackage("emu.grasscutter")
+                                                .excludePackage("emu.grasscutter.net.proto")));
 
         // Load server configuration.
         Grasscutter.loadConfig();

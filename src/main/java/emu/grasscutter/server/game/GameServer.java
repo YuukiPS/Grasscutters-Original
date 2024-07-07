@@ -56,9 +56,7 @@ import org.jetbrains.annotations.*;
 @Getter
 @Slf4j
 public final class GameServer implements Iterable<Player> {
-    /**
-     * This can be set by plugins to change the network transport implementation.
-     */
+    /** This can be set by plugins to change the network transport implementation. */
     @Setter private static Class<? extends INetworkTransport> transport = NetworkTransportImpl.class;
 
     // Game server base
@@ -145,9 +143,7 @@ public final class GameServer implements Iterable<Player> {
         // Create the network transport.
         INetworkTransport transport;
         try {
-            transport = GameServer.transport
-                .getDeclaredConstructor()
-                .newInstance();
+            transport = GameServer.transport.getDeclaredConstructor().newInstance();
         } catch (Exception ex) {
             log.error("Failed to create network transport.", ex);
             transport = new NetworkTransportImpl();

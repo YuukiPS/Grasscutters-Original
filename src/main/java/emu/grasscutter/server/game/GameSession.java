@@ -74,8 +74,9 @@ public class GameSession implements IGameSession {
     }
 
     public void logPacket(String sendOrRecv, int opcode, byte[] payload) {
-        this.session.getLogger().info("{}: {} ({})",
-            sendOrRecv, PacketOpcodesUtils.getOpcodeName(opcode), opcode);
+        this.session
+                .getLogger()
+                .info("{}: {} ({})", sendOrRecv, PacketOpcodesUtils.getOpcodeName(opcode), opcode);
         if (GAME_INFO.isShowPacketPayload) System.out.println(Utils.bytesToHex(payload));
     }
 
@@ -151,7 +152,9 @@ public class GameSession implements IGameSession {
                 int const1 = packet.readShort();
                 if (const1 != 17767) {
                     if (allDebug) {
-                        this.session.getLogger().error("Invalid packet header received: got {}, expected 17767", const1);
+                        this.session
+                                .getLogger()
+                                .error("Invalid packet header received: got {}, expected 17767", const1);
                     }
                     return; // Bad packet
                 }
@@ -169,7 +172,9 @@ public class GameSession implements IGameSession {
                 int const2 = packet.readShort();
                 if (const2 != -30293) {
                     if (allDebug) {
-                        this.session.getLogger().error("Invalid packet footer received: got {}, expected -30293", const2);
+                        this.session
+                                .getLogger()
+                                .error("Invalid packet footer received: got {}, expected -30293", const2);
                     }
                     return; // Bad packet
                 }

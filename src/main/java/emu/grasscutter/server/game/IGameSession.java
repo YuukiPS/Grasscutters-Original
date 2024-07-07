@@ -3,14 +3,12 @@ package emu.grasscutter.server.game;
 public interface IGameSession {
     /**
      * Invoked when the server establishes a connection to the client.
-     * <p>
-     * This is invoked after the KCP handshake is completed.
+     *
+     * <p>This is invoked after the KCP handshake is completed.
      */
     void onConnected();
 
-    /**
-     * Invoked when the server loses connection to the client.
-     */
+    /** Invoked when the server loses connection to the client. */
     void onDisconnected();
 
     /**

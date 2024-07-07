@@ -1,12 +1,9 @@
 package emu.grasscutter.net;
 
+import java.net.InetSocketAddress;
 import org.slf4j.Logger;
 
-import java.net.InetSocketAddress;
-
-/**
- * This is most closely related to the previous `KcpTunnel` interface.
- */
+/** This is most closely related to the previous `KcpTunnel` interface. */
 public interface IKcpSession {
     /**
      * @return The session's unique logger.
@@ -18,9 +15,7 @@ public interface IKcpSession {
      */
     InetSocketAddress getAddress();
 
-    /**
-     * Closes the server's connection to the client.
-     */
+    /** Closes the server's connection to the client. */
     void close();
 
     /**
