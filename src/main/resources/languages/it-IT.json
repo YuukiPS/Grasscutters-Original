@@ -44,7 +44,8 @@
         "password_error": "Password non valida",
         "password_length_error": "La lunghezza della password deve essere maggiore o uguale a 8",
         "password_storage_error": "Non hai una password per il tuo account. Contatta un amministratore.",
-        "server_max_player_limit": "Il numero di giocatori online ha raggiunto il limite"
+        "server_max_player_limit": "Il numero di giocatori online ha raggiunto il limite",
+        "password_crypto_error": "🇺🇸Unable to decrypt the client's given password. Are you using the right version of the game?"
       },
       "router_error": "[Dispatch] Impossibile collegare il router."
     },

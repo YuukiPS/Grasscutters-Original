@@ -44,7 +44,8 @@
         "password_error": "암호가 올바르지 않습니다",
         "password_length_error": "암호의 길이는 8자리보다 크거나 같아야합니다.",
         "password_storage_error": "계정에 암호가 없습니다. 관리자에게 문의하십시오.",
-        "server_max_player_limit": "온라인 플레이어 수가 최대에 도달했습니다."
+        "server_max_player_limit": "온라인 플레이어 수가 최대에 도달했습니다.",
+        "password_crypto_error": "🇺🇸Unable to decrypt the client's given password. Are you using the right version of the game?"
       },
       "router_error": "[Dispatch] 라우터에 연결할 수 없습니다."
     },

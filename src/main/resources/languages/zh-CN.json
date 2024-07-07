@@ -44,7 +44,8 @@
         "password_error": "登录失败，请确认账号/密码是否正确",
         "password_length_error": "密码必须大于或等于 8 位",
         "password_storage_error": "你没有密码，请联系管理员",
-        "server_max_player_limit": "服务器在线人数已满"
+        "server_max_player_limit": "服务器在线人数已满",
+        "password_crypto_error": "🇺🇸Unable to decrypt the client's given password. Are you using the right version of the game?"
       },
       "router_error": "[Dispatch] 无法连接路由"
     },

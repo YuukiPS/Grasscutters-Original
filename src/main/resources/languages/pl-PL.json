@@ -44,7 +44,8 @@
         "password_error": "Nieprawidłowe hasło",
         "password_length_error": "Długość hasła musi być większa niż równa 8 znaków",
         "password_storage_error": "Nie posiadasz hasła do tego konta. Proszę skontaktować się z Administratorem.",
-        "server_max_player_limit": "Liczba graczy online osiągnęła swój limit."
+        "server_max_player_limit": "Liczba graczy online osiągnęła swój limit.",
+        "password_crypto_error": "🇺🇸Unable to decrypt the client's given password. Are you using the right version of the game?"
       },
       "router_error": "[Dispatch] Wystąpił błąd podczas tworzenia routera."
     },
