@@ -507,6 +507,12 @@ public class SceneScriptManager {
                     .forEach(
                             block -> {
                                 block.load(sceneId, meta.context);
+                                if (block.groups == null) {
+                                    Grasscutter.getLogger()
+                                            .error("block.groups null for block {}", block.id);
+                                    return;
+                                }
+
                                 block.groups.values().stream()
                                         .filter(g -> !g.dynamic_load)
                                         .forEach(
