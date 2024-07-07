@@ -23,7 +23,7 @@ plugins {
     id 'java-library' // Apply the java-library plugin for API and implementation separation.
     id 'application' // Apply the application plugin to add support for building a CLI application
     id 'com.google.protobuf' version '0.8.18' // Apply the protobuf auto generator
-    id 'com.diffplug.spotless' version '6.11.0' // Apply the Spotless linter plugin.
+    id 'com.diffplug.spotless' version '6.25.0' // Apply the Spotless linter plugin.
 
     id 'eclipse' // Eclipse Support
     id 'idea' // IntelliJ Support
@@ -31,7 +31,7 @@ plugins {
     id 'maven-publish' // Support for publishing to Maven repositories.
     id 'signing' // Support for signing build artifacts.
 
-    id 'io.freefair.lombok' version '6.6.1' // Lombok for delombok'ification
+    id 'io.freefair.lombok' version '8.6' // Lombok for delombok'ification
 }
 
 spotless {
@@ -43,7 +43,7 @@ spotless {
         }
 
         importOrder('io.grasscutter', '', 'java', 'javax', '\\#java', '\\#') // Configure import order.
-        googleJavaFormat('1.15.0') // Use Google's Java formatter.
+        googleJavaFormat('1.17.0') // Use Google's Java formatter.
         formatAnnotations() // Reformat annotations.
         endWithNewline() // Ensure files end with a newline.
         indentWithTabs(2); indentWithSpaces(4) // Use 4 spaces for indentation.
