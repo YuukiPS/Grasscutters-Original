@@ -77,19 +77,19 @@ dependencies {
 
     // Logging libraries.
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.7'
-    implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.4.7'
-    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.4.7'
+    implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.4.14'
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.4.12'
 
     // Line reading libraries.
-    implementation group: 'org.jline', name: 'jline', version: '3.21.0'
+    implementation group: 'org.jline', name: 'jline', version: '3.25.0'
     implementation group: 'org.jline', name: 'jline-terminal-jna', version: '3.21.0'
     implementation group: 'net.java.dev.jna', name: 'jna', version: '5.10.0'
 
     // Java Netty for networking.
-    implementation group: 'io.netty', name: 'netty-common', version: '4.1.86.Final'
-    implementation group: 'io.netty', name: 'netty-handler', version: '4.1.86.Final'
-    implementation group: 'io.netty', name: 'netty-transport-native-epoll', version: '4.1.86.Final'
-    implementation group: 'io.netty', name: 'netty-transport-native-kqueue', version: '4.1.86.Final'
+    implementation group: 'io.netty', name: 'netty-common', version: project.netty_version
+    implementation group: 'io.netty', name: 'netty-handler', version: project.netty_version
+    implementation group: 'io.netty', name: 'netty-transport-native-epoll', version: project.netty_version
+    implementation group: 'io.netty', name: 'netty-transport-native-kqueue', version: project.netty_version
 
     // Serialization.
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.9.0'
@@ -136,10 +136,10 @@ dependencies {
     testImplementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.10.0'
 
     // Lombok.
-    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.26'
-    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.26'
-    testCompileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.26'
-    testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.26'
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: project.lombok_version
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: project.lombok_version
+    testCompileOnly group: 'org.projectlombok', name: 'lombok', version: project.lombok_version
+    testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: project.lombok_version
 }
 
 configurations.configureEach {
