@@ -1,5 +1,5 @@
 # Builder
-FROM gradle:jdk17-alpine as builder
+FROM gradle:jdk21-alpine as builder
 
 RUN apk add --update nodejs npm
 
@@ -19,7 +19,7 @@ WORKDIR /app
 RUN git clone --branch ${DATA_BRANCH} --depth 1 ${DATA_REPOSITORY}
 
 # Result Container
-FROM amazoncorretto:17-alpine
+FROM amazoncorretto:21-alpine
 
 WORKDIR /app
 

@@ -54,10 +54,10 @@ compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
 
 sourceCompatibility = JavaVersion.VERSION_21
-targetCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_21
 
 group = 'io.grasscutter'
-version = '1.7.4'
+version = '1.7.5-dev'
 
 java {
     withJavadocJar()
