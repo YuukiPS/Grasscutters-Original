@@ -14,6 +14,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 /** Handles requests for the new GM Handbook. */
+@Deprecated(since = "1.7.5-dev")
 public final class HandbookHandler implements Router {
     private String handbook;
     private final boolean serve;

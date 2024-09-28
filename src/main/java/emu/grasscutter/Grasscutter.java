@@ -150,7 +150,6 @@ public final class Grasscutter {
             httpServer.addRouter(AuthenticationHandler.class);
             httpServer.addRouter(GachaHandler.class);
             httpServer.addRouter(DocumentationServerHandler.class);
-            httpServer.addRouter(HandbookHandler.class);
         }
 
         // Check if the HTTP server should start.
