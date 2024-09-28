@@ -7,7 +7,7 @@ import emu.grasscutter.tools.Tools;
 
 import java.util.List;
 
-@Command(label = "info", aliases = {"troubleshoot", "helpme"},
+@Command(label = "info", aliases = {"about", "troubleshoot", "helpme"},
     usage = "/info", targetRequirement = Command.TargetRequirement.NONE)
 public final class InfoCommand implements CommandHandler {
     // This command can use the 'grasscutter.command.troubleshoot' permission to show sensitive information.
@@ -34,7 +34,7 @@ public final class InfoCommand implements CommandHandler {
                 - formerly maintained by Birdulon
 
                 Other Credits
-                 - Slushy Team (akio, azzu, Areha11Fz, tamil; protocol)
+                 - Kei-Luna (compiled protocol defs.)
                  - Yuki (resource minifying & packaging)
                  - Dimbreath (dumping most resources)""");
         // TODO: Send to remote server (Grasscutter API) and send dump link.
