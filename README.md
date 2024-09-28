@@ -31,7 +31,7 @@
 [4.0.x Client-cloud drive](https://www.123pan.com/s/HoqUVv-U7SBA.html)
 
 - Download the [latest Cultivation version](https://github.com/Grasscutters/Cultivation/releases/latest). Use the `.msi` installer.
-- After opening Cultivation (as admin), press the download button in the upper right corner. 
+- After opening Cultivation (as admin), press the download button in the upper right corner.
 - Click `Download All-in-One`
 - Click the gear in the upper right corner
 - Set the game Install path to where your game is located.
@@ -50,7 +50,6 @@ Grasscutter uses Gradle to handle dependencies & building.
 
 - [Java Development Kit 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) or higher
 - [Git](https://git-scm.com/downloads)
-- [NodeJS](https://nodejs.org/en/download) (Optional, for building the handbook)
 
 ##### Clone
 
@@ -60,8 +59,6 @@ cd Grasscutter
 ```
 
 ##### Compile
-
-**Note**: Handbook generation may fail on some systems. To disable the handbook generation, append `-PskipHandbook=1` to the `gradlew jar` command.
 
 Windows:
 
@@ -77,24 +74,6 @@ chmod +x gradlew
 ./gradlew jar
 ```
 
-##### Compiling the Handbook (Manually)
-
-With Gradle:
-
-```shell
-./gradlew generateHandbook
-```
-
-With NPM:
-
-```shell
-cd src/handbook
-npm install
-npm run build
-```
-
-You can find the output jar in the root of the project folder.
-
-### Troubleshooting 
+### Troubleshooting
 
 For a list of common issues and solutions and to ask for help, please join [our Discord server](https://discord.gg/T5vZU6UyeG) and go to the support channel.
