@@ -2,7 +2,6 @@ package emu.grasscutter.game.gacha;
 
 import static emu.grasscutter.config.Configuration.GAME_OPTIONS;
 
-import com.sun.nio.file.SensitivityWatchEventModifier;
 import emu.grasscutter.Grasscutter;
 import emu.grasscutter.data.*;
 import emu.grasscutter.data.common.ItemParamData;
@@ -26,11 +25,14 @@ import it.unimi.dsi.fastutil.ints.*;
 import java.nio.file.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+
+import lombok.Getter;
 import org.greenrobot.eventbus.Subscribe;
 
 public class GachaSystem extends BaseGameSystem {
     private static final int starglitterId = 221;
     private static final int stardustId = 222;
+    @Getter
     private final Int2ObjectMap<GachaBanner> gachaBanners;
     private WatchService watchService;
 
@@ -39,10 +41,6 @@ public class GachaSystem extends BaseGameSystem {
         this.gachaBanners = new Int2ObjectOpenHashMap<>();
         this.load();
         this.startWatcher(server);
-    }
-
-    public Int2ObjectMap<GachaBanner> getGachaBanners() {
-        return gachaBanners;
     }
 
     public int randomRange(int min, int max) { // Both are inclusive
@@ -425,18 +423,14 @@ public class GachaSystem extends BaseGameSystem {
             try {
                 this.watchService = FileSystems.getDefault().newWatchService();
                 FileUtils.getDataUserPath("")
-                        .register(
-                                watchService,
-                                new WatchEvent.Kind[] {StandardWatchEventKinds.ENTRY_MODIFY},
-                                SensitivityWatchEventModifier.HIGH);
+                        .register(watchService, StandardWatchEventKinds.ENTRY_MODIFY);
             } catch (Exception e) {
                 Grasscutter.getLogger()
                         .error(
                                 "Unable to load the Gacha Manager Watch Service. If ServerOptions.watchGacha is true it will not auto-reload");
-                e.printStackTrace();
             }
         } else {
-            Grasscutter.getLogger().error("Cannot reinitialise watcher ");
+            Grasscutter.getLogger().error("Cannot reinitialise watcher");
         }
     }
 
@@ -461,8 +455,8 @@ public class GachaSystem extends BaseGameSystem {
                             .error(
                                     "Unable to reset Gacha Manager Watch Key. Auto-reload of banners.json will no longer work.");
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ex) {
+                Grasscutter.getLogger().debug("Error watching Gacha Manager", ex);
             }
         }
     }
