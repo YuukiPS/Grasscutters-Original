@@ -202,8 +202,8 @@ publishing {
                 url = 'https://github.com/Grasscutters/Grasscutter'
                 licenses {
                     license {
-                        name = 'The Apache License, Version 2.0'
-                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        name = 'GNU Affero General Public License, Version 3.0'
+                        url = 'https://www.gnu.org/licenses/agpl-3.0.txt'
                     }
                 }
                 developers {
@@ -224,22 +224,9 @@ publishing {
 
     repositories {
         maven {
-            if (version.endsWith('-dev')) {
-                // Check if the action being ran is 'publish'.
+            if (!version.endsWith('-dev')) {
                 if (publish.state.executing) {
-                    println('Publishing to Ben4J-Maven')
-                }
-
-                url 'https://repo.4benj.com/releases'
-                name '4benj-maven'
-                credentials {
-                    username System.getenv('benj_maven_username')
-                    password System.getenv('benj_maven_token')
-                }
-            } else {
-                // Check if the action being ran is 'publish'.
-                if (publish.state.executing) {
-                    println('Publishing to Sonatype')
+                    println('Publishing artifact to Sonatype repository...')
                 }
 
                 def releasesRepoUrl = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
