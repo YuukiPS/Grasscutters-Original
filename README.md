@@ -77,3 +77,11 @@ chmod +x gradlew
 ### Troubleshooting
 
 For a list of common issues and solutions and to ask for help, please join [our Discord server](https://discord.gg/T5vZU6UyeG) and go to the support channel.
+
+
+## Credits
+
+> [!NOTE]
+> Protocol definitions are dumped from many parties, but they are not stated here. Thanks for contributing!
+
+- [KCP Library](https://github.com/OcenWang-GI/AyakaPS-KCP) - `grasskcper` updated with the `byte_check_code`
