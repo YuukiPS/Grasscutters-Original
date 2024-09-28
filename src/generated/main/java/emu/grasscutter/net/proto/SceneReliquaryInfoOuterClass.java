@@ -43,10 +43,6 @@ public final class SceneReliquaryInfoOuterClass {
     int getPromoteLevel();
   }
   /**
-   * <pre>
-   * Obf: HEMALDBEKEL
-   * </pre>
-   *
    * Protobuf type {@code SceneReliquaryInfo}
    */
   public static final class SceneReliquaryInfo extends
@@ -377,10 +373,6 @@ public final class SceneReliquaryInfoOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * Obf: HEMALDBEKEL
-     * </pre>
-     *
      * Protobuf type {@code SceneReliquaryInfo}
      */
     public static final class Builder extends

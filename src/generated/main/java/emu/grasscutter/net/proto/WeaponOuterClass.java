@@ -69,12 +69,14 @@ public final class WeaponOuterClass {
 
     int getAffixMapOrThrow(
         int key);
+
+    /**
+     * <code>bool HHLNNPOILDL = 5;</code>
+     * @return The hHLNNPOILDL.
+     */
+    boolean getHHLNNPOILDL();
   }
   /**
-   * <pre>
-   * Obf: NHOLFKPNLCH
-   * </pre>
-   *
    * Protobuf type {@code Weapon}
    */
   public static final class Weapon extends
@@ -146,6 +148,11 @@ public final class WeaponOuterClass {
                   AffixMapDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
               affixMap_.getMutableMap().put(
                   affixMap__.getKey(), affixMap__.getValue());
+              break;
+            }
+            case 40: {
+
+              hHLNNPOILDL_ = input.readBool();
               break;
             }
             default: {
@@ -306,6 +313,17 @@ public final class WeaponOuterClass {
       return map.get(key);
     }
 
+    public static final int HHLNNPOILDL_FIELD_NUMBER = 5;
+    private boolean hHLNNPOILDL_;
+    /**
+     * <code>bool HHLNNPOILDL = 5;</code>
+     * @return The hHLNNPOILDL.
+     */
+    @java.lang.Override
+    public boolean getHHLNNPOILDL() {
+      return hHLNNPOILDL_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -335,6 +353,9 @@ public final class WeaponOuterClass {
           internalGetAffixMap(),
           AffixMapDefaultEntryHolder.defaultEntry,
           4);
+      if (hHLNNPOILDL_ != false) {
+        output.writeBool(5, hHLNNPOILDL_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -366,6 +387,10 @@ public final class WeaponOuterClass {
         size += com.google.protobuf.CodedOutputStream
             .computeMessageSize(4, affixMap__);
       }
+      if (hHLNNPOILDL_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(5, hHLNNPOILDL_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -389,6 +414,8 @@ public final class WeaponOuterClass {
           != other.getPromoteLevel()) return false;
       if (!internalGetAffixMap().equals(
           other.internalGetAffixMap())) return false;
+      if (getHHLNNPOILDL()
+          != other.getHHLNNPOILDL()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -410,6 +437,9 @@ public final class WeaponOuterClass {
         hash = (37 * hash) + AFFIX_MAP_FIELD_NUMBER;
         hash = (53 * hash) + internalGetAffixMap().hashCode();
       }
+      hash = (37 * hash) + HHLNNPOILDL_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getHHLNNPOILDL());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -506,10 +536,6 @@ public final class WeaponOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * Obf: NHOLFKPNLCH
-     * </pre>
-     *
      * Protobuf type {@code Weapon}
      */
     public static final class Builder extends
@@ -576,6 +602,8 @@ public final class WeaponOuterClass {
         promoteLevel_ = 0;
 
         internalGetMutableAffixMap().clear();
+        hHLNNPOILDL_ = false;
+
         return this;
       }
 
@@ -608,6 +636,7 @@ public final class WeaponOuterClass {
         result.promoteLevel_ = promoteLevel_;
         result.affixMap_ = internalGetAffixMap();
         result.affixMap_.makeImmutable();
+        result.hHLNNPOILDL_ = hHLNNPOILDL_;
         onBuilt();
         return result;
       }
@@ -667,6 +696,9 @@ public final class WeaponOuterClass {
         }
         internalGetMutableAffixMap().mergeFrom(
             other.internalGetAffixMap());
+        if (other.getHHLNNPOILDL() != false) {
+          setHHLNNPOILDL(other.getHHLNNPOILDL());
+        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -917,6 +949,37 @@ public final class WeaponOuterClass {
             .putAll(values);
         return this;
       }
+
+      private boolean hHLNNPOILDL_ ;
+      /**
+       * <code>bool HHLNNPOILDL = 5;</code>
+       * @return The hHLNNPOILDL.
+       */
+      @java.lang.Override
+      public boolean getHHLNNPOILDL() {
+        return hHLNNPOILDL_;
+      }
+      /**
+       * <code>bool HHLNNPOILDL = 5;</code>
+       * @param value The hHLNNPOILDL to set.
+       * @return This builder for chaining.
+       */
+      public Builder setHHLNNPOILDL(boolean value) {
+        
+        hHLNNPOILDL_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool HHLNNPOILDL = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearHHLNNPOILDL() {
+        
+        hHLNNPOILDL_ = false;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -989,12 +1052,12 @@ public final class WeaponOuterClass {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\014Weapon.proto\"\226\001\n\006Weapon\022\r\n\005level\030\001 \001(\r" +
+      "\n\014Weapon.proto\"\253\001\n\006Weapon\022\r\n\005level\030\001 \001(\r" +
       "\022\013\n\003exp\030\002 \001(\r\022\025\n\rpromote_level\030\003 \001(\r\022(\n\t" +
-      "affix_map\030\004 \003(\0132\025.Weapon.AffixMapEntry\032/" +
-      "\n\rAffixMapEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 " +
-      "\001(\r:\0028\001B\033\n\031emu.grasscutter.net.protob\006pr" +
-      "oto3"
+      "affix_map\030\004 \003(\0132\025.Weapon.AffixMapEntry\022\023" +
+      "\n\013HHLNNPOILDL\030\005 \001(\010\032/\n\rAffixMapEntry\022\013\n\003" +
+      "key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028\001B\033\n\031emu.gras" +
+      "scutter.net.protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -1005,7 +1068,7 @@ public final class WeaponOuterClass {
     internal_static_Weapon_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Weapon_descriptor,
-        new java.lang.String[] { "Level", "Exp", "PromoteLevel", "AffixMap", });
+        new java.lang.String[] { "Level", "Exp", "PromoteLevel", "AffixMap", "HHLNNPOILDL", });
     internal_static_Weapon_AffixMapEntry_descriptor =
       internal_static_Weapon_descriptor.getNestedTypes().get(0);
     internal_static_Weapon_AffixMapEntry_fieldAccessorTable = new

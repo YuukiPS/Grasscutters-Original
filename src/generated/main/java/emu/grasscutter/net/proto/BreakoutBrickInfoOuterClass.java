@@ -32,7 +32,7 @@ public final class BreakoutBrickInfoOuterClass {
   }
   /**
    * <pre>
-   * Obf: DGMFFJIKOKD
+   * 5.0.0
    * </pre>
    *
    * Protobuf type {@code BreakoutBrickInfo}
@@ -311,7 +311,7 @@ public final class BreakoutBrickInfoOuterClass {
     }
     /**
      * <pre>
-     * Obf: DGMFFJIKOKD
+     * 5.0.0
      * </pre>
      *
      * Protobuf type {@code BreakoutBrickInfo}

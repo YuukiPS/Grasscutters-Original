@@ -19,28 +19,24 @@ public final class BattlePassCycleOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>uint32 cycle_idx = 15;</code>
-     * @return The cycleIdx.
-     */
-    int getCycleIdx();
-
-    /**
-     * <code>uint32 begin_time = 2;</code>
+     * <code>uint32 begin_time = 1;</code>
      * @return The beginTime.
      */
     int getBeginTime();
 
     /**
-     * <code>uint32 end_time = 12;</code>
+     * <code>uint32 cycle_idx = 13;</code>
+     * @return The cycleIdx.
+     */
+    int getCycleIdx();
+
+    /**
+     * <code>uint32 end_time = 14;</code>
      * @return The endTime.
      */
     int getEndTime();
   }
   /**
-   * <pre>
-   * Obf: JDHFCEDALOK
-   * </pre>
-   *
    * Protobuf type {@code BattlePassCycle}
    */
   public static final class BattlePassCycle extends
@@ -85,19 +81,19 @@ public final class BattlePassCycleOuterClass {
             case 0:
               done = true;
               break;
-            case 16: {
+            case 8: {
 
               beginTime_ = input.readUInt32();
               break;
             }
-            case 96: {
-
-              endTime_ = input.readUInt32();
-              break;
-            }
-            case 120: {
+            case 104: {
 
               cycleIdx_ = input.readUInt32();
+              break;
+            }
+            case 112: {
+
+              endTime_ = input.readUInt32();
               break;
             }
             default: {
@@ -132,21 +128,10 @@ public final class BattlePassCycleOuterClass {
               emu.grasscutter.net.proto.BattlePassCycleOuterClass.BattlePassCycle.class, emu.grasscutter.net.proto.BattlePassCycleOuterClass.BattlePassCycle.Builder.class);
     }
 
-    public static final int CYCLE_IDX_FIELD_NUMBER = 15;
-    private int cycleIdx_;
-    /**
-     * <code>uint32 cycle_idx = 15;</code>
-     * @return The cycleIdx.
-     */
-    @java.lang.Override
-    public int getCycleIdx() {
-      return cycleIdx_;
-    }
-
-    public static final int BEGIN_TIME_FIELD_NUMBER = 2;
+    public static final int BEGIN_TIME_FIELD_NUMBER = 1;
     private int beginTime_;
     /**
-     * <code>uint32 begin_time = 2;</code>
+     * <code>uint32 begin_time = 1;</code>
      * @return The beginTime.
      */
     @java.lang.Override
@@ -154,10 +139,21 @@ public final class BattlePassCycleOuterClass {
       return beginTime_;
     }
 
-    public static final int END_TIME_FIELD_NUMBER = 12;
+    public static final int CYCLE_IDX_FIELD_NUMBER = 13;
+    private int cycleIdx_;
+    /**
+     * <code>uint32 cycle_idx = 13;</code>
+     * @return The cycleIdx.
+     */
+    @java.lang.Override
+    public int getCycleIdx() {
+      return cycleIdx_;
+    }
+
+    public static final int END_TIME_FIELD_NUMBER = 14;
     private int endTime_;
     /**
-     * <code>uint32 end_time = 12;</code>
+     * <code>uint32 end_time = 14;</code>
      * @return The endTime.
      */
     @java.lang.Override
@@ -180,13 +176,13 @@ public final class BattlePassCycleOuterClass {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (beginTime_ != 0) {
-        output.writeUInt32(2, beginTime_);
-      }
-      if (endTime_ != 0) {
-        output.writeUInt32(12, endTime_);
+        output.writeUInt32(1, beginTime_);
       }
       if (cycleIdx_ != 0) {
-        output.writeUInt32(15, cycleIdx_);
+        output.writeUInt32(13, cycleIdx_);
+      }
+      if (endTime_ != 0) {
+        output.writeUInt32(14, endTime_);
       }
       unknownFields.writeTo(output);
     }
@@ -199,15 +195,15 @@ public final class BattlePassCycleOuterClass {
       size = 0;
       if (beginTime_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(2, beginTime_);
-      }
-      if (endTime_ != 0) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(12, endTime_);
+          .computeUInt32Size(1, beginTime_);
       }
       if (cycleIdx_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(15, cycleIdx_);
+          .computeUInt32Size(13, cycleIdx_);
+      }
+      if (endTime_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(14, endTime_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -224,10 +220,10 @@ public final class BattlePassCycleOuterClass {
       }
       emu.grasscutter.net.proto.BattlePassCycleOuterClass.BattlePassCycle other = (emu.grasscutter.net.proto.BattlePassCycleOuterClass.BattlePassCycle) obj;
 
-      if (getCycleIdx()
-          != other.getCycleIdx()) return false;
       if (getBeginTime()
           != other.getBeginTime()) return false;
+      if (getCycleIdx()
+          != other.getCycleIdx()) return false;
       if (getEndTime()
           != other.getEndTime()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
@@ -241,10 +237,10 @@ public final class BattlePassCycleOuterClass {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + CYCLE_IDX_FIELD_NUMBER;
-      hash = (53 * hash) + getCycleIdx();
       hash = (37 * hash) + BEGIN_TIME_FIELD_NUMBER;
       hash = (53 * hash) + getBeginTime();
+      hash = (37 * hash) + CYCLE_IDX_FIELD_NUMBER;
+      hash = (53 * hash) + getCycleIdx();
       hash = (37 * hash) + END_TIME_FIELD_NUMBER;
       hash = (53 * hash) + getEndTime();
       hash = (29 * hash) + unknownFields.hashCode();
@@ -343,10 +339,6 @@ public final class BattlePassCycleOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * Obf: JDHFCEDALOK
-     * </pre>
-     *
      * Protobuf type {@code BattlePassCycle}
      */
     public static final class Builder extends
@@ -384,9 +376,9 @@ public final class BattlePassCycleOuterClass {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        cycleIdx_ = 0;
-
         beginTime_ = 0;
+
+        cycleIdx_ = 0;
 
         endTime_ = 0;
 
@@ -416,8 +408,8 @@ public final class BattlePassCycleOuterClass {
       @java.lang.Override
       public emu.grasscutter.net.proto.BattlePassCycleOuterClass.BattlePassCycle buildPartial() {
         emu.grasscutter.net.proto.BattlePassCycleOuterClass.BattlePassCycle result = new emu.grasscutter.net.proto.BattlePassCycleOuterClass.BattlePassCycle(this);
-        result.cycleIdx_ = cycleIdx_;
         result.beginTime_ = beginTime_;
+        result.cycleIdx_ = cycleIdx_;
         result.endTime_ = endTime_;
         onBuilt();
         return result;
@@ -467,11 +459,11 @@ public final class BattlePassCycleOuterClass {
 
       public Builder mergeFrom(emu.grasscutter.net.proto.BattlePassCycleOuterClass.BattlePassCycle other) {
         if (other == emu.grasscutter.net.proto.BattlePassCycleOuterClass.BattlePassCycle.getDefaultInstance()) return this;
-        if (other.getCycleIdx() != 0) {
-          setCycleIdx(other.getCycleIdx());
-        }
         if (other.getBeginTime() != 0) {
           setBeginTime(other.getBeginTime());
+        }
+        if (other.getCycleIdx() != 0) {
+          setCycleIdx(other.getCycleIdx());
         }
         if (other.getEndTime() != 0) {
           setEndTime(other.getEndTime());
@@ -505,40 +497,9 @@ public final class BattlePassCycleOuterClass {
         return this;
       }
 
-      private int cycleIdx_ ;
-      /**
-       * <code>uint32 cycle_idx = 15;</code>
-       * @return The cycleIdx.
-       */
-      @java.lang.Override
-      public int getCycleIdx() {
-        return cycleIdx_;
-      }
-      /**
-       * <code>uint32 cycle_idx = 15;</code>
-       * @param value The cycleIdx to set.
-       * @return This builder for chaining.
-       */
-      public Builder setCycleIdx(int value) {
-        
-        cycleIdx_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>uint32 cycle_idx = 15;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearCycleIdx() {
-        
-        cycleIdx_ = 0;
-        onChanged();
-        return this;
-      }
-
       private int beginTime_ ;
       /**
-       * <code>uint32 begin_time = 2;</code>
+       * <code>uint32 begin_time = 1;</code>
        * @return The beginTime.
        */
       @java.lang.Override
@@ -546,7 +507,7 @@ public final class BattlePassCycleOuterClass {
         return beginTime_;
       }
       /**
-       * <code>uint32 begin_time = 2;</code>
+       * <code>uint32 begin_time = 1;</code>
        * @param value The beginTime to set.
        * @return This builder for chaining.
        */
@@ -557,7 +518,7 @@ public final class BattlePassCycleOuterClass {
         return this;
       }
       /**
-       * <code>uint32 begin_time = 2;</code>
+       * <code>uint32 begin_time = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearBeginTime() {
@@ -567,9 +528,40 @@ public final class BattlePassCycleOuterClass {
         return this;
       }
 
+      private int cycleIdx_ ;
+      /**
+       * <code>uint32 cycle_idx = 13;</code>
+       * @return The cycleIdx.
+       */
+      @java.lang.Override
+      public int getCycleIdx() {
+        return cycleIdx_;
+      }
+      /**
+       * <code>uint32 cycle_idx = 13;</code>
+       * @param value The cycleIdx to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCycleIdx(int value) {
+        
+        cycleIdx_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>uint32 cycle_idx = 13;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCycleIdx() {
+        
+        cycleIdx_ = 0;
+        onChanged();
+        return this;
+      }
+
       private int endTime_ ;
       /**
-       * <code>uint32 end_time = 12;</code>
+       * <code>uint32 end_time = 14;</code>
        * @return The endTime.
        */
       @java.lang.Override
@@ -577,7 +569,7 @@ public final class BattlePassCycleOuterClass {
         return endTime_;
       }
       /**
-       * <code>uint32 end_time = 12;</code>
+       * <code>uint32 end_time = 14;</code>
        * @param value The endTime to set.
        * @return This builder for chaining.
        */
@@ -588,7 +580,7 @@ public final class BattlePassCycleOuterClass {
         return this;
       }
       /**
-       * <code>uint32 end_time = 12;</code>
+       * <code>uint32 end_time = 14;</code>
        * @return This builder for chaining.
        */
       public Builder clearEndTime() {
@@ -665,8 +657,8 @@ public final class BattlePassCycleOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\025BattlePassCycle.proto\"J\n\017BattlePassCyc" +
-      "le\022\021\n\tcycle_idx\030\017 \001(\r\022\022\n\nbegin_time\030\002 \001(" +
-      "\r\022\020\n\010end_time\030\014 \001(\rB\033\n\031emu.grasscutter.n" +
+      "le\022\022\n\nbegin_time\030\001 \001(\r\022\021\n\tcycle_idx\030\r \001(" +
+      "\r\022\020\n\010end_time\030\016 \001(\rB\033\n\031emu.grasscutter.n" +
       "et.protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
@@ -678,7 +670,7 @@ public final class BattlePassCycleOuterClass {
     internal_static_BattlePassCycle_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_BattlePassCycle_descriptor,
-        new java.lang.String[] { "CycleIdx", "BeginTime", "EndTime", });
+        new java.lang.String[] { "BeginTime", "CycleIdx", "EndTime", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

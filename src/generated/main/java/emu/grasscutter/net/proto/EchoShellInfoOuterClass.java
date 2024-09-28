@@ -26,7 +26,7 @@ public final class EchoShellInfoOuterClass {
   }
   /**
    * <pre>
-   * Obf: KCHCJMNANCP
+   * 5.0.0
    * </pre>
    *
    * Protobuf type {@code EchoShellInfo}
@@ -278,7 +278,7 @@ public final class EchoShellInfoOuterClass {
     }
     /**
      * <pre>
-     * Obf: KCHCJMNANCP
+     * 5.0.0
      * </pre>
      *
      * Protobuf type {@code EchoShellInfo}

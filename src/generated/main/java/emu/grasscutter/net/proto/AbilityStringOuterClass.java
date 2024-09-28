@@ -50,7 +50,8 @@ public final class AbilityStringOuterClass {
   }
   /**
    * <pre>
-   * Obf: PPIBJBLBJDL
+   * 5.0.0
+   * CmdId: 
    * </pre>
    *
    * Protobuf type {@code AbilityString}
@@ -440,7 +441,8 @@ public final class AbilityStringOuterClass {
     }
     /**
      * <pre>
-     * Obf: PPIBJBLBJDL
+     * 5.0.0
+     * CmdId: 
      * </pre>
      *
      * Protobuf type {@code AbilityString}

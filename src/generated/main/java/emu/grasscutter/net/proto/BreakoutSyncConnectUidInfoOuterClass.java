@@ -60,7 +60,7 @@ public final class BreakoutSyncConnectUidInfoOuterClass {
   }
   /**
    * <pre>
-   * Obf: BKGOLPBLKMN
+   * 5.0.0
    * </pre>
    *
    * Protobuf type {@code BreakoutSyncConnectUidInfo}
@@ -474,7 +474,7 @@ public final class BreakoutSyncConnectUidInfoOuterClass {
     }
     /**
      * <pre>
-     * Obf: BKGOLPBLKMN
+     * 5.0.0
      * </pre>
      *
      * Protobuf type {@code BreakoutSyncConnectUidInfo}

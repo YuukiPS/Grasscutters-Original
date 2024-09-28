@@ -49,10 +49,6 @@ public final class ServerBuffOuterClass {
     boolean getIsModifierAdded();
   }
   /**
-   * <pre>
-   * Obf: JGJPJFGLDOE
-   * </pre>
-   *
    * Protobuf type {@code ServerBuff}
    */
   public static final class ServerBuff extends
@@ -410,10 +406,6 @@ public final class ServerBuffOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * Obf: JGJPJFGLDOE
-     * </pre>
-     *
      * Protobuf type {@code ServerBuff}
      */
     public static final class Builder extends

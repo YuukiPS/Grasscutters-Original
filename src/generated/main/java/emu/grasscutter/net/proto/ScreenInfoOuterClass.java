@@ -32,7 +32,7 @@ public final class ScreenInfoOuterClass {
   }
   /**
    * <pre>
-   * Obf: MPEEPHMCGKD
+   * 5.0.0
    * </pre>
    *
    * Protobuf type {@code ScreenInfo}
@@ -311,7 +311,7 @@ public final class ScreenInfoOuterClass {
     }
     /**
      * <pre>
-     * Obf: MPEEPHMCGKD
+     * 5.0.0
      * </pre>
      *
      * Protobuf type {@code ScreenInfo}

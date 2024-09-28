@@ -34,11 +34,6 @@ public final class AvatarChangeCostumeNotifyOuterClass {
     emu.grasscutter.net.proto.SceneEntityInfoOuterClass.SceneEntityInfoOrBuilder getEntityInfoOrBuilder();
   }
   /**
-   * <pre>
-   * CmdId: 22376
-   * Obf: MMGGANDHHFL
-   * </pre>
-   *
    * Protobuf type {@code AvatarChangeCostumeNotify}
    */
   public static final class AvatarChangeCostumeNotify extends
@@ -315,11 +310,6 @@ public final class AvatarChangeCostumeNotifyOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * CmdId: 22376
-     * Obf: MMGGANDHHFL
-     * </pre>
-     *
      * Protobuf type {@code AvatarChangeCostumeNotify}
      */
     public static final class Builder extends

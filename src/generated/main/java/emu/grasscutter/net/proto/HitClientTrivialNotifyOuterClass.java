@@ -19,30 +19,29 @@ public final class HitClientTrivialNotifyOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>uint32 owner_entity_id = 8;</code>
-     * @return The ownerEntityId.
-     */
-    int getOwnerEntityId();
-
-    /**
-     * <code>.Vector position = 5;</code>
+     * <code>.Vector position = 10;</code>
      * @return Whether the position field is set.
      */
     boolean hasPosition();
     /**
-     * <code>.Vector position = 5;</code>
+     * <code>.Vector position = 10;</code>
      * @return The position.
      */
     emu.grasscutter.net.proto.VectorOuterClass.Vector getPosition();
     /**
-     * <code>.Vector position = 5;</code>
+     * <code>.Vector position = 10;</code>
      */
     emu.grasscutter.net.proto.VectorOuterClass.VectorOrBuilder getPositionOrBuilder();
+
+    /**
+     * <code>uint32 owner_entity_id = 15;</code>
+     * @return The ownerEntityId.
+     */
+    int getOwnerEntityId();
   }
   /**
    * <pre>
-   * CmdId: 20211
-   * Obf: OEHPGPJNGDB
+   * CmdId: 25759
    * </pre>
    *
    * Protobuf type {@code HitClientTrivialNotify}
@@ -89,7 +88,7 @@ public final class HitClientTrivialNotifyOuterClass {
             case 0:
               done = true;
               break;
-            case 42: {
+            case 82: {
               emu.grasscutter.net.proto.VectorOuterClass.Vector.Builder subBuilder = null;
               if (position_ != null) {
                 subBuilder = position_.toBuilder();
@@ -102,7 +101,7 @@ public final class HitClientTrivialNotifyOuterClass {
 
               break;
             }
-            case 64: {
+            case 120: {
 
               ownerEntityId_ = input.readUInt32();
               break;
@@ -139,21 +138,10 @@ public final class HitClientTrivialNotifyOuterClass {
               emu.grasscutter.net.proto.HitClientTrivialNotifyOuterClass.HitClientTrivialNotify.class, emu.grasscutter.net.proto.HitClientTrivialNotifyOuterClass.HitClientTrivialNotify.Builder.class);
     }
 
-    public static final int OWNER_ENTITY_ID_FIELD_NUMBER = 8;
-    private int ownerEntityId_;
-    /**
-     * <code>uint32 owner_entity_id = 8;</code>
-     * @return The ownerEntityId.
-     */
-    @java.lang.Override
-    public int getOwnerEntityId() {
-      return ownerEntityId_;
-    }
-
-    public static final int POSITION_FIELD_NUMBER = 5;
+    public static final int POSITION_FIELD_NUMBER = 10;
     private emu.grasscutter.net.proto.VectorOuterClass.Vector position_;
     /**
-     * <code>.Vector position = 5;</code>
+     * <code>.Vector position = 10;</code>
      * @return Whether the position field is set.
      */
     @java.lang.Override
@@ -161,7 +149,7 @@ public final class HitClientTrivialNotifyOuterClass {
       return position_ != null;
     }
     /**
-     * <code>.Vector position = 5;</code>
+     * <code>.Vector position = 10;</code>
      * @return The position.
      */
     @java.lang.Override
@@ -169,11 +157,22 @@ public final class HitClientTrivialNotifyOuterClass {
       return position_ == null ? emu.grasscutter.net.proto.VectorOuterClass.Vector.getDefaultInstance() : position_;
     }
     /**
-     * <code>.Vector position = 5;</code>
+     * <code>.Vector position = 10;</code>
      */
     @java.lang.Override
     public emu.grasscutter.net.proto.VectorOuterClass.VectorOrBuilder getPositionOrBuilder() {
       return getPosition();
+    }
+
+    public static final int OWNER_ENTITY_ID_FIELD_NUMBER = 15;
+    private int ownerEntityId_;
+    /**
+     * <code>uint32 owner_entity_id = 15;</code>
+     * @return The ownerEntityId.
+     */
+    @java.lang.Override
+    public int getOwnerEntityId() {
+      return ownerEntityId_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -191,10 +190,10 @@ public final class HitClientTrivialNotifyOuterClass {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (position_ != null) {
-        output.writeMessage(5, getPosition());
+        output.writeMessage(10, getPosition());
       }
       if (ownerEntityId_ != 0) {
-        output.writeUInt32(8, ownerEntityId_);
+        output.writeUInt32(15, ownerEntityId_);
       }
       unknownFields.writeTo(output);
     }
@@ -207,11 +206,11 @@ public final class HitClientTrivialNotifyOuterClass {
       size = 0;
       if (position_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, getPosition());
+          .computeMessageSize(10, getPosition());
       }
       if (ownerEntityId_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(8, ownerEntityId_);
+          .computeUInt32Size(15, ownerEntityId_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -228,13 +227,13 @@ public final class HitClientTrivialNotifyOuterClass {
       }
       emu.grasscutter.net.proto.HitClientTrivialNotifyOuterClass.HitClientTrivialNotify other = (emu.grasscutter.net.proto.HitClientTrivialNotifyOuterClass.HitClientTrivialNotify) obj;
 
-      if (getOwnerEntityId()
-          != other.getOwnerEntityId()) return false;
       if (hasPosition() != other.hasPosition()) return false;
       if (hasPosition()) {
         if (!getPosition()
             .equals(other.getPosition())) return false;
       }
+      if (getOwnerEntityId()
+          != other.getOwnerEntityId()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -246,12 +245,12 @@ public final class HitClientTrivialNotifyOuterClass {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + OWNER_ENTITY_ID_FIELD_NUMBER;
-      hash = (53 * hash) + getOwnerEntityId();
       if (hasPosition()) {
         hash = (37 * hash) + POSITION_FIELD_NUMBER;
         hash = (53 * hash) + getPosition().hashCode();
       }
+      hash = (37 * hash) + OWNER_ENTITY_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getOwnerEntityId();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -349,8 +348,7 @@ public final class HitClientTrivialNotifyOuterClass {
     }
     /**
      * <pre>
-     * CmdId: 20211
-     * Obf: OEHPGPJNGDB
+     * CmdId: 25759
      * </pre>
      *
      * Protobuf type {@code HitClientTrivialNotify}
@@ -390,14 +388,14 @@ public final class HitClientTrivialNotifyOuterClass {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        ownerEntityId_ = 0;
-
         if (positionBuilder_ == null) {
           position_ = null;
         } else {
           position_ = null;
           positionBuilder_ = null;
         }
+        ownerEntityId_ = 0;
+
         return this;
       }
 
@@ -424,12 +422,12 @@ public final class HitClientTrivialNotifyOuterClass {
       @java.lang.Override
       public emu.grasscutter.net.proto.HitClientTrivialNotifyOuterClass.HitClientTrivialNotify buildPartial() {
         emu.grasscutter.net.proto.HitClientTrivialNotifyOuterClass.HitClientTrivialNotify result = new emu.grasscutter.net.proto.HitClientTrivialNotifyOuterClass.HitClientTrivialNotify(this);
-        result.ownerEntityId_ = ownerEntityId_;
         if (positionBuilder_ == null) {
           result.position_ = position_;
         } else {
           result.position_ = positionBuilder_.build();
         }
+        result.ownerEntityId_ = ownerEntityId_;
         onBuilt();
         return result;
       }
@@ -478,11 +476,11 @@ public final class HitClientTrivialNotifyOuterClass {
 
       public Builder mergeFrom(emu.grasscutter.net.proto.HitClientTrivialNotifyOuterClass.HitClientTrivialNotify other) {
         if (other == emu.grasscutter.net.proto.HitClientTrivialNotifyOuterClass.HitClientTrivialNotify.getDefaultInstance()) return this;
-        if (other.getOwnerEntityId() != 0) {
-          setOwnerEntityId(other.getOwnerEntityId());
-        }
         if (other.hasPosition()) {
           mergePosition(other.getPosition());
+        }
+        if (other.getOwnerEntityId() != 0) {
+          setOwnerEntityId(other.getOwnerEntityId());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -513,49 +511,18 @@ public final class HitClientTrivialNotifyOuterClass {
         return this;
       }
 
-      private int ownerEntityId_ ;
-      /**
-       * <code>uint32 owner_entity_id = 8;</code>
-       * @return The ownerEntityId.
-       */
-      @java.lang.Override
-      public int getOwnerEntityId() {
-        return ownerEntityId_;
-      }
-      /**
-       * <code>uint32 owner_entity_id = 8;</code>
-       * @param value The ownerEntityId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setOwnerEntityId(int value) {
-        
-        ownerEntityId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>uint32 owner_entity_id = 8;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearOwnerEntityId() {
-        
-        ownerEntityId_ = 0;
-        onChanged();
-        return this;
-      }
-
       private emu.grasscutter.net.proto.VectorOuterClass.Vector position_;
       private com.google.protobuf.SingleFieldBuilderV3<
           emu.grasscutter.net.proto.VectorOuterClass.Vector, emu.grasscutter.net.proto.VectorOuterClass.Vector.Builder, emu.grasscutter.net.proto.VectorOuterClass.VectorOrBuilder> positionBuilder_;
       /**
-       * <code>.Vector position = 5;</code>
+       * <code>.Vector position = 10;</code>
        * @return Whether the position field is set.
        */
       public boolean hasPosition() {
         return positionBuilder_ != null || position_ != null;
       }
       /**
-       * <code>.Vector position = 5;</code>
+       * <code>.Vector position = 10;</code>
        * @return The position.
        */
       public emu.grasscutter.net.proto.VectorOuterClass.Vector getPosition() {
@@ -566,7 +533,7 @@ public final class HitClientTrivialNotifyOuterClass {
         }
       }
       /**
-       * <code>.Vector position = 5;</code>
+       * <code>.Vector position = 10;</code>
        */
       public Builder setPosition(emu.grasscutter.net.proto.VectorOuterClass.Vector value) {
         if (positionBuilder_ == null) {
@@ -582,7 +549,7 @@ public final class HitClientTrivialNotifyOuterClass {
         return this;
       }
       /**
-       * <code>.Vector position = 5;</code>
+       * <code>.Vector position = 10;</code>
        */
       public Builder setPosition(
           emu.grasscutter.net.proto.VectorOuterClass.Vector.Builder builderForValue) {
@@ -596,7 +563,7 @@ public final class HitClientTrivialNotifyOuterClass {
         return this;
       }
       /**
-       * <code>.Vector position = 5;</code>
+       * <code>.Vector position = 10;</code>
        */
       public Builder mergePosition(emu.grasscutter.net.proto.VectorOuterClass.Vector value) {
         if (positionBuilder_ == null) {
@@ -614,7 +581,7 @@ public final class HitClientTrivialNotifyOuterClass {
         return this;
       }
       /**
-       * <code>.Vector position = 5;</code>
+       * <code>.Vector position = 10;</code>
        */
       public Builder clearPosition() {
         if (positionBuilder_ == null) {
@@ -628,7 +595,7 @@ public final class HitClientTrivialNotifyOuterClass {
         return this;
       }
       /**
-       * <code>.Vector position = 5;</code>
+       * <code>.Vector position = 10;</code>
        */
       public emu.grasscutter.net.proto.VectorOuterClass.Vector.Builder getPositionBuilder() {
         
@@ -636,7 +603,7 @@ public final class HitClientTrivialNotifyOuterClass {
         return getPositionFieldBuilder().getBuilder();
       }
       /**
-       * <code>.Vector position = 5;</code>
+       * <code>.Vector position = 10;</code>
        */
       public emu.grasscutter.net.proto.VectorOuterClass.VectorOrBuilder getPositionOrBuilder() {
         if (positionBuilder_ != null) {
@@ -647,7 +614,7 @@ public final class HitClientTrivialNotifyOuterClass {
         }
       }
       /**
-       * <code>.Vector position = 5;</code>
+       * <code>.Vector position = 10;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           emu.grasscutter.net.proto.VectorOuterClass.Vector, emu.grasscutter.net.proto.VectorOuterClass.Vector.Builder, emu.grasscutter.net.proto.VectorOuterClass.VectorOrBuilder> 
@@ -661,6 +628,37 @@ public final class HitClientTrivialNotifyOuterClass {
           position_ = null;
         }
         return positionBuilder_;
+      }
+
+      private int ownerEntityId_ ;
+      /**
+       * <code>uint32 owner_entity_id = 15;</code>
+       * @return The ownerEntityId.
+       */
+      @java.lang.Override
+      public int getOwnerEntityId() {
+        return ownerEntityId_;
+      }
+      /**
+       * <code>uint32 owner_entity_id = 15;</code>
+       * @param value The ownerEntityId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setOwnerEntityId(int value) {
+        
+        ownerEntityId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>uint32 owner_entity_id = 15;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearOwnerEntityId() {
+        
+        ownerEntityId_ = 0;
+        onChanged();
+        return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -730,9 +728,9 @@ public final class HitClientTrivialNotifyOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\034HitClientTrivialNotify.proto\032\014Vector.p" +
-      "roto\"L\n\026HitClientTrivialNotify\022\027\n\017owner_" +
-      "entity_id\030\010 \001(\r\022\031\n\010position\030\005 \001(\0132\007.Vect" +
-      "orB\033\n\031emu.grasscutter.net.protob\006proto3"
+      "roto\"L\n\026HitClientTrivialNotify\022\031\n\010positi" +
+      "on\030\n \001(\0132\007.Vector\022\027\n\017owner_entity_id\030\017 \001" +
+      "(\rB\033\n\031emu.grasscutter.net.protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -744,7 +742,7 @@ public final class HitClientTrivialNotifyOuterClass {
     internal_static_HitClientTrivialNotify_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_HitClientTrivialNotify_descriptor,
-        new java.lang.String[] { "OwnerEntityId", "Position", });
+        new java.lang.String[] { "Position", "OwnerEntityId", });
     emu.grasscutter.net.proto.VectorOuterClass.getDescriptor();
   }
 

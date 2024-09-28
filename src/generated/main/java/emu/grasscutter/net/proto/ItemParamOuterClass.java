@@ -32,7 +32,7 @@ public final class ItemParamOuterClass {
   }
   /**
    * <pre>
-   * Obf: GKCILFACLDH
+   * 5.0.0
    * </pre>
    *
    * Protobuf type {@code ItemParam}
@@ -311,7 +311,7 @@ public final class ItemParamOuterClass {
     }
     /**
      * <pre>
-     * Obf: GKCILFACLDH
+     * 5.0.0
      * </pre>
      *
      * Protobuf type {@code ItemParam}

@@ -19,7 +19,7 @@ public final class ChildQuestOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>uint32 quest_config_id = 6;</code>
+     * <code>uint32 quest_config_id = 2;</code>
      * @return The questConfigId.
      */
     int getQuestConfigId();
@@ -31,16 +31,12 @@ public final class ChildQuestOuterClass {
     int getQuestId();
 
     /**
-     * <code>uint32 state = 2;</code>
+     * <code>uint32 state = 14;</code>
      * @return The state.
      */
     int getState();
   }
   /**
-   * <pre>
-   * Obf: DHJCFBHIJFE
-   * </pre>
-   *
    * Protobuf type {@code ChildQuest}
    */
   public static final class ChildQuest extends
@@ -87,17 +83,17 @@ public final class ChildQuestOuterClass {
               break;
             case 16: {
 
-              state_ = input.readUInt32();
-              break;
-            }
-            case 48: {
-
               questConfigId_ = input.readUInt32();
               break;
             }
             case 88: {
 
               questId_ = input.readUInt32();
+              break;
+            }
+            case 112: {
+
+              state_ = input.readUInt32();
               break;
             }
             default: {
@@ -132,10 +128,10 @@ public final class ChildQuestOuterClass {
               emu.grasscutter.net.proto.ChildQuestOuterClass.ChildQuest.class, emu.grasscutter.net.proto.ChildQuestOuterClass.ChildQuest.Builder.class);
     }
 
-    public static final int QUEST_CONFIG_ID_FIELD_NUMBER = 6;
+    public static final int QUEST_CONFIG_ID_FIELD_NUMBER = 2;
     private int questConfigId_;
     /**
-     * <code>uint32 quest_config_id = 6;</code>
+     * <code>uint32 quest_config_id = 2;</code>
      * @return The questConfigId.
      */
     @java.lang.Override
@@ -154,10 +150,10 @@ public final class ChildQuestOuterClass {
       return questId_;
     }
 
-    public static final int STATE_FIELD_NUMBER = 2;
+    public static final int STATE_FIELD_NUMBER = 14;
     private int state_;
     /**
-     * <code>uint32 state = 2;</code>
+     * <code>uint32 state = 14;</code>
      * @return The state.
      */
     @java.lang.Override
@@ -179,14 +175,14 @@ public final class ChildQuestOuterClass {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (state_ != 0) {
-        output.writeUInt32(2, state_);
-      }
       if (questConfigId_ != 0) {
-        output.writeUInt32(6, questConfigId_);
+        output.writeUInt32(2, questConfigId_);
       }
       if (questId_ != 0) {
         output.writeUInt32(11, questId_);
+      }
+      if (state_ != 0) {
+        output.writeUInt32(14, state_);
       }
       unknownFields.writeTo(output);
     }
@@ -197,17 +193,17 @@ public final class ChildQuestOuterClass {
       if (size != -1) return size;
 
       size = 0;
-      if (state_ != 0) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(2, state_);
-      }
       if (questConfigId_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(6, questConfigId_);
+          .computeUInt32Size(2, questConfigId_);
       }
       if (questId_ != 0) {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(11, questId_);
+      }
+      if (state_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(14, state_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -343,10 +339,6 @@ public final class ChildQuestOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * Obf: DHJCFBHIJFE
-     * </pre>
-     *
      * Protobuf type {@code ChildQuest}
      */
     public static final class Builder extends
@@ -507,7 +499,7 @@ public final class ChildQuestOuterClass {
 
       private int questConfigId_ ;
       /**
-       * <code>uint32 quest_config_id = 6;</code>
+       * <code>uint32 quest_config_id = 2;</code>
        * @return The questConfigId.
        */
       @java.lang.Override
@@ -515,7 +507,7 @@ public final class ChildQuestOuterClass {
         return questConfigId_;
       }
       /**
-       * <code>uint32 quest_config_id = 6;</code>
+       * <code>uint32 quest_config_id = 2;</code>
        * @param value The questConfigId to set.
        * @return This builder for chaining.
        */
@@ -526,7 +518,7 @@ public final class ChildQuestOuterClass {
         return this;
       }
       /**
-       * <code>uint32 quest_config_id = 6;</code>
+       * <code>uint32 quest_config_id = 2;</code>
        * @return This builder for chaining.
        */
       public Builder clearQuestConfigId() {
@@ -569,7 +561,7 @@ public final class ChildQuestOuterClass {
 
       private int state_ ;
       /**
-       * <code>uint32 state = 2;</code>
+       * <code>uint32 state = 14;</code>
        * @return The state.
        */
       @java.lang.Override
@@ -577,7 +569,7 @@ public final class ChildQuestOuterClass {
         return state_;
       }
       /**
-       * <code>uint32 state = 2;</code>
+       * <code>uint32 state = 14;</code>
        * @param value The state to set.
        * @return This builder for chaining.
        */
@@ -588,7 +580,7 @@ public final class ChildQuestOuterClass {
         return this;
       }
       /**
-       * <code>uint32 state = 2;</code>
+       * <code>uint32 state = 14;</code>
        * @return This builder for chaining.
        */
       public Builder clearState() {
@@ -665,8 +657,8 @@ public final class ChildQuestOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\020ChildQuest.proto\"F\n\nChildQuest\022\027\n\017ques" +
-      "t_config_id\030\006 \001(\r\022\020\n\010quest_id\030\013 \001(\r\022\r\n\005s" +
-      "tate\030\002 \001(\rB\033\n\031emu.grasscutter.net.protob" +
+      "t_config_id\030\002 \001(\r\022\020\n\010quest_id\030\013 \001(\r\022\r\n\005s" +
+      "tate\030\016 \001(\rB\033\n\031emu.grasscutter.net.protob" +
       "\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor

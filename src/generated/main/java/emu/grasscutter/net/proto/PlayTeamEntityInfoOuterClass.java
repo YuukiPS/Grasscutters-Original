@@ -58,10 +58,6 @@ public final class PlayTeamEntityInfoOuterClass {
     emu.grasscutter.net.proto.AbilitySyncStateInfoOuterClass.AbilitySyncStateInfoOrBuilder getAbilityInfoOrBuilder();
   }
   /**
-   * <pre>
-   * Obf: EHPIOEOLPIA
-   * </pre>
-   *
    * Protobuf type {@code PlayTeamEntityInfo}
    */
   public static final class PlayTeamEntityInfo extends
@@ -446,10 +442,6 @@ public final class PlayTeamEntityInfoOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * Obf: EHPIOEOLPIA
-     * </pre>
-     *
      * Protobuf type {@code PlayTeamEntityInfo}
      */
     public static final class Builder extends

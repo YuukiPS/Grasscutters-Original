@@ -16,7 +16,7 @@ public final class MovingPlatformTypeOuterClass {
   }
   /**
    * <pre>
-   * Obf: FMMMMIIKELD
+   * 5.0.0
    * </pre>
    *
    * Protobuf enum {@code MovingPlatformType}

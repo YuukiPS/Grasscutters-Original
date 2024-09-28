@@ -19,7 +19,7 @@ public final class UnfreezeGroupLimitNotifyOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>uint32 scene_id = 1;</code>
+     * <code>uint32 scene_id = 5;</code>
      * @return The sceneId.
      */
     int getSceneId();
@@ -31,11 +31,6 @@ public final class UnfreezeGroupLimitNotifyOuterClass {
     int getPointId();
   }
   /**
-   * <pre>
-   * CmdId: 23739
-   * Obf: JEGDFLEGJLH
-   * </pre>
-   *
    * Protobuf type {@code UnfreezeGroupLimitNotify}
    */
   public static final class UnfreezeGroupLimitNotify extends
@@ -80,7 +75,7 @@ public final class UnfreezeGroupLimitNotifyOuterClass {
             case 0:
               done = true;
               break;
-            case 8: {
+            case 40: {
 
               sceneId_ = input.readUInt32();
               break;
@@ -122,10 +117,10 @@ public final class UnfreezeGroupLimitNotifyOuterClass {
               emu.grasscutter.net.proto.UnfreezeGroupLimitNotifyOuterClass.UnfreezeGroupLimitNotify.class, emu.grasscutter.net.proto.UnfreezeGroupLimitNotifyOuterClass.UnfreezeGroupLimitNotify.Builder.class);
     }
 
-    public static final int SCENE_ID_FIELD_NUMBER = 1;
+    public static final int SCENE_ID_FIELD_NUMBER = 5;
     private int sceneId_;
     /**
-     * <code>uint32 scene_id = 1;</code>
+     * <code>uint32 scene_id = 5;</code>
      * @return The sceneId.
      */
     @java.lang.Override
@@ -159,7 +154,7 @@ public final class UnfreezeGroupLimitNotifyOuterClass {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (sceneId_ != 0) {
-        output.writeUInt32(1, sceneId_);
+        output.writeUInt32(5, sceneId_);
       }
       if (pointId_ != 0) {
         output.writeUInt32(12, pointId_);
@@ -175,7 +170,7 @@ public final class UnfreezeGroupLimitNotifyOuterClass {
       size = 0;
       if (sceneId_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(1, sceneId_);
+          .computeUInt32Size(5, sceneId_);
       }
       if (pointId_ != 0) {
         size += com.google.protobuf.CodedOutputStream
@@ -311,11 +306,6 @@ public final class UnfreezeGroupLimitNotifyOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * CmdId: 23739
-     * Obf: JEGDFLEGJLH
-     * </pre>
-     *
      * Protobuf type {@code UnfreezeGroupLimitNotify}
      */
     public static final class Builder extends
@@ -470,7 +460,7 @@ public final class UnfreezeGroupLimitNotifyOuterClass {
 
       private int sceneId_ ;
       /**
-       * <code>uint32 scene_id = 1;</code>
+       * <code>uint32 scene_id = 5;</code>
        * @return The sceneId.
        */
       @java.lang.Override
@@ -478,7 +468,7 @@ public final class UnfreezeGroupLimitNotifyOuterClass {
         return sceneId_;
       }
       /**
-       * <code>uint32 scene_id = 1;</code>
+       * <code>uint32 scene_id = 5;</code>
        * @param value The sceneId to set.
        * @return This builder for chaining.
        */
@@ -489,7 +479,7 @@ public final class UnfreezeGroupLimitNotifyOuterClass {
         return this;
       }
       /**
-       * <code>uint32 scene_id = 1;</code>
+       * <code>uint32 scene_id = 5;</code>
        * @return This builder for chaining.
        */
       public Builder clearSceneId() {
@@ -597,7 +587,7 @@ public final class UnfreezeGroupLimitNotifyOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\036UnfreezeGroupLimitNotify.proto\">\n\030Unfr" +
-      "eezeGroupLimitNotify\022\020\n\010scene_id\030\001 \001(\r\022\020" +
+      "eezeGroupLimitNotify\022\020\n\010scene_id\030\005 \001(\r\022\020" +
       "\n\010point_id\030\014 \001(\rB\033\n\031emu.grasscutter.net." +
       "protob\006proto3"
     };

@@ -19,29 +19,24 @@ public final class WearEquipRspOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>uint64 avatar_guid = 4;</code>
+     * <code>uint64 avatar_guid = 1;</code>
      * @return The avatarGuid.
      */
     long getAvatarGuid();
 
     /**
-     * <code>int32 retcode = 7;</code>
+     * <code>int32 retcode = 9;</code>
      * @return The retcode.
      */
     int getRetcode();
 
     /**
-     * <code>uint64 equip_guid = 5;</code>
+     * <code>uint64 equip_guid = 13;</code>
      * @return The equipGuid.
      */
     long getEquipGuid();
   }
   /**
-   * <pre>
-   * CmdId: 22727
-   * Obf: KHELHHLFJBO
-   * </pre>
-   *
    * Protobuf type {@code WearEquipRsp}
    */
   public static final class WearEquipRsp extends
@@ -86,19 +81,19 @@ public final class WearEquipRspOuterClass {
             case 0:
               done = true;
               break;
-            case 32: {
+            case 8: {
 
               avatarGuid_ = input.readUInt64();
               break;
             }
-            case 40: {
-
-              equipGuid_ = input.readUInt64();
-              break;
-            }
-            case 56: {
+            case 72: {
 
               retcode_ = input.readInt32();
+              break;
+            }
+            case 104: {
+
+              equipGuid_ = input.readUInt64();
               break;
             }
             default: {
@@ -133,10 +128,10 @@ public final class WearEquipRspOuterClass {
               emu.grasscutter.net.proto.WearEquipRspOuterClass.WearEquipRsp.class, emu.grasscutter.net.proto.WearEquipRspOuterClass.WearEquipRsp.Builder.class);
     }
 
-    public static final int AVATAR_GUID_FIELD_NUMBER = 4;
+    public static final int AVATAR_GUID_FIELD_NUMBER = 1;
     private long avatarGuid_;
     /**
-     * <code>uint64 avatar_guid = 4;</code>
+     * <code>uint64 avatar_guid = 1;</code>
      * @return The avatarGuid.
      */
     @java.lang.Override
@@ -144,10 +139,10 @@ public final class WearEquipRspOuterClass {
       return avatarGuid_;
     }
 
-    public static final int RETCODE_FIELD_NUMBER = 7;
+    public static final int RETCODE_FIELD_NUMBER = 9;
     private int retcode_;
     /**
-     * <code>int32 retcode = 7;</code>
+     * <code>int32 retcode = 9;</code>
      * @return The retcode.
      */
     @java.lang.Override
@@ -155,10 +150,10 @@ public final class WearEquipRspOuterClass {
       return retcode_;
     }
 
-    public static final int EQUIP_GUID_FIELD_NUMBER = 5;
+    public static final int EQUIP_GUID_FIELD_NUMBER = 13;
     private long equipGuid_;
     /**
-     * <code>uint64 equip_guid = 5;</code>
+     * <code>uint64 equip_guid = 13;</code>
      * @return The equipGuid.
      */
     @java.lang.Override
@@ -181,13 +176,13 @@ public final class WearEquipRspOuterClass {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (avatarGuid_ != 0L) {
-        output.writeUInt64(4, avatarGuid_);
-      }
-      if (equipGuid_ != 0L) {
-        output.writeUInt64(5, equipGuid_);
+        output.writeUInt64(1, avatarGuid_);
       }
       if (retcode_ != 0) {
-        output.writeInt32(7, retcode_);
+        output.writeInt32(9, retcode_);
+      }
+      if (equipGuid_ != 0L) {
+        output.writeUInt64(13, equipGuid_);
       }
       unknownFields.writeTo(output);
     }
@@ -200,15 +195,15 @@ public final class WearEquipRspOuterClass {
       size = 0;
       if (avatarGuid_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(4, avatarGuid_);
-      }
-      if (equipGuid_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(5, equipGuid_);
+          .computeUInt64Size(1, avatarGuid_);
       }
       if (retcode_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(7, retcode_);
+          .computeInt32Size(9, retcode_);
+      }
+      if (equipGuid_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(13, equipGuid_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -346,11 +341,6 @@ public final class WearEquipRspOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * CmdId: 22727
-     * Obf: KHELHHLFJBO
-     * </pre>
-     *
      * Protobuf type {@code WearEquipRsp}
      */
     public static final class Builder extends
@@ -511,7 +501,7 @@ public final class WearEquipRspOuterClass {
 
       private long avatarGuid_ ;
       /**
-       * <code>uint64 avatar_guid = 4;</code>
+       * <code>uint64 avatar_guid = 1;</code>
        * @return The avatarGuid.
        */
       @java.lang.Override
@@ -519,7 +509,7 @@ public final class WearEquipRspOuterClass {
         return avatarGuid_;
       }
       /**
-       * <code>uint64 avatar_guid = 4;</code>
+       * <code>uint64 avatar_guid = 1;</code>
        * @param value The avatarGuid to set.
        * @return This builder for chaining.
        */
@@ -530,7 +520,7 @@ public final class WearEquipRspOuterClass {
         return this;
       }
       /**
-       * <code>uint64 avatar_guid = 4;</code>
+       * <code>uint64 avatar_guid = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearAvatarGuid() {
@@ -542,7 +532,7 @@ public final class WearEquipRspOuterClass {
 
       private int retcode_ ;
       /**
-       * <code>int32 retcode = 7;</code>
+       * <code>int32 retcode = 9;</code>
        * @return The retcode.
        */
       @java.lang.Override
@@ -550,7 +540,7 @@ public final class WearEquipRspOuterClass {
         return retcode_;
       }
       /**
-       * <code>int32 retcode = 7;</code>
+       * <code>int32 retcode = 9;</code>
        * @param value The retcode to set.
        * @return This builder for chaining.
        */
@@ -561,7 +551,7 @@ public final class WearEquipRspOuterClass {
         return this;
       }
       /**
-       * <code>int32 retcode = 7;</code>
+       * <code>int32 retcode = 9;</code>
        * @return This builder for chaining.
        */
       public Builder clearRetcode() {
@@ -573,7 +563,7 @@ public final class WearEquipRspOuterClass {
 
       private long equipGuid_ ;
       /**
-       * <code>uint64 equip_guid = 5;</code>
+       * <code>uint64 equip_guid = 13;</code>
        * @return The equipGuid.
        */
       @java.lang.Override
@@ -581,7 +571,7 @@ public final class WearEquipRspOuterClass {
         return equipGuid_;
       }
       /**
-       * <code>uint64 equip_guid = 5;</code>
+       * <code>uint64 equip_guid = 13;</code>
        * @param value The equipGuid to set.
        * @return This builder for chaining.
        */
@@ -592,7 +582,7 @@ public final class WearEquipRspOuterClass {
         return this;
       }
       /**
-       * <code>uint64 equip_guid = 5;</code>
+       * <code>uint64 equip_guid = 13;</code>
        * @return This builder for chaining.
        */
       public Builder clearEquipGuid() {
@@ -669,8 +659,8 @@ public final class WearEquipRspOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\022WearEquipRsp.proto\"H\n\014WearEquipRsp\022\023\n\013" +
-      "avatar_guid\030\004 \001(\004\022\017\n\007retcode\030\007 \001(\005\022\022\n\neq" +
-      "uip_guid\030\005 \001(\004B\033\n\031emu.grasscutter.net.pr" +
+      "avatar_guid\030\001 \001(\004\022\017\n\007retcode\030\t \001(\005\022\022\n\neq" +
+      "uip_guid\030\r \001(\004B\033\n\031emu.grasscutter.net.pr" +
       "otob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor

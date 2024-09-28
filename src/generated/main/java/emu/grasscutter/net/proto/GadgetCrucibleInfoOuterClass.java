@@ -32,7 +32,7 @@ public final class GadgetCrucibleInfoOuterClass {
   }
   /**
    * <pre>
-   * Obf: LMEGMGDKNJL
+   * 5.0.0
    * </pre>
    *
    * Protobuf type {@code GadgetCrucibleInfo}
@@ -311,7 +311,7 @@ public final class GadgetCrucibleInfoOuterClass {
     }
     /**
      * <pre>
-     * Obf: LMEGMGDKNJL
+     * 5.0.0
      * </pre>
      *
      * Protobuf type {@code GadgetCrucibleInfo}

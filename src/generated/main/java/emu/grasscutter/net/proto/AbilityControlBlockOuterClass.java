@@ -43,10 +43,6 @@ public final class AbilityControlBlockOuterClass {
         int index);
   }
   /**
-   * <pre>
-   * Obf: GGPHMELJCOL
-   * </pre>
-   *
    * Protobuf type {@code AbilityControlBlock}
    */
   public static final class AbilityControlBlock extends
@@ -335,10 +331,6 @@ public final class AbilityControlBlockOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * Obf: GGPHMELJCOL
-     * </pre>
-     *
      * Protobuf type {@code AbilityControlBlock}
      */
     public static final class Builder extends

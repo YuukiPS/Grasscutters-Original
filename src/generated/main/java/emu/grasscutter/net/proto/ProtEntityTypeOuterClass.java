@@ -15,10 +15,6 @@ public final class ProtEntityTypeOuterClass {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   /**
-   * <pre>
-   * Obf: HFCNMMNOEDA
-   * </pre>
-   *
    * Protobuf enum {@code ProtEntityType}
    */
   public enum ProtEntityType

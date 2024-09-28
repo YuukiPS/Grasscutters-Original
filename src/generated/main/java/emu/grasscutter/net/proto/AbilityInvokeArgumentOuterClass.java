@@ -15,10 +15,6 @@ public final class AbilityInvokeArgumentOuterClass {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   /**
-   * <pre>
-   * Obf: LBKBGBCCGMA
-   * </pre>
-   *
    * Protobuf enum {@code AbilityInvokeArgument}
    */
   public enum AbilityInvokeArgument
@@ -311,6 +307,38 @@ public final class AbilityInvokeArgumentOuterClass {
      * <code>ABILITY_INVOKE_ARGUMENT_MIXIN_BUOYANT_FORCE = 129;</code>
      */
     ABILITY_INVOKE_ARGUMENT_MIXIN_BUOYANT_FORCE(129),
+    /**
+     * <code>ABILITY_INVOKE_ARGUMENT_MIXIN_FILMFEST_BALL_GAME = 130;</code>
+     */
+    ABILITY_INVOKE_ARGUMENT_MIXIN_FILMFEST_BALL_GAME(130),
+    /**
+     * <code>ABILITY_INVOKE_ARGUMENT_MIXIN_CHECK_SCAN_ENTITY = 131;</code>
+     */
+    ABILITY_INVOKE_ARGUMENT_MIXIN_CHECK_SCAN_ENTITY(131),
+    /**
+     * <code>ABILITY_INVOKE_ARGUMENT_MIXIN_TIME_TRACK_PLAYER = 133;</code>
+     */
+    ABILITY_INVOKE_ARGUMENT_MIXIN_TIME_TRACK_PLAYER(133),
+    /**
+     * <code>ABILITY_INVOKE_ARGUMENT_MIXIN_PART_FOLLOW = 134;</code>
+     */
+    ABILITY_INVOKE_ARGUMENT_MIXIN_PART_FOLLOW(134),
+    /**
+     * <code>ABILITY_INVOKE_ARGUMENT_MIXIN_CHANGE_PHLOGISTON = 135;</code>
+     */
+    ABILITY_INVOKE_ARGUMENT_MIXIN_CHANGE_PHLOGISTON(135),
+    /**
+     * <code>ABILITY_INVOKE_ARGUMENT_MIXIN_HUMAN_DRAGON_COLLAB_PICK_PHLOGISTON_BALL = 136;</code>
+     */
+    ABILITY_INVOKE_ARGUMENT_MIXIN_HUMAN_DRAGON_COLLAB_PICK_PHLOGISTON_BALL(136),
+    /**
+     * <code>ABILITY_INVOKE_ARGUMENT_MIXIN_FREQUENCY_SHIELD_BAR = 137;</code>
+     */
+    ABILITY_INVOKE_ARGUMENT_MIXIN_FREQUENCY_SHIELD_BAR(137),
+    /**
+     * <code>ABILITY_INVOKE_ARGUMENT_MIXIN_VEHICLE_STEER_BY_CAMERA = 141;</code>
+     */
+    ABILITY_INVOKE_ARGUMENT_MIXIN_VEHICLE_STEER_BY_CAMERA(141),
     UNRECOGNIZED(-1),
     ;
 
@@ -602,6 +630,38 @@ public final class AbilityInvokeArgumentOuterClass {
      * <code>ABILITY_INVOKE_ARGUMENT_MIXIN_BUOYANT_FORCE = 129;</code>
      */
     public static final int ABILITY_INVOKE_ARGUMENT_MIXIN_BUOYANT_FORCE_VALUE = 129;
+    /**
+     * <code>ABILITY_INVOKE_ARGUMENT_MIXIN_FILMFEST_BALL_GAME = 130;</code>
+     */
+    public static final int ABILITY_INVOKE_ARGUMENT_MIXIN_FILMFEST_BALL_GAME_VALUE = 130;
+    /**
+     * <code>ABILITY_INVOKE_ARGUMENT_MIXIN_CHECK_SCAN_ENTITY = 131;</code>
+     */
+    public static final int ABILITY_INVOKE_ARGUMENT_MIXIN_CHECK_SCAN_ENTITY_VALUE = 131;
+    /**
+     * <code>ABILITY_INVOKE_ARGUMENT_MIXIN_TIME_TRACK_PLAYER = 133;</code>
+     */
+    public static final int ABILITY_INVOKE_ARGUMENT_MIXIN_TIME_TRACK_PLAYER_VALUE = 133;
+    /**
+     * <code>ABILITY_INVOKE_ARGUMENT_MIXIN_PART_FOLLOW = 134;</code>
+     */
+    public static final int ABILITY_INVOKE_ARGUMENT_MIXIN_PART_FOLLOW_VALUE = 134;
+    /**
+     * <code>ABILITY_INVOKE_ARGUMENT_MIXIN_CHANGE_PHLOGISTON = 135;</code>
+     */
+    public static final int ABILITY_INVOKE_ARGUMENT_MIXIN_CHANGE_PHLOGISTON_VALUE = 135;
+    /**
+     * <code>ABILITY_INVOKE_ARGUMENT_MIXIN_HUMAN_DRAGON_COLLAB_PICK_PHLOGISTON_BALL = 136;</code>
+     */
+    public static final int ABILITY_INVOKE_ARGUMENT_MIXIN_HUMAN_DRAGON_COLLAB_PICK_PHLOGISTON_BALL_VALUE = 136;
+    /**
+     * <code>ABILITY_INVOKE_ARGUMENT_MIXIN_FREQUENCY_SHIELD_BAR = 137;</code>
+     */
+    public static final int ABILITY_INVOKE_ARGUMENT_MIXIN_FREQUENCY_SHIELD_BAR_VALUE = 137;
+    /**
+     * <code>ABILITY_INVOKE_ARGUMENT_MIXIN_VEHICLE_STEER_BY_CAMERA = 141;</code>
+     */
+    public static final int ABILITY_INVOKE_ARGUMENT_MIXIN_VEHICLE_STEER_BY_CAMERA_VALUE = 141;
 
 
     public final int getNumber() {
@@ -700,6 +760,14 @@ public final class AbilityInvokeArgumentOuterClass {
         case 127: return ABILITY_INVOKE_ARGUMENT_MIXIN_ENERGY_CRYSTAL_TARGET;
         case 128: return ABILITY_INVOKE_ARGUMENT_MIXIN_ROTATION_FOLLOW_CAMERA;
         case 129: return ABILITY_INVOKE_ARGUMENT_MIXIN_BUOYANT_FORCE;
+        case 130: return ABILITY_INVOKE_ARGUMENT_MIXIN_FILMFEST_BALL_GAME;
+        case 131: return ABILITY_INVOKE_ARGUMENT_MIXIN_CHECK_SCAN_ENTITY;
+        case 133: return ABILITY_INVOKE_ARGUMENT_MIXIN_TIME_TRACK_PLAYER;
+        case 134: return ABILITY_INVOKE_ARGUMENT_MIXIN_PART_FOLLOW;
+        case 135: return ABILITY_INVOKE_ARGUMENT_MIXIN_CHANGE_PHLOGISTON;
+        case 136: return ABILITY_INVOKE_ARGUMENT_MIXIN_HUMAN_DRAGON_COLLAB_PICK_PHLOGISTON_BALL;
+        case 137: return ABILITY_INVOKE_ARGUMENT_MIXIN_FREQUENCY_SHIELD_BAR;
+        case 141: return ABILITY_INVOKE_ARGUMENT_MIXIN_VEHICLE_STEER_BY_CAMERA;
         default: return null;
       }
     }
@@ -765,7 +833,7 @@ public final class AbilityInvokeArgumentOuterClass {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\033AbilityInvokeArgument.proto*\245\036\n\025Abilit" +
+      "\n\033AbilityInvokeArgument.proto*\360!\n\025Abilit" +
       "yInvokeArgument\022 \n\034ABILITY_INVOKE_ARGUME" +
       "NT_NONE\020\000\0220\n,ABILITY_INVOKE_ARGUMENT_MET" +
       "A_MODIFIER_CHANGE\020\001\022@\n<ABILITY_INVOKE_AR" +
@@ -862,8 +930,20 @@ public final class AbilityInvokeArgumentOuterClass {
       "E_ARGUMENT_MIXIN_ENERGY_CRYSTAL_TARGET\020\177" +
       "\0229\n4ABILITY_INVOKE_ARGUMENT_MIXIN_ROTATI" +
       "ON_FOLLOW_CAMERA\020\200\001\0220\n+ABILITY_INVOKE_AR" +
-      "GUMENT_MIXIN_BUOYANT_FORCE\020\201\001B\033\n\031emu.gra" +
-      "sscutter.net.protob\006proto3"
+      "GUMENT_MIXIN_BUOYANT_FORCE\020\201\001\0225\n0ABILITY" +
+      "_INVOKE_ARGUMENT_MIXIN_FILMFEST_BALL_GAM" +
+      "E\020\202\001\0224\n/ABILITY_INVOKE_ARGUMENT_MIXIN_CH" +
+      "ECK_SCAN_ENTITY\020\203\001\0224\n/ABILITY_INVOKE_ARG" +
+      "UMENT_MIXIN_TIME_TRACK_PLAYER\020\205\001\022.\n)ABIL" +
+      "ITY_INVOKE_ARGUMENT_MIXIN_PART_FOLLOW\020\206\001" +
+      "\0224\n/ABILITY_INVOKE_ARGUMENT_MIXIN_CHANGE" +
+      "_PHLOGISTON\020\207\001\022K\nFABILITY_INVOKE_ARGUMEN" +
+      "T_MIXIN_HUMAN_DRAGON_COLLAB_PICK_PHLOGIS" +
+      "TON_BALL\020\210\001\0227\n2ABILITY_INVOKE_ARGUMENT_M" +
+      "IXIN_FREQUENCY_SHIELD_BAR\020\211\001\022:\n5ABILITY_" +
+      "INVOKE_ARGUMENT_MIXIN_VEHICLE_STEER_BY_C" +
+      "AMERA\020\215\001B\033\n\031emu.grasscutter.net.protob\006p" +
+      "roto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

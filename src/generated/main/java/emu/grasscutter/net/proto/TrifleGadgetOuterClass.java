@@ -34,14 +34,15 @@ public final class TrifleGadgetOuterClass {
     emu.grasscutter.net.proto.ItemOuterClass.ItemOrBuilder getItemOrBuilder();
 
     /**
-     * <code>uint32 GAHBDCCFPGJ = 2;</code>
-     * @return The gAHBDCCFPGJ.
+     * <code>uint32 EJNBFCIJOMO = 2;</code>
+     * @return The eJNBFCIJOMO.
      */
-    int getGAHBDCCFPGJ();
+    int getEJNBFCIJOMO();
   }
   /**
    * <pre>
-   * Obf: LEEAOCFCGJA
+   * 5.0.0
+   * CmdId: 
    * </pre>
    *
    * Protobuf type {@code TrifleGadget}
@@ -103,7 +104,7 @@ public final class TrifleGadgetOuterClass {
             }
             case 16: {
 
-              gAHBDCCFPGJ_ = input.readUInt32();
+              eJNBFCIJOMO_ = input.readUInt32();
               break;
             }
             default: {
@@ -164,15 +165,15 @@ public final class TrifleGadgetOuterClass {
       return getItem();
     }
 
-    public static final int GAHBDCCFPGJ_FIELD_NUMBER = 2;
-    private int gAHBDCCFPGJ_;
+    public static final int EJNBFCIJOMO_FIELD_NUMBER = 2;
+    private int eJNBFCIJOMO_;
     /**
-     * <code>uint32 GAHBDCCFPGJ = 2;</code>
-     * @return The gAHBDCCFPGJ.
+     * <code>uint32 EJNBFCIJOMO = 2;</code>
+     * @return The eJNBFCIJOMO.
      */
     @java.lang.Override
-    public int getGAHBDCCFPGJ() {
-      return gAHBDCCFPGJ_;
+    public int getEJNBFCIJOMO() {
+      return eJNBFCIJOMO_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -192,8 +193,8 @@ public final class TrifleGadgetOuterClass {
       if (item_ != null) {
         output.writeMessage(1, getItem());
       }
-      if (gAHBDCCFPGJ_ != 0) {
-        output.writeUInt32(2, gAHBDCCFPGJ_);
+      if (eJNBFCIJOMO_ != 0) {
+        output.writeUInt32(2, eJNBFCIJOMO_);
       }
       unknownFields.writeTo(output);
     }
@@ -208,9 +209,9 @@ public final class TrifleGadgetOuterClass {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, getItem());
       }
-      if (gAHBDCCFPGJ_ != 0) {
+      if (eJNBFCIJOMO_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(2, gAHBDCCFPGJ_);
+          .computeUInt32Size(2, eJNBFCIJOMO_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -232,8 +233,8 @@ public final class TrifleGadgetOuterClass {
         if (!getItem()
             .equals(other.getItem())) return false;
       }
-      if (getGAHBDCCFPGJ()
-          != other.getGAHBDCCFPGJ()) return false;
+      if (getEJNBFCIJOMO()
+          != other.getEJNBFCIJOMO()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -249,8 +250,8 @@ public final class TrifleGadgetOuterClass {
         hash = (37 * hash) + ITEM_FIELD_NUMBER;
         hash = (53 * hash) + getItem().hashCode();
       }
-      hash = (37 * hash) + GAHBDCCFPGJ_FIELD_NUMBER;
-      hash = (53 * hash) + getGAHBDCCFPGJ();
+      hash = (37 * hash) + EJNBFCIJOMO_FIELD_NUMBER;
+      hash = (53 * hash) + getEJNBFCIJOMO();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -348,7 +349,8 @@ public final class TrifleGadgetOuterClass {
     }
     /**
      * <pre>
-     * Obf: LEEAOCFCGJA
+     * 5.0.0
+     * CmdId: 
      * </pre>
      *
      * Protobuf type {@code TrifleGadget}
@@ -394,7 +396,7 @@ public final class TrifleGadgetOuterClass {
           item_ = null;
           itemBuilder_ = null;
         }
-        gAHBDCCFPGJ_ = 0;
+        eJNBFCIJOMO_ = 0;
 
         return this;
       }
@@ -427,7 +429,7 @@ public final class TrifleGadgetOuterClass {
         } else {
           result.item_ = itemBuilder_.build();
         }
-        result.gAHBDCCFPGJ_ = gAHBDCCFPGJ_;
+        result.eJNBFCIJOMO_ = eJNBFCIJOMO_;
         onBuilt();
         return result;
       }
@@ -479,8 +481,8 @@ public final class TrifleGadgetOuterClass {
         if (other.hasItem()) {
           mergeItem(other.getItem());
         }
-        if (other.getGAHBDCCFPGJ() != 0) {
-          setGAHBDCCFPGJ(other.getGAHBDCCFPGJ());
+        if (other.getEJNBFCIJOMO() != 0) {
+          setEJNBFCIJOMO(other.getEJNBFCIJOMO());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -630,33 +632,33 @@ public final class TrifleGadgetOuterClass {
         return itemBuilder_;
       }
 
-      private int gAHBDCCFPGJ_ ;
+      private int eJNBFCIJOMO_ ;
       /**
-       * <code>uint32 GAHBDCCFPGJ = 2;</code>
-       * @return The gAHBDCCFPGJ.
+       * <code>uint32 EJNBFCIJOMO = 2;</code>
+       * @return The eJNBFCIJOMO.
        */
       @java.lang.Override
-      public int getGAHBDCCFPGJ() {
-        return gAHBDCCFPGJ_;
+      public int getEJNBFCIJOMO() {
+        return eJNBFCIJOMO_;
       }
       /**
-       * <code>uint32 GAHBDCCFPGJ = 2;</code>
-       * @param value The gAHBDCCFPGJ to set.
+       * <code>uint32 EJNBFCIJOMO = 2;</code>
+       * @param value The eJNBFCIJOMO to set.
        * @return This builder for chaining.
        */
-      public Builder setGAHBDCCFPGJ(int value) {
+      public Builder setEJNBFCIJOMO(int value) {
         
-        gAHBDCCFPGJ_ = value;
+        eJNBFCIJOMO_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>uint32 GAHBDCCFPGJ = 2;</code>
+       * <code>uint32 EJNBFCIJOMO = 2;</code>
        * @return This builder for chaining.
        */
-      public Builder clearGAHBDCCFPGJ() {
+      public Builder clearEJNBFCIJOMO() {
         
-        gAHBDCCFPGJ_ = 0;
+        eJNBFCIJOMO_ = 0;
         onChanged();
         return this;
       }
@@ -728,8 +730,8 @@ public final class TrifleGadgetOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\022TrifleGadget.proto\032\nItem.proto\"8\n\014Trif" +
-      "leGadget\022\023\n\004item\030\001 \001(\0132\005.Item\022\023\n\013GAHBDCC" +
-      "FPGJ\030\002 \001(\rB\033\n\031emu.grasscutter.net.protob" +
+      "leGadget\022\023\n\004item\030\001 \001(\0132\005.Item\022\023\n\013EJNBFCI" +
+      "JOMO\030\002 \001(\rB\033\n\031emu.grasscutter.net.protob" +
       "\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
@@ -742,7 +744,7 @@ public final class TrifleGadgetOuterClass {
     internal_static_TrifleGadget_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TrifleGadget_descriptor,
-        new java.lang.String[] { "Item", "GAHBDCCFPGJ", });
+        new java.lang.String[] { "Item", "EJNBFCIJOMO", });
     emu.grasscutter.net.proto.ItemOuterClass.getDescriptor();
   }
 

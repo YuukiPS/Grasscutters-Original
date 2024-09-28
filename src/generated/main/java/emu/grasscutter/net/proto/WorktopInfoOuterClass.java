@@ -43,7 +43,7 @@ public final class WorktopInfoOuterClass {
   }
   /**
    * <pre>
-   * Obf: FHDMCJINDAH
+   * 5.0.0
    * </pre>
    *
    * Protobuf type {@code WorktopInfo}
@@ -378,7 +378,7 @@ public final class WorktopInfoOuterClass {
     }
     /**
      * <pre>
-     * Obf: FHDMCJINDAH
+     * 5.0.0
      * </pre>
      *
      * Protobuf type {@code WorktopInfo}
