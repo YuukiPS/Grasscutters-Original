@@ -9,20 +9,24 @@
 
 ## Current features
 
-* Logging in
-* Combat
-* Friends list
-* Teleportation
-* Gacha system
-* Co-op works(-ish)
-* Spawning monsters via console
-* Inventory features (receiving items/characters, upgrading items/characters, etc)
+- Logging in
+- Combat
+- Friends list
+- Teleportation
+- Gacha system
+- Co-op works(-ish)
+- Spawning monsters via console
+- Inventory features (receiving items/characters, upgrading items/characters, etc)
 
 ## Quick setup guide
 
 **Note**: For support please join our [Discord](https://discord.gg/T5vZU6UyeG).
 
 ### Quick Start (automatic)
+
+<details>
+
+<summary>Windows quick start using Cultivation</summary>
 
 - Get [Java 21](https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html)
 - Get [MongoDB Community Server](https://www.mongodb.com/try/download/community)
@@ -39,6 +43,8 @@
 - Click the small button next to launch.
 - Click the launch button.
 - Log in with whatever username you want. Password can be anything.
+
+</details>
 
 ### Downloading 5.0
 
@@ -80,7 +86,7 @@ Grasscutter uses Gradle to handle dependencies & building.
 
 **Requirements:**
 
-- [Java Development Kit 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) or higher
+- [Java Development Kit 21](https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html) or higher
 - [Git](https://git-scm.com/downloads)
 
 ##### Clone
