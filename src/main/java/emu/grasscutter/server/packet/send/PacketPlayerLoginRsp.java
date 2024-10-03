@@ -58,7 +58,8 @@ public class PacketPlayerLoginRsp extends BasePacket {
                         .setClientDataVersion(info.getClientDataVersion())
                         .setClientSilenceDataVersion(info.getClientSilenceDataVersion())
                         // .setClientMd5(info.getClientDataMd5()) // Removed in 5.0; we don't know what it is
-                        // .setClientSilenceMd5(info.getClientSilenceDataMd5()) // Removed in 5.0; we don't know what it is
+                        // .setClientSilenceMd5(info.getClientSilenceDataMd5()) // Removed in 5.0; we don't know
+                        // what it is
                         .setResVersionConfig(info.getResVersionConfig())
                         .setClientVersionSuffix(info.getClientVersionSuffix())
                         .setClientSilenceVersionSuffix(info.getClientSilenceVersionSuffix())

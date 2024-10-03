@@ -22,8 +22,8 @@ import org.java_websocket.handshake.ServerHandshake;
 import org.slf4j.Logger;
 
 /**
- * This is a simple implementation of a server-to-server IPC client.
- * It is implemented over WebSockets, and supports all Grasscutter versions past 1.6.0
+ * This is a simple implementation of a server-to-server IPC client. It is implemented over
+ * WebSockets, and supports all Grasscutter versions past 1.6.0
  */
 @Getter
 public final class DispatchClient extends WebSocketClient implements IDispatcher {

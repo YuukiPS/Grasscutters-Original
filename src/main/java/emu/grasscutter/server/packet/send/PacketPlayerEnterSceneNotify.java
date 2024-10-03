@@ -28,8 +28,10 @@ public class PacketPlayerEnterSceneNotify extends BasePacket {
                         .setTargetUid(player.getUid())
                         .setEnterSceneToken(player.getEnterSceneToken())
                         .setWorldLevel(player.getWorldLevel())
-                        // .setEnterReason(EnterReason.Login.getValue()) // Removed in 5.0; we don't know what it is
-                        // .setIsFirstLoginEnterScene(player.isFirstLoginEnterScene()) // Removed in 5.0; we don't know what it is
+                        // .setEnterReason(EnterReason.Login.getValue()) // Removed in 5.0; we don't know what
+                        // it is
+                        // .setIsFirstLoginEnterScene(player.isFirstLoginEnterScene()) // Removed in 5.0; we
+                        // don't know what it is
                         // .setWorldType(1) // Removed in 5.0; we don't know what it is
                         .setSceneTransaction(
                                 "3-"
@@ -80,7 +82,8 @@ public class PacketPlayerEnterSceneNotify extends BasePacket {
         var proto =
                 PlayerEnterSceneNotify.newBuilder()
                         // .setPrevSceneId(player.getSceneId()) // Removed in 5.0; we don't know what it is
-                        // .setPrevPos(player.getPosition().toProto()) // Removed in 5.0; we don't know what it is
+                        // .setPrevPos(player.getPosition().toProto()) // Removed in 5.0; we don't know what it
+                        // is
                         .setSceneId(teleportProperties.getSceneId())
                         .setPos(teleportProperties.getTeleportTo().toProto())
                         .setSceneBeginTime(System.currentTimeMillis())
@@ -88,7 +91,8 @@ public class PacketPlayerEnterSceneNotify extends BasePacket {
                         .setTargetUid(target.getUid())
                         .setEnterSceneToken(player.getEnterSceneToken())
                         .setWorldLevel(target.getWorld().getWorldLevel())
-                        // .setEnterReason(teleportProperties.getEnterReason().getValue()) // Removed in 5.0; we don't know what it is
+                        // .setEnterReason(teleportProperties.getEnterReason().getValue()) // Removed in 5.0; we
+                        // don't know what it is
                         // .setWorldType(1) // Removed in 5.0; we don't know what it is
                         .setSceneTransaction(
                                 teleportProperties.getSceneId()
@@ -118,14 +122,16 @@ public class PacketPlayerEnterSceneNotify extends BasePacket {
         var proto =
                 PlayerEnterSceneNotify.newBuilder()
                         // .setPrevSceneId(player.getSceneId()) // Removed in 5.0; we don't know what it is
-                        // .setPrevPos(player.getPosition().toProto()) // Removed in 5.0; we don't know what it is
+                        // .setPrevPos(player.getPosition().toProto()) // Removed in 5.0; we don't know what it
+                        // is
                         .setSceneId(teleportProperties.getSceneId())
                         .setPos(teleportProperties.getTeleportTo().toProto())
                         .setSceneBeginTime(System.currentTimeMillis())
                         .setType(other ? EnterType.ENTER_TYPE_OTHER_HOME : EnterType.ENTER_TYPE_SELF_HOME)
                         .setTargetUid(targetUid)
                         .setEnterSceneToken(player.getEnterSceneToken())
-                        // .setEnterReason(teleportProperties.getEnterReason().getValue()) // Removed in 5.0; we don't know what it is
+                        // .setEnterReason(teleportProperties.getEnterReason().getValue()) // Removed in 5.0; we
+                        // don't know what it is
                         // .setWorldType(64) // Removed in 5.0; we don't know what it is
                         .setSceneTransaction(
                                 teleportProperties.getSceneId()

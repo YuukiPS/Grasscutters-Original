@@ -25,15 +25,13 @@ import it.unimi.dsi.fastutil.ints.*;
 import java.nio.file.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
-
 import lombok.Getter;
 import org.greenrobot.eventbus.Subscribe;
 
 public class GachaSystem extends BaseGameSystem {
     private static final int starglitterId = 221;
     private static final int stardustId = 222;
-    @Getter
-    private final Int2ObjectMap<GachaBanner> gachaBanners;
+    @Getter private final Int2ObjectMap<GachaBanner> gachaBanners;
     private WatchService watchService;
 
     public GachaSystem(GameServer server) {
@@ -422,8 +420,7 @@ public class GachaSystem extends BaseGameSystem {
         if (this.watchService == null) {
             try {
                 this.watchService = FileSystems.getDefault().newWatchService();
-                FileUtils.getDataUserPath("")
-                        .register(watchService, StandardWatchEventKinds.ENTRY_MODIFY);
+                FileUtils.getDataUserPath("").register(watchService, StandardWatchEventKinds.ENTRY_MODIFY);
             } catch (Exception e) {
                 Grasscutter.getLogger()
                         .error(

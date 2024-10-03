@@ -346,10 +346,9 @@ public class AbilityModifier implements Serializable {
         public String overrideMapKey;
 
         public int paramNum;
-        public DynamicFloat
-            param1 = DynamicFloat.ZERO,
-            param2 = DynamicFloat.ZERO,
-            param3 = DynamicFloat.ZERO;
+        public DynamicFloat param1 = DynamicFloat.ZERO,
+                param2 = DynamicFloat.ZERO,
+                param3 = DynamicFloat.ZERO;
 
         public String funcName;
         public LuaCallType luaCallType;

@@ -18,6 +18,7 @@ public class SceneGadget extends SceneObject {
     public int owner;
     public SceneBossChest boss_chest;
     public int interact_id;
+
     /**
      * Note: this field indicates whether the gadget should disappear permanently. For example, if
      * isOneOff=true, like most chests, it will disappear permanently after interacted. If

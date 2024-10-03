@@ -16,9 +16,10 @@ public class HandlerAvatarUpgradeReq extends PacketHandler {
         // These are bundled into a list of items.
         for (var item : req.getItemParamListList()) {
             session
-                .getServer()
-                .getInventorySystem()
-                .upgradeAvatar(session.getPlayer(), req.getAvatarGuid(), item.getItemId(), item.getCount());
+                    .getServer()
+                    .getInventorySystem()
+                    .upgradeAvatar(
+                            session.getPlayer(), req.getAvatarGuid(), item.getItemId(), item.getCount());
         }
     }
 }

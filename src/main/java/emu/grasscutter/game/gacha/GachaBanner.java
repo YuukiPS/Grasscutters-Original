@@ -49,6 +49,7 @@ public class GachaBanner {
     @Getter private int[] rateUpItems5 = {};
     // This now handles default values for the fields below
     @Getter private BannerType bannerType = BannerType.STANDARD;
+
     // These don't change between banner types (apart from Standard having three extra 4star avatars)
     @Getter
     private int[] fallbackItems3 = {

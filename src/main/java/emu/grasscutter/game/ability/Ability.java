@@ -65,7 +65,9 @@ public class Ability {
                 data.modifiers.values().stream()
                         .map(
                                 m ->
-                                    m.onAdded == null ? Collections.<AbilityModifierAction>emptyList() : Arrays.asList(m.onAdded))
+                                        m.onAdded == null
+                                                ? Collections.<AbilityModifierAction>emptyList()
+                                                : Arrays.asList(m.onAdded))
                         .flatMap(List::stream)
                         .filter(action -> action.type == AbilityModifierAction.Type.AvatarSkillStart)
                         .map(action -> action.skillID)

@@ -2,6 +2,7 @@ package emu.grasscutter.scripts.constants;
 
 public class EventType {
     public static final int EVENT_NONE = 0;
+
     /** param1: monster.configId */
     public static final int EVENT_ANY_MONSTER_DIE = 1;
 

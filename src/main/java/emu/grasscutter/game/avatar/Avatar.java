@@ -86,6 +86,7 @@ public class Avatar {
 
     // trial avatar property
     @Getter @Setter private int trialAvatarId = 0;
+
     // cannot store to db if grant reason is not integer
     @Getter @Setter
     private int grantReason = TrialAvatarGrantRecord.GrantReason.GRANT_REASON_INVALID.getNumber();

@@ -21,6 +21,7 @@ public class CoopChapterData extends GameResource {
     //    int avatarSortId;
     //    String chapterIcon;
     List<CoopCondition> unlockCond;
+
     //    int [] unlockCondTips;
     //    int openMaterialId;
     //    int openMaterialNum;

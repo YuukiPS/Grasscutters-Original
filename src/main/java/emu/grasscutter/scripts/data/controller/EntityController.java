@@ -61,7 +61,8 @@ public class EntityController {
     }
 
     /**
-     * Invoked from {@link emu.grasscutter.game.ability.actions.ActionServerLuaCall} to call an entity controller function.
+     * Invoked from {@link emu.grasscutter.game.ability.actions.ActionServerLuaCall} to call an entity
+     * controller function.
      *
      * @param entity The entity which called the function.
      * @param funcName The name of the function to call.
@@ -70,8 +71,7 @@ public class EntityController {
      * @return The return value of the function.
      */
     public LuaValue callControllerScriptFunc(
-        GameEntity entity, String funcName,
-        Ability ability, AbilityModifierAction action) {
+            GameEntity entity, String funcName, Ability ability, AbilityModifierAction action) {
         var lParam1 = LuaValue.valueOf(action.param1.getInt(ability));
         var lParam2 = LuaValue.valueOf(action.param2.getInt(ability));
         var lParam3 = LuaValue.valueOf(action.param3.getInt(ability));

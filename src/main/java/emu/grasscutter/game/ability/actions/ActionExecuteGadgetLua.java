@@ -19,9 +19,7 @@ public class ActionExecuteGadgetLua extends AbilityActionHandler {
             var param2 = action.param2.getInt(ability);
             var param3 = action.param3.getInt(ability);
 
-            owner
-                    .getEntityController()
-                    .onClientExecuteRequest(owner, param1, param2, param3);
+            owner.getEntityController().onClientExecuteRequest(owner, param1, param2, param3);
             return true;
         }
 

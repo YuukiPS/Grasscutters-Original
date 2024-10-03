@@ -56,6 +56,7 @@ public class SceneScriptManager {
     private final Map<Integer, SceneGroupInstance> cachedSceneGroupsInstances;
     private ScriptMonsterTideService scriptMonsterTideService;
     private ScriptMonsterSpawnService scriptMonsterSpawnService;
+
     /** blockid - loaded groupSet */
     private final Map<Integer, Set<SceneGroup>> loadedGroupSetPerBlock;
 
@@ -846,6 +847,7 @@ public class SceneScriptManager {
                     .warn("failed to create entity with group {} and config {}", group.id, configId);
         }
     }
+
     // Events
     public Future<?> callEvent(int groupId, int eventType) {
         return callEvent(new ScriptArgs(groupId, eventType));

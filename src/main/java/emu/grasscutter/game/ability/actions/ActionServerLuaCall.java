@@ -70,9 +70,7 @@ public final class ActionServerLuaCall extends AbilityActionHandler {
      * @return Whether the function was called successfully.
      */
     private static boolean callFunction(
-        Bindings bindings, String functionName,
-        Ability ability, AbilityModifierAction action
-    ) {
+            Bindings bindings, String functionName, Ability ability, AbilityModifierAction action) {
         try {
             // Resolve the function from the script.
             var function = bindings.get(functionName);
@@ -86,10 +84,10 @@ public final class ActionServerLuaCall extends AbilityActionHandler {
 
             // Invoke the function with the parameters.
             switch (action.paramNum) {
-                case 1 -> luaFunction.invoke(new LuaValue[] { lParam1 });
-                case 2 -> luaFunction.invoke(new LuaValue[] { lParam1, lParam2 });
-                case 3 -> luaFunction.invoke(new LuaValue[] { lParam1, lParam2, lParam3 });
-                default -> luaFunction.invoke(new LuaValue[] { ScriptLoader.getScriptLibLua() });
+                case 1 -> luaFunction.invoke(new LuaValue[] {lParam1});
+                case 2 -> luaFunction.invoke(new LuaValue[] {lParam1, lParam2});
+                case 3 -> luaFunction.invoke(new LuaValue[] {lParam1, lParam2, lParam3});
+                default -> luaFunction.invoke(new LuaValue[] {ScriptLoader.getScriptLibLua()});
             }
 
             return true;

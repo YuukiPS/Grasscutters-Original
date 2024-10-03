@@ -28,11 +28,13 @@ public class ScriptLoader {
     @Getter private static Serializer serializer;
     @Getter private static ScriptLib scriptLib;
     @Getter private static LuaValue scriptLibLua;
+
     /** suggest GC to remove it if the memory is less */
     private static Map<String, SoftReference<String>> scriptSources = new ConcurrentHashMap<>();
 
     private static Map<String, SoftReference<CompiledScript>> scriptsCache =
             new ConcurrentHashMap<>();
+
     /** sceneId - SceneMeta */
     private static Map<Integer, SoftReference<SceneMeta>> sceneMetaCache = new ConcurrentHashMap<>();
 
