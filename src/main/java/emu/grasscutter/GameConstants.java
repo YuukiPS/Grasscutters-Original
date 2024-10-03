@@ -7,7 +7,7 @@ import emu.grasscutter.utils.objects.SparseSet;
 import java.util.Arrays;
 
 public final class GameConstants {
-    public static String VERSION = "5.0.0.";
+    public static String VERSION = "5.0.0";
     public static int[] VERSION_PARTS = {5, 0, 0};
     public static boolean DEBUG = false;
 
