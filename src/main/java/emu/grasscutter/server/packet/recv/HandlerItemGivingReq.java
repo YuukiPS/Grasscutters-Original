@@ -23,6 +23,7 @@ public final class HandlerItemGivingReq extends PacketHandler {
         var giveId = req.getGivingId();
         var items = req.getItemParamListList();
 
+        /*
         switch (req.getItemGivingType()) {
             case QUEST -> {
                 var questManager = player.getQuestManager();
@@ -112,5 +113,6 @@ public final class HandlerItemGivingReq extends PacketHandler {
                 player.sendPacket(new PacketItemGivingRsp());
             }
         }
+            */
     }
 }

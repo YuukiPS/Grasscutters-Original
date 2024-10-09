@@ -361,11 +361,13 @@ public final class AbilityManager extends BasePlayerManager {
     }
 
     private void setAbilityOverrideValue(Ability ability, AbilityScalarValueEntry valueChange) {
+        /*
         if (valueChange.getValueType() != AbilityScalarType.ABILITY_SCALAR_TYPE_FLOAT) {
             Grasscutter.getLogger().trace("Scalar type not supported: {}", valueChange.getValueType());
 
             return;
         }
+        */
 
         if (!valueChange.getKey().hasStr()) {
             Grasscutter.getLogger().trace("TODO: Calculate all the ability value hashes");
@@ -546,6 +548,7 @@ public final class AbilityManager extends BasePlayerManager {
         var entity = this.player.getScene().getEntityById(invoke.getEntityId());
         if (entity == null) return;
 
+        /*
         var entry = AbilityScalarValueEntry.parseFrom(invoke.getAbilityData());
         if (entry == null || !entry.hasFloatValue()) return;
 
@@ -571,6 +574,7 @@ public final class AbilityManager extends BasePlayerManager {
         }
 
         entity.onAbilityValueUpdate();
+        */
     }
 
     private void invokeAction(

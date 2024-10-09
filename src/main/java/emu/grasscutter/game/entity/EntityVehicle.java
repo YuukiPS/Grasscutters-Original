@@ -77,10 +77,7 @@ public class EntityVehicle extends EntityBaseGadget {
                 EntityAuthorityInfo.newBuilder()
                         .setAbilityInfo(AbilitySyncStateInfo.newBuilder())
                         .setRendererChangedInfo(EntityRendererChangedInfo.newBuilder())
-                        .setAiInfo(
-                                SceneEntityAiInfo.newBuilder()
-                                        .setIsAiOpen(true)
-                                        .setBornPos(getPosition().toProto()))
+                        //.setAiInfo(SceneEntityAiInfo.newBuilder().setIsAiOpen(true).setBornPos(getPosition().toProto()))
                         .setBornPos(getPosition().toProto())
                         .build();
 

@@ -413,17 +413,18 @@ public class EntityMonster extends GameEntity {
     public SceneEntityInfo toProto() {
         var data = this.getMonsterData();
 
-        var aiInfo =
-                SceneEntityAiInfo.newBuilder().setIsAiOpen(true).setBornPos(this.getBornPos().toProto());
+        /*
+        var aiInfo = SceneEntityAiInfo.newBuilder().setIsAiOpen(true).setBornPos(this.getBornPos().toProto());
         if (ownerEntityId != 0) {
             aiInfo.setServantInfo(ServantInfo.newBuilder().setMasterEntityId(ownerEntityId));
         }
+        */
 
         var authority =
                 EntityAuthorityInfo.newBuilder()
                         .setAbilityInfo(AbilitySyncStateInfo.newBuilder())
                         .setRendererChangedInfo(EntityRendererChangedInfo.newBuilder())
-                        .setAiInfo(aiInfo)
+                        //.setAiInfo(aiInfo)
                         .setBornPos(this.getBornPos().toProto())
                         .build();
 

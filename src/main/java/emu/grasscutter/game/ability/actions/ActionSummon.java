@@ -8,7 +8,7 @@ import emu.grasscutter.data.binout.AbilityModifier.AbilityModifierAction;
 import emu.grasscutter.game.ability.Ability;
 import emu.grasscutter.game.entity.*;
 import emu.grasscutter.game.world.*;
-import emu.grasscutter.net.proto.EPKDEHOJFLIOuterClass.EPKDEHOJFLI;
+import emu.grasscutter.net.proto.AbilityActionSummonOuterClass.AbilityActionSummon;
 import emu.grasscutter.server.packet.send.PacketMonsterSummonTagNotify;
 import emu.grasscutter.utils.*;
 
@@ -17,14 +17,14 @@ public class ActionSummon extends AbilityActionHandler {
     @Override
     public synchronized boolean execute(
             Ability ability, AbilityModifierAction action, ByteString abilityData, GameEntity target) {
-        EPKDEHOJFLI summonPosRot = null;
+                AbilityActionSummon summonPosRot = null;
         try {
             // In game version 4.0, summoned entity's
             // position and rotation are packed in EPKDEHOJFLI.
             // This is packet AbilityActionSummon and has two fields:
             //  4: Vector pos
             //  13: Vector rot
-            summonPosRot = EPKDEHOJFLI.parseFrom(abilityData);
+            summonPosRot = AbilityActionSummon.parseFrom(abilityData);
         } catch (InvalidProtocolBufferException e) {
             Grasscutter.getLogger()
                     .error("Failed to parse abilityData: {}", Utils.bytesToHex(abilityData.toByteArray()));

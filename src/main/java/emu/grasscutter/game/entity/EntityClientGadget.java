@@ -99,8 +99,7 @@ public class EntityClientGadget extends EntityBaseGadget {
                 EntityAuthorityInfo.newBuilder()
                         .setAbilityInfo(AbilitySyncStateInfo.newBuilder())
                         .setRendererChangedInfo(EntityRendererChangedInfo.newBuilder())
-                        .setAiInfo(
-                                SceneEntityAiInfo.newBuilder().setIsAiOpen(true).setBornPos(Vector.newBuilder()))
+                        //.setAiInfo(SceneEntityAiInfo.newBuilder().setIsAiOpen(true).setBornPos(Vector.newBuilder()))
                         .setBornPos(Vector.newBuilder())
                         .build();
 

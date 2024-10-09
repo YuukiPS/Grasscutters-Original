@@ -372,8 +372,7 @@ public class EntityGadget extends EntityBaseGadget {
                 EntityAuthorityInfo.newBuilder()
                         .setAbilityInfo(AbilitySyncStateInfo.newBuilder())
                         .setRendererChangedInfo(EntityRendererChangedInfo.newBuilder())
-                        .setAiInfo(
-                                SceneEntityAiInfo.newBuilder().setIsAiOpen(true).setBornPos(bornPos.toProto()))
+                        //.setAiInfo(SceneEntityAiInfo.newBuilder().setIsAiOpen(true).setBornPos(bornPos.toProto()))
                         .setBornPos(bornPos.toProto())
                         .build();
 

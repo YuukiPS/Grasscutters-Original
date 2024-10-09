@@ -25,9 +25,9 @@ public class PacketGetPlayerTokenRsp extends BasePacket {
                         .setPlatformType(3)
                         // .setChannelId(1) // Removed in 5.0; we don't know what it is
                         .setCountryCode("US")
-                        .setClientVersionRandomKey("c25-314dd05b0b5f")
+                        //.setClientVersionRandomKey("c25-314dd05b0b5f")
                         // .setRegPlatform(3) // Removed in 5.0; we don't know what it is
-                        .setClientIpStr(session.getAddress().getAddress().getHostAddress())
+                        //.setClientIpStr(session.getAddress().getAddress().getHostAddress())
                         .build();
 
         this.setData(p.toByteArray());
@@ -47,7 +47,7 @@ public class PacketGetPlayerTokenRsp extends BasePacket {
                         .setBlackUidEndTime(blackEndTime)
                         // .setRegPlatform(3) // Removed in 5.0; we don't know what it is
                         .setCountryCode("US")
-                        .setClientIpStr(session.getAddress().getAddress().getHostAddress())
+                        //.setClientIpStr(session.getAddress().getAddress().getHostAddress())
                         .build();
 
         this.setData(p.toByteArray());
@@ -71,9 +71,9 @@ public class PacketGetPlayerTokenRsp extends BasePacket {
                         .setPlatformType(3)
                         // .setChannelId(1) // Removed in 5.0; we don't know what it is
                         .setCountryCode("US")
-                        .setClientVersionRandomKey("c25-314dd05b0b5f")
+                        //.setClientVersionRandomKey("c25-314dd05b0b5f")
                         // .setRegPlatform(3) // Removed in 5.0; we don't know what it is
-                        .setClientIpStr(session.getAddress().getAddress().getHostAddress())
+                        //.setClientIpStr(session.getAddress().getAddress().getHostAddress())
                         .setServerRandKey(encryptedSeed)
                         .setSign(encryptedSeedSign)
                         .build();

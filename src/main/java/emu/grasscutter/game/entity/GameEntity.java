@@ -284,6 +284,7 @@ public abstract class GameEntity {
         if (dropTableEntry == null) return false;
 
         Int2ObjectMap<Integer> itemsToDrop = new Int2ObjectOpenHashMap<>();
+        /*
         switch (dropTableEntry.getRandomType()) {
             case 0: // select one
                 {
@@ -316,6 +317,7 @@ public abstract class GameEntity {
                 }
                 break;
         }
+        */
 
         for (var entry : itemsToDrop.int2ObjectEntrySet()) {
             var item =
@@ -337,11 +339,13 @@ public abstract class GameEntity {
         var subfieldMapping = GameData.getSubfieldMappingMap().get(getEntityTypeId());
         if (subfieldMapping == null || subfieldMapping.getSubfields() == null) return false;
 
+        /*
         for (SubfieldMappingEntry entry : subfieldMapping.getSubfields()) {
             if (entry.getSubfieldName().compareTo(subfieldName) == 0) {
                 return dropSubfieldItem(entry.getDrop_id());
             }
         }
+        */
 
         return false;
     }

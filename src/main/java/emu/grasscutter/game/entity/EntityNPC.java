@@ -47,10 +47,7 @@ public class EntityNPC extends GameEntity {
                         .setAbilityInfo(AbilitySyncStateInfoOuterClass.AbilitySyncStateInfo.newBuilder())
                         .setRendererChangedInfo(
                                 EntityRendererChangedInfoOuterClass.EntityRendererChangedInfo.newBuilder())
-                        .setAiInfo(
-                                SceneEntityAiInfoOuterClass.SceneEntityAiInfo.newBuilder()
-                                        .setIsAiOpen(true)
-                                        .setBornPos(getPosition().toProto()))
+                        //.setAiInfo(SceneEntityAiInfoOuterClass.SceneEntityAiInfo.newBuilder().setIsAiOpen(true).setBornPos(getPosition().toProto()))
                         .setBornPos(getPosition().toProto())
                         .build();
 

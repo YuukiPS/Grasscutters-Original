@@ -20,7 +20,7 @@ public class PacketAllWidgetDataNotify extends BasePacket {
                         // Maybe it's a little difficult, or it makes you upset :(
                         .addAllOneoffGatherPointDetectorDataList(List.of())
                         // So, goodbye, and hopefully sometime in the future o(*￣▽￣*)ブ
-                        .addAllCoolDownGroupDataList(List.of())
+                        //.addAllCoolDownGroupDataList(List.of())
                         // I'll see your PR with a title that says (・∀・(・∀・(・∀・*)
                         .addAllAnchorPointList(List.of())
                         // "Complete implementation of widget functionality" b（￣▽￣）d
