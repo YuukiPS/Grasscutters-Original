@@ -15,10 +15,6 @@ public final class ModifierActionOuterClass {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   /**
-   * <pre>
-   * Obf: DBPAAGNJNHH
-   * </pre>
-   *
    * Protobuf enum {@code ModifierAction}
    */
   public enum ModifierAction

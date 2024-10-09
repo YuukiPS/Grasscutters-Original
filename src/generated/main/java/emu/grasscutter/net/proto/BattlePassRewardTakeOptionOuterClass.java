@@ -19,31 +19,33 @@ public final class BattlePassRewardTakeOptionOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>uint32 option_idx = 14;</code>
+     * <code>uint32 option_idx = 1;</code>
      * @return The optionIdx.
      */
     int getOptionIdx();
 
     /**
-     * <code>.BattlePassRewardTag tag = 7;</code>
+     * <code>.BattlePassRewardTag tag = 10;</code>
      * @return Whether the tag field is set.
      */
     boolean hasTag();
     /**
-     * <code>.BattlePassRewardTag tag = 7;</code>
+     * <code>.BattlePassRewardTag tag = 10;</code>
      * @return The tag.
      */
     emu.grasscutter.net.proto.BattlePassRewardTagOuterClass.BattlePassRewardTag getTag();
     /**
-     * <code>.BattlePassRewardTag tag = 7;</code>
+     * <code>.BattlePassRewardTag tag = 10;</code>
      */
     emu.grasscutter.net.proto.BattlePassRewardTagOuterClass.BattlePassRewardTagOrBuilder getTagOrBuilder();
+
+    /**
+     * <code>uint32 default_reward_type = 12;</code>
+     * @return The defaultRewardType.
+     */
+    int getDefaultRewardType();
   }
   /**
-   * <pre>
-   * Obf: ABOLHFADNBD
-   * </pre>
-   *
    * Protobuf type {@code BattlePassRewardTakeOption}
    */
   public static final class BattlePassRewardTakeOption extends
@@ -88,7 +90,12 @@ public final class BattlePassRewardTakeOptionOuterClass {
             case 0:
               done = true;
               break;
-            case 58: {
+            case 8: {
+
+              optionIdx_ = input.readUInt32();
+              break;
+            }
+            case 82: {
               emu.grasscutter.net.proto.BattlePassRewardTagOuterClass.BattlePassRewardTag.Builder subBuilder = null;
               if (tag_ != null) {
                 subBuilder = tag_.toBuilder();
@@ -101,9 +108,9 @@ public final class BattlePassRewardTakeOptionOuterClass {
 
               break;
             }
-            case 112: {
+            case 96: {
 
-              optionIdx_ = input.readUInt32();
+              defaultRewardType_ = input.readUInt32();
               break;
             }
             default: {
@@ -138,10 +145,10 @@ public final class BattlePassRewardTakeOptionOuterClass {
               emu.grasscutter.net.proto.BattlePassRewardTakeOptionOuterClass.BattlePassRewardTakeOption.class, emu.grasscutter.net.proto.BattlePassRewardTakeOptionOuterClass.BattlePassRewardTakeOption.Builder.class);
     }
 
-    public static final int OPTION_IDX_FIELD_NUMBER = 14;
+    public static final int OPTION_IDX_FIELD_NUMBER = 1;
     private int optionIdx_;
     /**
-     * <code>uint32 option_idx = 14;</code>
+     * <code>uint32 option_idx = 1;</code>
      * @return The optionIdx.
      */
     @java.lang.Override
@@ -149,10 +156,10 @@ public final class BattlePassRewardTakeOptionOuterClass {
       return optionIdx_;
     }
 
-    public static final int TAG_FIELD_NUMBER = 7;
+    public static final int TAG_FIELD_NUMBER = 10;
     private emu.grasscutter.net.proto.BattlePassRewardTagOuterClass.BattlePassRewardTag tag_;
     /**
-     * <code>.BattlePassRewardTag tag = 7;</code>
+     * <code>.BattlePassRewardTag tag = 10;</code>
      * @return Whether the tag field is set.
      */
     @java.lang.Override
@@ -160,7 +167,7 @@ public final class BattlePassRewardTakeOptionOuterClass {
       return tag_ != null;
     }
     /**
-     * <code>.BattlePassRewardTag tag = 7;</code>
+     * <code>.BattlePassRewardTag tag = 10;</code>
      * @return The tag.
      */
     @java.lang.Override
@@ -168,11 +175,22 @@ public final class BattlePassRewardTakeOptionOuterClass {
       return tag_ == null ? emu.grasscutter.net.proto.BattlePassRewardTagOuterClass.BattlePassRewardTag.getDefaultInstance() : tag_;
     }
     /**
-     * <code>.BattlePassRewardTag tag = 7;</code>
+     * <code>.BattlePassRewardTag tag = 10;</code>
      */
     @java.lang.Override
     public emu.grasscutter.net.proto.BattlePassRewardTagOuterClass.BattlePassRewardTagOrBuilder getTagOrBuilder() {
       return getTag();
+    }
+
+    public static final int DEFAULT_REWARD_TYPE_FIELD_NUMBER = 12;
+    private int defaultRewardType_;
+    /**
+     * <code>uint32 default_reward_type = 12;</code>
+     * @return The defaultRewardType.
+     */
+    @java.lang.Override
+    public int getDefaultRewardType() {
+      return defaultRewardType_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -189,11 +207,14 @@ public final class BattlePassRewardTakeOptionOuterClass {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (tag_ != null) {
-        output.writeMessage(7, getTag());
-      }
       if (optionIdx_ != 0) {
-        output.writeUInt32(14, optionIdx_);
+        output.writeUInt32(1, optionIdx_);
+      }
+      if (tag_ != null) {
+        output.writeMessage(10, getTag());
+      }
+      if (defaultRewardType_ != 0) {
+        output.writeUInt32(12, defaultRewardType_);
       }
       unknownFields.writeTo(output);
     }
@@ -204,13 +225,17 @@ public final class BattlePassRewardTakeOptionOuterClass {
       if (size != -1) return size;
 
       size = 0;
-      if (tag_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(7, getTag());
-      }
       if (optionIdx_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(14, optionIdx_);
+          .computeUInt32Size(1, optionIdx_);
+      }
+      if (tag_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(10, getTag());
+      }
+      if (defaultRewardType_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(12, defaultRewardType_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -234,6 +259,8 @@ public final class BattlePassRewardTakeOptionOuterClass {
         if (!getTag()
             .equals(other.getTag())) return false;
       }
+      if (getDefaultRewardType()
+          != other.getDefaultRewardType()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -251,6 +278,8 @@ public final class BattlePassRewardTakeOptionOuterClass {
         hash = (37 * hash) + TAG_FIELD_NUMBER;
         hash = (53 * hash) + getTag().hashCode();
       }
+      hash = (37 * hash) + DEFAULT_REWARD_TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + getDefaultRewardType();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -347,10 +376,6 @@ public final class BattlePassRewardTakeOptionOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * Obf: ABOLHFADNBD
-     * </pre>
-     *
      * Protobuf type {@code BattlePassRewardTakeOption}
      */
     public static final class Builder extends
@@ -396,6 +421,8 @@ public final class BattlePassRewardTakeOptionOuterClass {
           tag_ = null;
           tagBuilder_ = null;
         }
+        defaultRewardType_ = 0;
+
         return this;
       }
 
@@ -428,6 +455,7 @@ public final class BattlePassRewardTakeOptionOuterClass {
         } else {
           result.tag_ = tagBuilder_.build();
         }
+        result.defaultRewardType_ = defaultRewardType_;
         onBuilt();
         return result;
       }
@@ -482,6 +510,9 @@ public final class BattlePassRewardTakeOptionOuterClass {
         if (other.hasTag()) {
           mergeTag(other.getTag());
         }
+        if (other.getDefaultRewardType() != 0) {
+          setDefaultRewardType(other.getDefaultRewardType());
+        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -513,7 +544,7 @@ public final class BattlePassRewardTakeOptionOuterClass {
 
       private int optionIdx_ ;
       /**
-       * <code>uint32 option_idx = 14;</code>
+       * <code>uint32 option_idx = 1;</code>
        * @return The optionIdx.
        */
       @java.lang.Override
@@ -521,7 +552,7 @@ public final class BattlePassRewardTakeOptionOuterClass {
         return optionIdx_;
       }
       /**
-       * <code>uint32 option_idx = 14;</code>
+       * <code>uint32 option_idx = 1;</code>
        * @param value The optionIdx to set.
        * @return This builder for chaining.
        */
@@ -532,7 +563,7 @@ public final class BattlePassRewardTakeOptionOuterClass {
         return this;
       }
       /**
-       * <code>uint32 option_idx = 14;</code>
+       * <code>uint32 option_idx = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearOptionIdx() {
@@ -546,14 +577,14 @@ public final class BattlePassRewardTakeOptionOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           emu.grasscutter.net.proto.BattlePassRewardTagOuterClass.BattlePassRewardTag, emu.grasscutter.net.proto.BattlePassRewardTagOuterClass.BattlePassRewardTag.Builder, emu.grasscutter.net.proto.BattlePassRewardTagOuterClass.BattlePassRewardTagOrBuilder> tagBuilder_;
       /**
-       * <code>.BattlePassRewardTag tag = 7;</code>
+       * <code>.BattlePassRewardTag tag = 10;</code>
        * @return Whether the tag field is set.
        */
       public boolean hasTag() {
         return tagBuilder_ != null || tag_ != null;
       }
       /**
-       * <code>.BattlePassRewardTag tag = 7;</code>
+       * <code>.BattlePassRewardTag tag = 10;</code>
        * @return The tag.
        */
       public emu.grasscutter.net.proto.BattlePassRewardTagOuterClass.BattlePassRewardTag getTag() {
@@ -564,7 +595,7 @@ public final class BattlePassRewardTakeOptionOuterClass {
         }
       }
       /**
-       * <code>.BattlePassRewardTag tag = 7;</code>
+       * <code>.BattlePassRewardTag tag = 10;</code>
        */
       public Builder setTag(emu.grasscutter.net.proto.BattlePassRewardTagOuterClass.BattlePassRewardTag value) {
         if (tagBuilder_ == null) {
@@ -580,7 +611,7 @@ public final class BattlePassRewardTakeOptionOuterClass {
         return this;
       }
       /**
-       * <code>.BattlePassRewardTag tag = 7;</code>
+       * <code>.BattlePassRewardTag tag = 10;</code>
        */
       public Builder setTag(
           emu.grasscutter.net.proto.BattlePassRewardTagOuterClass.BattlePassRewardTag.Builder builderForValue) {
@@ -594,7 +625,7 @@ public final class BattlePassRewardTakeOptionOuterClass {
         return this;
       }
       /**
-       * <code>.BattlePassRewardTag tag = 7;</code>
+       * <code>.BattlePassRewardTag tag = 10;</code>
        */
       public Builder mergeTag(emu.grasscutter.net.proto.BattlePassRewardTagOuterClass.BattlePassRewardTag value) {
         if (tagBuilder_ == null) {
@@ -612,7 +643,7 @@ public final class BattlePassRewardTakeOptionOuterClass {
         return this;
       }
       /**
-       * <code>.BattlePassRewardTag tag = 7;</code>
+       * <code>.BattlePassRewardTag tag = 10;</code>
        */
       public Builder clearTag() {
         if (tagBuilder_ == null) {
@@ -626,7 +657,7 @@ public final class BattlePassRewardTakeOptionOuterClass {
         return this;
       }
       /**
-       * <code>.BattlePassRewardTag tag = 7;</code>
+       * <code>.BattlePassRewardTag tag = 10;</code>
        */
       public emu.grasscutter.net.proto.BattlePassRewardTagOuterClass.BattlePassRewardTag.Builder getTagBuilder() {
         
@@ -634,7 +665,7 @@ public final class BattlePassRewardTakeOptionOuterClass {
         return getTagFieldBuilder().getBuilder();
       }
       /**
-       * <code>.BattlePassRewardTag tag = 7;</code>
+       * <code>.BattlePassRewardTag tag = 10;</code>
        */
       public emu.grasscutter.net.proto.BattlePassRewardTagOuterClass.BattlePassRewardTagOrBuilder getTagOrBuilder() {
         if (tagBuilder_ != null) {
@@ -645,7 +676,7 @@ public final class BattlePassRewardTakeOptionOuterClass {
         }
       }
       /**
-       * <code>.BattlePassRewardTag tag = 7;</code>
+       * <code>.BattlePassRewardTag tag = 10;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           emu.grasscutter.net.proto.BattlePassRewardTagOuterClass.BattlePassRewardTag, emu.grasscutter.net.proto.BattlePassRewardTagOuterClass.BattlePassRewardTag.Builder, emu.grasscutter.net.proto.BattlePassRewardTagOuterClass.BattlePassRewardTagOrBuilder> 
@@ -659,6 +690,37 @@ public final class BattlePassRewardTakeOptionOuterClass {
           tag_ = null;
         }
         return tagBuilder_;
+      }
+
+      private int defaultRewardType_ ;
+      /**
+       * <code>uint32 default_reward_type = 12;</code>
+       * @return The defaultRewardType.
+       */
+      @java.lang.Override
+      public int getDefaultRewardType() {
+        return defaultRewardType_;
+      }
+      /**
+       * <code>uint32 default_reward_type = 12;</code>
+       * @param value The defaultRewardType to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDefaultRewardType(int value) {
+        
+        defaultRewardType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>uint32 default_reward_type = 12;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDefaultRewardType() {
+        
+        defaultRewardType_ = 0;
+        onChanged();
+        return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -728,10 +790,11 @@ public final class BattlePassRewardTakeOptionOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n BattlePassRewardTakeOption.proto\032\031Batt" +
-      "lePassRewardTag.proto\"S\n\032BattlePassRewar" +
-      "dTakeOption\022\022\n\noption_idx\030\016 \001(\r\022!\n\003tag\030\007" +
-      " \001(\0132\024.BattlePassRewardTagB\033\n\031emu.grassc" +
-      "utter.net.protob\006proto3"
+      "lePassRewardTag.proto\"p\n\032BattlePassRewar" +
+      "dTakeOption\022\022\n\noption_idx\030\001 \001(\r\022!\n\003tag\030\n" +
+      " \001(\0132\024.BattlePassRewardTag\022\033\n\023default_re" +
+      "ward_type\030\014 \001(\rB\033\n\031emu.grasscutter.net.p" +
+      "rotob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -743,7 +806,7 @@ public final class BattlePassRewardTakeOptionOuterClass {
     internal_static_BattlePassRewardTakeOption_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_BattlePassRewardTakeOption_descriptor,
-        new java.lang.String[] { "OptionIdx", "Tag", });
+        new java.lang.String[] { "OptionIdx", "Tag", "DefaultRewardType", });
     emu.grasscutter.net.proto.BattlePassRewardTagOuterClass.getDescriptor();
   }
 

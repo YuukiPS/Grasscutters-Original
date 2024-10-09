@@ -19,17 +19,12 @@ public final class SceneEntityDrownReqOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>uint32 entity_id = 14;</code>
+     * <code>uint32 entity_id = 3;</code>
      * @return The entityId.
      */
     int getEntityId();
   }
   /**
-   * <pre>
-   * CmdId: 22277
-   * Obf: DEDMMLJOCEF
-   * </pre>
-   *
    * Protobuf type {@code SceneEntityDrownReq}
    */
   public static final class SceneEntityDrownReq extends
@@ -74,7 +69,7 @@ public final class SceneEntityDrownReqOuterClass {
             case 0:
               done = true;
               break;
-            case 112: {
+            case 24: {
 
               entityId_ = input.readUInt32();
               break;
@@ -111,10 +106,10 @@ public final class SceneEntityDrownReqOuterClass {
               emu.grasscutter.net.proto.SceneEntityDrownReqOuterClass.SceneEntityDrownReq.class, emu.grasscutter.net.proto.SceneEntityDrownReqOuterClass.SceneEntityDrownReq.Builder.class);
     }
 
-    public static final int ENTITY_ID_FIELD_NUMBER = 14;
+    public static final int ENTITY_ID_FIELD_NUMBER = 3;
     private int entityId_;
     /**
-     * <code>uint32 entity_id = 14;</code>
+     * <code>uint32 entity_id = 3;</code>
      * @return The entityId.
      */
     @java.lang.Override
@@ -137,7 +132,7 @@ public final class SceneEntityDrownReqOuterClass {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (entityId_ != 0) {
-        output.writeUInt32(14, entityId_);
+        output.writeUInt32(3, entityId_);
       }
       unknownFields.writeTo(output);
     }
@@ -150,7 +145,7 @@ public final class SceneEntityDrownReqOuterClass {
       size = 0;
       if (entityId_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(14, entityId_);
+          .computeUInt32Size(3, entityId_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -278,11 +273,6 @@ public final class SceneEntityDrownReqOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * CmdId: 22277
-     * Obf: DEDMMLJOCEF
-     * </pre>
-     *
      * Protobuf type {@code SceneEntityDrownReq}
      */
     public static final class Builder extends
@@ -431,7 +421,7 @@ public final class SceneEntityDrownReqOuterClass {
 
       private int entityId_ ;
       /**
-       * <code>uint32 entity_id = 14;</code>
+       * <code>uint32 entity_id = 3;</code>
        * @return The entityId.
        */
       @java.lang.Override
@@ -439,7 +429,7 @@ public final class SceneEntityDrownReqOuterClass {
         return entityId_;
       }
       /**
-       * <code>uint32 entity_id = 14;</code>
+       * <code>uint32 entity_id = 3;</code>
        * @param value The entityId to set.
        * @return This builder for chaining.
        */
@@ -450,7 +440,7 @@ public final class SceneEntityDrownReqOuterClass {
         return this;
       }
       /**
-       * <code>uint32 entity_id = 14;</code>
+       * <code>uint32 entity_id = 3;</code>
        * @return This builder for chaining.
        */
       public Builder clearEntityId() {
@@ -527,7 +517,7 @@ public final class SceneEntityDrownReqOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\031SceneEntityDrownReq.proto\"(\n\023SceneEnti" +
-      "tyDrownReq\022\021\n\tentity_id\030\016 \001(\rB\033\n\031emu.gra" +
+      "tyDrownReq\022\021\n\tentity_id\030\003 \001(\rB\033\n\031emu.gra" +
       "sscutter.net.protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor

@@ -195,6 +195,7 @@ public class GameMainQuest {
         //         .forEach(getQuestManager()::startMainQuest);
         // }
     }
+
     // TODO
     public void fail() {}
 

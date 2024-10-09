@@ -23,10 +23,10 @@ public class PacketGetPlayerTokenRsp extends BasePacket {
                         .setSecretKeySeed(session.getEncryptSeed())
                         .setSecurityCmdBuffer(ByteString.copyFrom(Crypto.ENCRYPT_SEED_BUFFER))
                         .setPlatformType(3)
-                        .setChannelId(1)
+                        // .setChannelId(1) // Removed in 5.0; we don't know what it is
                         .setCountryCode("US")
                         .setClientVersionRandomKey("c25-314dd05b0b5f")
-                        .setRegPlatform(3)
+                        // .setRegPlatform(3) // Removed in 5.0; we don't know what it is
                         .setClientIpStr(session.getAddress().getAddress().getHostAddress())
                         .build();
 
@@ -45,7 +45,7 @@ public class PacketGetPlayerTokenRsp extends BasePacket {
                         .setRetcode(retcode)
                         .setMsg(msg)
                         .setBlackUidEndTime(blackEndTime)
-                        .setRegPlatform(3)
+                        // .setRegPlatform(3) // Removed in 5.0; we don't know what it is
                         .setCountryCode("US")
                         .setClientIpStr(session.getAddress().getAddress().getHostAddress())
                         .build();
@@ -69,10 +69,10 @@ public class PacketGetPlayerTokenRsp extends BasePacket {
                         .setSecretKeySeed(session.getEncryptSeed())
                         .setSecurityCmdBuffer(ByteString.copyFrom(Crypto.ENCRYPT_SEED_BUFFER))
                         .setPlatformType(3)
-                        .setChannelId(1)
+                        // .setChannelId(1) // Removed in 5.0; we don't know what it is
                         .setCountryCode("US")
                         .setClientVersionRandomKey("c25-314dd05b0b5f")
-                        .setRegPlatform(3)
+                        // .setRegPlatform(3) // Removed in 5.0; we don't know what it is
                         .setClientIpStr(session.getAddress().getAddress().getHostAddress())
                         .setServerRandKey(encryptedSeed)
                         .setSign(encryptedSeedSign)

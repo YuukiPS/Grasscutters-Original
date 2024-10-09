@@ -94,10 +94,6 @@ public final class ShapeBoxOuterClass {
     emu.grasscutter.net.proto.VectorOuterClass.VectorOrBuilder getExtentsOrBuilder();
   }
   /**
-   * <pre>
-   * Obf: BFCLKLDHKOM
-   * </pre>
-   *
    * Protobuf type {@code ShapeBox}
    */
   public static final class ShapeBox extends
@@ -594,10 +590,6 @@ public final class ShapeBoxOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * Obf: BFCLKLDHKOM
-     * </pre>
-     *
      * Protobuf type {@code ShapeBox}
      */
     public static final class Builder extends

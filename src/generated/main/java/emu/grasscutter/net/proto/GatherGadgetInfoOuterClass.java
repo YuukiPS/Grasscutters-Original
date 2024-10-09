@@ -31,10 +31,6 @@ public final class GatherGadgetInfoOuterClass {
     boolean getIsForbidGuest();
   }
   /**
-   * <pre>
-   * Obf: IHPBLNPFECK
-   * </pre>
-   *
    * Protobuf type {@code GatherGadgetInfo}
    */
   public static final class GatherGadgetInfo extends
@@ -311,10 +307,6 @@ public final class GatherGadgetInfoOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * Obf: IHPBLNPFECK
-     * </pre>
-     *
      * Protobuf type {@code GatherGadgetInfo}
      */
     public static final class Builder extends

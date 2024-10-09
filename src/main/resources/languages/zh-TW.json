@@ -44,7 +44,8 @@
         "password_error": "密碼無效",
         "password_length_error": "密碼長度必須大於或等於 8",
         "password_storage_error": "您的帳號沒有設定密碼，請聯繫管理員。",
-        "server_max_player_limit": "伺服器線上人數已滿"
+        "server_max_player_limit": "伺服器線上人數已滿",
+        "password_crypto_error": "🇺🇸Unable to decrypt the client's given password. Are you using the right version of the game?"
       },
       "router_error": "[Dispatch] 無法附加路由。"
     },

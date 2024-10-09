@@ -31,10 +31,6 @@ public final class ServantInfoOuterClass {
     int getBornSlotIndex();
   }
   /**
-   * <pre>
-   * Obf: CILIBMDMDLK
-   * </pre>
-   *
    * Protobuf type {@code ServantInfo}
    */
   public static final class ServantInfo extends
@@ -310,10 +306,6 @@ public final class ServantInfoOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * Obf: CILIBMDMDLK
-     * </pre>
-     *
      * Protobuf type {@code ServantInfo}
      */
     public static final class Builder extends

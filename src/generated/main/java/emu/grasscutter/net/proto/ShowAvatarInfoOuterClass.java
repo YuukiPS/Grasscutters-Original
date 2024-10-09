@@ -267,10 +267,6 @@ public final class ShowAvatarInfoOuterClass {
     emu.grasscutter.net.proto.AvatarExcelInfoOuterClass.AvatarExcelInfoOrBuilder getExcelInfoOrBuilder();
   }
   /**
-   * <pre>
-   * Obf: BHNAGPHOKLL
-   * </pre>
-   *
    * Protobuf type {@code ShowAvatarInfo}
    */
   public static final class ShowAvatarInfo extends
@@ -1420,10 +1416,6 @@ public final class ShowAvatarInfoOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * Obf: BHNAGPHOKLL
-     * </pre>
-     *
      * Protobuf type {@code ShowAvatarInfo}
      */
     public static final class Builder extends

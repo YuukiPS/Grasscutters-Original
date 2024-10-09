@@ -19,35 +19,30 @@ public final class TryEnterHomeReqOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>uint32 target_uid = 4;</code>
+     * <code>uint32 target_uid = 7;</code>
      * @return The targetUid.
      */
     int getTargetUid();
 
     /**
-     * <code>bool is_transfer_to_safe_point = 9;</code>
+     * <code>bool is_transfer_to_main_house_point = 1;</code>
+     * @return The isTransferToMainHousePoint.
+     */
+    boolean getIsTransferToMainHousePoint();
+
+    /**
+     * <code>bool is_transfer_to_safe_point = 11;</code>
      * @return The isTransferToSafePoint.
      */
     boolean getIsTransferToSafePoint();
 
     /**
-     * <code>uint32 target_point = 5;</code>
+     * <code>uint32 target_point = 15;</code>
      * @return The targetPoint.
      */
     int getTargetPoint();
-
-    /**
-     * <code>bool is_transfer_to_main_house_point = 12;</code>
-     * @return The isTransferToMainHousePoint.
-     */
-    boolean getIsTransferToMainHousePoint();
   }
   /**
-   * <pre>
-   * CmdId: 26594
-   * Obf: EPFFLHEAHIE
-   * </pre>
-   *
    * Protobuf type {@code TryEnterHomeReq}
    */
   public static final class TryEnterHomeReq extends
@@ -92,24 +87,24 @@ public final class TryEnterHomeReqOuterClass {
             case 0:
               done = true;
               break;
-            case 32: {
+            case 8: {
+
+              isTransferToMainHousePoint_ = input.readBool();
+              break;
+            }
+            case 56: {
 
               targetUid_ = input.readUInt32();
               break;
             }
-            case 40: {
-
-              targetPoint_ = input.readUInt32();
-              break;
-            }
-            case 72: {
+            case 88: {
 
               isTransferToSafePoint_ = input.readBool();
               break;
             }
-            case 96: {
+            case 120: {
 
-              isTransferToMainHousePoint_ = input.readBool();
+              targetPoint_ = input.readUInt32();
               break;
             }
             default: {
@@ -144,10 +139,10 @@ public final class TryEnterHomeReqOuterClass {
               emu.grasscutter.net.proto.TryEnterHomeReqOuterClass.TryEnterHomeReq.class, emu.grasscutter.net.proto.TryEnterHomeReqOuterClass.TryEnterHomeReq.Builder.class);
     }
 
-    public static final int TARGET_UID_FIELD_NUMBER = 4;
+    public static final int TARGET_UID_FIELD_NUMBER = 7;
     private int targetUid_;
     /**
-     * <code>uint32 target_uid = 4;</code>
+     * <code>uint32 target_uid = 7;</code>
      * @return The targetUid.
      */
     @java.lang.Override
@@ -155,10 +150,21 @@ public final class TryEnterHomeReqOuterClass {
       return targetUid_;
     }
 
-    public static final int IS_TRANSFER_TO_SAFE_POINT_FIELD_NUMBER = 9;
+    public static final int IS_TRANSFER_TO_MAIN_HOUSE_POINT_FIELD_NUMBER = 1;
+    private boolean isTransferToMainHousePoint_;
+    /**
+     * <code>bool is_transfer_to_main_house_point = 1;</code>
+     * @return The isTransferToMainHousePoint.
+     */
+    @java.lang.Override
+    public boolean getIsTransferToMainHousePoint() {
+      return isTransferToMainHousePoint_;
+    }
+
+    public static final int IS_TRANSFER_TO_SAFE_POINT_FIELD_NUMBER = 11;
     private boolean isTransferToSafePoint_;
     /**
-     * <code>bool is_transfer_to_safe_point = 9;</code>
+     * <code>bool is_transfer_to_safe_point = 11;</code>
      * @return The isTransferToSafePoint.
      */
     @java.lang.Override
@@ -166,26 +172,15 @@ public final class TryEnterHomeReqOuterClass {
       return isTransferToSafePoint_;
     }
 
-    public static final int TARGET_POINT_FIELD_NUMBER = 5;
+    public static final int TARGET_POINT_FIELD_NUMBER = 15;
     private int targetPoint_;
     /**
-     * <code>uint32 target_point = 5;</code>
+     * <code>uint32 target_point = 15;</code>
      * @return The targetPoint.
      */
     @java.lang.Override
     public int getTargetPoint() {
       return targetPoint_;
-    }
-
-    public static final int IS_TRANSFER_TO_MAIN_HOUSE_POINT_FIELD_NUMBER = 12;
-    private boolean isTransferToMainHousePoint_;
-    /**
-     * <code>bool is_transfer_to_main_house_point = 12;</code>
-     * @return The isTransferToMainHousePoint.
-     */
-    @java.lang.Override
-    public boolean getIsTransferToMainHousePoint() {
-      return isTransferToMainHousePoint_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -202,17 +197,17 @@ public final class TryEnterHomeReqOuterClass {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (targetUid_ != 0) {
-        output.writeUInt32(4, targetUid_);
+      if (isTransferToMainHousePoint_ != false) {
+        output.writeBool(1, isTransferToMainHousePoint_);
       }
-      if (targetPoint_ != 0) {
-        output.writeUInt32(5, targetPoint_);
+      if (targetUid_ != 0) {
+        output.writeUInt32(7, targetUid_);
       }
       if (isTransferToSafePoint_ != false) {
-        output.writeBool(9, isTransferToSafePoint_);
+        output.writeBool(11, isTransferToSafePoint_);
       }
-      if (isTransferToMainHousePoint_ != false) {
-        output.writeBool(12, isTransferToMainHousePoint_);
+      if (targetPoint_ != 0) {
+        output.writeUInt32(15, targetPoint_);
       }
       unknownFields.writeTo(output);
     }
@@ -223,21 +218,21 @@ public final class TryEnterHomeReqOuterClass {
       if (size != -1) return size;
 
       size = 0;
+      if (isTransferToMainHousePoint_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(1, isTransferToMainHousePoint_);
+      }
       if (targetUid_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(4, targetUid_);
-      }
-      if (targetPoint_ != 0) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(5, targetPoint_);
+          .computeUInt32Size(7, targetUid_);
       }
       if (isTransferToSafePoint_ != false) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(9, isTransferToSafePoint_);
+          .computeBoolSize(11, isTransferToSafePoint_);
       }
-      if (isTransferToMainHousePoint_ != false) {
+      if (targetPoint_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(12, isTransferToMainHousePoint_);
+          .computeUInt32Size(15, targetPoint_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -256,12 +251,12 @@ public final class TryEnterHomeReqOuterClass {
 
       if (getTargetUid()
           != other.getTargetUid()) return false;
+      if (getIsTransferToMainHousePoint()
+          != other.getIsTransferToMainHousePoint()) return false;
       if (getIsTransferToSafePoint()
           != other.getIsTransferToSafePoint()) return false;
       if (getTargetPoint()
           != other.getTargetPoint()) return false;
-      if (getIsTransferToMainHousePoint()
-          != other.getIsTransferToMainHousePoint()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -275,14 +270,14 @@ public final class TryEnterHomeReqOuterClass {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + TARGET_UID_FIELD_NUMBER;
       hash = (53 * hash) + getTargetUid();
+      hash = (37 * hash) + IS_TRANSFER_TO_MAIN_HOUSE_POINT_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getIsTransferToMainHousePoint());
       hash = (37 * hash) + IS_TRANSFER_TO_SAFE_POINT_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getIsTransferToSafePoint());
       hash = (37 * hash) + TARGET_POINT_FIELD_NUMBER;
       hash = (53 * hash) + getTargetPoint();
-      hash = (37 * hash) + IS_TRANSFER_TO_MAIN_HOUSE_POINT_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-          getIsTransferToMainHousePoint());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -379,11 +374,6 @@ public final class TryEnterHomeReqOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * CmdId: 26594
-     * Obf: EPFFLHEAHIE
-     * </pre>
-     *
      * Protobuf type {@code TryEnterHomeReq}
      */
     public static final class Builder extends
@@ -423,11 +413,11 @@ public final class TryEnterHomeReqOuterClass {
         super.clear();
         targetUid_ = 0;
 
+        isTransferToMainHousePoint_ = false;
+
         isTransferToSafePoint_ = false;
 
         targetPoint_ = 0;
-
-        isTransferToMainHousePoint_ = false;
 
         return this;
       }
@@ -456,9 +446,9 @@ public final class TryEnterHomeReqOuterClass {
       public emu.grasscutter.net.proto.TryEnterHomeReqOuterClass.TryEnterHomeReq buildPartial() {
         emu.grasscutter.net.proto.TryEnterHomeReqOuterClass.TryEnterHomeReq result = new emu.grasscutter.net.proto.TryEnterHomeReqOuterClass.TryEnterHomeReq(this);
         result.targetUid_ = targetUid_;
+        result.isTransferToMainHousePoint_ = isTransferToMainHousePoint_;
         result.isTransferToSafePoint_ = isTransferToSafePoint_;
         result.targetPoint_ = targetPoint_;
-        result.isTransferToMainHousePoint_ = isTransferToMainHousePoint_;
         onBuilt();
         return result;
       }
@@ -510,14 +500,14 @@ public final class TryEnterHomeReqOuterClass {
         if (other.getTargetUid() != 0) {
           setTargetUid(other.getTargetUid());
         }
+        if (other.getIsTransferToMainHousePoint() != false) {
+          setIsTransferToMainHousePoint(other.getIsTransferToMainHousePoint());
+        }
         if (other.getIsTransferToSafePoint() != false) {
           setIsTransferToSafePoint(other.getIsTransferToSafePoint());
         }
         if (other.getTargetPoint() != 0) {
           setTargetPoint(other.getTargetPoint());
-        }
-        if (other.getIsTransferToMainHousePoint() != false) {
-          setIsTransferToMainHousePoint(other.getIsTransferToMainHousePoint());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -550,7 +540,7 @@ public final class TryEnterHomeReqOuterClass {
 
       private int targetUid_ ;
       /**
-       * <code>uint32 target_uid = 4;</code>
+       * <code>uint32 target_uid = 7;</code>
        * @return The targetUid.
        */
       @java.lang.Override
@@ -558,7 +548,7 @@ public final class TryEnterHomeReqOuterClass {
         return targetUid_;
       }
       /**
-       * <code>uint32 target_uid = 4;</code>
+       * <code>uint32 target_uid = 7;</code>
        * @param value The targetUid to set.
        * @return This builder for chaining.
        */
@@ -569,7 +559,7 @@ public final class TryEnterHomeReqOuterClass {
         return this;
       }
       /**
-       * <code>uint32 target_uid = 4;</code>
+       * <code>uint32 target_uid = 7;</code>
        * @return This builder for chaining.
        */
       public Builder clearTargetUid() {
@@ -579,9 +569,40 @@ public final class TryEnterHomeReqOuterClass {
         return this;
       }
 
+      private boolean isTransferToMainHousePoint_ ;
+      /**
+       * <code>bool is_transfer_to_main_house_point = 1;</code>
+       * @return The isTransferToMainHousePoint.
+       */
+      @java.lang.Override
+      public boolean getIsTransferToMainHousePoint() {
+        return isTransferToMainHousePoint_;
+      }
+      /**
+       * <code>bool is_transfer_to_main_house_point = 1;</code>
+       * @param value The isTransferToMainHousePoint to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIsTransferToMainHousePoint(boolean value) {
+        
+        isTransferToMainHousePoint_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool is_transfer_to_main_house_point = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearIsTransferToMainHousePoint() {
+        
+        isTransferToMainHousePoint_ = false;
+        onChanged();
+        return this;
+      }
+
       private boolean isTransferToSafePoint_ ;
       /**
-       * <code>bool is_transfer_to_safe_point = 9;</code>
+       * <code>bool is_transfer_to_safe_point = 11;</code>
        * @return The isTransferToSafePoint.
        */
       @java.lang.Override
@@ -589,7 +610,7 @@ public final class TryEnterHomeReqOuterClass {
         return isTransferToSafePoint_;
       }
       /**
-       * <code>bool is_transfer_to_safe_point = 9;</code>
+       * <code>bool is_transfer_to_safe_point = 11;</code>
        * @param value The isTransferToSafePoint to set.
        * @return This builder for chaining.
        */
@@ -600,7 +621,7 @@ public final class TryEnterHomeReqOuterClass {
         return this;
       }
       /**
-       * <code>bool is_transfer_to_safe_point = 9;</code>
+       * <code>bool is_transfer_to_safe_point = 11;</code>
        * @return This builder for chaining.
        */
       public Builder clearIsTransferToSafePoint() {
@@ -612,7 +633,7 @@ public final class TryEnterHomeReqOuterClass {
 
       private int targetPoint_ ;
       /**
-       * <code>uint32 target_point = 5;</code>
+       * <code>uint32 target_point = 15;</code>
        * @return The targetPoint.
        */
       @java.lang.Override
@@ -620,7 +641,7 @@ public final class TryEnterHomeReqOuterClass {
         return targetPoint_;
       }
       /**
-       * <code>uint32 target_point = 5;</code>
+       * <code>uint32 target_point = 15;</code>
        * @param value The targetPoint to set.
        * @return This builder for chaining.
        */
@@ -631,43 +652,12 @@ public final class TryEnterHomeReqOuterClass {
         return this;
       }
       /**
-       * <code>uint32 target_point = 5;</code>
+       * <code>uint32 target_point = 15;</code>
        * @return This builder for chaining.
        */
       public Builder clearTargetPoint() {
         
         targetPoint_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private boolean isTransferToMainHousePoint_ ;
-      /**
-       * <code>bool is_transfer_to_main_house_point = 12;</code>
-       * @return The isTransferToMainHousePoint.
-       */
-      @java.lang.Override
-      public boolean getIsTransferToMainHousePoint() {
-        return isTransferToMainHousePoint_;
-      }
-      /**
-       * <code>bool is_transfer_to_main_house_point = 12;</code>
-       * @param value The isTransferToMainHousePoint to set.
-       * @return This builder for chaining.
-       */
-      public Builder setIsTransferToMainHousePoint(boolean value) {
-        
-        isTransferToMainHousePoint_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>bool is_transfer_to_main_house_point = 12;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearIsTransferToMainHousePoint() {
-        
-        isTransferToMainHousePoint_ = false;
         onChanged();
         return this;
       }
@@ -739,10 +729,10 @@ public final class TryEnterHomeReqOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\025TryEnterHomeReq.proto\"\207\001\n\017TryEnterHome" +
-      "Req\022\022\n\ntarget_uid\030\004 \001(\r\022!\n\031is_transfer_t" +
-      "o_safe_point\030\t \001(\010\022\024\n\014target_point\030\005 \001(\r" +
-      "\022\'\n\037is_transfer_to_main_house_point\030\014 \001(" +
-      "\010B\033\n\031emu.grasscutter.net.protob\006proto3"
+      "Req\022\022\n\ntarget_uid\030\007 \001(\r\022\'\n\037is_transfer_t" +
+      "o_main_house_point\030\001 \001(\010\022!\n\031is_transfer_" +
+      "to_safe_point\030\013 \001(\010\022\024\n\014target_point\030\017 \001(" +
+      "\rB\033\n\031emu.grasscutter.net.protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -753,7 +743,7 @@ public final class TryEnterHomeReqOuterClass {
     internal_static_TryEnterHomeReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TryEnterHomeReq_descriptor,
-        new java.lang.String[] { "TargetUid", "IsTransferToSafePoint", "TargetPoint", "IsTransferToMainHousePoint", });
+        new java.lang.String[] { "TargetUid", "IsTransferToMainHousePoint", "IsTransferToSafePoint", "TargetPoint", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

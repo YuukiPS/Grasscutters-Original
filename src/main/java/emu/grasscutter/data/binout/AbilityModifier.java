@@ -42,6 +42,7 @@ public class AbilityModifier implements Serializable {
     public String stacking;
 
     public AbilityMixinData[] modifierMixins;
+    public AbilityModifierProperty properties;
 
     public ElementType elementType;
     public DynamicFloat elementDurability = DynamicFloat.ZERO;
@@ -328,6 +329,8 @@ public class AbilityModifier implements Serializable {
 
         public int skillID;
         public int resistanceListID;
+        public int monsterID;
+        public int summonTag;
 
         public AbilityModifierAction[] actions;
         public AbilityModifierAction[] successActions;
@@ -342,9 +345,10 @@ public class AbilityModifier implements Serializable {
         public DynamicFloat valueRangeMax;
         public String overrideMapKey;
 
-        public int param1;
-        public int param2;
-        public int param3;
+        public int paramNum;
+        public DynamicFloat param1 = DynamicFloat.ZERO,
+                param2 = DynamicFloat.ZERO,
+                param3 = DynamicFloat.ZERO;
 
         public String funcName;
         public LuaCallType luaCallType;
@@ -355,12 +359,18 @@ public class AbilityModifier implements Serializable {
         public String content;
 
         public enum LuaCallType {
+            Gadget,
+            @SerializedName(value = "OwnerGadegt", alternate = "OwnerGadget")
+            OwnerGadget,
             FromGroup,
-            CurGalleryControlGroup,
-            CurChallengeGroup,
+            OwnerFromGroup,
             SpecificGroup,
+            CurScenePlay,
+            CurChallengeGroup,
+            CurRogueBossGroup,
+            CurGalleryControlGroup,
             AbilityGroupSourceGroup,
-            CurScenePlay
+            LevelBankZoneContainsGroup
         }
 
         public enum DropType {
@@ -368,6 +378,11 @@ public class AbilityModifier implements Serializable {
             BigWorldOnly,
             ForceDrop
         }
+    }
+
+    public static class AbilityModifierProperty implements Serializable {
+        public float Actor_HpThresholdRatio;
+        // Add more properties here when GC needs them.
     }
 
     public enum State {

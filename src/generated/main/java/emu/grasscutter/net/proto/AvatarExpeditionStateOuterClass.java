@@ -15,57 +15,53 @@ public final class AvatarExpeditionStateOuterClass {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   /**
-   * <pre>
-   * Obf: OJBIHADNECN
-   * </pre>
-   *
    * Protobuf enum {@code AvatarExpeditionState}
    */
   public enum AvatarExpeditionState
       implements com.google.protobuf.ProtocolMessageEnum {
     /**
-     * <code>AVATAR_EXPEDITION_NONE = 0;</code>
+     * <code>AVATAR_EXPEDITION_STATE_AVATAR_EXPEDITION_NONE = 0;</code>
      */
-    AVATAR_EXPEDITION_NONE(0),
+    AVATAR_EXPEDITION_STATE_AVATAR_EXPEDITION_NONE(0),
     /**
-     * <code>AVATAR_EXPEDITION_DOING = 1;</code>
+     * <code>AVATAR_EXPEDITION_STATE_AVATAR_EXPEDITION_DOING = 1;</code>
      */
-    AVATAR_EXPEDITION_DOING(1),
+    AVATAR_EXPEDITION_STATE_AVATAR_EXPEDITION_DOING(1),
     /**
-     * <code>AVATAR_EXPEDITION_FINISH_WAIT_REWARD = 2;</code>
+     * <code>AVATAR_EXPEDITION_STATE_AVATAR_EXPEDITION_FINISH_WAIT_REWARD = 2;</code>
      */
-    AVATAR_EXPEDITION_FINISH_WAIT_REWARD(2),
+    AVATAR_EXPEDITION_STATE_AVATAR_EXPEDITION_FINISH_WAIT_REWARD(2),
     /**
-     * <code>AVATAR_EXPEDITION_CALLBACK_WAIT_REWARD = 3;</code>
+     * <code>AVATAR_EXPEDITION_STATE_AVATAR_EXPEDITION_CALLBACK_WAIT_REWARD = 3;</code>
      */
-    AVATAR_EXPEDITION_CALLBACK_WAIT_REWARD(3),
+    AVATAR_EXPEDITION_STATE_AVATAR_EXPEDITION_CALLBACK_WAIT_REWARD(3),
     /**
-     * <code>AVATAR_EXPEDITION_LOCKED = 4;</code>
+     * <code>AVATAR_EXPEDITION_STATE_AVATAR_EXPEDITION_LOCKED = 4;</code>
      */
-    AVATAR_EXPEDITION_LOCKED(4),
+    AVATAR_EXPEDITION_STATE_AVATAR_EXPEDITION_LOCKED(4),
     UNRECOGNIZED(-1),
     ;
 
     /**
-     * <code>AVATAR_EXPEDITION_NONE = 0;</code>
+     * <code>AVATAR_EXPEDITION_STATE_AVATAR_EXPEDITION_NONE = 0;</code>
      */
-    public static final int AVATAR_EXPEDITION_NONE_VALUE = 0;
+    public static final int AVATAR_EXPEDITION_STATE_AVATAR_EXPEDITION_NONE_VALUE = 0;
     /**
-     * <code>AVATAR_EXPEDITION_DOING = 1;</code>
+     * <code>AVATAR_EXPEDITION_STATE_AVATAR_EXPEDITION_DOING = 1;</code>
      */
-    public static final int AVATAR_EXPEDITION_DOING_VALUE = 1;
+    public static final int AVATAR_EXPEDITION_STATE_AVATAR_EXPEDITION_DOING_VALUE = 1;
     /**
-     * <code>AVATAR_EXPEDITION_FINISH_WAIT_REWARD = 2;</code>
+     * <code>AVATAR_EXPEDITION_STATE_AVATAR_EXPEDITION_FINISH_WAIT_REWARD = 2;</code>
      */
-    public static final int AVATAR_EXPEDITION_FINISH_WAIT_REWARD_VALUE = 2;
+    public static final int AVATAR_EXPEDITION_STATE_AVATAR_EXPEDITION_FINISH_WAIT_REWARD_VALUE = 2;
     /**
-     * <code>AVATAR_EXPEDITION_CALLBACK_WAIT_REWARD = 3;</code>
+     * <code>AVATAR_EXPEDITION_STATE_AVATAR_EXPEDITION_CALLBACK_WAIT_REWARD = 3;</code>
      */
-    public static final int AVATAR_EXPEDITION_CALLBACK_WAIT_REWARD_VALUE = 3;
+    public static final int AVATAR_EXPEDITION_STATE_AVATAR_EXPEDITION_CALLBACK_WAIT_REWARD_VALUE = 3;
     /**
-     * <code>AVATAR_EXPEDITION_LOCKED = 4;</code>
+     * <code>AVATAR_EXPEDITION_STATE_AVATAR_EXPEDITION_LOCKED = 4;</code>
      */
-    public static final int AVATAR_EXPEDITION_LOCKED_VALUE = 4;
+    public static final int AVATAR_EXPEDITION_STATE_AVATAR_EXPEDITION_LOCKED_VALUE = 4;
 
 
     public final int getNumber() {
@@ -92,11 +88,11 @@ public final class AvatarExpeditionStateOuterClass {
      */
     public static AvatarExpeditionState forNumber(int value) {
       switch (value) {
-        case 0: return AVATAR_EXPEDITION_NONE;
-        case 1: return AVATAR_EXPEDITION_DOING;
-        case 2: return AVATAR_EXPEDITION_FINISH_WAIT_REWARD;
-        case 3: return AVATAR_EXPEDITION_CALLBACK_WAIT_REWARD;
-        case 4: return AVATAR_EXPEDITION_LOCKED;
+        case 0: return AVATAR_EXPEDITION_STATE_AVATAR_EXPEDITION_NONE;
+        case 1: return AVATAR_EXPEDITION_STATE_AVATAR_EXPEDITION_DOING;
+        case 2: return AVATAR_EXPEDITION_STATE_AVATAR_EXPEDITION_FINISH_WAIT_REWARD;
+        case 3: return AVATAR_EXPEDITION_STATE_AVATAR_EXPEDITION_CALLBACK_WAIT_REWARD;
+        case 4: return AVATAR_EXPEDITION_STATE_AVATAR_EXPEDITION_LOCKED;
         default: return null;
       }
     }
@@ -162,12 +158,15 @@ public final class AvatarExpeditionStateOuterClass {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\033AvatarExpeditionState.proto*\304\001\n\025Avatar" +
-      "ExpeditionState\022\032\n\026AVATAR_EXPEDITION_NON" +
-      "E\020\000\022\033\n\027AVATAR_EXPEDITION_DOING\020\001\022(\n$AVAT" +
-      "AR_EXPEDITION_FINISH_WAIT_REWARD\020\002\022*\n&AV" +
-      "ATAR_EXPEDITION_CALLBACK_WAIT_REWARD\020\003\022\034" +
-      "\n\030AVATAR_EXPEDITION_LOCKED\020\004B\033\n\031emu.gras" +
+      "\n\033AvatarExpeditionState.proto*\274\002\n\025Avatar" +
+      "ExpeditionState\0222\n.AVATAR_EXPEDITION_STA" +
+      "TE_AVATAR_EXPEDITION_NONE\020\000\0223\n/AVATAR_EX" +
+      "PEDITION_STATE_AVATAR_EXPEDITION_DOING\020\001" +
+      "\022@\n<AVATAR_EXPEDITION_STATE_AVATAR_EXPED" +
+      "ITION_FINISH_WAIT_REWARD\020\002\022B\n>AVATAR_EXP" +
+      "EDITION_STATE_AVATAR_EXPEDITION_CALLBACK" +
+      "_WAIT_REWARD\020\003\0224\n0AVATAR_EXPEDITION_STAT" +
+      "E_AVATAR_EXPEDITION_LOCKED\020\004B\033\n\031emu.gras" +
       "scutter.net.protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor

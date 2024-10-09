@@ -15,10 +15,6 @@ public final class InterOpTypeOuterClass {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   /**
-   * <pre>
-   * Obf: BGICOOCNDKD
-   * </pre>
-   *
    * Protobuf enum {@code InterOpType}
    */
   public enum InterOpType

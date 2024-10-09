@@ -53,19 +53,20 @@ public class PacketPlayerLoginRsp extends BasePacket {
 
         PlayerLoginRsp p =
                 PlayerLoginRsp.newBuilder()
-                        .setIsUseAbilityHash(true) // true
+                        // .setIsUseAbilityHash(true) // true, Removed in 5.0; we don't know what it is
                         .setAbilityHashCode(1844674) // 1844674
                         .setGameBiz("hk4e_global")
                         .setClientDataVersion(info.getClientDataVersion())
                         .setClientSilenceDataVersion(info.getClientSilenceDataVersion())
-                        .setClientMd5(info.getClientDataMd5())
-                        .setClientSilenceMd5(info.getClientSilenceDataMd5())
+                        // .setClientMd5(info.getClientDataMd5()) // Removed in 5.0; we don't know what it is
+                        // .setClientSilenceMd5(info.getClientSilenceDataMd5()) // Removed in 5.0; we don't know
+                        // what it is
                         .setResVersionConfig(info.getResVersionConfig())
                         .setClientVersionSuffix(info.getClientVersionSuffix())
                         .setClientSilenceVersionSuffix(info.getClientSilenceVersionSuffix())
-                        // .setIsScOpen(false)
-                        // .setScInfo(ByteString.copyFrom(new byte[] {}))
-                        // .setRegisterCps("mihoyo")
+                        // .setIsScOpen(false) // Unknown for ??.??
+                        // .setScInfo(ByteString.copyFrom(new byte[] {})) // Unknown for ??.??
+                        // .setRegisterCps("mihoyo") // Unknown for ??.??
                         .setCountryCode("US")
                         .build();
 

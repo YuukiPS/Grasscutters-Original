@@ -91,10 +91,6 @@ public final class ResVersionConfigOuterClass {
         getNextScriptVersionBytes();
   }
   /**
-   * <pre>
-   * Obf: DPBFMJOKIMN
-   * </pre>
-   *
    * Protobuf type {@code ResVersionConfig}
    */
   public static final class ResVersionConfig extends
@@ -646,10 +642,6 @@ public final class ResVersionConfigOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * Obf: DPBFMJOKIMN
-     * </pre>
-     *
      * Protobuf type {@code ResVersionConfig}
      */
     public static final class Builder extends

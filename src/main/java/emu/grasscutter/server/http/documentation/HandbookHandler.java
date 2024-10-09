@@ -14,6 +14,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 /** Handles requests for the new GM Handbook. */
+@Deprecated(since = "1.7.5-dev")
 public final class HandbookHandler implements Router {
     private String handbook;
     private final boolean serve;
@@ -25,8 +26,13 @@ public final class HandbookHandler implements Router {
      * found.
      */
     public HandbookHandler() {
+        if (!HANDBOOK.enable) {
+            this.serve = false;
+            return;
+        }
+
         this.handbook = new String(FileUtils.readResource("/html/handbook.html"));
-        this.serve = HANDBOOK.enable && this.handbook.length() > 0;
+        this.serve = !this.handbook.isEmpty();
 
         var server = HANDBOOK.server;
         if (this.serve && server.enforced) {

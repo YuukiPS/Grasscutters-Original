@@ -44,7 +44,8 @@
         "password_error": "Invalid Password",
         "password_length_error": "Password length must be greater then or equal to 8",
         "password_storage_error": "You don't have a password for your account. Please contact an administrator.",
-        "server_max_player_limit": "The number of online players has reached the limit"
+        "server_max_player_limit": "The number of online players has reached the limit",
+        "password_crypto_error": "Unable to decrypt the client's given password. Are you using the right version of the game?"
       },
       "router_error": "[Dispatch] Unable to attach router."
     },

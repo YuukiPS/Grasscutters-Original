@@ -19,33 +19,40 @@ public final class FireworksReformDataNotifyOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+     * <code>uint32 uk1 = 7;</code>
+     * @return The uk1.
+     */
+    int getUk1();
+
+    /**
+     * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
      */
     java.util.List<emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformData> 
         getFireworksReformDataListList();
     /**
-     * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+     * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
      */
     emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformData getFireworksReformDataList(int index);
     /**
-     * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+     * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
      */
     int getFireworksReformDataListCount();
     /**
-     * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+     * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
      */
     java.util.List<? extends emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformDataOrBuilder> 
         getFireworksReformDataListOrBuilderList();
     /**
-     * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+     * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
      */
     emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformDataOrBuilder getFireworksReformDataListOrBuilder(
         int index);
   }
   /**
    * <pre>
-   * CmdId: 7551
-   * Obf: OFPJGJACJBD
+   * 4.7.0
+   * CmdId: 23329
+   * Obf: MFHAPJMFPON
    * </pre>
    *
    * Protobuf type {@code FireworksReformDataNotify}
@@ -94,7 +101,12 @@ public final class FireworksReformDataNotifyOuterClass {
             case 0:
               done = true;
               break;
-            case 34: {
+            case 56: {
+
+              uk1_ = input.readUInt32();
+              break;
+            }
+            case 82: {
               if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 fireworksReformDataList_ = new java.util.ArrayList<emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformData>();
                 mutable_bitField0_ |= 0x00000001;
@@ -138,17 +150,28 @@ public final class FireworksReformDataNotifyOuterClass {
               emu.grasscutter.net.proto.FireworksReformDataNotifyOuterClass.FireworksReformDataNotify.class, emu.grasscutter.net.proto.FireworksReformDataNotifyOuterClass.FireworksReformDataNotify.Builder.class);
     }
 
-    public static final int FIREWORKS_REFORM_DATA_LIST_FIELD_NUMBER = 4;
+    public static final int UK1_FIELD_NUMBER = 7;
+    private int uk1_;
+    /**
+     * <code>uint32 uk1 = 7;</code>
+     * @return The uk1.
+     */
+    @java.lang.Override
+    public int getUk1() {
+      return uk1_;
+    }
+
+    public static final int FIREWORKS_REFORM_DATA_LIST_FIELD_NUMBER = 10;
     private java.util.List<emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformData> fireworksReformDataList_;
     /**
-     * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+     * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
      */
     @java.lang.Override
     public java.util.List<emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformData> getFireworksReformDataListList() {
       return fireworksReformDataList_;
     }
     /**
-     * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+     * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
      */
     @java.lang.Override
     public java.util.List<? extends emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformDataOrBuilder> 
@@ -156,21 +179,21 @@ public final class FireworksReformDataNotifyOuterClass {
       return fireworksReformDataList_;
     }
     /**
-     * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+     * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
      */
     @java.lang.Override
     public int getFireworksReformDataListCount() {
       return fireworksReformDataList_.size();
     }
     /**
-     * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+     * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
      */
     @java.lang.Override
     public emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformData getFireworksReformDataList(int index) {
       return fireworksReformDataList_.get(index);
     }
     /**
-     * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+     * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
      */
     @java.lang.Override
     public emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformDataOrBuilder getFireworksReformDataListOrBuilder(
@@ -192,8 +215,11 @@ public final class FireworksReformDataNotifyOuterClass {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
+      if (uk1_ != 0) {
+        output.writeUInt32(7, uk1_);
+      }
       for (int i = 0; i < fireworksReformDataList_.size(); i++) {
-        output.writeMessage(4, fireworksReformDataList_.get(i));
+        output.writeMessage(10, fireworksReformDataList_.get(i));
       }
       unknownFields.writeTo(output);
     }
@@ -204,9 +230,13 @@ public final class FireworksReformDataNotifyOuterClass {
       if (size != -1) return size;
 
       size = 0;
+      if (uk1_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(7, uk1_);
+      }
       for (int i = 0; i < fireworksReformDataList_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, fireworksReformDataList_.get(i));
+          .computeMessageSize(10, fireworksReformDataList_.get(i));
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -223,6 +253,8 @@ public final class FireworksReformDataNotifyOuterClass {
       }
       emu.grasscutter.net.proto.FireworksReformDataNotifyOuterClass.FireworksReformDataNotify other = (emu.grasscutter.net.proto.FireworksReformDataNotifyOuterClass.FireworksReformDataNotify) obj;
 
+      if (getUk1()
+          != other.getUk1()) return false;
       if (!getFireworksReformDataListList()
           .equals(other.getFireworksReformDataListList())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
@@ -236,6 +268,8 @@ public final class FireworksReformDataNotifyOuterClass {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + UK1_FIELD_NUMBER;
+      hash = (53 * hash) + getUk1();
       if (getFireworksReformDataListCount() > 0) {
         hash = (37 * hash) + FIREWORKS_REFORM_DATA_LIST_FIELD_NUMBER;
         hash = (53 * hash) + getFireworksReformDataListList().hashCode();
@@ -337,8 +371,9 @@ public final class FireworksReformDataNotifyOuterClass {
     }
     /**
      * <pre>
-     * CmdId: 7551
-     * Obf: OFPJGJACJBD
+     * 4.7.0
+     * CmdId: 23329
+     * Obf: MFHAPJMFPON
      * </pre>
      *
      * Protobuf type {@code FireworksReformDataNotify}
@@ -379,6 +414,8 @@ public final class FireworksReformDataNotifyOuterClass {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        uk1_ = 0;
+
         if (fireworksReformDataListBuilder_ == null) {
           fireworksReformDataList_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000001);
@@ -412,6 +449,7 @@ public final class FireworksReformDataNotifyOuterClass {
       public emu.grasscutter.net.proto.FireworksReformDataNotifyOuterClass.FireworksReformDataNotify buildPartial() {
         emu.grasscutter.net.proto.FireworksReformDataNotifyOuterClass.FireworksReformDataNotify result = new emu.grasscutter.net.proto.FireworksReformDataNotifyOuterClass.FireworksReformDataNotify(this);
         int from_bitField0_ = bitField0_;
+        result.uk1_ = uk1_;
         if (fireworksReformDataListBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0)) {
             fireworksReformDataList_ = java.util.Collections.unmodifiableList(fireworksReformDataList_);
@@ -469,6 +507,9 @@ public final class FireworksReformDataNotifyOuterClass {
 
       public Builder mergeFrom(emu.grasscutter.net.proto.FireworksReformDataNotifyOuterClass.FireworksReformDataNotify other) {
         if (other == emu.grasscutter.net.proto.FireworksReformDataNotifyOuterClass.FireworksReformDataNotify.getDefaultInstance()) return this;
+        if (other.getUk1() != 0) {
+          setUk1(other.getUk1());
+        }
         if (fireworksReformDataListBuilder_ == null) {
           if (!other.fireworksReformDataList_.isEmpty()) {
             if (fireworksReformDataList_.isEmpty()) {
@@ -525,6 +566,37 @@ public final class FireworksReformDataNotifyOuterClass {
       }
       private int bitField0_;
 
+      private int uk1_ ;
+      /**
+       * <code>uint32 uk1 = 7;</code>
+       * @return The uk1.
+       */
+      @java.lang.Override
+      public int getUk1() {
+        return uk1_;
+      }
+      /**
+       * <code>uint32 uk1 = 7;</code>
+       * @param value The uk1 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUk1(int value) {
+        
+        uk1_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>uint32 uk1 = 7;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUk1() {
+        
+        uk1_ = 0;
+        onChanged();
+        return this;
+      }
+
       private java.util.List<emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformData> fireworksReformDataList_ =
         java.util.Collections.emptyList();
       private void ensureFireworksReformDataListIsMutable() {
@@ -538,7 +610,7 @@ public final class FireworksReformDataNotifyOuterClass {
           emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformData, emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformData.Builder, emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformDataOrBuilder> fireworksReformDataListBuilder_;
 
       /**
-       * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+       * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
        */
       public java.util.List<emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformData> getFireworksReformDataListList() {
         if (fireworksReformDataListBuilder_ == null) {
@@ -548,7 +620,7 @@ public final class FireworksReformDataNotifyOuterClass {
         }
       }
       /**
-       * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+       * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
        */
       public int getFireworksReformDataListCount() {
         if (fireworksReformDataListBuilder_ == null) {
@@ -558,7 +630,7 @@ public final class FireworksReformDataNotifyOuterClass {
         }
       }
       /**
-       * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+       * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
        */
       public emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformData getFireworksReformDataList(int index) {
         if (fireworksReformDataListBuilder_ == null) {
@@ -568,7 +640,7 @@ public final class FireworksReformDataNotifyOuterClass {
         }
       }
       /**
-       * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+       * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
        */
       public Builder setFireworksReformDataList(
           int index, emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformData value) {
@@ -585,7 +657,7 @@ public final class FireworksReformDataNotifyOuterClass {
         return this;
       }
       /**
-       * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+       * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
        */
       public Builder setFireworksReformDataList(
           int index, emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformData.Builder builderForValue) {
@@ -599,7 +671,7 @@ public final class FireworksReformDataNotifyOuterClass {
         return this;
       }
       /**
-       * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+       * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
        */
       public Builder addFireworksReformDataList(emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformData value) {
         if (fireworksReformDataListBuilder_ == null) {
@@ -615,7 +687,7 @@ public final class FireworksReformDataNotifyOuterClass {
         return this;
       }
       /**
-       * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+       * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
        */
       public Builder addFireworksReformDataList(
           int index, emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformData value) {
@@ -632,7 +704,7 @@ public final class FireworksReformDataNotifyOuterClass {
         return this;
       }
       /**
-       * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+       * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
        */
       public Builder addFireworksReformDataList(
           emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformData.Builder builderForValue) {
@@ -646,7 +718,7 @@ public final class FireworksReformDataNotifyOuterClass {
         return this;
       }
       /**
-       * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+       * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
        */
       public Builder addFireworksReformDataList(
           int index, emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformData.Builder builderForValue) {
@@ -660,7 +732,7 @@ public final class FireworksReformDataNotifyOuterClass {
         return this;
       }
       /**
-       * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+       * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
        */
       public Builder addAllFireworksReformDataList(
           java.lang.Iterable<? extends emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformData> values) {
@@ -675,7 +747,7 @@ public final class FireworksReformDataNotifyOuterClass {
         return this;
       }
       /**
-       * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+       * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
        */
       public Builder clearFireworksReformDataList() {
         if (fireworksReformDataListBuilder_ == null) {
@@ -688,7 +760,7 @@ public final class FireworksReformDataNotifyOuterClass {
         return this;
       }
       /**
-       * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+       * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
        */
       public Builder removeFireworksReformDataList(int index) {
         if (fireworksReformDataListBuilder_ == null) {
@@ -701,14 +773,14 @@ public final class FireworksReformDataNotifyOuterClass {
         return this;
       }
       /**
-       * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+       * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
        */
       public emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformData.Builder getFireworksReformDataListBuilder(
           int index) {
         return getFireworksReformDataListFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+       * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
        */
       public emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformDataOrBuilder getFireworksReformDataListOrBuilder(
           int index) {
@@ -718,7 +790,7 @@ public final class FireworksReformDataNotifyOuterClass {
         }
       }
       /**
-       * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+       * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
        */
       public java.util.List<? extends emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformDataOrBuilder> 
            getFireworksReformDataListOrBuilderList() {
@@ -729,14 +801,14 @@ public final class FireworksReformDataNotifyOuterClass {
         }
       }
       /**
-       * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+       * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
        */
       public emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformData.Builder addFireworksReformDataListBuilder() {
         return getFireworksReformDataListFieldBuilder().addBuilder(
             emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformData.getDefaultInstance());
       }
       /**
-       * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+       * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
        */
       public emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformData.Builder addFireworksReformDataListBuilder(
           int index) {
@@ -744,7 +816,7 @@ public final class FireworksReformDataNotifyOuterClass {
             index, emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformData.getDefaultInstance());
       }
       /**
-       * <code>repeated .FireworksReformData fireworks_reform_data_list = 4;</code>
+       * <code>repeated .FireworksReformData fireworks_reform_data_list = 10;</code>
        */
       public java.util.List<emu.grasscutter.net.proto.FireworksReformDataOuterClass.FireworksReformData.Builder> 
            getFireworksReformDataListBuilderList() {
@@ -832,10 +904,10 @@ public final class FireworksReformDataNotifyOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\037FireworksReformDataNotify.proto\032\031Firew" +
-      "orksReformData.proto\"U\n\031FireworksReformD" +
-      "ataNotify\0228\n\032fireworks_reform_data_list\030" +
-      "\004 \003(\0132\024.FireworksReformDataB\033\n\031emu.grass" +
-      "cutter.net.protob\006proto3"
+      "orksReformData.proto\"b\n\031FireworksReformD" +
+      "ataNotify\022\013\n\003uk1\030\007 \001(\r\0228\n\032fireworks_refo" +
+      "rm_data_list\030\n \003(\0132\024.FireworksReformData" +
+      "B\033\n\031emu.grasscutter.net.protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -847,7 +919,7 @@ public final class FireworksReformDataNotifyOuterClass {
     internal_static_FireworksReformDataNotify_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_FireworksReformDataNotify_descriptor,
-        new java.lang.String[] { "FireworksReformDataList", });
+        new java.lang.String[] { "Uk1", "FireworksReformDataList", });
     emu.grasscutter.net.proto.FireworksReformDataOuterClass.getDescriptor();
   }
 

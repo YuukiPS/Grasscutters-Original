@@ -19,23 +19,18 @@ public final class HomeSaveArrangementNoChangeRspOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>int32 retcode = 2;</code>
-     * @return The retcode.
-     */
-    int getRetcode();
-
-    /**
      * <code>uint32 scene_id = 1;</code>
      * @return The sceneId.
      */
     int getSceneId();
+
+    /**
+     * <code>int32 retcode = 9;</code>
+     * @return The retcode.
+     */
+    int getRetcode();
   }
   /**
-   * <pre>
-   * CmdId: 20696
-   * Obf: BMFLMFIECOG
-   * </pre>
-   *
    * Protobuf type {@code HomeSaveArrangementNoChangeRsp}
    */
   public static final class HomeSaveArrangementNoChangeRsp extends
@@ -85,7 +80,7 @@ public final class HomeSaveArrangementNoChangeRspOuterClass {
               sceneId_ = input.readUInt32();
               break;
             }
-            case 16: {
+            case 72: {
 
               retcode_ = input.readInt32();
               break;
@@ -122,17 +117,6 @@ public final class HomeSaveArrangementNoChangeRspOuterClass {
               emu.grasscutter.net.proto.HomeSaveArrangementNoChangeRspOuterClass.HomeSaveArrangementNoChangeRsp.class, emu.grasscutter.net.proto.HomeSaveArrangementNoChangeRspOuterClass.HomeSaveArrangementNoChangeRsp.Builder.class);
     }
 
-    public static final int RETCODE_FIELD_NUMBER = 2;
-    private int retcode_;
-    /**
-     * <code>int32 retcode = 2;</code>
-     * @return The retcode.
-     */
-    @java.lang.Override
-    public int getRetcode() {
-      return retcode_;
-    }
-
     public static final int SCENE_ID_FIELD_NUMBER = 1;
     private int sceneId_;
     /**
@@ -142,6 +126,17 @@ public final class HomeSaveArrangementNoChangeRspOuterClass {
     @java.lang.Override
     public int getSceneId() {
       return sceneId_;
+    }
+
+    public static final int RETCODE_FIELD_NUMBER = 9;
+    private int retcode_;
+    /**
+     * <code>int32 retcode = 9;</code>
+     * @return The retcode.
+     */
+    @java.lang.Override
+    public int getRetcode() {
+      return retcode_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -162,7 +157,7 @@ public final class HomeSaveArrangementNoChangeRspOuterClass {
         output.writeUInt32(1, sceneId_);
       }
       if (retcode_ != 0) {
-        output.writeInt32(2, retcode_);
+        output.writeInt32(9, retcode_);
       }
       unknownFields.writeTo(output);
     }
@@ -179,7 +174,7 @@ public final class HomeSaveArrangementNoChangeRspOuterClass {
       }
       if (retcode_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, retcode_);
+          .computeInt32Size(9, retcode_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -196,10 +191,10 @@ public final class HomeSaveArrangementNoChangeRspOuterClass {
       }
       emu.grasscutter.net.proto.HomeSaveArrangementNoChangeRspOuterClass.HomeSaveArrangementNoChangeRsp other = (emu.grasscutter.net.proto.HomeSaveArrangementNoChangeRspOuterClass.HomeSaveArrangementNoChangeRsp) obj;
 
-      if (getRetcode()
-          != other.getRetcode()) return false;
       if (getSceneId()
           != other.getSceneId()) return false;
+      if (getRetcode()
+          != other.getRetcode()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -211,10 +206,10 @@ public final class HomeSaveArrangementNoChangeRspOuterClass {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + RETCODE_FIELD_NUMBER;
-      hash = (53 * hash) + getRetcode();
       hash = (37 * hash) + SCENE_ID_FIELD_NUMBER;
       hash = (53 * hash) + getSceneId();
+      hash = (37 * hash) + RETCODE_FIELD_NUMBER;
+      hash = (53 * hash) + getRetcode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -311,11 +306,6 @@ public final class HomeSaveArrangementNoChangeRspOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * CmdId: 20696
-     * Obf: BMFLMFIECOG
-     * </pre>
-     *
      * Protobuf type {@code HomeSaveArrangementNoChangeRsp}
      */
     public static final class Builder extends
@@ -353,9 +343,9 @@ public final class HomeSaveArrangementNoChangeRspOuterClass {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        retcode_ = 0;
-
         sceneId_ = 0;
+
+        retcode_ = 0;
 
         return this;
       }
@@ -383,8 +373,8 @@ public final class HomeSaveArrangementNoChangeRspOuterClass {
       @java.lang.Override
       public emu.grasscutter.net.proto.HomeSaveArrangementNoChangeRspOuterClass.HomeSaveArrangementNoChangeRsp buildPartial() {
         emu.grasscutter.net.proto.HomeSaveArrangementNoChangeRspOuterClass.HomeSaveArrangementNoChangeRsp result = new emu.grasscutter.net.proto.HomeSaveArrangementNoChangeRspOuterClass.HomeSaveArrangementNoChangeRsp(this);
-        result.retcode_ = retcode_;
         result.sceneId_ = sceneId_;
+        result.retcode_ = retcode_;
         onBuilt();
         return result;
       }
@@ -433,11 +423,11 @@ public final class HomeSaveArrangementNoChangeRspOuterClass {
 
       public Builder mergeFrom(emu.grasscutter.net.proto.HomeSaveArrangementNoChangeRspOuterClass.HomeSaveArrangementNoChangeRsp other) {
         if (other == emu.grasscutter.net.proto.HomeSaveArrangementNoChangeRspOuterClass.HomeSaveArrangementNoChangeRsp.getDefaultInstance()) return this;
-        if (other.getRetcode() != 0) {
-          setRetcode(other.getRetcode());
-        }
         if (other.getSceneId() != 0) {
           setSceneId(other.getSceneId());
+        }
+        if (other.getRetcode() != 0) {
+          setRetcode(other.getRetcode());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -468,37 +458,6 @@ public final class HomeSaveArrangementNoChangeRspOuterClass {
         return this;
       }
 
-      private int retcode_ ;
-      /**
-       * <code>int32 retcode = 2;</code>
-       * @return The retcode.
-       */
-      @java.lang.Override
-      public int getRetcode() {
-        return retcode_;
-      }
-      /**
-       * <code>int32 retcode = 2;</code>
-       * @param value The retcode to set.
-       * @return This builder for chaining.
-       */
-      public Builder setRetcode(int value) {
-        
-        retcode_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>int32 retcode = 2;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearRetcode() {
-        
-        retcode_ = 0;
-        onChanged();
-        return this;
-      }
-
       private int sceneId_ ;
       /**
        * <code>uint32 scene_id = 1;</code>
@@ -526,6 +485,37 @@ public final class HomeSaveArrangementNoChangeRspOuterClass {
       public Builder clearSceneId() {
         
         sceneId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int retcode_ ;
+      /**
+       * <code>int32 retcode = 9;</code>
+       * @return The retcode.
+       */
+      @java.lang.Override
+      public int getRetcode() {
+        return retcode_;
+      }
+      /**
+       * <code>int32 retcode = 9;</code>
+       * @param value The retcode to set.
+       * @return This builder for chaining.
+       */
+      public Builder setRetcode(int value) {
+        
+        retcode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 retcode = 9;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearRetcode() {
+        
+        retcode_ = 0;
         onChanged();
         return this;
       }
@@ -597,8 +587,8 @@ public final class HomeSaveArrangementNoChangeRspOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n$HomeSaveArrangementNoChangeRsp.proto\"C" +
-      "\n\036HomeSaveArrangementNoChangeRsp\022\017\n\007retc" +
-      "ode\030\002 \001(\005\022\020\n\010scene_id\030\001 \001(\rB\033\n\031emu.grass" +
+      "\n\036HomeSaveArrangementNoChangeRsp\022\020\n\010scen" +
+      "e_id\030\001 \001(\r\022\017\n\007retcode\030\t \001(\005B\033\n\031emu.grass" +
       "cutter.net.protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
@@ -610,7 +600,7 @@ public final class HomeSaveArrangementNoChangeRspOuterClass {
     internal_static_HomeSaveArrangementNoChangeRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_HomeSaveArrangementNoChangeRsp_descriptor,
-        new java.lang.String[] { "Retcode", "SceneId", });
+        new java.lang.String[] { "SceneId", "Retcode", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

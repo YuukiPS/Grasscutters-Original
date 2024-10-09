@@ -43,11 +43,6 @@ public final class GadgetAutoPickDropInfoNotifyOuterClass {
         int index);
   }
   /**
-   * <pre>
-   * CmdId: 3579
-   * Obf: PEILLEHHFBL
-   * </pre>
-   *
    * Protobuf type {@code GadgetAutoPickDropInfoNotify}
    */
   public static final class GadgetAutoPickDropInfoNotify extends
@@ -336,11 +331,6 @@ public final class GadgetAutoPickDropInfoNotifyOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * CmdId: 3579
-     * Obf: PEILLEHHFBL
-     * </pre>
-     *
      * Protobuf type {@code GadgetAutoPickDropInfoNotify}
      */
     public static final class Builder extends

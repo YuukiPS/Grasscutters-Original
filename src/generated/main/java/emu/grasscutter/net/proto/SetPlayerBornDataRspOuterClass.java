@@ -19,17 +19,12 @@ public final class SetPlayerBornDataRspOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>int32 retcode = 14;</code>
+     * <code>int32 retcode = 10;</code>
      * @return The retcode.
      */
     int getRetcode();
   }
   /**
-   * <pre>
-   * CmdId: 22804
-   * Obf: CGFIJAMAKEG
-   * </pre>
-   *
    * Protobuf type {@code SetPlayerBornDataRsp}
    */
   public static final class SetPlayerBornDataRsp extends
@@ -74,7 +69,7 @@ public final class SetPlayerBornDataRspOuterClass {
             case 0:
               done = true;
               break;
-            case 112: {
+            case 80: {
 
               retcode_ = input.readInt32();
               break;
@@ -111,10 +106,10 @@ public final class SetPlayerBornDataRspOuterClass {
               emu.grasscutter.net.proto.SetPlayerBornDataRspOuterClass.SetPlayerBornDataRsp.class, emu.grasscutter.net.proto.SetPlayerBornDataRspOuterClass.SetPlayerBornDataRsp.Builder.class);
     }
 
-    public static final int RETCODE_FIELD_NUMBER = 14;
+    public static final int RETCODE_FIELD_NUMBER = 10;
     private int retcode_;
     /**
-     * <code>int32 retcode = 14;</code>
+     * <code>int32 retcode = 10;</code>
      * @return The retcode.
      */
     @java.lang.Override
@@ -137,7 +132,7 @@ public final class SetPlayerBornDataRspOuterClass {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (retcode_ != 0) {
-        output.writeInt32(14, retcode_);
+        output.writeInt32(10, retcode_);
       }
       unknownFields.writeTo(output);
     }
@@ -150,7 +145,7 @@ public final class SetPlayerBornDataRspOuterClass {
       size = 0;
       if (retcode_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(14, retcode_);
+          .computeInt32Size(10, retcode_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -278,11 +273,6 @@ public final class SetPlayerBornDataRspOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * CmdId: 22804
-     * Obf: CGFIJAMAKEG
-     * </pre>
-     *
      * Protobuf type {@code SetPlayerBornDataRsp}
      */
     public static final class Builder extends
@@ -431,7 +421,7 @@ public final class SetPlayerBornDataRspOuterClass {
 
       private int retcode_ ;
       /**
-       * <code>int32 retcode = 14;</code>
+       * <code>int32 retcode = 10;</code>
        * @return The retcode.
        */
       @java.lang.Override
@@ -439,7 +429,7 @@ public final class SetPlayerBornDataRspOuterClass {
         return retcode_;
       }
       /**
-       * <code>int32 retcode = 14;</code>
+       * <code>int32 retcode = 10;</code>
        * @param value The retcode to set.
        * @return This builder for chaining.
        */
@@ -450,7 +440,7 @@ public final class SetPlayerBornDataRspOuterClass {
         return this;
       }
       /**
-       * <code>int32 retcode = 14;</code>
+       * <code>int32 retcode = 10;</code>
        * @return This builder for chaining.
        */
       public Builder clearRetcode() {
@@ -527,7 +517,7 @@ public final class SetPlayerBornDataRspOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\032SetPlayerBornDataRsp.proto\"\'\n\024SetPlaye" +
-      "rBornDataRsp\022\017\n\007retcode\030\016 \001(\005B\033\n\031emu.gra" +
+      "rBornDataRsp\022\017\n\007retcode\030\n \001(\005B\033\n\031emu.gra" +
       "sscutter.net.protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor

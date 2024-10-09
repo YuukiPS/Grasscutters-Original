@@ -26,8 +26,8 @@ public final class DeleteFriendNotifyOuterClass {
   }
   /**
    * <pre>
-   * CmdId: 25517
-   * Obf: LFOHLJPLBGN
+   * CmdId: 26120,24013,25241,29109,20663,20514,3607,27447,9316
+   * Obf: ?
    * </pre>
    *
    * Protobuf type {@code DeleteFriendNotify}
@@ -279,8 +279,8 @@ public final class DeleteFriendNotifyOuterClass {
     }
     /**
      * <pre>
-     * CmdId: 25517
-     * Obf: LFOHLJPLBGN
+     * CmdId: 26120,24013,25241,29109,20663,20514,3607,27447,9316
+     * Obf: ?
      * </pre>
      *
      * Protobuf type {@code DeleteFriendNotify}

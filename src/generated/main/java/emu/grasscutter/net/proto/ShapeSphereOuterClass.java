@@ -40,10 +40,6 @@ public final class ShapeSphereOuterClass {
     float getRadius();
   }
   /**
-   * <pre>
-   * Obf: KJNACIDANGB
-   * </pre>
-   *
    * Protobuf type {@code ShapeSphere}
    */
   public static final class ShapeSphere extends
@@ -349,10 +345,6 @@ public final class ShapeSphereOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * Obf: KJNACIDANGB
-     * </pre>
-     *
      * Protobuf type {@code ShapeSphere}
      */
     public static final class Builder extends

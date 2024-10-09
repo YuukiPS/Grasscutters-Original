@@ -15,10 +15,6 @@ public final class MonsterBornTypeOuterClass {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   /**
-   * <pre>
-   * Obf: LNFJOAGMCEF
-   * </pre>
-   *
    * Protobuf enum {@code MonsterBornType}
    */
   public enum MonsterBornType

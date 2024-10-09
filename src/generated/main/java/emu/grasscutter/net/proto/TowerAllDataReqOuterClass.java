@@ -25,11 +25,6 @@ public final class TowerAllDataReqOuterClass {
     boolean getIsInteract();
   }
   /**
-   * <pre>
-   * CmdId: 23009
-   * Obf: OBIBAPPDOKJ
-   * </pre>
-   *
    * Protobuf type {@code TowerAllDataReq}
    */
   public static final class TowerAllDataReq extends
@@ -279,11 +274,6 @@ public final class TowerAllDataReqOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * CmdId: 23009
-     * Obf: OBIBAPPDOKJ
-     * </pre>
-     *
      * Protobuf type {@code TowerAllDataReq}
      */
     public static final class Builder extends

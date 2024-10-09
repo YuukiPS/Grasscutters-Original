@@ -229,10 +229,6 @@ public final class FriendBriefOuterClass {
     boolean getIsDuelObservable();
   }
   /**
-   * <pre>
-   * Obf: JIFKJKFNBFF
-   * </pre>
-   *
    * Protobuf type {@code FriendBrief}
    */
   public static final class FriendBrief extends
@@ -1315,10 +1311,6 @@ public final class FriendBriefOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * Obf: JIFKJKFNBFF
-     * </pre>
-     *
      * Protobuf type {@code FriendBrief}
      */
     public static final class Builder extends

@@ -106,10 +106,6 @@ public final class AvatarFetterInfoOuterClass {
         int index);
   }
   /**
-   * <pre>
-   * Obf: BJIGILJGKAI
-   * </pre>
-   *
    * Protobuf type {@code AvatarFetterInfo}
    */
   public static final class AvatarFetterInfo extends
@@ -693,10 +689,6 @@ public final class AvatarFetterInfoOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * Obf: BJIGILJGKAI
-     * </pre>
-     *
      * Protobuf type {@code AvatarFetterInfo}
      */
     public static final class Builder extends

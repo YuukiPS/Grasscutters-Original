@@ -25,16 +25,12 @@ public final class MaterialInfoOuterClass {
     long getGuid();
 
     /**
-     * <code>uint32 count = 4;</code>
+     * <code>uint32 count = 9;</code>
      * @return The count.
      */
     int getCount();
   }
   /**
-   * <pre>
-   * Obf: MGMDCJEEMPF
-   * </pre>
-   *
    * Protobuf type {@code MaterialInfo}
    */
   public static final class MaterialInfo extends
@@ -79,14 +75,14 @@ public final class MaterialInfoOuterClass {
             case 0:
               done = true;
               break;
-            case 32: {
-
-              count_ = input.readUInt32();
-              break;
-            }
             case 48: {
 
               guid_ = input.readUInt64();
+              break;
+            }
+            case 72: {
+
+              count_ = input.readUInt32();
               break;
             }
             default: {
@@ -132,10 +128,10 @@ public final class MaterialInfoOuterClass {
       return guid_;
     }
 
-    public static final int COUNT_FIELD_NUMBER = 4;
+    public static final int COUNT_FIELD_NUMBER = 9;
     private int count_;
     /**
-     * <code>uint32 count = 4;</code>
+     * <code>uint32 count = 9;</code>
      * @return The count.
      */
     @java.lang.Override
@@ -157,11 +153,11 @@ public final class MaterialInfoOuterClass {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (count_ != 0) {
-        output.writeUInt32(4, count_);
-      }
       if (guid_ != 0L) {
         output.writeUInt64(6, guid_);
+      }
+      if (count_ != 0) {
+        output.writeUInt32(9, count_);
       }
       unknownFields.writeTo(output);
     }
@@ -172,13 +168,13 @@ public final class MaterialInfoOuterClass {
       if (size != -1) return size;
 
       size = 0;
-      if (count_ != 0) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(4, count_);
-      }
       if (guid_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt64Size(6, guid_);
+      }
+      if (count_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(9, count_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -311,10 +307,6 @@ public final class MaterialInfoOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * Obf: MGMDCJEEMPF
-     * </pre>
-     *
      * Protobuf type {@code MaterialInfo}
      */
     public static final class Builder extends
@@ -500,7 +492,7 @@ public final class MaterialInfoOuterClass {
 
       private int count_ ;
       /**
-       * <code>uint32 count = 4;</code>
+       * <code>uint32 count = 9;</code>
        * @return The count.
        */
       @java.lang.Override
@@ -508,7 +500,7 @@ public final class MaterialInfoOuterClass {
         return count_;
       }
       /**
-       * <code>uint32 count = 4;</code>
+       * <code>uint32 count = 9;</code>
        * @param value The count to set.
        * @return This builder for chaining.
        */
@@ -519,7 +511,7 @@ public final class MaterialInfoOuterClass {
         return this;
       }
       /**
-       * <code>uint32 count = 4;</code>
+       * <code>uint32 count = 9;</code>
        * @return This builder for chaining.
        */
       public Builder clearCount() {
@@ -596,7 +588,7 @@ public final class MaterialInfoOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\022MaterialInfo.proto\"+\n\014MaterialInfo\022\014\n\004" +
-      "guid\030\006 \001(\004\022\r\n\005count\030\004 \001(\rB\033\n\031emu.grasscu" +
+      "guid\030\006 \001(\004\022\r\n\005count\030\t \001(\rB\033\n\031emu.grasscu" +
       "tter.net.protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor

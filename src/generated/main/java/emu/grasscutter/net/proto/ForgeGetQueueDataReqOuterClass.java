@@ -20,8 +20,9 @@ public final class ForgeGetQueueDataReqOuterClass {
   }
   /**
    * <pre>
-   * CmdId: 477
-   * Obf: AFDBIGNEOMH
+   * 4.7.0
+   * CmdId: 21724 or 5954
+   * Obf: EMCLHBPFBMB ?
    * </pre>
    *
    * Protobuf type {@code ForgeGetQueueDataReq}
@@ -246,8 +247,9 @@ public final class ForgeGetQueueDataReqOuterClass {
     }
     /**
      * <pre>
-     * CmdId: 477
-     * Obf: AFDBIGNEOMH
+     * 4.7.0
+     * CmdId: 21724 or 5954
+     * Obf: EMCLHBPFBMB ?
      * </pre>
      *
      * Protobuf type {@code ForgeGetQueueDataReq}

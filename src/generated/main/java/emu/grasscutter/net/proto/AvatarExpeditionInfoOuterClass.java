@@ -54,10 +54,6 @@ public final class AvatarExpeditionInfoOuterClass {
     float getShortenRatio();
   }
   /**
-   * <pre>
-   * Obf: MBBNGLKDKFD
-   * </pre>
-   *
    * Protobuf type {@code AvatarExpeditionInfo}
    */
   public static final class AvatarExpeditionInfo extends
@@ -238,7 +234,7 @@ public final class AvatarExpeditionInfoOuterClass {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (state_ != emu.grasscutter.net.proto.AvatarExpeditionStateOuterClass.AvatarExpeditionState.AVATAR_EXPEDITION_NONE.getNumber()) {
+      if (state_ != emu.grasscutter.net.proto.AvatarExpeditionStateOuterClass.AvatarExpeditionState.AVATAR_EXPEDITION_STATE_AVATAR_EXPEDITION_NONE.getNumber()) {
         output.writeEnum(1, state_);
       }
       if (expId_ != 0) {
@@ -262,7 +258,7 @@ public final class AvatarExpeditionInfoOuterClass {
       if (size != -1) return size;
 
       size = 0;
-      if (state_ != emu.grasscutter.net.proto.AvatarExpeditionStateOuterClass.AvatarExpeditionState.AVATAR_EXPEDITION_NONE.getNumber()) {
+      if (state_ != emu.grasscutter.net.proto.AvatarExpeditionStateOuterClass.AvatarExpeditionState.AVATAR_EXPEDITION_STATE_AVATAR_EXPEDITION_NONE.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(1, state_);
       }
@@ -425,10 +421,6 @@ public final class AvatarExpeditionInfoOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * Obf: MBBNGLKDKFD
-     * </pre>
-     *
      * Protobuf type {@code AvatarExpeditionInfo}
      */
     public static final class Builder extends

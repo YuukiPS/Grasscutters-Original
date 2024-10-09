@@ -13,6 +13,7 @@ public abstract class SceneObject {
 
     public Position pos;
     public Position rot;
+
     /** not set by lua */
     public transient SceneGroup group;
 }

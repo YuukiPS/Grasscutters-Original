@@ -260,10 +260,6 @@ public final class SceneMonsterInfoOuterClass {
     public emu.grasscutter.net.proto.SceneMonsterInfoOuterClass.SceneMonsterInfo.ContentCase getContentCase();
   }
   /**
-   * <pre>
-   * Obf: JIEPEMAABDK
-   * </pre>
-   *
    * Protobuf type {@code SceneMonsterInfo}
    */
   public static final class SceneMonsterInfo extends
@@ -1510,10 +1506,6 @@ public final class SceneMonsterInfoOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * Obf: JIEPEMAABDK
-     * </pre>
-     *
      * Protobuf type {@code SceneMonsterInfo}
      */
     public static final class Builder extends

@@ -36,10 +36,6 @@ public final class ParamListOuterClass {
     int getParamList(int index);
   }
   /**
-   * <pre>
-   * Obf: BLCNFAPGDKG
-   * </pre>
-   *
    * Protobuf type {@code ParamList}
    */
   public static final class ParamList extends
@@ -343,10 +339,6 @@ public final class ParamListOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * Obf: BLCNFAPGDKG
-     * </pre>
-     *
      * Protobuf type {@code ParamList}
      */
     public static final class Builder extends

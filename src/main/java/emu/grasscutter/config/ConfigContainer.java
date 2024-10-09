@@ -35,9 +35,10 @@ public class ConfigContainer {
      *              HTTP server should start immediately.
      * Version 13 - 'game.useUniquePacketKey' was added to control whether the
      *              encryption key used for packets is a constant or randomly generated.
+     * Version 14 - 'game.timeout' was added to control the UDP client timeout.
      */
     private static int version() {
-        return 13;
+        return 14;
     }
 
     /**
@@ -140,6 +141,7 @@ public class ConfigContainer {
         public boolean autoCreate = false;
         public boolean EXPERIMENTAL_RealPassword = false;
         public String[] defaultPermissions = {};
+        public String playerEmail = "grasscutter.io";
         public int maxPlayer = -1;
     }
 
@@ -182,6 +184,9 @@ public class ConfigContainer {
 
         /* Kcp internal work interval (milliseconds) */
         public int kcpInterval = 20;
+        /* Time to wait (in seconds) before terminating a connection. */
+        public long timeout = 30;
+
         /* Controls whether packets should be logged in console or not */
         public ServerDebugMode logPackets = ServerDebugMode.NONE;
         /* Show packet payload in console or no (in any case the payload is shown in encrypted view) */

@@ -29,13 +29,15 @@ import lombok.*;
 import org.jline.reader.*;
 import org.jline.terminal.*;
 import org.reflections.Reflections;
+import org.reflections.util.ConfigurationBuilder;
+import org.reflections.util.FilterBuilder;
 import org.slf4j.LoggerFactory;
 
 public final class Grasscutter {
     public static final File configFile = new File("./config.json");
-    public static final Reflections reflector = new Reflections("emu.grasscutter");
     @Getter private static final Logger logger = (Logger) LoggerFactory.getLogger(Grasscutter.class);
 
+    public static final Reflections reflector;
     @Getter public static ConfigContainer config;
 
     @Getter @Setter private static Language language;
@@ -74,6 +76,16 @@ public final class Grasscutter {
         // Disable the MongoDB logger.
         var mongoLogger = (Logger) LoggerFactory.getLogger("org.mongodb.driver");
         mongoLogger.setLevel(Level.OFF);
+
+        // Configure the reflector.
+        reflector =
+                new Reflections(
+                        new ConfigurationBuilder()
+                                .forPackage("emu.grasscutter")
+                                .filterInputsBy(
+                                        new FilterBuilder()
+                                                .includePackage("emu.grasscutter")
+                                                .excludePackage("emu.grasscutter.net.proto")));
 
         // Load server configuration.
         Grasscutter.loadConfig();
@@ -138,7 +150,6 @@ public final class Grasscutter {
             httpServer.addRouter(AuthenticationHandler.class);
             httpServer.addRouter(GachaHandler.class);
             httpServer.addRouter(DocumentationServerHandler.class);
-            httpServer.addRouter(HandbookHandler.class);
         }
 
         // Check if the HTTP server should start.

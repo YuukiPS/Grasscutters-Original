@@ -44,7 +44,8 @@
         "password_error": "Contraseña no válida",
         "password_length_error": "La longitud de la contraseña debe ser mayor o igual a 8",
         "password_storage_error": "No tienes contraseña para tu cuenta. Por favor contacta a un administrador.",
-        "server_max_player_limit": "Se ha alcanzado el límite de jugadores activos"
+        "server_max_player_limit": "Se ha alcanzado el límite de jugadores activos",
+        "password_crypto_error": "🇺🇸Unable to decrypt the client's given password. Are you using the right version of the game?"
       },
       "router_error": "[Dispatch] No se ha podido vincular el router."
     },

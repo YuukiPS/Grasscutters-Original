@@ -7,6 +7,7 @@ import java.util.*;
 public class TowerLevelRecord {
     /** floorId in config */
     private int floorId;
+
     /** LevelId - Stars */
     private Map<Integer, Integer> passedLevelMap;
 

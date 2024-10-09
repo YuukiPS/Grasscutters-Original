@@ -19,25 +19,25 @@ public final class ReliquaryUpgradeReqOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .ItemParam item_param_list = 15;</code>
+     * <code>repeated .ItemParam item_param_list = 12;</code>
      */
     java.util.List<emu.grasscutter.net.proto.ItemParamOuterClass.ItemParam> 
         getItemParamListList();
     /**
-     * <code>repeated .ItemParam item_param_list = 15;</code>
+     * <code>repeated .ItemParam item_param_list = 12;</code>
      */
     emu.grasscutter.net.proto.ItemParamOuterClass.ItemParam getItemParamList(int index);
     /**
-     * <code>repeated .ItemParam item_param_list = 15;</code>
+     * <code>repeated .ItemParam item_param_list = 12;</code>
      */
     int getItemParamListCount();
     /**
-     * <code>repeated .ItemParam item_param_list = 15;</code>
+     * <code>repeated .ItemParam item_param_list = 12;</code>
      */
     java.util.List<? extends emu.grasscutter.net.proto.ItemParamOuterClass.ItemParamOrBuilder> 
         getItemParamListOrBuilderList();
     /**
-     * <code>repeated .ItemParam item_param_list = 15;</code>
+     * <code>repeated .ItemParam item_param_list = 12;</code>
      */
     emu.grasscutter.net.proto.ItemParamOuterClass.ItemParamOrBuilder getItemParamListOrBuilder(
         int index);
@@ -60,17 +60,12 @@ public final class ReliquaryUpgradeReqOuterClass {
     long getFoodReliquaryGuidList(int index);
 
     /**
-     * <code>uint64 target_reliquary_guid = 4;</code>
+     * <code>uint64 target_reliquary_guid = 11;</code>
      * @return The targetReliquaryGuid.
      */
     long getTargetReliquaryGuid();
   }
   /**
-   * <pre>
-   * CmdId: 1702
-   * Obf: BNGPJOABGAC
-   * </pre>
-   *
    * Protobuf type {@code ReliquaryUpgradeReq}
    */
   public static final class ReliquaryUpgradeReq extends
@@ -139,12 +134,12 @@ public final class ReliquaryUpgradeReqOuterClass {
               input.popLimit(limit);
               break;
             }
-            case 32: {
+            case 88: {
 
               targetReliquaryGuid_ = input.readUInt64();
               break;
             }
-            case 122: {
+            case 98: {
               if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 itemParamList_ = new java.util.ArrayList<emu.grasscutter.net.proto.ItemParamOuterClass.ItemParam>();
                 mutable_bitField0_ |= 0x00000001;
@@ -191,17 +186,17 @@ public final class ReliquaryUpgradeReqOuterClass {
               emu.grasscutter.net.proto.ReliquaryUpgradeReqOuterClass.ReliquaryUpgradeReq.class, emu.grasscutter.net.proto.ReliquaryUpgradeReqOuterClass.ReliquaryUpgradeReq.Builder.class);
     }
 
-    public static final int ITEM_PARAM_LIST_FIELD_NUMBER = 15;
+    public static final int ITEM_PARAM_LIST_FIELD_NUMBER = 12;
     private java.util.List<emu.grasscutter.net.proto.ItemParamOuterClass.ItemParam> itemParamList_;
     /**
-     * <code>repeated .ItemParam item_param_list = 15;</code>
+     * <code>repeated .ItemParam item_param_list = 12;</code>
      */
     @java.lang.Override
     public java.util.List<emu.grasscutter.net.proto.ItemParamOuterClass.ItemParam> getItemParamListList() {
       return itemParamList_;
     }
     /**
-     * <code>repeated .ItemParam item_param_list = 15;</code>
+     * <code>repeated .ItemParam item_param_list = 12;</code>
      */
     @java.lang.Override
     public java.util.List<? extends emu.grasscutter.net.proto.ItemParamOuterClass.ItemParamOrBuilder> 
@@ -209,21 +204,21 @@ public final class ReliquaryUpgradeReqOuterClass {
       return itemParamList_;
     }
     /**
-     * <code>repeated .ItemParam item_param_list = 15;</code>
+     * <code>repeated .ItemParam item_param_list = 12;</code>
      */
     @java.lang.Override
     public int getItemParamListCount() {
       return itemParamList_.size();
     }
     /**
-     * <code>repeated .ItemParam item_param_list = 15;</code>
+     * <code>repeated .ItemParam item_param_list = 12;</code>
      */
     @java.lang.Override
     public emu.grasscutter.net.proto.ItemParamOuterClass.ItemParam getItemParamList(int index) {
       return itemParamList_.get(index);
     }
     /**
-     * <code>repeated .ItemParam item_param_list = 15;</code>
+     * <code>repeated .ItemParam item_param_list = 12;</code>
      */
     @java.lang.Override
     public emu.grasscutter.net.proto.ItemParamOuterClass.ItemParamOrBuilder getItemParamListOrBuilder(
@@ -259,10 +254,10 @@ public final class ReliquaryUpgradeReqOuterClass {
     }
     private int foodReliquaryGuidListMemoizedSerializedSize = -1;
 
-    public static final int TARGET_RELIQUARY_GUID_FIELD_NUMBER = 4;
+    public static final int TARGET_RELIQUARY_GUID_FIELD_NUMBER = 11;
     private long targetReliquaryGuid_;
     /**
-     * <code>uint64 target_reliquary_guid = 4;</code>
+     * <code>uint64 target_reliquary_guid = 11;</code>
      * @return The targetReliquaryGuid.
      */
     @java.lang.Override
@@ -293,10 +288,10 @@ public final class ReliquaryUpgradeReqOuterClass {
         output.writeUInt64NoTag(foodReliquaryGuidList_.getLong(i));
       }
       if (targetReliquaryGuid_ != 0L) {
-        output.writeUInt64(4, targetReliquaryGuid_);
+        output.writeUInt64(11, targetReliquaryGuid_);
       }
       for (int i = 0; i < itemParamList_.size(); i++) {
-        output.writeMessage(15, itemParamList_.get(i));
+        output.writeMessage(12, itemParamList_.get(i));
       }
       unknownFields.writeTo(output);
     }
@@ -323,11 +318,11 @@ public final class ReliquaryUpgradeReqOuterClass {
       }
       if (targetReliquaryGuid_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(4, targetReliquaryGuid_);
+          .computeUInt64Size(11, targetReliquaryGuid_);
       }
       for (int i = 0; i < itemParamList_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(15, itemParamList_.get(i));
+          .computeMessageSize(12, itemParamList_.get(i));
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -468,11 +463,6 @@ public final class ReliquaryUpgradeReqOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * CmdId: 1702
-     * Obf: BNGPJOABGAC
-     * </pre>
-     *
      * Protobuf type {@code ReliquaryUpgradeReq}
      */
     public static final class Builder extends
@@ -693,7 +683,7 @@ public final class ReliquaryUpgradeReqOuterClass {
           emu.grasscutter.net.proto.ItemParamOuterClass.ItemParam, emu.grasscutter.net.proto.ItemParamOuterClass.ItemParam.Builder, emu.grasscutter.net.proto.ItemParamOuterClass.ItemParamOrBuilder> itemParamListBuilder_;
 
       /**
-       * <code>repeated .ItemParam item_param_list = 15;</code>
+       * <code>repeated .ItemParam item_param_list = 12;</code>
        */
       public java.util.List<emu.grasscutter.net.proto.ItemParamOuterClass.ItemParam> getItemParamListList() {
         if (itemParamListBuilder_ == null) {
@@ -703,7 +693,7 @@ public final class ReliquaryUpgradeReqOuterClass {
         }
       }
       /**
-       * <code>repeated .ItemParam item_param_list = 15;</code>
+       * <code>repeated .ItemParam item_param_list = 12;</code>
        */
       public int getItemParamListCount() {
         if (itemParamListBuilder_ == null) {
@@ -713,7 +703,7 @@ public final class ReliquaryUpgradeReqOuterClass {
         }
       }
       /**
-       * <code>repeated .ItemParam item_param_list = 15;</code>
+       * <code>repeated .ItemParam item_param_list = 12;</code>
        */
       public emu.grasscutter.net.proto.ItemParamOuterClass.ItemParam getItemParamList(int index) {
         if (itemParamListBuilder_ == null) {
@@ -723,7 +713,7 @@ public final class ReliquaryUpgradeReqOuterClass {
         }
       }
       /**
-       * <code>repeated .ItemParam item_param_list = 15;</code>
+       * <code>repeated .ItemParam item_param_list = 12;</code>
        */
       public Builder setItemParamList(
           int index, emu.grasscutter.net.proto.ItemParamOuterClass.ItemParam value) {
@@ -740,7 +730,7 @@ public final class ReliquaryUpgradeReqOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ItemParam item_param_list = 15;</code>
+       * <code>repeated .ItemParam item_param_list = 12;</code>
        */
       public Builder setItemParamList(
           int index, emu.grasscutter.net.proto.ItemParamOuterClass.ItemParam.Builder builderForValue) {
@@ -754,7 +744,7 @@ public final class ReliquaryUpgradeReqOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ItemParam item_param_list = 15;</code>
+       * <code>repeated .ItemParam item_param_list = 12;</code>
        */
       public Builder addItemParamList(emu.grasscutter.net.proto.ItemParamOuterClass.ItemParam value) {
         if (itemParamListBuilder_ == null) {
@@ -770,7 +760,7 @@ public final class ReliquaryUpgradeReqOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ItemParam item_param_list = 15;</code>
+       * <code>repeated .ItemParam item_param_list = 12;</code>
        */
       public Builder addItemParamList(
           int index, emu.grasscutter.net.proto.ItemParamOuterClass.ItemParam value) {
@@ -787,7 +777,7 @@ public final class ReliquaryUpgradeReqOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ItemParam item_param_list = 15;</code>
+       * <code>repeated .ItemParam item_param_list = 12;</code>
        */
       public Builder addItemParamList(
           emu.grasscutter.net.proto.ItemParamOuterClass.ItemParam.Builder builderForValue) {
@@ -801,7 +791,7 @@ public final class ReliquaryUpgradeReqOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ItemParam item_param_list = 15;</code>
+       * <code>repeated .ItemParam item_param_list = 12;</code>
        */
       public Builder addItemParamList(
           int index, emu.grasscutter.net.proto.ItemParamOuterClass.ItemParam.Builder builderForValue) {
@@ -815,7 +805,7 @@ public final class ReliquaryUpgradeReqOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ItemParam item_param_list = 15;</code>
+       * <code>repeated .ItemParam item_param_list = 12;</code>
        */
       public Builder addAllItemParamList(
           java.lang.Iterable<? extends emu.grasscutter.net.proto.ItemParamOuterClass.ItemParam> values) {
@@ -830,7 +820,7 @@ public final class ReliquaryUpgradeReqOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ItemParam item_param_list = 15;</code>
+       * <code>repeated .ItemParam item_param_list = 12;</code>
        */
       public Builder clearItemParamList() {
         if (itemParamListBuilder_ == null) {
@@ -843,7 +833,7 @@ public final class ReliquaryUpgradeReqOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ItemParam item_param_list = 15;</code>
+       * <code>repeated .ItemParam item_param_list = 12;</code>
        */
       public Builder removeItemParamList(int index) {
         if (itemParamListBuilder_ == null) {
@@ -856,14 +846,14 @@ public final class ReliquaryUpgradeReqOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ItemParam item_param_list = 15;</code>
+       * <code>repeated .ItemParam item_param_list = 12;</code>
        */
       public emu.grasscutter.net.proto.ItemParamOuterClass.ItemParam.Builder getItemParamListBuilder(
           int index) {
         return getItemParamListFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .ItemParam item_param_list = 15;</code>
+       * <code>repeated .ItemParam item_param_list = 12;</code>
        */
       public emu.grasscutter.net.proto.ItemParamOuterClass.ItemParamOrBuilder getItemParamListOrBuilder(
           int index) {
@@ -873,7 +863,7 @@ public final class ReliquaryUpgradeReqOuterClass {
         }
       }
       /**
-       * <code>repeated .ItemParam item_param_list = 15;</code>
+       * <code>repeated .ItemParam item_param_list = 12;</code>
        */
       public java.util.List<? extends emu.grasscutter.net.proto.ItemParamOuterClass.ItemParamOrBuilder> 
            getItemParamListOrBuilderList() {
@@ -884,14 +874,14 @@ public final class ReliquaryUpgradeReqOuterClass {
         }
       }
       /**
-       * <code>repeated .ItemParam item_param_list = 15;</code>
+       * <code>repeated .ItemParam item_param_list = 12;</code>
        */
       public emu.grasscutter.net.proto.ItemParamOuterClass.ItemParam.Builder addItemParamListBuilder() {
         return getItemParamListFieldBuilder().addBuilder(
             emu.grasscutter.net.proto.ItemParamOuterClass.ItemParam.getDefaultInstance());
       }
       /**
-       * <code>repeated .ItemParam item_param_list = 15;</code>
+       * <code>repeated .ItemParam item_param_list = 12;</code>
        */
       public emu.grasscutter.net.proto.ItemParamOuterClass.ItemParam.Builder addItemParamListBuilder(
           int index) {
@@ -899,7 +889,7 @@ public final class ReliquaryUpgradeReqOuterClass {
             index, emu.grasscutter.net.proto.ItemParamOuterClass.ItemParam.getDefaultInstance());
       }
       /**
-       * <code>repeated .ItemParam item_param_list = 15;</code>
+       * <code>repeated .ItemParam item_param_list = 12;</code>
        */
       public java.util.List<emu.grasscutter.net.proto.ItemParamOuterClass.ItemParam.Builder> 
            getItemParamListBuilderList() {
@@ -1001,7 +991,7 @@ public final class ReliquaryUpgradeReqOuterClass {
 
       private long targetReliquaryGuid_ ;
       /**
-       * <code>uint64 target_reliquary_guid = 4;</code>
+       * <code>uint64 target_reliquary_guid = 11;</code>
        * @return The targetReliquaryGuid.
        */
       @java.lang.Override
@@ -1009,7 +999,7 @@ public final class ReliquaryUpgradeReqOuterClass {
         return targetReliquaryGuid_;
       }
       /**
-       * <code>uint64 target_reliquary_guid = 4;</code>
+       * <code>uint64 target_reliquary_guid = 11;</code>
        * @param value The targetReliquaryGuid to set.
        * @return This builder for chaining.
        */
@@ -1020,7 +1010,7 @@ public final class ReliquaryUpgradeReqOuterClass {
         return this;
       }
       /**
-       * <code>uint64 target_reliquary_guid = 4;</code>
+       * <code>uint64 target_reliquary_guid = 11;</code>
        * @return This builder for chaining.
        */
       public Builder clearTargetReliquaryGuid() {
@@ -1098,9 +1088,9 @@ public final class ReliquaryUpgradeReqOuterClass {
     java.lang.String[] descriptorData = {
       "\n\031ReliquaryUpgradeReq.proto\032\017ItemParam.p" +
       "roto\"{\n\023ReliquaryUpgradeReq\022#\n\017item_para" +
-      "m_list\030\017 \003(\0132\n.ItemParam\022 \n\030food_reliqua" +
+      "m_list\030\014 \003(\0132\n.ItemParam\022 \n\030food_reliqua" +
       "ry_guid_list\030\002 \003(\004\022\035\n\025target_reliquary_g" +
-      "uid\030\004 \001(\004B\033\n\031emu.grasscutter.net.protob\006" +
+      "uid\030\013 \001(\004B\033\n\031emu.grasscutter.net.protob\006" +
       "proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor

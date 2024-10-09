@@ -25,20 +25,21 @@ public final class ForgeQueueManipulateReqOuterClass {
     int getForgeQueueId();
 
     /**
-     * <code>.ForgeQueueManipulateType manipulate_type = 5;</code>
+     * <code>.ForgeQueueManipulateType manipulate_type = 9;</code>
      * @return The enum numeric value on the wire for manipulateType.
      */
     int getManipulateTypeValue();
     /**
-     * <code>.ForgeQueueManipulateType manipulate_type = 5;</code>
+     * <code>.ForgeQueueManipulateType manipulate_type = 9;</code>
      * @return The manipulateType.
      */
     emu.grasscutter.net.proto.ForgeQueueManipulateTypeOuterClass.ForgeQueueManipulateType getManipulateType();
   }
   /**
    * <pre>
-   * CmdId: 25920
-   * Obf: KLKEPLGJNFI
+   * 4.7.0
+   * CmdId: 23681
+   * Obf: OJHGCEMACGN
    * </pre>
    *
    * Protobuf type {@code ForgeQueueManipulateReq}
@@ -91,7 +92,7 @@ public final class ForgeQueueManipulateReqOuterClass {
               forgeQueueId_ = input.readUInt32();
               break;
             }
-            case 40: {
+            case 72: {
               int rawValue = input.readEnum();
 
               manipulateType_ = rawValue;
@@ -140,17 +141,17 @@ public final class ForgeQueueManipulateReqOuterClass {
       return forgeQueueId_;
     }
 
-    public static final int MANIPULATE_TYPE_FIELD_NUMBER = 5;
+    public static final int MANIPULATE_TYPE_FIELD_NUMBER = 9;
     private int manipulateType_;
     /**
-     * <code>.ForgeQueueManipulateType manipulate_type = 5;</code>
+     * <code>.ForgeQueueManipulateType manipulate_type = 9;</code>
      * @return The enum numeric value on the wire for manipulateType.
      */
     @java.lang.Override public int getManipulateTypeValue() {
       return manipulateType_;
     }
     /**
-     * <code>.ForgeQueueManipulateType manipulate_type = 5;</code>
+     * <code>.ForgeQueueManipulateType manipulate_type = 9;</code>
      * @return The manipulateType.
      */
     @java.lang.Override public emu.grasscutter.net.proto.ForgeQueueManipulateTypeOuterClass.ForgeQueueManipulateType getManipulateType() {
@@ -177,7 +178,7 @@ public final class ForgeQueueManipulateReqOuterClass {
         output.writeUInt32(1, forgeQueueId_);
       }
       if (manipulateType_ != emu.grasscutter.net.proto.ForgeQueueManipulateTypeOuterClass.ForgeQueueManipulateType.FORGE_QUEUE_MANIPULATE_TYPE_RECEIVE_OUTPUT.getNumber()) {
-        output.writeEnum(5, manipulateType_);
+        output.writeEnum(9, manipulateType_);
       }
       unknownFields.writeTo(output);
     }
@@ -194,7 +195,7 @@ public final class ForgeQueueManipulateReqOuterClass {
       }
       if (manipulateType_ != emu.grasscutter.net.proto.ForgeQueueManipulateTypeOuterClass.ForgeQueueManipulateType.FORGE_QUEUE_MANIPULATE_TYPE_RECEIVE_OUTPUT.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(5, manipulateType_);
+          .computeEnumSize(9, manipulateType_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -326,8 +327,9 @@ public final class ForgeQueueManipulateReqOuterClass {
     }
     /**
      * <pre>
-     * CmdId: 25920
-     * Obf: KLKEPLGJNFI
+     * 4.7.0
+     * CmdId: 23681
+     * Obf: OJHGCEMACGN
      * </pre>
      *
      * Protobuf type {@code ForgeQueueManipulateReq}
@@ -515,14 +517,14 @@ public final class ForgeQueueManipulateReqOuterClass {
 
       private int manipulateType_ = 0;
       /**
-       * <code>.ForgeQueueManipulateType manipulate_type = 5;</code>
+       * <code>.ForgeQueueManipulateType manipulate_type = 9;</code>
        * @return The enum numeric value on the wire for manipulateType.
        */
       @java.lang.Override public int getManipulateTypeValue() {
         return manipulateType_;
       }
       /**
-       * <code>.ForgeQueueManipulateType manipulate_type = 5;</code>
+       * <code>.ForgeQueueManipulateType manipulate_type = 9;</code>
        * @param value The enum numeric value on the wire for manipulateType to set.
        * @return This builder for chaining.
        */
@@ -533,7 +535,7 @@ public final class ForgeQueueManipulateReqOuterClass {
         return this;
       }
       /**
-       * <code>.ForgeQueueManipulateType manipulate_type = 5;</code>
+       * <code>.ForgeQueueManipulateType manipulate_type = 9;</code>
        * @return The manipulateType.
        */
       @java.lang.Override
@@ -543,7 +545,7 @@ public final class ForgeQueueManipulateReqOuterClass {
         return result == null ? emu.grasscutter.net.proto.ForgeQueueManipulateTypeOuterClass.ForgeQueueManipulateType.UNRECOGNIZED : result;
       }
       /**
-       * <code>.ForgeQueueManipulateType manipulate_type = 5;</code>
+       * <code>.ForgeQueueManipulateType manipulate_type = 9;</code>
        * @param value The manipulateType to set.
        * @return This builder for chaining.
        */
@@ -557,7 +559,7 @@ public final class ForgeQueueManipulateReqOuterClass {
         return this;
       }
       /**
-       * <code>.ForgeQueueManipulateType manipulate_type = 5;</code>
+       * <code>.ForgeQueueManipulateType manipulate_type = 9;</code>
        * @return This builder for chaining.
        */
       public Builder clearManipulateType() {
@@ -636,7 +638,7 @@ public final class ForgeQueueManipulateReqOuterClass {
       "\n\035ForgeQueueManipulateReq.proto\032\036ForgeQu" +
       "eueManipulateType.proto\"e\n\027ForgeQueueMan" +
       "ipulateReq\022\026\n\016forge_queue_id\030\001 \001(\r\0222\n\017ma" +
-      "nipulate_type\030\005 \001(\0162\031.ForgeQueueManipula" +
+      "nipulate_type\030\t \001(\0162\031.ForgeQueueManipula" +
       "teTypeB\033\n\031emu.grasscutter.net.protob\006pro" +
       "to3"
     };

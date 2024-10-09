@@ -34,17 +34,12 @@ public final class SceneAvatarStaminaStepReqOuterClass {
     emu.grasscutter.net.proto.VectorOuterClass.VectorOrBuilder getRotOrBuilder();
 
     /**
-     * <code>bool use_client_rot = 8;</code>
+     * <code>bool use_client_rot = 9;</code>
      * @return The useClientRot.
      */
     boolean getUseClientRot();
   }
   /**
-   * <pre>
-   * CmdId: 543
-   * Obf: OALKNGKGAJL
-   * </pre>
-   *
    * Protobuf type {@code SceneAvatarStaminaStepReq}
    */
   public static final class SceneAvatarStaminaStepReq extends
@@ -102,7 +97,7 @@ public final class SceneAvatarStaminaStepReqOuterClass {
 
               break;
             }
-            case 64: {
+            case 72: {
 
               useClientRot_ = input.readBool();
               break;
@@ -165,10 +160,10 @@ public final class SceneAvatarStaminaStepReqOuterClass {
       return getRot();
     }
 
-    public static final int USE_CLIENT_ROT_FIELD_NUMBER = 8;
+    public static final int USE_CLIENT_ROT_FIELD_NUMBER = 9;
     private boolean useClientRot_;
     /**
-     * <code>bool use_client_rot = 8;</code>
+     * <code>bool use_client_rot = 9;</code>
      * @return The useClientRot.
      */
     @java.lang.Override
@@ -194,7 +189,7 @@ public final class SceneAvatarStaminaStepReqOuterClass {
         output.writeMessage(5, getRot());
       }
       if (useClientRot_ != false) {
-        output.writeBool(8, useClientRot_);
+        output.writeBool(9, useClientRot_);
       }
       unknownFields.writeTo(output);
     }
@@ -211,7 +206,7 @@ public final class SceneAvatarStaminaStepReqOuterClass {
       }
       if (useClientRot_ != false) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(8, useClientRot_);
+          .computeBoolSize(9, useClientRot_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -349,11 +344,6 @@ public final class SceneAvatarStaminaStepReqOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * CmdId: 543
-     * Obf: OALKNGKGAJL
-     * </pre>
-     *
      * Protobuf type {@code SceneAvatarStaminaStepReq}
      */
     public static final class Builder extends
@@ -635,7 +625,7 @@ public final class SceneAvatarStaminaStepReqOuterClass {
 
       private boolean useClientRot_ ;
       /**
-       * <code>bool use_client_rot = 8;</code>
+       * <code>bool use_client_rot = 9;</code>
        * @return The useClientRot.
        */
       @java.lang.Override
@@ -643,7 +633,7 @@ public final class SceneAvatarStaminaStepReqOuterClass {
         return useClientRot_;
       }
       /**
-       * <code>bool use_client_rot = 8;</code>
+       * <code>bool use_client_rot = 9;</code>
        * @param value The useClientRot to set.
        * @return This builder for chaining.
        */
@@ -654,7 +644,7 @@ public final class SceneAvatarStaminaStepReqOuterClass {
         return this;
       }
       /**
-       * <code>bool use_client_rot = 8;</code>
+       * <code>bool use_client_rot = 9;</code>
        * @return This builder for chaining.
        */
       public Builder clearUseClientRot() {
@@ -732,7 +722,7 @@ public final class SceneAvatarStaminaStepReqOuterClass {
     java.lang.String[] descriptorData = {
       "\n\037SceneAvatarStaminaStepReq.proto\032\014Vecto" +
       "r.proto\"I\n\031SceneAvatarStaminaStepReq\022\024\n\003" +
-      "rot\030\005 \001(\0132\007.Vector\022\026\n\016use_client_rot\030\010 \001" +
+      "rot\030\005 \001(\0132\007.Vector\022\026\n\016use_client_rot\030\t \001" +
       "(\010B\033\n\031emu.grasscutter.net.protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor

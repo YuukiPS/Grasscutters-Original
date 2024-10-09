@@ -25,10 +25,6 @@ public final class FurnitureOuterClass {
     int getCount();
   }
   /**
-   * <pre>
-   * Obf: GDHFFBFCAPJ
-   * </pre>
-   *
    * Protobuf type {@code Furniture}
    */
   public static final class Furniture extends
@@ -277,10 +273,6 @@ public final class FurnitureOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * Obf: GDHFFBFCAPJ
-     * </pre>
-     *
      * Protobuf type {@code Furniture}
      */
     public static final class Builder extends

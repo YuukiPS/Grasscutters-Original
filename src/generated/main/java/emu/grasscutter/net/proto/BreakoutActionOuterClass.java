@@ -19,15 +19,15 @@ public final class BreakoutActionOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.BreakoutAction.BreakoutActionType action_type = 1;</code>
+     * <code>.BreakoutActionType action_type = 1;</code>
      * @return The enum numeric value on the wire for actionType.
      */
     int getActionTypeValue();
     /**
-     * <code>.BreakoutAction.BreakoutActionType action_type = 1;</code>
+     * <code>.BreakoutActionType action_type = 1;</code>
      * @return The actionType.
      */
-    emu.grasscutter.net.proto.BreakoutActionOuterClass.BreakoutAction.BreakoutActionType getActionType();
+    emu.grasscutter.net.proto.BreakoutActionTypeOuterClass.BreakoutActionType getActionType();
 
     /**
      * <code>uint64 client_game_time = 2;</code>
@@ -153,16 +153,12 @@ public final class BreakoutActionOuterClass {
     int getOffset();
 
     /**
-     * <code>uint64 FCCNGNCIFAI = 18;</code>
-     * @return The fCCNGNCIFAI.
+     * <code>uint64 CLKEPICNJJD = 18;</code>
+     * @return The cLKEPICNJJD.
      */
-    long getFCCNGNCIFAI();
+    long getCLKEPICNJJD();
   }
   /**
-   * <pre>
-   * Obf: JBHHKOPAEFB
-   * </pre>
-   *
    * Protobuf type {@code BreakoutAction}
    */
   public static final class BreakoutAction extends
@@ -320,7 +316,7 @@ public final class BreakoutActionOuterClass {
             }
             case 144: {
 
-              fCCNGNCIFAI_ = input.readUInt64();
+              cLKEPICNJJD_ = input.readUInt64();
               break;
             }
             default: {
@@ -355,162 +351,23 @@ public final class BreakoutActionOuterClass {
               emu.grasscutter.net.proto.BreakoutActionOuterClass.BreakoutAction.class, emu.grasscutter.net.proto.BreakoutActionOuterClass.BreakoutAction.Builder.class);
     }
 
-    /**
-     * <pre>
-     * Obf: BGLHJHMLHAI
-     * </pre>
-     *
-     * Protobuf enum {@code BreakoutAction.BreakoutActionType}
-     */
-    public enum BreakoutActionType
-        implements com.google.protobuf.ProtocolMessageEnum {
-      /**
-       * <code>ACTION_TYPE_NONE = 0;</code>
-       */
-      ACTION_TYPE_NONE(0),
-      /**
-       * <code>ACTION_TYPE_LAUNCH_BALL = 1;</code>
-       */
-      ACTION_TYPE_LAUNCH_BALL(1),
-      /**
-       * <code>ACTION_TYPE_DESTROY_BALL = 2;</code>
-       */
-      ACTION_TYPE_DESTROY_BALL(2),
-      /**
-       * <code>ACTION_TYPE_FALLING_OBJECT = 3;</code>
-       */
-      ACTION_TYPE_FALLING_OBJECT(3),
-      /**
-       * <code>ACTION_TYPE_MISSILE = 4;</code>
-       */
-      ACTION_TYPE_MISSILE(4),
-      UNRECOGNIZED(-1),
-      ;
-
-      /**
-       * <code>ACTION_TYPE_NONE = 0;</code>
-       */
-      public static final int ACTION_TYPE_NONE_VALUE = 0;
-      /**
-       * <code>ACTION_TYPE_LAUNCH_BALL = 1;</code>
-       */
-      public static final int ACTION_TYPE_LAUNCH_BALL_VALUE = 1;
-      /**
-       * <code>ACTION_TYPE_DESTROY_BALL = 2;</code>
-       */
-      public static final int ACTION_TYPE_DESTROY_BALL_VALUE = 2;
-      /**
-       * <code>ACTION_TYPE_FALLING_OBJECT = 3;</code>
-       */
-      public static final int ACTION_TYPE_FALLING_OBJECT_VALUE = 3;
-      /**
-       * <code>ACTION_TYPE_MISSILE = 4;</code>
-       */
-      public static final int ACTION_TYPE_MISSILE_VALUE = 4;
-
-
-      public final int getNumber() {
-        if (this == UNRECOGNIZED) {
-          throw new java.lang.IllegalArgumentException(
-              "Can't get the number of an unknown enum value.");
-        }
-        return value;
-      }
-
-      /**
-       * @param value The numeric wire value of the corresponding enum entry.
-       * @return The enum associated with the given numeric wire value.
-       * @deprecated Use {@link #forNumber(int)} instead.
-       */
-      @java.lang.Deprecated
-      public static BreakoutActionType valueOf(int value) {
-        return forNumber(value);
-      }
-
-      /**
-       * @param value The numeric wire value of the corresponding enum entry.
-       * @return The enum associated with the given numeric wire value.
-       */
-      public static BreakoutActionType forNumber(int value) {
-        switch (value) {
-          case 0: return ACTION_TYPE_NONE;
-          case 1: return ACTION_TYPE_LAUNCH_BALL;
-          case 2: return ACTION_TYPE_DESTROY_BALL;
-          case 3: return ACTION_TYPE_FALLING_OBJECT;
-          case 4: return ACTION_TYPE_MISSILE;
-          default: return null;
-        }
-      }
-
-      public static com.google.protobuf.Internal.EnumLiteMap<BreakoutActionType>
-          internalGetValueMap() {
-        return internalValueMap;
-      }
-      private static final com.google.protobuf.Internal.EnumLiteMap<
-          BreakoutActionType> internalValueMap =
-            new com.google.protobuf.Internal.EnumLiteMap<BreakoutActionType>() {
-              public BreakoutActionType findValueByNumber(int number) {
-                return BreakoutActionType.forNumber(number);
-              }
-            };
-
-      public final com.google.protobuf.Descriptors.EnumValueDescriptor
-          getValueDescriptor() {
-        if (this == UNRECOGNIZED) {
-          throw new java.lang.IllegalStateException(
-              "Can't get the descriptor of an unrecognized enum value.");
-        }
-        return getDescriptor().getValues().get(ordinal());
-      }
-      public final com.google.protobuf.Descriptors.EnumDescriptor
-          getDescriptorForType() {
-        return getDescriptor();
-      }
-      public static final com.google.protobuf.Descriptors.EnumDescriptor
-          getDescriptor() {
-        return emu.grasscutter.net.proto.BreakoutActionOuterClass.BreakoutAction.getDescriptor().getEnumTypes().get(0);
-      }
-
-      private static final BreakoutActionType[] VALUES = values();
-
-      public static BreakoutActionType valueOf(
-          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-        if (desc.getType() != getDescriptor()) {
-          throw new java.lang.IllegalArgumentException(
-            "EnumValueDescriptor is not for this type.");
-        }
-        if (desc.getIndex() == -1) {
-          return UNRECOGNIZED;
-        }
-        return VALUES[desc.getIndex()];
-      }
-
-      private final int value;
-
-      private BreakoutActionType(int value) {
-        this.value = value;
-      }
-
-      // @@protoc_insertion_point(enum_scope:BreakoutAction.BreakoutActionType)
-    }
-
     public static final int ACTION_TYPE_FIELD_NUMBER = 1;
     private int actionType_;
     /**
-     * <code>.BreakoutAction.BreakoutActionType action_type = 1;</code>
+     * <code>.BreakoutActionType action_type = 1;</code>
      * @return The enum numeric value on the wire for actionType.
      */
     @java.lang.Override public int getActionTypeValue() {
       return actionType_;
     }
     /**
-     * <code>.BreakoutAction.BreakoutActionType action_type = 1;</code>
+     * <code>.BreakoutActionType action_type = 1;</code>
      * @return The actionType.
      */
-    @java.lang.Override public emu.grasscutter.net.proto.BreakoutActionOuterClass.BreakoutAction.BreakoutActionType getActionType() {
+    @java.lang.Override public emu.grasscutter.net.proto.BreakoutActionTypeOuterClass.BreakoutActionType getActionType() {
       @SuppressWarnings("deprecation")
-      emu.grasscutter.net.proto.BreakoutActionOuterClass.BreakoutAction.BreakoutActionType result = emu.grasscutter.net.proto.BreakoutActionOuterClass.BreakoutAction.BreakoutActionType.valueOf(actionType_);
-      return result == null ? emu.grasscutter.net.proto.BreakoutActionOuterClass.BreakoutAction.BreakoutActionType.UNRECOGNIZED : result;
+      emu.grasscutter.net.proto.BreakoutActionTypeOuterClass.BreakoutActionType result = emu.grasscutter.net.proto.BreakoutActionTypeOuterClass.BreakoutActionType.valueOf(actionType_);
+      return result == null ? emu.grasscutter.net.proto.BreakoutActionTypeOuterClass.BreakoutActionType.UNRECOGNIZED : result;
     }
 
     public static final int CLIENT_GAME_TIME_FIELD_NUMBER = 2;
@@ -734,15 +591,15 @@ public final class BreakoutActionOuterClass {
       return offset_;
     }
 
-    public static final int FCCNGNCIFAI_FIELD_NUMBER = 18;
-    private long fCCNGNCIFAI_;
+    public static final int CLKEPICNJJD_FIELD_NUMBER = 18;
+    private long cLKEPICNJJD_;
     /**
-     * <code>uint64 FCCNGNCIFAI = 18;</code>
-     * @return The fCCNGNCIFAI.
+     * <code>uint64 CLKEPICNJJD = 18;</code>
+     * @return The cLKEPICNJJD.
      */
     @java.lang.Override
-    public long getFCCNGNCIFAI() {
-      return fCCNGNCIFAI_;
+    public long getCLKEPICNJJD() {
+      return cLKEPICNJJD_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -759,7 +616,7 @@ public final class BreakoutActionOuterClass {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (actionType_ != emu.grasscutter.net.proto.BreakoutActionOuterClass.BreakoutAction.BreakoutActionType.ACTION_TYPE_NONE.getNumber()) {
+      if (actionType_ != emu.grasscutter.net.proto.BreakoutActionTypeOuterClass.BreakoutActionType.BREAKOUT_ACTION_TYPE_ACTION_TYPE_NONE.getNumber()) {
         output.writeEnum(1, actionType_);
       }
       if (clientGameTime_ != 0L) {
@@ -810,8 +667,8 @@ public final class BreakoutActionOuterClass {
       if (offset_ != 0) {
         output.writeInt32(17, offset_);
       }
-      if (fCCNGNCIFAI_ != 0L) {
-        output.writeUInt64(18, fCCNGNCIFAI_);
+      if (cLKEPICNJJD_ != 0L) {
+        output.writeUInt64(18, cLKEPICNJJD_);
       }
       unknownFields.writeTo(output);
     }
@@ -822,7 +679,7 @@ public final class BreakoutActionOuterClass {
       if (size != -1) return size;
 
       size = 0;
-      if (actionType_ != emu.grasscutter.net.proto.BreakoutActionOuterClass.BreakoutAction.BreakoutActionType.ACTION_TYPE_NONE.getNumber()) {
+      if (actionType_ != emu.grasscutter.net.proto.BreakoutActionTypeOuterClass.BreakoutActionType.BREAKOUT_ACTION_TYPE_ACTION_TYPE_NONE.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(1, actionType_);
       }
@@ -890,9 +747,9 @@ public final class BreakoutActionOuterClass {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(17, offset_);
       }
-      if (fCCNGNCIFAI_ != 0L) {
+      if (cLKEPICNJJD_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(18, fCCNGNCIFAI_);
+          .computeUInt64Size(18, cLKEPICNJJD_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -951,8 +808,8 @@ public final class BreakoutActionOuterClass {
           != other.getExtraBallIndex()) return false;
       if (getOffset()
           != other.getOffset()) return false;
-      if (getFCCNGNCIFAI()
-          != other.getFCCNGNCIFAI()) return false;
+      if (getCLKEPICNJJD()
+          != other.getCLKEPICNJJD()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -1008,9 +865,9 @@ public final class BreakoutActionOuterClass {
       hash = (53 * hash) + getExtraBallIndex();
       hash = (37 * hash) + OFFSET_FIELD_NUMBER;
       hash = (53 * hash) + getOffset();
-      hash = (37 * hash) + FCCNGNCIFAI_FIELD_NUMBER;
+      hash = (37 * hash) + CLKEPICNJJD_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getFCCNGNCIFAI());
+          getCLKEPICNJJD());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1107,10 +964,6 @@ public final class BreakoutActionOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * Obf: JBHHKOPAEFB
-     * </pre>
-     *
      * Protobuf type {@code BreakoutAction}
      */
     public static final class Builder extends
@@ -1194,7 +1047,7 @@ public final class BreakoutActionOuterClass {
 
         offset_ = 0;
 
-        fCCNGNCIFAI_ = 0L;
+        cLKEPICNJJD_ = 0L;
 
         return this;
       }
@@ -1251,7 +1104,7 @@ public final class BreakoutActionOuterClass {
         }
         result.extraBallIndex_ = extraBallIndex_;
         result.offset_ = offset_;
-        result.fCCNGNCIFAI_ = fCCNGNCIFAI_;
+        result.cLKEPICNJJD_ = cLKEPICNJJD_;
         onBuilt();
         return result;
       }
@@ -1351,8 +1204,8 @@ public final class BreakoutActionOuterClass {
         if (other.getOffset() != 0) {
           setOffset(other.getOffset());
         }
-        if (other.getFCCNGNCIFAI() != 0L) {
-          setFCCNGNCIFAI(other.getFCCNGNCIFAI());
+        if (other.getCLKEPICNJJD() != 0L) {
+          setCLKEPICNJJD(other.getCLKEPICNJJD());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1385,14 +1238,14 @@ public final class BreakoutActionOuterClass {
 
       private int actionType_ = 0;
       /**
-       * <code>.BreakoutAction.BreakoutActionType action_type = 1;</code>
+       * <code>.BreakoutActionType action_type = 1;</code>
        * @return The enum numeric value on the wire for actionType.
        */
       @java.lang.Override public int getActionTypeValue() {
         return actionType_;
       }
       /**
-       * <code>.BreakoutAction.BreakoutActionType action_type = 1;</code>
+       * <code>.BreakoutActionType action_type = 1;</code>
        * @param value The enum numeric value on the wire for actionType to set.
        * @return This builder for chaining.
        */
@@ -1403,21 +1256,21 @@ public final class BreakoutActionOuterClass {
         return this;
       }
       /**
-       * <code>.BreakoutAction.BreakoutActionType action_type = 1;</code>
+       * <code>.BreakoutActionType action_type = 1;</code>
        * @return The actionType.
        */
       @java.lang.Override
-      public emu.grasscutter.net.proto.BreakoutActionOuterClass.BreakoutAction.BreakoutActionType getActionType() {
+      public emu.grasscutter.net.proto.BreakoutActionTypeOuterClass.BreakoutActionType getActionType() {
         @SuppressWarnings("deprecation")
-        emu.grasscutter.net.proto.BreakoutActionOuterClass.BreakoutAction.BreakoutActionType result = emu.grasscutter.net.proto.BreakoutActionOuterClass.BreakoutAction.BreakoutActionType.valueOf(actionType_);
-        return result == null ? emu.grasscutter.net.proto.BreakoutActionOuterClass.BreakoutAction.BreakoutActionType.UNRECOGNIZED : result;
+        emu.grasscutter.net.proto.BreakoutActionTypeOuterClass.BreakoutActionType result = emu.grasscutter.net.proto.BreakoutActionTypeOuterClass.BreakoutActionType.valueOf(actionType_);
+        return result == null ? emu.grasscutter.net.proto.BreakoutActionTypeOuterClass.BreakoutActionType.UNRECOGNIZED : result;
       }
       /**
-       * <code>.BreakoutAction.BreakoutActionType action_type = 1;</code>
+       * <code>.BreakoutActionType action_type = 1;</code>
        * @param value The actionType to set.
        * @return This builder for chaining.
        */
-      public Builder setActionType(emu.grasscutter.net.proto.BreakoutActionOuterClass.BreakoutAction.BreakoutActionType value) {
+      public Builder setActionType(emu.grasscutter.net.proto.BreakoutActionTypeOuterClass.BreakoutActionType value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -1427,7 +1280,7 @@ public final class BreakoutActionOuterClass {
         return this;
       }
       /**
-       * <code>.BreakoutAction.BreakoutActionType action_type = 1;</code>
+       * <code>.BreakoutActionType action_type = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearActionType() {
@@ -2197,33 +2050,33 @@ public final class BreakoutActionOuterClass {
         return this;
       }
 
-      private long fCCNGNCIFAI_ ;
+      private long cLKEPICNJJD_ ;
       /**
-       * <code>uint64 FCCNGNCIFAI = 18;</code>
-       * @return The fCCNGNCIFAI.
+       * <code>uint64 CLKEPICNJJD = 18;</code>
+       * @return The cLKEPICNJJD.
        */
       @java.lang.Override
-      public long getFCCNGNCIFAI() {
-        return fCCNGNCIFAI_;
+      public long getCLKEPICNJJD() {
+        return cLKEPICNJJD_;
       }
       /**
-       * <code>uint64 FCCNGNCIFAI = 18;</code>
-       * @param value The fCCNGNCIFAI to set.
+       * <code>uint64 CLKEPICNJJD = 18;</code>
+       * @param value The cLKEPICNJJD to set.
        * @return This builder for chaining.
        */
-      public Builder setFCCNGNCIFAI(long value) {
+      public Builder setCLKEPICNJJD(long value) {
         
-        fCCNGNCIFAI_ = value;
+        cLKEPICNJJD_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>uint64 FCCNGNCIFAI = 18;</code>
+       * <code>uint64 CLKEPICNJJD = 18;</code>
        * @return This builder for chaining.
        */
-      public Builder clearFCCNGNCIFAI() {
+      public Builder clearCLKEPICNJJD() {
         
-        fCCNGNCIFAI_ = 0L;
+        cLKEPICNJJD_ = 0L;
         onChanged();
         return this;
       }
@@ -2294,29 +2147,26 @@ public final class BreakoutActionOuterClass {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\024BreakoutAction.proto\032\025BreakoutVector2." +
-      "proto\"\216\005\n\016BreakoutAction\0227\n\013action_type\030" +
-      "\001 \001(\0162\".BreakoutAction.BreakoutActionTyp" +
-      "e\022\030\n\020client_game_time\030\002 \001(\004\022\030\n\020server_ga" +
-      "me_time\030\003 \001(\004\022\021\n\tis_failed\030\004 \001(\010\022\021\n\tpre_" +
-      "index\030\005 \001(\r\022\021\n\tnew_index\030\006 \001(\r\022\035\n\003pos\030\007 " +
-      "\001(\0132\020.BreakoutVector2\022\"\n\010move_dir\030\010 \001(\0132" +
-      "\020.BreakoutVector2\022\r\n\005speed\030\t \001(\005\022\017\n\007peer" +
-      "_id\030\n \001(\r\022\024\n\014element_type\030\013 \001(\r\022\035\n\025eleme" +
-      "nt_reaction_buff\030\014 \001(\r\022\034\n\024speed_increase" +
-      "_count\030\r \001(\r\022\026\n\016has_extra_ball\030\016 \001(\010\022(\n\016" +
-      "extra_ball_dir\030\017 \001(\0132\020.BreakoutVector2\022\030" +
-      "\n\020extra_ball_index\030\020 \001(\r\022\016\n\006offset\030\021 \001(\005" +
-      "\022\023\n\013FCCNGNCIFAI\030\022 \001(\004\"\236\001\n\022BreakoutAction" +
-      "Type\022\024\n\020ACTION_TYPE_NONE\020\000\022\033\n\027ACTION_TYP" +
-      "E_LAUNCH_BALL\020\001\022\034\n\030ACTION_TYPE_DESTROY_B" +
-      "ALL\020\002\022\036\n\032ACTION_TYPE_FALLING_OBJECT\020\003\022\027\n" +
-      "\023ACTION_TYPE_MISSILE\020\004B\033\n\031emu.grasscutte" +
-      "r.net.protob\006proto3"
+      "\n\024BreakoutAction.proto\032\030BreakoutActionTy" +
+      "pe.proto\032\025BreakoutVector2.proto\"\336\003\n\016Brea" +
+      "koutAction\022(\n\013action_type\030\001 \001(\0162\023.Breako" +
+      "utActionType\022\030\n\020client_game_time\030\002 \001(\004\022\030" +
+      "\n\020server_game_time\030\003 \001(\004\022\021\n\tis_failed\030\004 " +
+      "\001(\010\022\021\n\tpre_index\030\005 \001(\r\022\021\n\tnew_index\030\006 \001(" +
+      "\r\022\035\n\003pos\030\007 \001(\0132\020.BreakoutVector2\022\"\n\010move" +
+      "_dir\030\010 \001(\0132\020.BreakoutVector2\022\r\n\005speed\030\t " +
+      "\001(\005\022\017\n\007peer_id\030\n \001(\r\022\024\n\014element_type\030\013 \001" +
+      "(\r\022\035\n\025element_reaction_buff\030\014 \001(\r\022\034\n\024spe" +
+      "ed_increase_count\030\r \001(\r\022\026\n\016has_extra_bal" +
+      "l\030\016 \001(\010\022(\n\016extra_ball_dir\030\017 \001(\0132\020.Breako" +
+      "utVector2\022\030\n\020extra_ball_index\030\020 \001(\r\022\016\n\006o" +
+      "ffset\030\021 \001(\005\022\023\n\013CLKEPICNJJD\030\022 \001(\004B\033\n\031emu." +
+      "grasscutter.net.protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          emu.grasscutter.net.proto.BreakoutActionTypeOuterClass.getDescriptor(),
           emu.grasscutter.net.proto.BreakoutVector2OuterClass.getDescriptor(),
         });
     internal_static_BreakoutAction_descriptor =
@@ -2324,7 +2174,8 @@ public final class BreakoutActionOuterClass {
     internal_static_BreakoutAction_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_BreakoutAction_descriptor,
-        new java.lang.String[] { "ActionType", "ClientGameTime", "ServerGameTime", "IsFailed", "PreIndex", "NewIndex", "Pos", "MoveDir", "Speed", "PeerId", "ElementType", "ElementReactionBuff", "SpeedIncreaseCount", "HasExtraBall", "ExtraBallDir", "ExtraBallIndex", "Offset", "FCCNGNCIFAI", });
+        new java.lang.String[] { "ActionType", "ClientGameTime", "ServerGameTime", "IsFailed", "PreIndex", "NewIndex", "Pos", "MoveDir", "Speed", "PeerId", "ElementType", "ElementReactionBuff", "SpeedIncreaseCount", "HasExtraBall", "ExtraBallDir", "ExtraBallIndex", "Offset", "CLKEPICNJJD", });
+    emu.grasscutter.net.proto.BreakoutActionTypeOuterClass.getDescriptor();
     emu.grasscutter.net.proto.BreakoutVector2OuterClass.getDescriptor();
   }
 

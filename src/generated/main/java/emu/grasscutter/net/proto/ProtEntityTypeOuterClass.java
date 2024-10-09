@@ -15,10 +15,6 @@ public final class ProtEntityTypeOuterClass {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   /**
-   * <pre>
-   * Obf: HFCNMMNOEDA
-   * </pre>
-   *
    * Protobuf enum {@code ProtEntityType}
    */
   public enum ProtEntityType
@@ -63,10 +59,6 @@ public final class ProtEntityTypeOuterClass {
      * <code>PROT_ENTITY_TYPE_TEAM = 9;</code>
      */
     PROT_ENTITY_TYPE_TEAM(9),
-    /**
-     * <code>PROT_ENTITY_TYPE_MASSIVE_ENTITY = 10;</code>
-     */
-    PROT_ENTITY_TYPE_MASSIVE_ENTITY(10),
     /**
      * <code>PROT_ENTITY_TYPE_MP_LEVEL = 11;</code>
      */
@@ -127,10 +119,6 @@ public final class ProtEntityTypeOuterClass {
      */
     public static final int PROT_ENTITY_TYPE_TEAM_VALUE = 9;
     /**
-     * <code>PROT_ENTITY_TYPE_MASSIVE_ENTITY = 10;</code>
-     */
-    public static final int PROT_ENTITY_TYPE_MASSIVE_ENTITY_VALUE = 10;
-    /**
      * <code>PROT_ENTITY_TYPE_MP_LEVEL = 11;</code>
      */
     public static final int PROT_ENTITY_TYPE_MP_LEVEL_VALUE = 11;
@@ -182,7 +170,6 @@ public final class ProtEntityTypeOuterClass {
         case 7: return PROT_ENTITY_TYPE_WEATHER;
         case 8: return PROT_ENTITY_TYPE_SCENE;
         case 9: return PROT_ENTITY_TYPE_TEAM;
-        case 10: return PROT_ENTITY_TYPE_MASSIVE_ENTITY;
         case 11: return PROT_ENTITY_TYPE_MP_LEVEL;
         case 12: return PROT_ENTITY_TYPE_PLAY_TEAM_ENTITY;
         case 13: return PROT_ENTITY_TYPE_EYE_POINT;
@@ -252,7 +239,7 @@ public final class ProtEntityTypeOuterClass {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\024ProtEntityType.proto*\321\003\n\016ProtEntityTyp" +
+      "\n\024ProtEntityType.proto*\254\003\n\016ProtEntityTyp" +
       "e\022\031\n\025PROT_ENTITY_TYPE_NONE\020\000\022\033\n\027PROT_ENT" +
       "ITY_TYPE_AVATAR\020\001\022\034\n\030PROT_ENTITY_TYPE_MO" +
       "NSTER\020\002\022\030\n\024PROT_ENTITY_TYPE_NPC\020\003\022\033\n\027PRO" +
@@ -260,12 +247,11 @@ public final class ProtEntityTypeOuterClass {
       "PE_REGION\020\005\022\033\n\027PROT_ENTITY_TYPE_WEAPON\020\006" +
       "\022\034\n\030PROT_ENTITY_TYPE_WEATHER\020\007\022\032\n\026PROT_E" +
       "NTITY_TYPE_SCENE\020\010\022\031\n\025PROT_ENTITY_TYPE_T" +
-      "EAM\020\t\022#\n\037PROT_ENTITY_TYPE_MASSIVE_ENTITY" +
-      "\020\n\022\035\n\031PROT_ENTITY_TYPE_MP_LEVEL\020\013\022%\n!PRO" +
-      "T_ENTITY_TYPE_PLAY_TEAM_ENTITY\020\014\022\036\n\032PROT" +
-      "_ENTITY_TYPE_EYE_POINT\020\r\022\030\n\024PROT_ENTITY_" +
-      "TYPE_MAX\020\016B\033\n\031emu.grasscutter.net.protob" +
-      "\006proto3"
+      "EAM\020\t\022\035\n\031PROT_ENTITY_TYPE_MP_LEVEL\020\013\022%\n!" +
+      "PROT_ENTITY_TYPE_PLAY_TEAM_ENTITY\020\014\022\036\n\032P" +
+      "ROT_ENTITY_TYPE_EYE_POINT\020\r\022\030\n\024PROT_ENTI" +
+      "TY_TYPE_MAX\020\016B\033\n\031emu.grasscutter.net.pro" +
+      "tob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

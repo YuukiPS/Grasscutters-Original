@@ -32,6 +32,8 @@ import emu.grasscutter.game.talk.TalkSystem;
 import emu.grasscutter.game.tower.TowerSystem;
 import emu.grasscutter.game.world.World;
 import emu.grasscutter.game.world.WorldDataSystem;
+import emu.grasscutter.net.INetworkTransport;
+import emu.grasscutter.net.impl.NetworkTransportImpl;
 import emu.grasscutter.net.packet.PacketHandler;
 import emu.grasscutter.net.proto.SocialDetailOuterClass.SocialDetail;
 import emu.grasscutter.server.dispatch.DispatchClient;
@@ -47,14 +49,20 @@ import java.net.*;
 import java.time.*;
 import java.util.*;
 import java.util.concurrent.*;
-import kcp.highway.*;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.*;
 
 @Getter
-public final class GameServer extends KcpServer implements Iterable<Player> {
+@Slf4j
+public final class GameServer implements Iterable<Player> {
+    /** This can be set by plugins to change the network transport implementation. */
+    @Setter private static Class<? extends INetworkTransport> transport = NetworkTransportImpl.class;
+
     // Game server base
     private final InetSocketAddress address;
+    private final INetworkTransport netTransport;
+
     private final GameServerPacketHandler packetHandler;
     private final Map<Integer, Player> players;
     private final Set<World> worlds;
@@ -106,6 +114,7 @@ public final class GameServer extends KcpServer implements Iterable<Player> {
             this.taskMap = null;
 
             this.address = null;
+            this.netTransport = null;
             this.packetHandler = null;
             this.dispatchClient = null;
             this.players = null;
@@ -131,16 +140,18 @@ public final class GameServer extends KcpServer implements Iterable<Player> {
             return;
         }
 
-        var channelConfig = new ChannelConfig();
-        channelConfig.nodelay(true, GAME_INFO.kcpInterval, 2, true);
-        channelConfig.setMtu(1400);
-        channelConfig.setSndwnd(256);
-        channelConfig.setRcvwnd(256);
-        channelConfig.setTimeoutMillis(30 * 1000); // 30s
-        channelConfig.setUseConvChannel(true);
-        channelConfig.setAckNoDelay(false);
+        // Create the network transport.
+        INetworkTransport transport;
+        try {
+            transport = GameServer.transport.getDeclaredConstructor().newInstance();
+        } catch (Exception ex) {
+            log.error("Failed to create network transport.", ex);
+            transport = new NetworkTransportImpl();
+        }
 
-        this.init(GameSessionManager.getListener(), channelConfig, address);
+        // Initialize the transport.
+        this.netTransport = transport;
+        this.netTransport.start(this.address = address);
 
         EnergyManager.initialize();
         StaminaManager.initialize();
@@ -149,7 +160,6 @@ public final class GameServer extends KcpServer implements Iterable<Player> {
         CombineManger.initialize();
 
         // Game Server base
-        this.address = address;
         this.packetHandler = new GameServerPacketHandler(PacketHandler.class);
         this.dispatchClient = new DispatchClient(GameServer.getDispatchUrl());
         this.players = new ConcurrentHashMap<>();
@@ -184,7 +194,7 @@ public final class GameServer extends KcpServer implements Iterable<Player> {
 
     private static InetSocketAddress getAdapterInetSocketAddress() {
         InetSocketAddress inetSocketAddress;
-        if (GAME_INFO.bindAddress.equals("")) {
+        if (GAME_INFO.bindAddress.isEmpty()) {
             inetSocketAddress = new InetSocketAddress(GAME_INFO.bindPort);
         } else {
             inetSocketAddress = new InetSocketAddress(GAME_INFO.bindAddress, GAME_INFO.bindPort);
@@ -353,19 +363,6 @@ public final class GameServer extends KcpServer implements Iterable<Player> {
         this.getWorlds().forEach(World::save);
 
         Utils.sleep(1000L); // Wait 1 second for operations to finish.
-        this.stop(); // Stop the server.
-
-        try {
-            var threadPool = GameSessionManager.getLogicThread();
-
-            // Shutdown network thread.
-            threadPool.shutdownGracefully();
-            // Wait for the network thread to finish.
-            if (!threadPool.awaitTermination(5, TimeUnit.SECONDS)) {
-                Grasscutter.getLogger().error("Logic thread did not terminate!");
-            }
-        } catch (InterruptedException ignored) {
-        }
     }
 
     @NotNull @Override

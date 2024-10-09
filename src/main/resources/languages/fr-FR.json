@@ -44,7 +44,8 @@
         "password_error": "Mot de passe invalide",
         "password_length_error": "La longueur du mot de passe doit être supérieure a 8",
         "password_storage_error": "Vous n'avez pas de mot de passe pour votre compte. Veuillez contacter un administrateur.",
-        "server_max_player_limit": "Le nombre de joueurs maximum est atteint."
+        "server_max_player_limit": "Le nombre de joueurs maximum est atteint.",
+        "password_crypto_error": "🇺🇸Unable to decrypt the client's given password. Are you using the right version of the game?"
       },
       "router_error": "[Dispatch] Impossible d'attacher le routeur."
     },

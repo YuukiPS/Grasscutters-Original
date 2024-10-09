@@ -65,12 +65,31 @@ public class Ability {
                 data.modifiers.values().stream()
                         .map(
                                 m ->
-                                        (List<AbilityModifierAction>)
-                                                (m.onAdded == null ? Collections.emptyList() : Arrays.asList(m.onAdded)))
+                                        m.onAdded == null
+                                                ? Collections.<AbilityModifierAction>emptyList()
+                                                : Arrays.asList(m.onAdded))
                         .flatMap(List::stream)
                         .filter(action -> action.type == AbilityModifierAction.Type.AvatarSkillStart)
                         .map(action -> action.skillID)
                         .toList());
+
+        if (data.onAdded != null) {
+            processOnAddedAbilityModifiers();
+        }
+    }
+
+    public void processOnAddedAbilityModifiers() {
+        for (AbilityModifierAction modifierAction : data.onAdded) {
+            if (modifierAction.type == null) continue;
+
+            if (modifierAction.type == AbilityModifierAction.Type.ApplyModifier) {
+                if (modifierAction.modifierName == null) continue;
+                else if (!data.modifiers.containsKey(modifierAction.modifierName)) continue;
+
+                var modifierData = data.modifiers.get(modifierAction.modifierName);
+                owner.onAddAbilityModifier(modifierData);
+            }
+        }
     }
 
     public static String getAbilityName(AbilityString abString) {

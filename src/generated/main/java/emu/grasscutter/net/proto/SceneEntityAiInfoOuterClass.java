@@ -19,27 +19,6 @@ public final class SceneEntityAiInfoOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>bool is_ai_open = 1;</code>
-     * @return The isAiOpen.
-     */
-    boolean getIsAiOpen();
-
-    /**
-     * <code>.Vector born_pos = 2;</code>
-     * @return Whether the bornPos field is set.
-     */
-    boolean hasBornPos();
-    /**
-     * <code>.Vector born_pos = 2;</code>
-     * @return The bornPos.
-     */
-    emu.grasscutter.net.proto.VectorOuterClass.Vector getBornPos();
-    /**
-     * <code>.Vector born_pos = 2;</code>
-     */
-    emu.grasscutter.net.proto.VectorOuterClass.VectorOrBuilder getBornPosOrBuilder();
-
-    /**
      * <code>map&lt;uint32, uint32&gt; skill_cd_map = 3;</code>
      */
     int getSkillCdMapCount();
@@ -163,16 +142,12 @@ public final class SceneEntityAiInfoOuterClass {
     int getCurTactic();
 
     /**
-     * <code>bool NMECJFPHFGH = 8;</code>
-     * @return The nMECJFPHFGH.
+     * <code>bool AADJDKIFENL = 8;</code>
+     * @return The aADJDKIFENL.
      */
-    boolean getNMECJFPHFGH();
+    boolean getAADJDKIFENL();
   }
   /**
-   * <pre>
-   * Obf: NGIAJBBLFGD
-   * </pre>
-   *
    * Protobuf type {@code SceneEntityAiInfo}
    */
   public static final class SceneEntityAiInfo extends
@@ -218,24 +193,6 @@ public final class SceneEntityAiInfoOuterClass {
             case 0:
               done = true;
               break;
-            case 8: {
-
-              isAiOpen_ = input.readBool();
-              break;
-            }
-            case 18: {
-              emu.grasscutter.net.proto.VectorOuterClass.Vector.Builder subBuilder = null;
-              if (bornPos_ != null) {
-                subBuilder = bornPos_.toBuilder();
-              }
-              bornPos_ = input.readMessage(emu.grasscutter.net.proto.VectorOuterClass.Vector.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(bornPos_);
-                bornPos_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
             case 26: {
               if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 skillCdMap_ = com.google.protobuf.MapField.newMapField(
@@ -295,7 +252,7 @@ public final class SceneEntityAiInfoOuterClass {
             }
             case 64: {
 
-              nMECJFPHFGH_ = input.readBool();
+              aADJDKIFENL_ = input.readBool();
               break;
             }
             default: {
@@ -344,43 +301,6 @@ public final class SceneEntityAiInfoOuterClass {
       return emu.grasscutter.net.proto.SceneEntityAiInfoOuterClass.internal_static_SceneEntityAiInfo_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               emu.grasscutter.net.proto.SceneEntityAiInfoOuterClass.SceneEntityAiInfo.class, emu.grasscutter.net.proto.SceneEntityAiInfoOuterClass.SceneEntityAiInfo.Builder.class);
-    }
-
-    public static final int IS_AI_OPEN_FIELD_NUMBER = 1;
-    private boolean isAiOpen_;
-    /**
-     * <code>bool is_ai_open = 1;</code>
-     * @return The isAiOpen.
-     */
-    @java.lang.Override
-    public boolean getIsAiOpen() {
-      return isAiOpen_;
-    }
-
-    public static final int BORN_POS_FIELD_NUMBER = 2;
-    private emu.grasscutter.net.proto.VectorOuterClass.Vector bornPos_;
-    /**
-     * <code>.Vector born_pos = 2;</code>
-     * @return Whether the bornPos field is set.
-     */
-    @java.lang.Override
-    public boolean hasBornPos() {
-      return bornPos_ != null;
-    }
-    /**
-     * <code>.Vector born_pos = 2;</code>
-     * @return The bornPos.
-     */
-    @java.lang.Override
-    public emu.grasscutter.net.proto.VectorOuterClass.Vector getBornPos() {
-      return bornPos_ == null ? emu.grasscutter.net.proto.VectorOuterClass.Vector.getDefaultInstance() : bornPos_;
-    }
-    /**
-     * <code>.Vector born_pos = 2;</code>
-     */
-    @java.lang.Override
-    public emu.grasscutter.net.proto.VectorOuterClass.VectorOrBuilder getBornPosOrBuilder() {
-      return getBornPos();
     }
 
     public static final int SKILL_CD_MAP_FIELD_NUMBER = 3;
@@ -663,15 +583,15 @@ public final class SceneEntityAiInfoOuterClass {
       return curTactic_;
     }
 
-    public static final int NMECJFPHFGH_FIELD_NUMBER = 8;
-    private boolean nMECJFPHFGH_;
+    public static final int AADJDKIFENL_FIELD_NUMBER = 8;
+    private boolean aADJDKIFENL_;
     /**
-     * <code>bool NMECJFPHFGH = 8;</code>
-     * @return The nMECJFPHFGH.
+     * <code>bool AADJDKIFENL = 8;</code>
+     * @return The aADJDKIFENL.
      */
     @java.lang.Override
-    public boolean getNMECJFPHFGH() {
-      return nMECJFPHFGH_;
+    public boolean getAADJDKIFENL() {
+      return aADJDKIFENL_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -688,12 +608,6 @@ public final class SceneEntityAiInfoOuterClass {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (isAiOpen_ != false) {
-        output.writeBool(1, isAiOpen_);
-      }
-      if (bornPos_ != null) {
-        output.writeMessage(2, getBornPos());
-      }
       com.google.protobuf.GeneratedMessageV3
         .serializeIntegerMapTo(
           output,
@@ -718,8 +632,8 @@ public final class SceneEntityAiInfoOuterClass {
       if (curTactic_ != 0) {
         output.writeUInt32(7, curTactic_);
       }
-      if (nMECJFPHFGH_ != false) {
-        output.writeBool(8, nMECJFPHFGH_);
+      if (aADJDKIFENL_ != false) {
+        output.writeBool(8, aADJDKIFENL_);
       }
       unknownFields.writeTo(output);
     }
@@ -730,14 +644,6 @@ public final class SceneEntityAiInfoOuterClass {
       if (size != -1) return size;
 
       size = 0;
-      if (isAiOpen_ != false) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(1, isAiOpen_);
-      }
-      if (bornPos_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, getBornPos());
-      }
       for (java.util.Map.Entry<java.lang.Integer, java.lang.Integer> entry
            : internalGetSkillCdMap().getMap().entrySet()) {
         com.google.protobuf.MapEntry<java.lang.Integer, java.lang.Integer>
@@ -776,9 +682,9 @@ public final class SceneEntityAiInfoOuterClass {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(7, curTactic_);
       }
-      if (nMECJFPHFGH_ != false) {
+      if (aADJDKIFENL_ != false) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(8, nMECJFPHFGH_);
+          .computeBoolSize(8, aADJDKIFENL_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -795,13 +701,6 @@ public final class SceneEntityAiInfoOuterClass {
       }
       emu.grasscutter.net.proto.SceneEntityAiInfoOuterClass.SceneEntityAiInfo other = (emu.grasscutter.net.proto.SceneEntityAiInfoOuterClass.SceneEntityAiInfo) obj;
 
-      if (getIsAiOpen()
-          != other.getIsAiOpen()) return false;
-      if (hasBornPos() != other.hasBornPos()) return false;
-      if (hasBornPos()) {
-        if (!getBornPos()
-            .equals(other.getBornPos())) return false;
-      }
       if (!internalGetSkillCdMap().equals(
           other.internalGetSkillCdMap())) return false;
       if (hasServantInfo() != other.hasServantInfo()) return false;
@@ -815,8 +714,8 @@ public final class SceneEntityAiInfoOuterClass {
           other.internalGetSkillGroupCdMap())) return false;
       if (getCurTactic()
           != other.getCurTactic()) return false;
-      if (getNMECJFPHFGH()
-          != other.getNMECJFPHFGH()) return false;
+      if (getAADJDKIFENL()
+          != other.getAADJDKIFENL()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -828,13 +727,6 @@ public final class SceneEntityAiInfoOuterClass {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + IS_AI_OPEN_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-          getIsAiOpen());
-      if (hasBornPos()) {
-        hash = (37 * hash) + BORN_POS_FIELD_NUMBER;
-        hash = (53 * hash) + getBornPos().hashCode();
-      }
       if (!internalGetSkillCdMap().getMap().isEmpty()) {
         hash = (37 * hash) + SKILL_CD_MAP_FIELD_NUMBER;
         hash = (53 * hash) + internalGetSkillCdMap().hashCode();
@@ -853,9 +745,9 @@ public final class SceneEntityAiInfoOuterClass {
       }
       hash = (37 * hash) + CUR_TACTIC_FIELD_NUMBER;
       hash = (53 * hash) + getCurTactic();
-      hash = (37 * hash) + NMECJFPHFGH_FIELD_NUMBER;
+      hash = (37 * hash) + AADJDKIFENL_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-          getNMECJFPHFGH());
+          getAADJDKIFENL());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -952,10 +844,6 @@ public final class SceneEntityAiInfoOuterClass {
       return builder;
     }
     /**
-     * <pre>
-     * Obf: NGIAJBBLFGD
-     * </pre>
-     *
      * Protobuf type {@code SceneEntityAiInfo}
      */
     public static final class Builder extends
@@ -1023,14 +911,6 @@ public final class SceneEntityAiInfoOuterClass {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        isAiOpen_ = false;
-
-        if (bornPosBuilder_ == null) {
-          bornPos_ = null;
-        } else {
-          bornPos_ = null;
-          bornPosBuilder_ = null;
-        }
         internalGetMutableSkillCdMap().clear();
         if (servantInfoBuilder_ == null) {
           servantInfo_ = null;
@@ -1042,7 +922,7 @@ public final class SceneEntityAiInfoOuterClass {
         internalGetMutableSkillGroupCdMap().clear();
         curTactic_ = 0;
 
-        nMECJFPHFGH_ = false;
+        aADJDKIFENL_ = false;
 
         return this;
       }
@@ -1071,12 +951,6 @@ public final class SceneEntityAiInfoOuterClass {
       public emu.grasscutter.net.proto.SceneEntityAiInfoOuterClass.SceneEntityAiInfo buildPartial() {
         emu.grasscutter.net.proto.SceneEntityAiInfoOuterClass.SceneEntityAiInfo result = new emu.grasscutter.net.proto.SceneEntityAiInfoOuterClass.SceneEntityAiInfo(this);
         int from_bitField0_ = bitField0_;
-        result.isAiOpen_ = isAiOpen_;
-        if (bornPosBuilder_ == null) {
-          result.bornPos_ = bornPos_;
-        } else {
-          result.bornPos_ = bornPosBuilder_.build();
-        }
         result.skillCdMap_ = internalGetSkillCdMap();
         result.skillCdMap_.makeImmutable();
         if (servantInfoBuilder_ == null) {
@@ -1089,7 +963,7 @@ public final class SceneEntityAiInfoOuterClass {
         result.skillGroupCdMap_ = internalGetSkillGroupCdMap();
         result.skillGroupCdMap_.makeImmutable();
         result.curTactic_ = curTactic_;
-        result.nMECJFPHFGH_ = nMECJFPHFGH_;
+        result.aADJDKIFENL_ = aADJDKIFENL_;
         onBuilt();
         return result;
       }
@@ -1138,12 +1012,6 @@ public final class SceneEntityAiInfoOuterClass {
 
       public Builder mergeFrom(emu.grasscutter.net.proto.SceneEntityAiInfoOuterClass.SceneEntityAiInfo other) {
         if (other == emu.grasscutter.net.proto.SceneEntityAiInfoOuterClass.SceneEntityAiInfo.getDefaultInstance()) return this;
-        if (other.getIsAiOpen() != false) {
-          setIsAiOpen(other.getIsAiOpen());
-        }
-        if (other.hasBornPos()) {
-          mergeBornPos(other.getBornPos());
-        }
         internalGetMutableSkillCdMap().mergeFrom(
             other.internalGetSkillCdMap());
         if (other.hasServantInfo()) {
@@ -1156,8 +1024,8 @@ public final class SceneEntityAiInfoOuterClass {
         if (other.getCurTactic() != 0) {
           setCurTactic(other.getCurTactic());
         }
-        if (other.getNMECJFPHFGH() != false) {
-          setNMECJFPHFGH(other.getNMECJFPHFGH());
+        if (other.getAADJDKIFENL() != false) {
+          setAADJDKIFENL(other.getAADJDKIFENL());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1188,156 +1056,6 @@ public final class SceneEntityAiInfoOuterClass {
         return this;
       }
       private int bitField0_;
-
-      private boolean isAiOpen_ ;
-      /**
-       * <code>bool is_ai_open = 1;</code>
-       * @return The isAiOpen.
-       */
-      @java.lang.Override
-      public boolean getIsAiOpen() {
-        return isAiOpen_;
-      }
-      /**
-       * <code>bool is_ai_open = 1;</code>
-       * @param value The isAiOpen to set.
-       * @return This builder for chaining.
-       */
-      public Builder setIsAiOpen(boolean value) {
-        
-        isAiOpen_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>bool is_ai_open = 1;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearIsAiOpen() {
-        
-        isAiOpen_ = false;
-        onChanged();
-        return this;
-      }
-
-      private emu.grasscutter.net.proto.VectorOuterClass.Vector bornPos_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          emu.grasscutter.net.proto.VectorOuterClass.Vector, emu.grasscutter.net.proto.VectorOuterClass.Vector.Builder, emu.grasscutter.net.proto.VectorOuterClass.VectorOrBuilder> bornPosBuilder_;
-      /**
-       * <code>.Vector born_pos = 2;</code>
-       * @return Whether the bornPos field is set.
-       */
-      public boolean hasBornPos() {
-        return bornPosBuilder_ != null || bornPos_ != null;
-      }
-      /**
-       * <code>.Vector born_pos = 2;</code>
-       * @return The bornPos.
-       */
-      public emu.grasscutter.net.proto.VectorOuterClass.Vector getBornPos() {
-        if (bornPosBuilder_ == null) {
-          return bornPos_ == null ? emu.grasscutter.net.proto.VectorOuterClass.Vector.getDefaultInstance() : bornPos_;
-        } else {
-          return bornPosBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>.Vector born_pos = 2;</code>
-       */
-      public Builder setBornPos(emu.grasscutter.net.proto.VectorOuterClass.Vector value) {
-        if (bornPosBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          bornPos_ = value;
-          onChanged();
-        } else {
-          bornPosBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.Vector born_pos = 2;</code>
-       */
-      public Builder setBornPos(
-          emu.grasscutter.net.proto.VectorOuterClass.Vector.Builder builderForValue) {
-        if (bornPosBuilder_ == null) {
-          bornPos_ = builderForValue.build();
-          onChanged();
-        } else {
-          bornPosBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <code>.Vector born_pos = 2;</code>
-       */
-      public Builder mergeBornPos(emu.grasscutter.net.proto.VectorOuterClass.Vector value) {
-        if (bornPosBuilder_ == null) {
-          if (bornPos_ != null) {
-            bornPos_ =
-              emu.grasscutter.net.proto.VectorOuterClass.Vector.newBuilder(bornPos_).mergeFrom(value).buildPartial();
-          } else {
-            bornPos_ = value;
-          }
-          onChanged();
-        } else {
-          bornPosBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.Vector born_pos = 2;</code>
-       */
-      public Builder clearBornPos() {
-        if (bornPosBuilder_ == null) {
-          bornPos_ = null;
-          onChanged();
-        } else {
-          bornPos_ = null;
-          bornPosBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <code>.Vector born_pos = 2;</code>
-       */
-      public emu.grasscutter.net.proto.VectorOuterClass.Vector.Builder getBornPosBuilder() {
-        
-        onChanged();
-        return getBornPosFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>.Vector born_pos = 2;</code>
-       */
-      public emu.grasscutter.net.proto.VectorOuterClass.VectorOrBuilder getBornPosOrBuilder() {
-        if (bornPosBuilder_ != null) {
-          return bornPosBuilder_.getMessageOrBuilder();
-        } else {
-          return bornPos_ == null ?
-              emu.grasscutter.net.proto.VectorOuterClass.Vector.getDefaultInstance() : bornPos_;
-        }
-      }
-      /**
-       * <code>.Vector born_pos = 2;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          emu.grasscutter.net.proto.VectorOuterClass.Vector, emu.grasscutter.net.proto.VectorOuterClass.Vector.Builder, emu.grasscutter.net.proto.VectorOuterClass.VectorOrBuilder> 
-          getBornPosFieldBuilder() {
-        if (bornPosBuilder_ == null) {
-          bornPosBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              emu.grasscutter.net.proto.VectorOuterClass.Vector, emu.grasscutter.net.proto.VectorOuterClass.Vector.Builder, emu.grasscutter.net.proto.VectorOuterClass.VectorOrBuilder>(
-                  getBornPos(),
-                  getParentForChildren(),
-                  isClean());
-          bornPos_ = null;
-        }
-        return bornPosBuilder_;
-      }
 
       private com.google.protobuf.MapField<
           java.lang.Integer, java.lang.Integer> skillCdMap_;
@@ -1873,33 +1591,33 @@ public final class SceneEntityAiInfoOuterClass {
         return this;
       }
 
-      private boolean nMECJFPHFGH_ ;
+      private boolean aADJDKIFENL_ ;
       /**
-       * <code>bool NMECJFPHFGH = 8;</code>
-       * @return The nMECJFPHFGH.
+       * <code>bool AADJDKIFENL = 8;</code>
+       * @return The aADJDKIFENL.
        */
       @java.lang.Override
-      public boolean getNMECJFPHFGH() {
-        return nMECJFPHFGH_;
+      public boolean getAADJDKIFENL() {
+        return aADJDKIFENL_;
       }
       /**
-       * <code>bool NMECJFPHFGH = 8;</code>
-       * @param value The nMECJFPHFGH to set.
+       * <code>bool AADJDKIFENL = 8;</code>
+       * @param value The aADJDKIFENL to set.
        * @return This builder for chaining.
        */
-      public Builder setNMECJFPHFGH(boolean value) {
+      public Builder setAADJDKIFENL(boolean value) {
         
-        nMECJFPHFGH_ = value;
+        aADJDKIFENL_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>bool NMECJFPHFGH = 8;</code>
+       * <code>bool AADJDKIFENL = 8;</code>
        * @return This builder for chaining.
        */
-      public Builder clearNMECJFPHFGH() {
+      public Builder clearAADJDKIFENL() {
         
-        nMECJFPHFGH_ = false;
+        aADJDKIFENL_ = false;
         onChanged();
         return this;
       }
@@ -1985,26 +1703,24 @@ public final class SceneEntityAiInfoOuterClass {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\027SceneEntityAiInfo.proto\032\014Vector.proto\032" +
-      "\021ServantInfo.proto\"\351\003\n\021SceneEntityAiInfo" +
-      "\022\022\n\nis_ai_open\030\001 \001(\010\022\031\n\010born_pos\030\002 \001(\0132\007" +
-      ".Vector\0228\n\014skill_cd_map\030\003 \003(\0132\".SceneEnt" +
-      "ityAiInfo.SkillCdMapEntry\022\"\n\014servant_inf" +
-      "o\030\004 \001(\0132\014.ServantInfo\022:\n\rai_threat_map\030\005" +
-      " \003(\0132#.SceneEntityAiInfo.AiThreatMapEntr" +
-      "y\022C\n\022skill_group_cd_map\030\006 \003(\0132\'.SceneEnt" +
-      "ityAiInfo.SkillGroupCdMapEntry\022\022\n\ncur_ta" +
-      "ctic\030\007 \001(\r\022\023\n\013NMECJFPHFGH\030\010 \001(\010\0321\n\017Skill" +
-      "CdMapEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\002" +
-      "8\001\0322\n\020AiThreatMapEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005v" +
-      "alue\030\002 \001(\r:\0028\001\0326\n\024SkillGroupCdMapEntry\022\013" +
-      "\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028\001B\033\n\031emu.gr" +
-      "asscutter.net.protob\006proto3"
+      "\n\027SceneEntityAiInfo.proto\032\021ServantInfo.p" +
+      "roto\"\272\003\n\021SceneEntityAiInfo\0228\n\014skill_cd_m" +
+      "ap\030\003 \003(\0132\".SceneEntityAiInfo.SkillCdMapE" +
+      "ntry\022\"\n\014servant_info\030\004 \001(\0132\014.ServantInfo" +
+      "\022:\n\rai_threat_map\030\005 \003(\0132#.SceneEntityAiI" +
+      "nfo.AiThreatMapEntry\022C\n\022skill_group_cd_m" +
+      "ap\030\006 \003(\0132\'.SceneEntityAiInfo.SkillGroupC" +
+      "dMapEntry\022\022\n\ncur_tactic\030\007 \001(\r\022\023\n\013AADJDKI" +
+      "FENL\030\010 \001(\010\0321\n\017SkillCdMapEntry\022\013\n\003key\030\001 \001" +
+      "(\r\022\r\n\005value\030\002 \001(\r:\0028\001\0322\n\020AiThreatMapEntr" +
+      "y\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028\001\0326\n\024Ski" +
+      "llGroupCdMapEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030" +
+      "\002 \001(\r:\0028\001B\033\n\031emu.grasscutter.net.protob\006" +
+      "proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-          emu.grasscutter.net.proto.VectorOuterClass.getDescriptor(),
           emu.grasscutter.net.proto.ServantInfoOuterClass.getDescriptor(),
         });
     internal_static_SceneEntityAiInfo_descriptor =
@@ -2012,7 +1728,7 @@ public final class SceneEntityAiInfoOuterClass {
     internal_static_SceneEntityAiInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_SceneEntityAiInfo_descriptor,
-        new java.lang.String[] { "IsAiOpen", "BornPos", "SkillCdMap", "ServantInfo", "AiThreatMap", "SkillGroupCdMap", "CurTactic", "NMECJFPHFGH", });
+        new java.lang.String[] { "SkillCdMap", "ServantInfo", "AiThreatMap", "SkillGroupCdMap", "CurTactic", "AADJDKIFENL", });
     internal_static_SceneEntityAiInfo_SkillCdMapEntry_descriptor =
       internal_static_SceneEntityAiInfo_descriptor.getNestedTypes().get(0);
     internal_static_SceneEntityAiInfo_SkillCdMapEntry_fieldAccessorTable = new
@@ -2031,7 +1747,6 @@ public final class SceneEntityAiInfoOuterClass {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_SceneEntityAiInfo_SkillGroupCdMapEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
-    emu.grasscutter.net.proto.VectorOuterClass.getDescriptor();
     emu.grasscutter.net.proto.ServantInfoOuterClass.getDescriptor();
   }
 
