@@ -600,8 +600,8 @@ public final class ResourceLoader {
                             GameData.getMainQuestDataMap().put(mainQuest.getId(), mainQuest);
 
                             mainQuest.onLoad(); // Load the quest data.
-                        } catch (IOException ignored) {
-                            // skip
+                        } catch (Exception e) {
+                            Grasscutter.getLogger().error("Quest data error: "+path, e);
                         }
                     });
         } catch (IOException e) {
