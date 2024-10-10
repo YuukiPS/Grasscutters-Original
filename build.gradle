@@ -72,9 +72,9 @@ dependencies {
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.4.12'
 
     // Line reading libraries.
-    implementation group: 'org.jline', name: 'jline', version: '3.25.0'
-    implementation group: 'org.jline', name: 'jline-terminal-jna', version: '3.21.0'
-    implementation group: 'net.java.dev.jna', name: 'jna', version: '5.10.0'
+    implementation group: 'org.jline', name: 'jline', version: '3.27.0'
+    implementation group: 'org.jline', name: 'jline-terminal-jna', version: '3.27.0'
+    implementation group: 'net.java.dev.jna', name: 'jna', version: '5.15.0'
 
     // Java Netty for networking.
     implementation group: 'io.netty', name: 'netty-common', version: project.netty_version
@@ -113,6 +113,9 @@ dependencies {
     implementation group: 'io.javalin', name: 'javalin', version: '5.5.0'
     // Java WebSocket server & client library.
     implementation group: 'org.java-websocket', name: 'Java-WebSocket', version: '1.5.2'
+
+    // Xxhash
+    implementation group: 'net.openhft', name: 'zero-allocation-hashing', version: '0.26ea0'
 
     // Google Protocol Buffer definitions.
     // These are the raw '.proto' files.
